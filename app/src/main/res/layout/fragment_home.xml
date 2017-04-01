@@ -188,6 +188,7 @@
             android:orientation="vertical">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circleImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="0.9"
@@ -257,7 +258,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
-                android:text="编辑桌台" />
+                android:text="打印设置" />
         </LinearLayout>
     </LinearLayout>
 
@@ -383,6 +384,7 @@
                 android:background="@mipmap/custom_service" />
 
             <Button
+                android:id="@+id/logoff"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="2dp"
@@ -393,6 +395,7 @@
                 android:textSize="24sp" />
 
             <ImageButton
+                android:id="@+id/imageButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="2dp"

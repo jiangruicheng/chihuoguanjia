@@ -6,4 +6,6 @@
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="buttonStork">#FB5630</color>
+    <color name="menuEditorItemTitle">#FBC27F</color>
+    <color name="menuEditorItemDelete">#FC5630</color>
 </resources>

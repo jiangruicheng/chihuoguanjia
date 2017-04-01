@@ -4,48 +4,89 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
-import de.hdodenhof.circleimageview.CircleImageView;
-
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link HomeFragment#newInstance} factory method to
+ * Use the {@link MenuEditorFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class MenuEditorFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    @BindView(R.id.textView2)
-    TextView textView2;
-    @BindView(R.id.textView3)
-    TextView textView3;
-    @BindView(R.id.textView)
-    TextView textView;
-    @BindView(R.id.circleImageView)
-    CircleImageView circleImageView;
-    @BindView(R.id.imageButton)
-    ImageButton imageButton;
     Unbinder unbinder;
-    @BindView(R.id.logoff)
-    Button logoff;
+    @BindView(R.id.back)
+    Button back;
 
+    @OnClick(R.id.back)
+    void onclick_back() {
+        fragmentManager.popBackStack();
+    }
+
+    @BindView(R.id.title)
+    TextView title;
+    @BindView(R.id.frame1)
+    FrameLayout frame;
+    @BindView(R.id.add_cailei)
+    Button addCailei;
+
+    @OnClick(R.id.add_cailei)
+    void onclick_cailei() {
+        if (!fragments.get(CAILEI).isVisible()) {
+            switchFragment(CAILEI);
+        } else {
+            //
+        }
+    }
+
+    @BindView(R.id.add_caipin)
+    Button addCaipin;
+
+    @OnClick(R.id.add_caipin)
+    void onclick_caipin() {
+        if (!fragments.get(CAIPIN).isVisible()) {
+            switchFragment(CAIPIN);
+        } else {
+
+        }
+    }
+
+    FragmentManager fragmentManager;
+
+    private void switchFragment(String name) {
+        Iterator iterator = fragments.values().iterator();
+        while (iterator.hasNext()) {
+            Fragment fragment = (Fragment) iterator.next();
+            if (fragment.equals(fragments.get(name))) {
+                fragmentManager.beginTransaction().show(fragment).commit();
+            } else {
+                fragmentManager.beginTransaction().hide(fragment).commit();
+            }
+
+        }
+    }
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -53,7 +94,7 @@ public class HomeFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public HomeFragment() {
+    public MenuEditorFragment() {
         // Required empty public constructor
     }
 
@@ -63,11 +104,11 @@ public class HomeFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
+     * @return A new instance of fragment MenuEditorFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
+    public static MenuEditorFragment newInstance(String param1, String param2) {
+        MenuEditorFragment fragment = new MenuEditorFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -84,25 +125,21 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    private static final String CAILEI = "CL";
+    private static final String CAIPIN = "CP";
+    private Map<String, Fragment> fragments;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_menu_editor, container, false);
         unbinder = ButterKnife.bind(this, view);
-        circleImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame, MenuEditorFragment.newInstance(null, null)).addToBackStack("").commit();
-            }
-        });
-        logoff.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame, LoginFragment.newInstance(null, null)).addToBackStack("").commit();
-
-            }
-        });
+        fragments = new HashMap<>();
+        fragments.put(CAILEI, CaileiFragment.newInstance(null, null));
+        fragments.put(CAIPIN, CaipinFragment.newInstance(null, null));
+        fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().add(R.id.frame1, fragments.get(CAILEI)).add(R.id.frame1, fragments.get(CAIPIN)).hide(fragments.get(CAIPIN)).commit();
         return view;
     }
 
