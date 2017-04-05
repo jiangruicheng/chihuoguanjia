@@ -7,13 +7,21 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.cndll.chgj.R;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link LoginFragment.OnFragmentInteractionListener} interface
+ * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link LoginFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -23,6 +31,29 @@ public class LoginFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    @BindView(R.id.back)
+    Button back;
+    @BindView(R.id.title)
+    TextView title;
+    @BindView(R.id.info)
+    TextView info;
+    @BindView(R.id.number)
+    EditText number;
+    @BindView(R.id.tel)
+    EditText tel;
+    @BindView(R.id.password)
+    EditText password;
+    @BindView(R.id.login)
+    Button login;
+    @BindView(R.id.register)
+    Button register;
+
+    @OnClick(R.id.register)
+    void onclick_register() {
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame, RegisterFragment.newInstance(null, null)).addToBackStack("").commit();
+    }
+
+    Unbinder unbinder;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -65,7 +96,9 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false);
+        View view = inflater.inflate(R.layout.fragment_login, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -90,6 +123,12 @@ public class LoginFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     /**

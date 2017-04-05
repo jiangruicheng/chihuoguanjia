@@ -25,20 +25,9 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical|left"
                 android:padding="8dp"
-                android:text="小炒类"
+                android:text="乡村18碗（龙岗店）"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/price"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical|left"
-                android:paddingLeft="8dp"
-                android:text="￥18/份"
-                android:textColor="@color/white"
-                android:textSize="10sp" />
 
             <TextView
                 android:id="@+id/info"
@@ -47,8 +36,8 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical|left"
                 android:paddingLeft="8dp"
-                android:text="折扣：可  编号：12  厨房打印机"
-                android:textColor="@color/white"
+                android:text="门店编号123455"
+                android:textColor="@android:color/holo_red_light"
                 android:textSize="10sp" />
         </LinearLayout>
 
@@ -58,7 +47,6 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:background="#FDE1BF"
             android:gravity="center"
             android:text="排序"
             android:textColor="@color/black"

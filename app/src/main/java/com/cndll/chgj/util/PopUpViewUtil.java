@@ -3,7 +3,6 @@ package com.cndll.chgj.util;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
@@ -29,11 +28,11 @@ public class PopUpViewUtil {
         return wg;
     }
 
-    public void popListWindow(View location, ViewGroup group, int width, int height, int gravity, int[] locations) {
-        if (group == null) {
+    public void popListWindow(View location, View view, int width, int height, int gravity, int[] locations) {
+        if (view == null) {
             return;
         }
-        popupWindow = new PopupWindow(group, width, height);
+        popupWindow = new PopupWindow(view, width, height);
         popupWindow.setFocusable(true);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
@@ -46,7 +45,7 @@ public class PopUpViewUtil {
         if (null != locations && locations.length == 2) {
             popupWindow.showAtLocation(location, gravity, locations[0], locations[2]);
         } else {
-            popupWindow.showAsDropDown(location);
+            popupWindow.showAtLocation(location, gravity, 0, 0);
         }
     }
 

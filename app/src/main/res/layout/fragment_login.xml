@@ -27,18 +27,20 @@
     </FrameLayout>
 
     <TextView
+        android:id="@+id/info"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:layout_weight="1"
         android:gravity="center"
         android:text="当前门店号:1234556\n老乡店"
         android:textColor="@color/black" />
 
     <EditText
+        android:id="@+id/number"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="4dp"
         android:layout_weight="1"
         android:background="@color/white"
         android:drawableLeft="@mipmap/mendianhao"
@@ -48,7 +50,7 @@
         android:paddingLeft="12dp" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/tel"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -60,6 +62,7 @@
         android:paddingLeft="12dp" />
 
     <EditText
+        android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -71,24 +74,26 @@
         android:paddingLeft="12dp" />
 
     <Button
+        android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginLeft="42dp"
         android:layout_marginRight="42dp"
-        android:layout_marginTop="42dp"
-        android:layout_weight="1.1"
+        android:layout_marginTop="12dp"
+        android:layout_weight="1"
         android:background="@drawable/shape_fillet_solid"
         android:text="登录"
         android:textColor="@color/white"
         android:textSize="21sp" />
 
     <Button
+        android:id="@+id/register"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginLeft="42dp"
         android:layout_marginRight="42dp"
-        android:layout_marginTop="24dp"
-        android:layout_weight="1.1"
+        android:layout_marginTop="12dp"
+        android:layout_weight="1"
         android:background="@drawable/shape_fillet_button"
         android:text="注册门店号"
         android:textColor="@color/buttonStork"

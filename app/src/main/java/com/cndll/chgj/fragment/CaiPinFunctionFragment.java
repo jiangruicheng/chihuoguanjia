@@ -4,70 +4,47 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.adapter.CaipinFunctionListAdpater;
+import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
+import com.cndll.chgj.itemtouchhelperdemo.helper.SimpleItemTouchHelperCallback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
-import de.hdodenhof.circleimageview.CircleImageView;
-
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link HomeFragment#newInstance} factory method to
+ * Use the {@link CaiPinFunctionFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class CaiPinFunctionFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    @BindView(R.id.textView2)
-    TextView textView2;
-    @BindView(R.id.textView3)
-    TextView textView3;
-    @BindView(R.id.textView)
-    TextView textView;
-    @BindView(R.id.circleImageView)
-    CircleImageView circleImageView;
-    @BindView(R.id.imageButton)
-    ImageButton imageButton;
+    @BindView(R.id.back)
+    Button back;
+    @BindView(R.id.title)
+    TextView title;
+    @BindView(R.id.search_caipin)
+    EditText searchCaipin;
+    @BindView(R.id.list)
+    RecyclerView list;
     Unbinder unbinder;
-    @BindView(R.id.logoff)
-    Button logoff;
-    @BindView(R.id.desk_edit)
-    CircleImageView deskEdit;
-    @BindView(R.id.caipin_do)
-    CircleImageView caipinDo;
-    @BindView(R.id.register)
-    CircleImageView register;
-
-    @OnClick(R.id.register)
-    void onclick_register() {
-        replaceFragment(RegisterFragment.newInstance(null, null));
-    }
-
-
-    @OnClick(R.id.caipin_do)
-    void onclick_do() {
-        replaceFragment(CaiPinFunctionFragment.newInstance(null, null));
-    }
-
-    @OnClick(R.id.desk_edit)
-    void oclick_desk() {
-        replaceFragment(DeskFragment.newInstance(null, null));
-    }
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -75,7 +52,7 @@ public class HomeFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public HomeFragment() {
+    public CaiPinFunctionFragment() {
         // Required empty public constructor
     }
 
@@ -85,11 +62,11 @@ public class HomeFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
+     * @return A new instance of fragment CaiPinFunctionFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
+    public static CaiPinFunctionFragment newInstance(String param1, String param2) {
+        CaiPinFunctionFragment fragment = new CaiPinFunctionFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -105,32 +82,30 @@ public class HomeFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
+    private ItemTouchHelper mItemTouchHelper;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_cai_pin_function, container, false);
         unbinder = ButterKnife.bind(this, view);
-        circleImageView.setOnClickListener(new View.OnClickListener() {
+        CaipinFunctionListAdpater adapter = new CaipinFunctionListAdpater(getActivity(), new OnStartDragListener() {
             @Override
-            public void onClick(View v) {
-                replaceFragment(MenuEditorFragment.newInstance(null, null));
+            public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+                mItemTouchHelper.startDrag(viewHolder);
             }
         });
-        logoff.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                replaceFragment(LoginFragment.newInstance(null, null));
 
-            }
-        });
+
+        list.setHasFixedSize(true);
+        list.setAdapter(adapter);
+        list.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(list);
+
         return view;
-    }
-
-    private void replaceFragment(Fragment fragment) {
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("").commit();
-
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -143,7 +118,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-       /* if (context instanceof OnFragmentInteractionListener) {
+        /*if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()

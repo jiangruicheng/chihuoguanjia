@@ -9,47 +9,40 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="4"
-        android:background="@color/menuEditorItemTitle">
+        android:background="#F47A83">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/desk_white" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/menu_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:id="@+id/desk_id"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:gravity="center_vertical|left"
                 android:padding="8dp"
-                android:text="小炒类"
+                android:text="1号桌"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/price"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical|left"
-                android:paddingLeft="8dp"
-                android:text="￥18/份"
-                android:textColor="@color/white"
-                android:textSize="10sp" />
-
-            <TextView
-                android:id="@+id/info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical|left"
-                android:paddingLeft="8dp"
-                android:text="折扣：可  编号：12  厨房打印机"
-                android:textColor="@color/white"
-                android:textSize="10sp" />
         </LinearLayout>
 
 
@@ -58,7 +51,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:background="#FDE1BF"
+            android:background="#FABDC1"
             android:gravity="center"
             android:text="排序"
             android:textColor="@color/black"

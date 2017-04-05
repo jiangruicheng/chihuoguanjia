@@ -209,6 +209,7 @@
             android:orientation="vertical">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/caipin_do"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="0.9"
@@ -229,6 +230,7 @@
             android:orientation="vertical">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/desk_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="0.9"
@@ -277,6 +279,7 @@
             android:orientation="vertical">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/register"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="0.9"
