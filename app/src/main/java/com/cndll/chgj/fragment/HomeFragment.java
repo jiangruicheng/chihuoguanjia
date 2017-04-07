@@ -52,6 +52,13 @@ public class HomeFragment extends Fragment {
     CircleImageView caipinDo;
     @BindView(R.id.register)
     CircleImageView register;
+    @BindView(R.id.order)
+    CircleImageView order;
+
+    @OnClick(R.id.order)
+    void onclick_order() {
+        replaceFragment(OrderDishFragment.newInstance(null, null));
+    }
 
     @OnClick(R.id.register)
     void onclick_register() {
@@ -66,7 +73,7 @@ public class HomeFragment extends Fragment {
 
     @OnClick(R.id.desk_edit)
     void oclick_desk() {
-        replaceFragment(DeskFragment.newInstance(null, null));
+        replaceFragment(DeskEditorFragment.newInstance(null, null));
     }
 
     // TODO: Rename and change types of parameters

@@ -4,27 +4,16 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import com.cndll.chgj.R;
-import com.cndll.chgj.adapter.DeskListAdapter;
-import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
-import com.cndll.chgj.itemtouchhelperdemo.helper.SimpleItemTouchHelperCallback;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link OnFragmentInteractionListener} interface
+ * {@link DeskFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link DeskFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -34,11 +23,6 @@ public class DeskFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    @BindView(R.id.search_caipin)
-    EditText searchCaipin;
-    @BindView(R.id.list)
-    RecyclerView list;
-    Unbinder unbinder;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -76,30 +60,12 @@ public class DeskFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-    private ItemTouchHelper mItemTouchHelper;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_desk, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        DeskListAdapter adapter = new DeskListAdapter(getActivity(), new OnStartDragListener() {
-            @Override
-            public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-                mItemTouchHelper.startDrag(viewHolder);
-            }
-        });
-
-
-        list.setHasFixedSize(true);
-        list.setAdapter(adapter);
-        list.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
-        mItemTouchHelper = new ItemTouchHelper(callback);
-        mItemTouchHelper.attachToRecyclerView(list);
-
-        return view;
+        return inflater.inflate(R.layout.fragment_desk, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -112,24 +78,18 @@ public class DeskFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-       /* if (context instanceof OnFragmentInteractionListener) {
+        if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
-        }*/
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 
     /**

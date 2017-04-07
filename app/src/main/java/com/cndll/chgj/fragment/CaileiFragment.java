@@ -4,9 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +12,6 @@ import android.view.ViewGroup;
 import com.cndll.chgj.R;
 import com.cndll.chgj.adapter.RecyclerListAdapter;
 import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
-import com.cndll.chgj.itemtouchhelperdemo.helper.SimpleItemTouchHelperCallback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,7 +25,7 @@ import butterknife.Unbinder;
  * Use the {@link CaileiFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CaileiFragment extends Fragment {
+public class CaileiFragment extends BaseFragment<RecyclerListAdapter> {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -65,7 +62,7 @@ public class CaileiFragment extends Fragment {
         return fragment;
     }
 
-    private ItemTouchHelper mItemTouchHelper;
+    /*private ItemTouchHelper mItemTouchHelper;*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,7 +79,16 @@ public class CaileiFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cailei, container, false);
         unbinder = ButterKnife.bind(this, view);
-        RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), new OnStartDragListener() {
+        adapter = new RecyclerListAdapter(getContext(), new OnStartDragListener() {
+            @Override
+            public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+                mItemTouchHelper.startDrag(viewHolder);
+            }
+        });
+        adapter.setType(RecyclerListAdapter.CAILEI);
+        setListViewAdapter(menuList);
+
+        /*RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), new OnStartDragListener() {
             @Override
             public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
                 mItemTouchHelper.startDrag(viewHolder);
@@ -96,7 +102,7 @@ public class CaileiFragment extends Fragment {
 
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
-        mItemTouchHelper.attachToRecyclerView(menuList);
+        mItemTouchHelper.attachToRecyclerView(menuList);*/
 
 
         return view;

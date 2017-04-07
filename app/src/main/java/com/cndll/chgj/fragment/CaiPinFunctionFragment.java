@@ -4,9 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +15,6 @@ import android.widget.TextView;
 import com.cndll.chgj.R;
 import com.cndll.chgj.adapter.CaipinFunctionListAdpater;
 import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
-import com.cndll.chgj.itemtouchhelperdemo.helper.SimpleItemTouchHelperCallback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,7 +28,7 @@ import butterknife.Unbinder;
  * Use the {@link CaiPinFunctionFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CaiPinFunctionFragment extends Fragment {
+public class CaiPinFunctionFragment extends BaseFragment<CaipinFunctionListAdpater> {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -82,14 +79,22 @@ public class CaiPinFunctionFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-    private ItemTouchHelper mItemTouchHelper;
+
+    /*private ItemTouchHelper mItemTouchHelper;*/
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cai_pin_function, container, false);
         unbinder = ButterKnife.bind(this, view);
-        CaipinFunctionListAdpater adapter = new CaipinFunctionListAdpater(getActivity(), new OnStartDragListener() {
+        adapter = new CaipinFunctionListAdpater(getContext(), new OnStartDragListener() {
+            @Override
+            public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+                mItemTouchHelper.startDrag(viewHolder);
+            }
+        });
+        setListViewAdapter(list);
+       /* CaipinFunctionListAdpater adapter = new CaipinFunctionListAdpater(getActivity(), new OnStartDragListener() {
             @Override
             public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
                 mItemTouchHelper.startDrag(viewHolder);
@@ -103,7 +108,7 @@ public class CaiPinFunctionFragment extends Fragment {
 
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
-        mItemTouchHelper.attachToRecyclerView(list);
+        mItemTouchHelper.attachToRecyclerView(list);*/
 
         return view;
     }

@@ -19,7 +19,6 @@ package com.cndll.chgj.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.view.MotionEventCompat;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -42,8 +41,7 @@ import java.util.List;
  *
  * @author Paul Burke (ipaulpro)
  */
-public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapter.ItemViewHolder>
-        implements ItemTouchHelperAdapter {
+public class RecyclerListAdapter extends ListAdapter {
     private final List<String> mItems = new ArrayList<>();
     public static final int CAILEI = 0;
     public static final int CAIPIN = 1;
@@ -60,6 +58,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     private final OnStartDragListener mDragStartListener;
 
     public RecyclerListAdapter(Context context, OnStartDragListener dragStartListener) {
+        super(context, dragStartListener);
         mDragStartListener = dragStartListener;
         // mItems.addAll(Arrays.asList(context.getResources().getStringArray(R.array.dummy_items)));
     }
@@ -67,7 +66,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_menu_editor, parent, false);
-        ItemViewHolder itemViewHolder = new ItemViewHolder(view);
+        ListItemViewHolder itemViewHolder = new ListItemViewHolder(view);
         return itemViewHolder;
     }
 
@@ -76,22 +75,22 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         //holder.name.setText(mItems.get(position));
         switch (type) {
             case CAILEI:
-                holder.info.setVisibility(View.GONE);
-                holder.price.setVisibility(View.GONE);
+                ((ListItemViewHolder) holder).info.setVisibility(View.GONE);
+                ((ListItemViewHolder) holder).price.setVisibility(View.GONE);
                 break;
             case CAIPIN:
-                holder.info.setVisibility(View.VISIBLE);
-                holder.price.setVisibility(View.VISIBLE);
+                ((ListItemViewHolder) holder).info.setVisibility(View.VISIBLE);
+                ((ListItemViewHolder) holder).price.setVisibility(View.VISIBLE);
                 break;
         }
-        holder.revise.setOnClickListener(new View.OnClickListener() {
+        ((ListItemViewHolder) holder).revise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
         // Start a drag whenever the handle view it touched
-        holder.handleView.setOnTouchListener(new View.OnTouchListener() {
+        ((ListItemViewHolder) holder).handleView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
@@ -124,8 +123,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
      * Simple example of a view holder that implements {@link ItemTouchHelperViewHolder} and has a
      * "handle" view that initiates a drag event when touched.
      */
-    public static class ItemViewHolder extends RecyclerView.ViewHolder implements
-            ItemTouchHelperViewHolder {
+    public static class ListItemViewHolder extends ItemViewHolder {
 
         public final TextView name;
         public final TextView handleView;
@@ -133,7 +131,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         public final TextView price;
         public final TextView info;
 
-        public ItemViewHolder(View itemView) {
+        public ListItemViewHolder(View itemView) {
             super(itemView);
             price = (TextView) itemView.findViewById(R.id.price);
             name = (TextView) itemView.findViewById(R.id.menu_name);
