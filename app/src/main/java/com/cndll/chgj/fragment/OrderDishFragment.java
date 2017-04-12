@@ -9,13 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cndll.chgj.R;
 import com.cndll.chgj.util.HorizontalPageLayoutManager;
-import com.cndll.chgj.util.PagingScrollHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -89,8 +89,9 @@ public class OrderDishFragment extends BaseFragment {
         unbinder = ButterKnife.bind(this, view);
         DeshListAdapter deshListAdapter = new DeshListAdapter();
         deshList.setAdapter(deshListAdapter);
-        HorizontalPageLayoutManager horizontalPageLayoutManager = new HorizontalPageLayoutManager(4, 3);
-        //LinearLayoutManager m = new LinearLayoutManager(getActivity());
+        HorizontalPageLayoutManager gridLayoutManager = new HorizontalPageLayoutManager(5, 3);
+        deshList.setLayoutManager(gridLayoutManager);
+        /*HorizontalPageLayoutManager horizontalPageLayoutManager = new HorizontalPageLayoutManager(4, 3);
         deshList.setLayoutManager(horizontalPageLayoutManager);
         PagingScrollHelper scrollHelper = new PagingScrollHelper();
         scrollHelper.setUpRecycleView(deshList);
@@ -100,7 +101,7 @@ public class OrderDishFragment extends BaseFragment {
             public void onPageChange(int index) {
                 Toast.makeText(getActivity(), "" + index, Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
         return view;
     }
@@ -150,18 +151,23 @@ public class OrderDishFragment extends BaseFragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private static class DeshListAdapter extends RecyclerView.Adapter {
+
+    private static class DeshListAdapter extends RecyclerView.Adapter<DeshListAdapter.ItemViewHolder> {
+
 
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public DeshListAdapter.ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_desh, parent, false);
-
-            return new ItemViewHolder(view);
+            Toast.makeText(parent.getContext(), "" + (parent.getId() == R.id.desh_list), Toast.LENGTH_SHORT).show();
+            return new ItemViewHolder(view, parent);
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+        public void onBindViewHolder(DeshListAdapter.ItemViewHolder holder, int position) {
+            holder.parent.setBackgroundResource(R.color.menuEditorItemDelete);
+            /*GridLayoutManager.LayoutParams params = (GridLayoutManager.LayoutParams) holder.parent.getLayoutParams();
+            params.height = w/5;
+            holder.parent.setLayoutParams(params);*/
         }
 
         @Override
@@ -170,8 +176,20 @@ public class OrderDishFragment extends BaseFragment {
         }
 
         public static class ItemViewHolder extends RecyclerView.ViewHolder {
-            public ItemViewHolder(View itemView) {
+            LinearLayout parent;
+
+            public ItemViewHolder(View itemView, ViewGroup v) {
                 super(itemView);
+                parent = (LinearLayout) itemView.findViewById(R.id.parent);
+                /*GridLayoutManager.LayoutParams params = (GridLayoutManager.LayoutParams) parent.getLayoutParams();
+                WindowManager wm = (WindowManager) v.getContext().getSystemService(Context.WINDOW_SERVICE);
+                int result = 0;
+                int resourceId = v.getContext().getResources().getIdentifier("status_bar_height", "dimen", "android");
+                if (resourceId > 0) {
+                    result = v.getContext().getResources().getDimensionPixelSize(resourceId);
+                }
+                params.height = (((wm.getDefaultDisplay().getHeight() - result) / 10) * 7) / 5 - 4;
+                parent.setLayoutParams(params);*/
             }
         }
     }

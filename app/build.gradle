@@ -44,4 +44,6 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.0'
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'in.srain.cube:cube-sdk:1.0.44@aar'
+    compile 'in.srain.cube:clog:1.0.2'
 }

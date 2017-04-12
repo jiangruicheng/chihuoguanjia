@@ -7,6 +7,7 @@ import android.widget.FrameLayout;
 
 import com.cndll.chgj.R;
 import com.cndll.chgj.fragment.HomeFragment;
+import com.cndll.chgj.mvp.presenter.impl.HomeImpl;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().add(R.id.frame, HomeFragment.newInstance("", "")).commit();
+        HomeFragment fragment = HomeFragment.newInstance("", "");
+        HomeImpl h = new HomeImpl();
+        fragment.setPresenter(h);
+        fragmentManager.beginTransaction().add(R.id.frame, fragment).commit();
     }
 }

@@ -2,6 +2,7 @@ package com.cndll.chgj;
 
 import android.app.Application;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.stetho.Stetho;
 
 /**
@@ -12,6 +13,7 @@ public class app extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fresco.initialize(this);
         Stetho.initialize(
                 Stetho.newInitializerBuilder(this)
                         .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))

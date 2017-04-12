@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.mvp.presenter.LoginPresenter;
+import com.cndll.chgj.mvp.view.LoginView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,13 +28,19 @@ import butterknife.Unbinder;
  * Use the {@link LoginFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LoginFragment extends Fragment {
+public class LoginFragment extends BaseFragment implements LoginView {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     @BindView(R.id.back)
     Button back;
+
+    @OnClick(R.id.back)
+    void onclick_back() {
+        popBackFragment();
+    }
+
     @BindView(R.id.title)
     TextView title;
     @BindView(R.id.info)
@@ -45,6 +53,12 @@ public class LoginFragment extends Fragment {
     EditText password;
     @BindView(R.id.login)
     Button login;
+
+    @OnClick(R.id.login)
+    void onclick_login() {
+        presenter.login(tel.getText().toString(), password.getText().toString(), number.getText().toString());
+    }
+
     @BindView(R.id.register)
     Button register;
 
@@ -129,6 +143,35 @@ public class LoginFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void showMesg(String mesg) {
+
+    }
+
+    @Override
+    public void showProg(String mesg) {
+
+    }
+
+    private LoginPresenter presenter;
+
+    @Override
+    public void setPresenter(LoginPresenter presenter) {
+        this.presenter = presenter;
+        presenter.setView(this);
+    }
+
+    @Override
+    public void loginSucces() {
+        //replaceFragment(HomeFragment.newInstance(null, null), null);
+        popBackFragment();
+    }
+
+    @Override
+    public void showUserMesg(String[] strings) {
+
     }
 
     /**

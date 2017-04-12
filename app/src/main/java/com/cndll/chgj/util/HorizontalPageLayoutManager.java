@@ -68,7 +68,7 @@ public class HorizontalPageLayoutManager extends RecyclerView.LayoutManager impl
         return result;
     }
 
-    private SparseArray<Rect> allItemFrames = new SparseArray<>();
+    protected SparseArray<Rect> allItemFrames = new SparseArray<>();
 
     private int getUsableWidth() {
         return getWidth() - getPaddingLeft() - getPaddingRight();

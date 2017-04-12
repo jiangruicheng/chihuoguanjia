@@ -9,9 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bigkoo.convenientbanner.ConvenientBanner;
+import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
+import com.bigkoo.convenientbanner.holder.Holder;
 import com.cndll.chgj.R;
+import com.cndll.chgj.mvp.presenter.HomePresenter;
+import com.cndll.chgj.mvp.presenter.impl.LoginImpl;
+import com.cndll.chgj.mvp.view.HomeView;
+import com.facebook.drawee.view.SimpleDraweeView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,7 +38,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends BaseFragment implements HomeView {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -54,26 +64,28 @@ public class HomeFragment extends Fragment {
     CircleImageView register;
     @BindView(R.id.order)
     CircleImageView order;
+    @BindView(R.id.banner)
+    ConvenientBanner banner;
 
     @OnClick(R.id.order)
     void onclick_order() {
-        replaceFragment(OrderDishFragment.newInstance(null, null));
+        replaceFragmentAddToBackStack(OrderDishFragment.newInstance(null, null), null);
     }
 
     @OnClick(R.id.register)
     void onclick_register() {
-        replaceFragment(RegisterFragment.newInstance(null, null));
+        replaceFragmentAddToBackStack(RegisterFragment.newInstance(null, null), null);
     }
 
 
     @OnClick(R.id.caipin_do)
     void onclick_do() {
-        replaceFragment(CaiPinFunctionFragment.newInstance(null, null));
+        replaceFragmentAddToBackStack(CaiPinFunctionFragment.newInstance(null, null), null);
     }
 
     @OnClick(R.id.desk_edit)
     void oclick_desk() {
-        replaceFragment(DeskEditorFragment.newInstance(null, null));
+        replaceFragmentAddToBackStack(DeskEditorFragment.newInstance(null, null), null);
     }
 
     // TODO: Rename and change types of parameters
@@ -83,6 +95,7 @@ public class HomeFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     public HomeFragment() {
+
         // Required empty public constructor
     }
 
@@ -119,25 +132,51 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         unbinder = ButterKnife.bind(this, view);
+
         circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragment(MenuEditorFragment.newInstance(null, null));
+                replaceFragmentAddToBackStack(MenuEditorFragment.newInstance(null, null), null);
             }
         });
         logoff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragment(LoginFragment.newInstance(null, null));
+                replaceFragmentAddToBackStack(LoginFragment.newInstance(null, null), new LoginImpl());
 
             }
         });
         return view;
     }
 
-    private void replaceFragment(Fragment fragment) {
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack("").commit();
 
+    private void setBannerUrl(List<String> urls) {
+
+        banner.setPages(new CBViewHolderCreator<LocalImageHolderView>() {
+            @Override
+            public LocalImageHolderView createHolder() {
+                return new LocalImageHolderView();
+            }
+        }, urls).setCanLoop(true);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.getHomeInfo();
+        banner.startTurning(2000);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        banner.stopTurning();
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -170,6 +209,29 @@ public class HomeFragment extends Fragment {
         unbinder.unbind();
     }
 
+    @Override
+    public void showMesg(String mesg) {
+
+    }
+
+    @Override
+    public void showProg(String mesg) {
+
+    }
+
+    private HomePresenter presenter;
+
+    @Override
+    public void setPresenter(HomePresenter presenter) {
+        this.presenter = presenter;
+        this.presenter.setView(this);
+    }
+
+    @Override
+    public void setBanner(List<String> urls) {
+        setBannerUrl(urls);
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -183,5 +245,28 @@ public class HomeFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public class LocalImageHolderView implements Holder<String> {
+        // private CubeImageView imageView;
+        private SimpleDraweeView imageView;
+
+        @Override
+        public View createView(Context context) {
+            // imageView = new CubeImageView(context);
+            imageView = new SimpleDraweeView(context);
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            return imageView;
+        }
+
+        @Override
+        public void UpdateUI(Context context, final int position, String data) {
+            imageView.setImageURI(data);
+           /* ImageLoader imageLoader = ImageLoaderFactory.create(context);
+            imageLoader.setImageLoadHandler(new DefaultImageLoadHandler(context));*/
+            //imageView.loadImage(imageLoader, data);
+        }
     }
 }
