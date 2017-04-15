@@ -4,7 +4,7 @@ package com.cndll.chgj.mvp.mode.bean.request;
  * Created by kongqing on 2017/4/12.
  */
 
-public class RequestHomeInfo {
+public class RequestHomeInfo  {
 
     /**
      * uid : 3

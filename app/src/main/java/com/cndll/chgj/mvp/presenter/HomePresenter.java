@@ -8,4 +8,6 @@ import com.cndll.chgj.mvp.view.HomeView;
 
 public interface HomePresenter extends BasePresenter<HomeView> {
     void getHomeInfo();
+
+    void getMendianList();
 }

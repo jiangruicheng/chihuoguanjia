@@ -15,6 +15,12 @@ public class PopUpViewUtil {
 
     private PopupWindow popupWindow;
 
+    public void setOnDismissAction(OnDismissAction onDismissAction) {
+        this.onDismissAction = onDismissAction;
+    }
+
+    private OnDismissAction onDismissAction;
+
     private PopUpViewUtil() {
 
     }
@@ -39,14 +45,26 @@ public class PopUpViewUtil {
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
+                if (onDismissAction != null) {
+                    onDismissAction.onDismiss();
+                }
+            }
+        });
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
                 popupWindow = null;
             }
         });
         if (null != locations && locations.length == 2) {
-            popupWindow.showAtLocation(location, gravity, locations[0], locations[2]);
+            popupWindow.showAtLocation(location, gravity, locations[0], locations[1]);
         } else {
             popupWindow.showAtLocation(location, gravity, 0, 0);
         }
+    }
+
+   public interface OnDismissAction {
+        void onDismiss();
     }
 
     public void dismiss() {

@@ -4,21 +4,28 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.cndll.chgj.R;
+import com.cndll.chgj.adapter.MendianListAdpater;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseMendianHomeList;
 import com.cndll.chgj.mvp.presenter.HomePresenter;
 import com.cndll.chgj.mvp.presenter.impl.LoginImpl;
 import com.cndll.chgj.mvp.view.HomeView;
+import com.cndll.chgj.util.PopUpViewUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.List;
@@ -51,8 +58,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
     TextView textView;
     @BindView(R.id.circleImageView)
     CircleImageView circleImageView;
-    @BindView(R.id.imageButton)
-    ImageButton imageButton;
+
     Unbinder unbinder;
     @BindView(R.id.logoff)
     Button logoff;
@@ -66,6 +72,69 @@ public class HomeFragment extends BaseFragment implements HomeView {
     CircleImageView order;
     @BindView(R.id.banner)
     ConvenientBanner banner;
+    @BindView(R.id.resetpassword)
+    Button resetpassword;
+    @BindView(R.id.switch_mendian)
+    Button switchMendian;
+    @BindView(R.id.parent)
+    LinearLayout parent;
+    MendianListAdpater mendianListAdpater;
+
+    @OnClick(R.id.switch_mendian)
+    void onclick_switchmendian() {
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.list_mendian, parent, false);
+        ListView listView = (ListView) view.findViewById(R.id.list_mendian);
+        if (adapter == null) {
+            mendianListAdpater = new MendianListAdpater();
+        }
+        listView.setAdapter(mendianListAdpater);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
+        PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
+        popUpViewUtil.setOnDismissAction(new PopUpViewUtil.OnDismissAction() {
+            @Override
+            public void onDismiss() {
+                mendianListAdpater = null;
+            }
+        });
+        int[] locations = new int[2];
+        switchMendian.getLocationOnScreen(locations);
+        locations[1] = locations[1] + switchMendian.getHeight();
+        popUpViewUtil.popListWindow(switchMendian, view,
+                popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getWidth() / 3 * 2,
+                popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 10 * 4, Gravity.NO_GRAVITY, locations);
+        /*setMendianList(new ArrayList<ResponseMendianHomeList.DataBean>());*/
+        presenter.getMendianList();
+    }
+
+    @BindView(R.id.today_comin)
+    TextView todayComin;
+    @BindView(R.id.today_numb)
+    TextView todayNumb;
+    @BindView(R.id.month_comin)
+    TextView monthComin;
+    @BindView(R.id.search_baobiao)
+    Button searchBaobiao;
+    @BindView(R.id.set_print)
+    CircleImageView setPrint;
+    @BindView(R.id.staff)
+    CircleImageView staff;
+    @BindView(R.id.search_bear)
+    CircleImageView searchBear;
+    @BindView(R.id.setting)
+    CircleImageView setting;
+    @BindView(R.id.kefu)
+    ImageButton kefu;
+    @BindView(R.id.mode_switch)
+    ImageButton modeSwitch;
+    @BindView(R.id.usernumber)
+    TextView usernumber;
+    @BindView(R.id.mendian_numb)
+    TextView mendianNumb;
 
     @OnClick(R.id.order)
     void onclick_order() {
@@ -230,6 +299,48 @@ public class HomeFragment extends BaseFragment implements HomeView {
     @Override
     public void setBanner(List<String> urls) {
         setBannerUrl(urls);
+    }
+
+    @Override
+    public void setUserNumb(String s) {
+        usernumber.setText(s);
+    }
+
+    @Override
+    public void setMendianNumb(String s) {
+        mendianNumb.setText(s);
+    }
+
+    @Override
+    public void setTodayComin(String s) {
+        todayComin.setText(s);
+    }
+
+    @Override
+    public void setTodaynumb(String s) {
+        todayNumb.setText(s);
+    }
+
+    @Override
+    public void setMonthComin(String s) {
+        monthComin.setText(s);
+    }
+
+    @Override
+    public void setMendianName(String s) {
+        textView.setText(s);
+    }
+
+    @Override
+    public void setMendianList(List<ResponseMendianHomeList.DataBean> list) {
+        /*list = new ArrayList<>();
+        list.add(new ResponseMendianHomeList.DataBean().setCode("10000").setName("宝安店"));
+        list.add(new ResponseMendianHomeList.DataBean().setCode("10000").setName("宝安店"));
+        list.add(new ResponseMendianHomeList.DataBean().setCode("10000").setName("宝安店"));
+        list.add(new ResponseMendianHomeList.DataBean().setCode("10000").setName("宝安店"));*/
+        if (mendianListAdpater != null) {
+            mendianListAdpater.setList(list);
+        }
     }
 
     /**
