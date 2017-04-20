@@ -5,8 +5,18 @@
     <color name="colorAccent">#FF4081</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
+    <color name="colorBottom">#cccbcb</color>
+    <color name="colorText">#757575</color>
+    <color name="colorHintText">#d4d3d3</color>
+    <color name="colorButtonLogin">#DC5301</color>
+    <color name="blak">#1e1d1c</color>
+    <color name="green">#00af00</color>
     <color name="buttonStork">#FB5630</color>
     <color name="menuEditorItemTitle">#FBC27F</color>
     <color name="menuEditorItemDelete">#FC5630</color>
     <color name="yinse">#CCCCCC</color>
+      <!--覆盖颜色-->
+    <color name="bgColor_overlay">#60000000</color>
+    <color name="apla">#757575</color>
+    <color name="line">#8FC1C0C0</color>
 </resources>

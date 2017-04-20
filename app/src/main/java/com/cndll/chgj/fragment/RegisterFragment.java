@@ -21,7 +21,13 @@ import com.cndll.chgj.R;
 import com.cndll.chgj.adapter.RegisterListAdpater;
 import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
 import com.cndll.chgj.itemtouchhelperdemo.helper.SimpleItemTouchHelperCallback;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseArea;
+import com.cndll.chgj.mvp.presenter.RegisterPresenter;
+import com.cndll.chgj.mvp.view.RegisterView;
 import com.cndll.chgj.util.PopUpViewUtil;
+import com.cndll.chgj.weight.OptionPickView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,7 +42,7 @@ import butterknife.Unbinder;
  * Use the {@link RegisterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RegisterFragment extends Fragment {
+public class RegisterFragment extends Fragment implements RegisterView {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -144,7 +150,7 @@ public class RegisterFragment extends Fragment {
     }
 
     private void popview() {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.popview_register_info, parent, false);
+        final ViewGroup view = (ViewGroup) LayoutInflater.from(getActivity()).inflate(R.layout.popview_register_info, parent, false);
         final PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
         Spinner spinner = (Spinner) view.findViewById(R.id.type);
         ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, new String[]{"1234", "121314", "12131414"});
@@ -162,7 +168,11 @@ public class RegisterFragment extends Fragment {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popUpViewUtil.dismiss();
+                if (optionPickView == null) {
+                    presenter.getArea();
+                } else {
+                    optionPickView.show();
+                }
             }
         });
         spinner.setAdapter(arrayAdapter);
@@ -177,6 +187,43 @@ public class RegisterFragment extends Fragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+
+    @Override
+    public void showMesg(String mesg) {
+
+    }
+
+    @Override
+    public void showProg(String mesg) {
+
+    }
+
+    private RegisterPresenter presenter;
+
+    @Override
+    public void setPresenter(RegisterPresenter presenter) {
+        this.presenter = presenter;
+        presenter.setView(this);
+    }
+
+    @Override
+    public void loadListView() {
+
+    }
+
+    private OptionPickView optionPickView;
+
+    @Override
+    public void showArea(List<String> item0, List<List<String>> item1, ResponseArea responseArea) {
+        if (optionPickView == null) {
+            optionPickView = new OptionPickView(getActivity(), R.layout.dialog_opitionpick);
+            optionPickView.setLooper(false, false);
+            optionPickView.setOptionItem(item0, item1);
+        }
+        optionPickView.show();
+
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this

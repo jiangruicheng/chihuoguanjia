@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.cndll.chgj.R;
 import com.cndll.chgj.util.HorizontalPageLayoutManager;
+import com.cndll.chgj.util.PagingScrollHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -89,9 +90,9 @@ public class OrderDishFragment extends BaseFragment {
         unbinder = ButterKnife.bind(this, view);
         DeshListAdapter deshListAdapter = new DeshListAdapter();
         deshList.setAdapter(deshListAdapter);
-        HorizontalPageLayoutManager gridLayoutManager = new HorizontalPageLayoutManager(5, 3);
-        deshList.setLayoutManager(gridLayoutManager);
-        /*HorizontalPageLayoutManager horizontalPageLayoutManager = new HorizontalPageLayoutManager(4, 3);
+        /*HorizontalPageLayoutManager gridLayoutManager = new HorizontalPageLayoutManager(5, 3);
+        deshList.setLayoutManager(gridLayoutManager);*/
+        HorizontalPageLayoutManager horizontalPageLayoutManager = new HorizontalPageLayoutManager(4, 3);
         deshList.setLayoutManager(horizontalPageLayoutManager);
         PagingScrollHelper scrollHelper = new PagingScrollHelper();
         scrollHelper.setUpRecycleView(deshList);
@@ -101,7 +102,7 @@ public class OrderDishFragment extends BaseFragment {
             public void onPageChange(int index) {
                 Toast.makeText(getActivity(), "" + index, Toast.LENGTH_SHORT).show();
             }
-        });*/
+        });
 
         return view;
     }
@@ -158,7 +159,6 @@ public class OrderDishFragment extends BaseFragment {
         @Override
         public DeshListAdapter.ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_desh, parent, false);
-            Toast.makeText(parent.getContext(), "" + (parent.getId() == R.id.desh_list), Toast.LENGTH_SHORT).show();
             return new ItemViewHolder(view, parent);
         }
 

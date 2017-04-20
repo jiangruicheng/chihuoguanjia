@@ -7,69 +7,22 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.cndll.chgj.R;
-import com.cndll.chgj.mvp.presenter.LoginPresenter;
-import com.cndll.chgj.mvp.presenter.impl.RegisterImpl;
-import com.cndll.chgj.mvp.view.LoginView;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link OnFragmentInteractionListener} interface
+ * {@link FindPasswordFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link LoginFragment#newInstance} factory method to
+ * Use the {@link FindPasswordFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LoginFragment extends BaseFragment implements LoginView {
+public class FindPasswordFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    @BindView(R.id.back)
-    Button back;
-
-    @OnClick(R.id.back)
-    void onclick_back() {
-        popBackFragment();
-    }
-
-    @BindView(R.id.title)
-    TextView title;
-    @BindView(R.id.info)
-    TextView info;
-    @BindView(R.id.number)
-    EditText number;
-    @BindView(R.id.tel)
-    EditText tel;
-    @BindView(R.id.password)
-    EditText password;
-    @BindView(R.id.login)
-    Button login;
-
-    @OnClick(R.id.login)
-    void onclick_login() {
-        presenter.login(tel.getText().toString(), password.getText().toString(), number.getText().toString());
-    }
-
-    @BindView(R.id.register)
-    Button register;
-
-    @OnClick(R.id.register)
-    void onclick_register() {
-        replaceFragmentAddToBackStack(RegisterFragment.newInstance(null, null), new RegisterImpl());
-        //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame, RegisterFragment.newInstance(null, null)).addToBackStack("").commit();
-    }
-
-    Unbinder unbinder;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -77,7 +30,7 @@ public class LoginFragment extends BaseFragment implements LoginView {
 
     private OnFragmentInteractionListener mListener;
 
-    public LoginFragment() {
+    public FindPasswordFragment() {
         // Required empty public constructor
     }
 
@@ -87,11 +40,11 @@ public class LoginFragment extends BaseFragment implements LoginView {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment LoginFragment.
+     * @return A new instance of fragment FindPasswordFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static LoginFragment newInstance(String param1, String param2) {
-        LoginFragment fragment = new LoginFragment();
+    public static FindPasswordFragment newInstance(String param1, String param2) {
+        FindPasswordFragment fragment = new FindPasswordFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -112,9 +65,7 @@ public class LoginFragment extends BaseFragment implements LoginView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        return view;
+        return inflater.inflate(R.layout.fragment_find_password, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -139,41 +90,6 @@ public class LoginFragment extends BaseFragment implements LoginView {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-    @Override
-    public void showMesg(String mesg) {
-
-    }
-
-    @Override
-    public void showProg(String mesg) {
-
-    }
-
-    private LoginPresenter presenter;
-
-    @Override
-    public void setPresenter(LoginPresenter presenter) {
-        this.presenter = presenter;
-        presenter.setView(this);
-    }
-
-    @Override
-    public void loginSucces() {
-        //replaceFragment(HomeFragment.newInstance(null, null), null);
-        popBackFragment();
-    }
-
-    @Override
-    public void showUserMesg(String[] strings) {
-
     }
 
     /**

@@ -4,10 +4,12 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -24,6 +26,7 @@ import com.cndll.chgj.adapter.MendianListAdpater;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseMendianHomeList;
 import com.cndll.chgj.mvp.presenter.HomePresenter;
 import com.cndll.chgj.mvp.presenter.impl.LoginImpl;
+import com.cndll.chgj.mvp.presenter.impl.RegisterImpl;
 import com.cndll.chgj.mvp.view.HomeView;
 import com.cndll.chgj.util.PopUpViewUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -74,6 +77,12 @@ public class HomeFragment extends BaseFragment implements HomeView {
     ConvenientBanner banner;
     @BindView(R.id.resetpassword)
     Button resetpassword;
+
+    @OnClick(R.id.resetpassword)
+    void onclick_resetpassword() {
+        replaceFragmentAddToBackStack(FindPasswordFragment.newInstance(null, null), null);
+    }
+
     @BindView(R.id.switch_mendian)
     Button switchMendian;
     @BindView(R.id.parent)
@@ -131,6 +140,21 @@ public class HomeFragment extends BaseFragment implements HomeView {
     ImageButton kefu;
     @BindView(R.id.mode_switch)
     ImageButton modeSwitch;
+
+    @OnClick(R.id.mode_switch)
+    void onclick_modeswitch() {
+        WindowManager m = getActivity().getWindowManager();
+        Display d = m.getDefaultDisplay();  //为获取屏幕宽、高
+        PopUpViewUtil.getInstance().
+                showDialog(getActivity(),
+                        R.layout.dialog_mode_switch,
+                        0,
+                        (int) (d.getHeight() * 0.5),
+                        (int) (d.getWidth() * 0.9),
+                        (int) (d.getHeight() * 0.4),
+                        R.style.Translucent_Dialog);
+    }
+
     @BindView(R.id.usernumber)
     TextView usernumber;
     @BindView(R.id.mendian_numb)
@@ -143,7 +167,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @OnClick(R.id.register)
     void onclick_register() {
-        replaceFragmentAddToBackStack(RegisterFragment.newInstance(null, null), null);
+        replaceFragmentAddToBackStack(RegisterFragment.newInstance(null, null), new RegisterImpl());
     }
 
 

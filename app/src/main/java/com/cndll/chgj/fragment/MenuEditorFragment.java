@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.util.PopUpViewUtil;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -57,7 +59,12 @@ public class MenuEditorFragment extends Fragment {
         if (!fragments.get(CAILEI).isVisible()) {
             switchFragment(CAILEI);
         } else {
-            //
+            PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
+            View view = LayoutInflater.from(getActivity()).inflate(R.layout.popview_add_cailei, null, false);
+            popUpViewUtil.popListWindow(addCailei,
+                    view,
+                    popUpViewUtil.getWindowManager(getActivity()).getDefaultDisplay().getWidth(),
+                    popUpViewUtil.getWindowManager(getActivity()).getDefaultDisplay().getHeight() / 10 * 2, Gravity.CENTER, null);
         }
     }
 

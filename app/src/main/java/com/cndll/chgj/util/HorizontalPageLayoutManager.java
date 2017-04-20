@@ -2,6 +2,7 @@ package com.cndll.chgj.util;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 
@@ -42,7 +43,7 @@ public class HorizontalPageLayoutManager extends RecyclerView.LayoutManager impl
         int newY = offsetY + dy;
         int result = dy;
         if (newY > totalHeight) {
-            result = totalHeight - offsetX;
+            result = totalHeight - offsetY;
         } else if (newY < 0) {
             result = 0 - offsetY;
         }
@@ -114,7 +115,6 @@ public class HorizontalPageLayoutManager extends RecyclerView.LayoutManager impl
         totalHeight = (pageSize - 1) * getHeight();
         //分离view
         detachAndScrapAttachedViews(recycler);
-
         int count = getItemCount();
         for (int p = 0; p < pageSize; p++) {
             for (int r = 0; r < rows; r++) {
@@ -151,7 +151,7 @@ public class HorizontalPageLayoutManager extends RecyclerView.LayoutManager impl
             //每一页循环以后就回收一页的View用于下一页的使用
             removeAndRecycleAllViews(recycler);
         }
-
+        Log.d("recyclerview", recycler.getScrapList().size() + "");
         recycleAndFillItems(recycler, state);
     }
 

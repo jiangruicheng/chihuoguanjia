@@ -56,7 +56,10 @@ public class HomeImpl implements HomePresenter {
 
     @Override
     public void getMendianList() {
-        AppRequest.getAPI().getHomeMendianList(new RequsetHomeMendianList().setUid("3")).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ResponseMendianHomeList>() {
+        AppRequest.getAPI().getHomeMendianList(new RequsetHomeMendianList().setUid("3")).
+                subscribeOn(Schedulers.io()).
+                observeOn(AndroidSchedulers.mainThread()).
+                subscribe(new Observer<ResponseMendianHomeList>() {
             @Override
             public void onCompleted() {
 

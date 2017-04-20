@@ -1,8 +1,15 @@
 package com.cndll.chgj.util;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.drawable.BitmapDrawable;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.StyleRes;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
@@ -14,6 +21,7 @@ public class PopUpViewUtil {
 
 
     private PopupWindow popupWindow;
+    private AlertDialog alertDialog;
 
     public void setOnDismissAction(OnDismissAction onDismissAction) {
         this.onDismissAction = onDismissAction;
@@ -53,7 +61,7 @@ public class PopUpViewUtil {
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                popupWindow = null;
+                dismiss();
             }
         });
         if (null != locations && locations.length == 2) {
@@ -63,7 +71,51 @@ public class PopUpViewUtil {
         }
     }
 
-   public interface OnDismissAction {
+    public void showDialog(@NonNull Activity context, @LayoutRes int layout, int locationX, int locationY, int width, int heigth) {
+        showDialog(context, layout, locationX, locationY, width, heigth, 0);
+    }
+
+    public void showDialog(@NonNull Activity context, View layout, int locationX, int locationY, int width, int heigth, @StyleRes int style) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context, style);
+        alertDialog = dialog.create();
+        alertDialog.show();
+        Window window = alertDialog.getWindow();
+        window.setContentView(layout);
+        android.view.WindowManager.LayoutParams p = window.getAttributes();  //获取对话框当前的参数值
+        p.height = heigth;   //高度设置为屏幕的0.3
+        p.width = width;    //宽度设置为屏幕的0.5
+        p.x = locationX;
+        p.y = locationY;
+        window.setAttributes(p);     //设置生效
+        alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                dismiss();
+            }
+        });
+    }
+
+    public void showDialog(@NonNull Activity context, @LayoutRes int layout, int locationX, int locationY, int width, int heigth, @StyleRes int style) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context, style);
+        alertDialog = dialog.create();
+        alertDialog.show();
+        Window window = alertDialog.getWindow();
+        window.setContentView(layout);
+        android.view.WindowManager.LayoutParams p = window.getAttributes();  //获取对话框当前的参数值
+        p.height = heigth;   //高度设置为屏幕的0.3
+        p.width = width;    //宽度设置为屏幕的0.5
+        p.x = locationX;
+        p.y = locationY;
+        window.setAttributes(p);     //设置生效
+        alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                dismiss();
+            }
+        });
+    }
+
+    public interface OnDismissAction {
         void onDismiss();
     }
 
@@ -72,5 +124,10 @@ public class PopUpViewUtil {
             popupWindow.dismiss();
             popupWindow = null;
         }
+        if (alertDialog != null) {
+            alertDialog.dismiss();
+            alertDialog = null;
+        }
+        onDismissAction = null;
     }
 }
