@@ -88,10 +88,14 @@ public class OrderDishFragment extends BaseFragment {
         unbinder = ButterKnife.bind(this, view);
         DeshListAdapter deshListAdapter = new DeshListAdapter();
         deshList.setAdapter(deshListAdapter);
+        deshMenueList.setAdapter(new DeshListAdapter());
+
         /*HorizontalPageLayoutManager gridLayoutManager = new HorizontalPageLayoutManager(5, 3);
         deshList.setLayoutManager(gridLayoutManager);*/
-        PagerLayoutManaer horizontalPageLayoutManager = new PagerLayoutManaer(getContext(), 4, 3);
+        PagerLayoutManaer horizontalPageLayoutManager = new PagerLayoutManaer(getContext(), 5, 3);
         deshList.setLayoutManager(horizontalPageLayoutManager);
+        PagerLayoutManaer pagerLayoutManaer = new PagerLayoutManaer(getContext(), 5, 1);
+        deshMenueList.setLayoutManager(pagerLayoutManaer);
         PagingScrollHelper scrollHelper = new PagingScrollHelper();
         scrollHelper.setUpRecycleView(deshList);
         //设置页面滚动监听
