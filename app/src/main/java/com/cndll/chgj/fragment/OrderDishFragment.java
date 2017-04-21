@@ -10,12 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cndll.chgj.R;
-import com.cndll.chgj.util.HorizontalPageLayoutManager;
+import com.cndll.chgj.util.PagerLayoutManaer;
 import com.cndll.chgj.util.PagingScrollHelper;
 
 import butterknife.BindView;
@@ -40,7 +38,7 @@ public class OrderDishFragment extends BaseFragment {
     @BindView(R.id.title)
     TextView title;
     @BindView(R.id.desh_menue_list)
-    ListView deshMenueList;
+    RecyclerView deshMenueList;
     @BindView(R.id.desh_list)
     RecyclerView deshList;
     Unbinder unbinder;
@@ -92,7 +90,7 @@ public class OrderDishFragment extends BaseFragment {
         deshList.setAdapter(deshListAdapter);
         /*HorizontalPageLayoutManager gridLayoutManager = new HorizontalPageLayoutManager(5, 3);
         deshList.setLayoutManager(gridLayoutManager);*/
-        HorizontalPageLayoutManager horizontalPageLayoutManager = new HorizontalPageLayoutManager(4, 3);
+        PagerLayoutManaer horizontalPageLayoutManager = new PagerLayoutManaer(getContext(), 4, 3);
         deshList.setLayoutManager(horizontalPageLayoutManager);
         PagingScrollHelper scrollHelper = new PagingScrollHelper();
         scrollHelper.setUpRecycleView(deshList);
@@ -100,7 +98,7 @@ public class OrderDishFragment extends BaseFragment {
         scrollHelper.setOnPageChangeListener(new PagingScrollHelper.onPageChangeListener() {
             @Override
             public void onPageChange(int index) {
-                Toast.makeText(getActivity(), "" + index, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getActivity(), "" + index, Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -145,7 +145,6 @@ public class HorizontalPageLayoutManager extends RecyclerView.LayoutManager impl
                     rect.set(x, y, width + x, height + y);
                     allItemFrames.put(index, rect);
 
-
                 }
             }
             //每一页循环以后就回收一页的View用于下一页的使用
@@ -182,7 +181,7 @@ public class HorizontalPageLayoutManager extends RecyclerView.LayoutManager impl
 
         for (int i = 0; i < getItemCount(); i++) {
             if (Rect.intersects(displayRect, allItemFrames.get(i))) {
-                View view = recycler.getViewForPosition(i);
+                    View view = recycler.getViewForPosition(i);
                 addView(view);
                 measureChildWithMargins(view, itemWidthUsed, itemHeightUsed);
                 Rect rect = allItemFrames.get(i);

@@ -16,7 +16,7 @@
         android:layout_weight="7"
         android:orientation="horizontal">
 
-        <ListView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/desh_menue_list"
             android:layout_width="0dp"
             android:layout_height="match_parent"

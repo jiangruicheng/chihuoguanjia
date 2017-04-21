@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +74,7 @@ public class DeskEditorFragment extends BaseFragment<DeskListAdapter> {
         }
     }
 
-    private ItemTouchHelper mItemTouchHelper;
+    /*private ItemTouchHelper mItemTouchHelper;*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
