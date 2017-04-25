@@ -12,14 +12,14 @@ import android.widget.Toast;
  * Created by kongqing on 2017/4/21.
  */
 
-public class PagerLayoutManaer extends RecyclerView.LayoutManager {
+public class PagerLayoutManager extends RecyclerView.LayoutManager {
     private Context context;
     private int row;
     private int count;
     private int page;
-    private int totalHeight;
+    private int offsetHeight;
 
-    public PagerLayoutManaer(Context context, int row, int count) {
+    public PagerLayoutManager(Context context, int row, int count) {
         this.context = context;
         this.row = row;
         this.count = count;
@@ -31,6 +31,9 @@ public class PagerLayoutManaer extends RecyclerView.LayoutManager {
     }
 
     private int margin = 12;
+    protected int allHeight;
+    protected int width;
+    protected int height;
 
     @Override
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
@@ -41,14 +44,16 @@ public class PagerLayoutManaer extends RecyclerView.LayoutManager {
             return;
         }
         detachAndScrapAttachedViews(recycler);
-        int width = (getWidth() - margin * count * 2) / count;
-        int height = (getHeight() - margin * row * 2) / row;
+        width = (getWidth() - margin * count * 2) / count;
+        height = (getHeight() - margin * row * 2) / row;
         page = getItemCount() / (count * row);
-        totalHeight = (page - 1) * getHeight() + (getItemCount() % (count * row) == 0 ? 0 : 1) * getHeight();
+        allHeight = (getHeight() / row) * getItemCount() / count + (getItemCount() % count == 0 ? 0 : 1) * (getHeight() / row) - getHeight();
+        offsetHeight = (page - 1) * getHeight() + (getItemCount() % (count * row) == 0 ? 0 : 1) * getHeight();
         for (int i = 0; i < getItemCount(); i++) {
             View view = recycler.getViewForPosition(i);
             //measureChild(view, 0, 0);
             addView(view);
+
             Rect rect = allItemFrames.get(i);
             if (rect == null) {
                 rect = new Rect();
@@ -72,10 +77,10 @@ public class PagerLayoutManaer extends RecyclerView.LayoutManager {
         recyclerFillAndAttach(recycler, state);
     }
 
-    private int offsetY;
+    protected int offsetY;
     protected SparseArray<Rect> allItemFrames = new SparseArray<>();
 
-    private void recyclerFillAndAttach(RecyclerView.Recycler recycler, RecyclerView.State state) {
+    protected void recyclerFillAndAttach(RecyclerView.Recycler recycler, RecyclerView.State state) {
         if (state.isPreLayout()) {
             return;
         }
@@ -97,6 +102,10 @@ public class PagerLayoutManaer extends RecyclerView.LayoutManager {
             if (Rect.intersects(displayRect, allItemFrames.get(i))) {
                 View view = recycler.getViewForPosition(i);
                 addView(view);
+                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) view.getLayoutParams();
+                params.width = width;
+                params.height = height;
+                view.setLayoutParams(params);
                 measureChildWithMargins(view, 0, 0);
                 Rect rect = allItemFrames.get(i);
                 layoutDecorated(view, rect.left, rect.top - offsetY, rect.right, rect.bottom - offsetY);
@@ -116,8 +125,8 @@ public class PagerLayoutManaer extends RecyclerView.LayoutManager {
         detachAndScrapAttachedViews(recycler);
         int newY = offsetY + dy;
         int result = dy;
-        if (newY > totalHeight) {
-            result = totalHeight - offsetY;
+        if (newY > offsetHeight) {
+            result = offsetHeight - offsetY;
         } else if (newY < 0) {
             result = 0 - offsetY;
         }

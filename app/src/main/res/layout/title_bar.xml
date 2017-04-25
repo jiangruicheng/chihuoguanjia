@@ -7,14 +7,15 @@
 
     <Button
         android:id="@+id/back"
-        android:layout_width="42dp"
-        android:layout_height="wrap_content"
+        android:layout_width="56dp"
+        android:layout_height="32dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_margin="8dp"
         android:background="@drawable/shape_fillet_titlebar_back"
         android:text="返回"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/title"
@@ -22,5 +23,40 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="菜品编辑"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:id="@+id/title_tow"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/right_text"
+        android:layout_toRightOf="@id/back"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/title_left"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/title_right"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/right_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="8dp"
+        android:text=" "
+        android:textColor="@color/white"
+        android:textSize="16sp" />
 </RelativeLayout>

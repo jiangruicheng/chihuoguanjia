@@ -7,14 +7,12 @@
     android:weightSum="10"
     tools:context="com.cndll.chgj.fragment.RegisterFragment">
 
-    <include
-        layout="@layout/title_bar"
-         />
+    <include layout="@layout/title_bar" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.7"
+        android:layout_weight="0.6"
         android:gravity="center_vertical|left"
         android:paddingLeft="24dp"
         android:text="门店列表" />
@@ -23,7 +21,7 @@
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="7.5"
+        android:layout_weight="8.5"
         android:padding="4dp" />
 
     <Button

@@ -13,7 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
-import com.cndll.chgj.util.PagerLayoutManaer;
+import com.cndll.chgj.util.LinearPagerLayoutManager;
+import com.cndll.chgj.util.PagerLayoutManager;
 import com.cndll.chgj.util.PagingScrollHelper;
 
 import butterknife.BindView;
@@ -42,6 +43,44 @@ public class OrderDishFragment extends BaseFragment {
     @BindView(R.id.desh_list)
     RecyclerView deshList;
     Unbinder unbinder;
+    @BindView(R.id.title_left)
+    TextView titleLeft;
+    @BindView(R.id.title_right)
+    TextView titleRight;
+    @BindView(R.id.title_tow)
+    LinearLayout titleTow;
+    @BindView(R.id.right_text)
+    TextView rightText;
+    @BindView(R.id.number_all)
+    TextView numberAll;
+    @BindView(R.id.textView6)
+    TextView textView6;
+    @BindView(R.id.textView7)
+    TextView textView7;
+    @BindView(R.id.yaoqiu)
+    TextView yaoqiu;
+    @BindView(R.id.number)
+    TextView number;
+    @BindView(R.id.allcount)
+    TextView allcount;
+    @BindView(R.id.zhekou)
+    TextView zhekou;
+    @BindView(R.id.zengsong)
+    TextView zengsong;
+    @BindView(R.id.lastprice)
+    TextView lastprice;
+    @BindView(R.id.query)
+    Button query;
+    @BindView(R.id.send)
+    Button send;
+    @BindView(R.id.info)
+    Button info;
+    @BindView(R.id.other)
+    Button other;
+    @BindView(R.id.dazhe)
+    Button dazhe;
+    @BindView(R.id.pay)
+    Button pay;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -86,15 +125,21 @@ public class OrderDishFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_order_dish, container, false);
         unbinder = ButterKnife.bind(this, view);
+        initlistview();
+
+        return view;
+    }
+
+    private void initlistview() {
         DeshListAdapter deshListAdapter = new DeshListAdapter();
         deshList.setAdapter(deshListAdapter);
         deshMenueList.setAdapter(new DeshListAdapter());
 
         /*HorizontalPageLayoutManager gridLayoutManager = new HorizontalPageLayoutManager(5, 3);
         deshList.setLayoutManager(gridLayoutManager);*/
-        PagerLayoutManaer horizontalPageLayoutManager = new PagerLayoutManaer(getContext(), 5, 3);
+        PagerLayoutManager horizontalPageLayoutManager = new PagerLayoutManager(getContext(), 5, 3);
         deshList.setLayoutManager(horizontalPageLayoutManager);
-        PagerLayoutManaer pagerLayoutManaer = new PagerLayoutManaer(getContext(), 5, 1);
+        LinearPagerLayoutManager pagerLayoutManaer = new LinearPagerLayoutManager(getContext(), 5, 1);
         deshMenueList.setLayoutManager(pagerLayoutManaer);
         PagingScrollHelper scrollHelper = new PagingScrollHelper();
         scrollHelper.setUpRecycleView(deshList);
@@ -105,8 +150,6 @@ public class OrderDishFragment extends BaseFragment {
                 // Toast.makeText(getActivity(), "" + index, Toast.LENGTH_SHORT).show();
             }
         });
-
-        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -114,6 +157,10 @@ public class OrderDishFragment extends BaseFragment {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+    private void setTitle() {
+
     }
 
     @Override
@@ -159,14 +206,15 @@ public class OrderDishFragment extends BaseFragment {
 
 
         @Override
-        public DeshListAdapter.ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_desh, parent, false);
             return new ItemViewHolder(view, parent);
         }
 
         @Override
-        public void onBindViewHolder(DeshListAdapter.ItemViewHolder holder, int position) {
-            holder.parent.setBackgroundResource(R.color.menuEditorItemDelete);
+        public void onBindViewHolder(ItemViewHolder holder, int position) {
+            holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid);
+            holder.name.setText(position + "");
             /*GridLayoutManager.LayoutParams params = (GridLayoutManager.LayoutParams) holder.parent.getLayoutParams();
             params.height = w/5;
             holder.parent.setLayoutParams(params);*/
@@ -179,19 +227,12 @@ public class OrderDishFragment extends BaseFragment {
 
         public static class ItemViewHolder extends RecyclerView.ViewHolder {
             LinearLayout parent;
+            TextView name;
 
             public ItemViewHolder(View itemView, ViewGroup v) {
                 super(itemView);
                 parent = (LinearLayout) itemView.findViewById(R.id.parent);
-                /*GridLayoutManager.LayoutParams params = (GridLayoutManager.LayoutParams) parent.getLayoutParams();
-                WindowManager wm = (WindowManager) v.getContext().getSystemService(Context.WINDOW_SERVICE);
-                int result = 0;
-                int resourceId = v.getContext().getResources().getIdentifier("status_bar_height", "dimen", "android");
-                if (resourceId > 0) {
-                    result = v.getContext().getResources().getDimensionPixelSize(resourceId);
-                }
-                params.height = (((wm.getDefaultDisplay().getHeight() - result) / 10) * 7) / 5 - 4;
-                parent.setLayoutParams(params);*/
+                name = (TextView) itemView.findViewById(R.id.name);
             }
         }
     }
