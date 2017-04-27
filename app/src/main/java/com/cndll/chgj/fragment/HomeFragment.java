@@ -29,6 +29,7 @@ import com.cndll.chgj.mvp.presenter.impl.LoginImpl;
 import com.cndll.chgj.mvp.presenter.impl.RegisterImpl;
 import com.cndll.chgj.mvp.view.HomeView;
 import com.cndll.chgj.util.PopUpViewUtil;
+import com.cndll.chgj.weight.MesgShow;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.List;
@@ -130,14 +131,42 @@ public class HomeFragment extends BaseFragment implements HomeView {
     Button searchBaobiao;
     @BindView(R.id.set_print)
     CircleImageView setPrint;
+
+    @OnClick(R.id.set_print)
+    void onclick_setpirng() {
+        replaceFragmentAddToBackStack(PrintSetingFragment.newInstance(null, null), null);
+    }
+
     @BindView(R.id.staff)
     CircleImageView staff;
+
+    @OnClick(R.id.staff)
+    void onclick_staff() {
+        replaceFragmentAddToBackStack(StaffFragment.newInstance(null, null), null);
+    }
+
     @BindView(R.id.search_bear)
     CircleImageView searchBear;
     @BindView(R.id.setting)
     CircleImageView setting;
     @BindView(R.id.kefu)
     ImageButton kefu;
+
+    @OnClick(R.id.kefu)
+    void onclick_kefu() {
+        MesgShow.showMesg("", "", kefu, new MesgShow.OnButtonListener() {
+            @Override
+            public void onListerner() {
+
+            }
+        }, new MesgShow.OnButtonListener() {
+            @Override
+            public void onListerner() {
+
+            }
+        }, false);
+    }
+
     @BindView(R.id.mode_switch)
     ImageButton modeSwitch;
 

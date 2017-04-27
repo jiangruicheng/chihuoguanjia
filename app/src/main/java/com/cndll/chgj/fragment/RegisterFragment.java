@@ -11,10 +11,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
@@ -22,11 +24,13 @@ import com.cndll.chgj.adapter.RegisterListAdpater;
 import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
 import com.cndll.chgj.itemtouchhelperdemo.helper.SimpleItemTouchHelperCallback;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseArea;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseStoreTye;
 import com.cndll.chgj.mvp.presenter.RegisterPresenter;
 import com.cndll.chgj.mvp.view.RegisterView;
 import com.cndll.chgj.util.PopUpViewUtil;
 import com.cndll.chgj.weight.OptionPickView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -149,19 +153,46 @@ public class RegisterFragment extends Fragment implements RegisterView {
         mListener = null;
     }
 
+    ArrayAdapter arrayAdapter;
+
     private void popview() {
         final ViewGroup view = (ViewGroup) LayoutInflater.from(getActivity()).inflate(R.layout.popview_register_info, parent, false);
         final PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
-        Spinner spinner = (Spinner) view.findViewById(R.id.type);
-        ArrayAdapter arrayAdapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, new String[]{"1234", "121314", "12131414"});
-        Button cancel, save, delete;
+        TextView spinner = (TextView) view.findViewById(R.id.type);
+        spinner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                final PopUpViewUtil popupSpinner = PopUpViewUtil.getInstance();
+                View spinner_list = LayoutInflater.from(getContext()).inflate(R.layout.popview_spinner_list, null, false);
+                arrayAdapter = new ArrayAdapter(getActivity(), R.layout.spinner_register_item, dataString);
+                ListView spinnerItem = (ListView) spinner_list.findViewById(R.id.spinner);
+                spinnerItem.setAdapter(arrayAdapter);
+                spinnerItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        ((TextView) v).setText(dataBean.get(position).getName());
+                        popupSpinner.dismiss();
+                    }
+                });
+                popupSpinner.popListWindow(list, spinner_list,
+                        popUpViewUtil.getWindowManager(getContext()).
+                                getDefaultDisplay().getWidth() * 19 / 20, popUpViewUtil.getWindowManager(getContext()).
+                                getDefaultDisplay().getHeight() * 3 / 5, Gravity.CENTER, null);
+            }
+        });
+
+        Button cancel, save, delete, getverify;
+        TextView shi, sheng;
+        EditText name, tel, edi_verify;
         delete = (Button) view.findViewById(R.id.delete);
         delete.setVisibility(View.GONE);
         cancel = (Button) view.findViewById(R.id.cancel);
         save = (Button) view.findViewById(R.id.save);
+
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                arrayAdapter = null;
                 popUpViewUtil.dismiss();
             }
         });
@@ -173,13 +204,15 @@ public class RegisterFragment extends Fragment implements RegisterView {
                 } else {
                     optionPickView.show();
                 }
+                arrayAdapter = null;
             }
         });
-        spinner.setAdapter(arrayAdapter);
+        /*spinner.setAdapter(arrayAdapter);*/
         popUpViewUtil.popListWindow(list, view,
                 popUpViewUtil.getWindowManager(getContext()).
                         getDefaultDisplay().getWidth() * 19 / 20, popUpViewUtil.getWindowManager(getContext()).
                         getDefaultDisplay().getHeight() * 3 / 5, Gravity.CENTER, null);
+        presenter.getStoreType();
     }
 
     @Override
@@ -212,8 +245,9 @@ public class RegisterFragment extends Fragment implements RegisterView {
     }
 
     private OptionPickView optionPickView;
+    private List<ResponseStoreTye.DataBean> dataBean;
+    private List<String> dataString = new ArrayList<>();
 
-    @Override
     public void showArea(List<String> item0, List<List<String>> item1, ResponseArea responseArea) {
         if (optionPickView == null) {
             optionPickView = new OptionPickView(getActivity(), R.layout.dialog_opitionpick);
@@ -222,6 +256,20 @@ public class RegisterFragment extends Fragment implements RegisterView {
         }
         optionPickView.show();
 
+    }
+
+    @Override
+    public void showStoreType(List<ResponseStoreTye.DataBean> dataBean) {
+        this.dataBean = dataBean;
+        if (dataString == null) {
+            dataString = new ArrayList<>();
+        } else {
+            dataString.clear();
+        }
+        for (int i = 0; i < dataBean.size(); i++) {
+            dataString.add(dataBean.get(i).getName());
+        }
+        arrayAdapter.notifyDataSetChanged();
     }
 
 

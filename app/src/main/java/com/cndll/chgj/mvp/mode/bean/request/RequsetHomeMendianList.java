@@ -1,10 +1,12 @@
 package com.cndll.chgj.mvp.mode.bean.request;
 
+import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
+
 /**
  * Created by kongqing on 2017/4/14.
  */
 
-public class RequsetHomeMendianList {
+public class RequsetHomeMendianList extends BaseResponse {
     public String getUid() {
         return uid;
     }

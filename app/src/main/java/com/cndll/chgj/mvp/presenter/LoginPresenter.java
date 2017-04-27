@@ -1,5 +1,6 @@
 package com.cndll.chgj.mvp.presenter;
 
+import com.cndll.chgj.mvp.mode.bean.request.RequestLogin;
 import com.cndll.chgj.mvp.view.LoginView;
 
 /**
@@ -7,5 +8,5 @@ import com.cndll.chgj.mvp.view.LoginView;
  */
 
 public interface LoginPresenter extends BasePresenter<LoginView> {
-    void login(String user, String password,String storeId);
+    void login(RequestLogin requestLogin);
 }

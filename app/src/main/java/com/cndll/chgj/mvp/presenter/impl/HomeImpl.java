@@ -1,8 +1,11 @@
 package com.cndll.chgj.mvp.presenter.impl;
 
+import com.cndll.chgj.mvp.MObeserver;
 import com.cndll.chgj.mvp.mode.AppRequest;
+import com.cndll.chgj.mvp.mode.AppRequestResoult;
 import com.cndll.chgj.mvp.mode.bean.request.RequestHomeInfo;
 import com.cndll.chgj.mvp.mode.bean.request.RequsetHomeMendianList;
+import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseHome;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseMendianHomeList;
 import com.cndll.chgj.mvp.presenter.HomePresenter;
@@ -11,7 +14,6 @@ import com.cndll.chgj.mvp.view.HomeView;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -22,61 +24,71 @@ import rx.schedulers.Schedulers;
 public class HomeImpl implements HomePresenter {
     @Override
     public void getHomeInfo() {
-        AppRequest.getAPI().getHomeInfo(new RequestHomeInfo().setMid(3).setUid(3)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ResponseHome>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onNext(ResponseHome responseHome) {
-                if (responseHome.getCode() == 1) {
-                    List<String> list = new ArrayList<String>();
-                    for (ResponseHome.DataBean.BlistBean r : responseHome.getData().getBlist()) {
-                        list.add(r.getImgsrc());
+        AppRequest.getAPI().getHomeInfo(new RequestHomeInfo().
+                setMid(AppRequestResoult.getInstance().getMid()).
+                setUid(AppRequestResoult.getInstance().getUid())).
+                subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
+                subscribe(new MObeserver(view) {
+                    @Override
+                    public void onCompleted() {
+                        super.onCompleted();
                     }
-                    view.setBanner(list);
-                    view.setMendianNumb(responseHome.getData().getCode());
-                    view.setMonthComin(responseHome.getData().getMonthincome());
-                    view.setTodayComin(responseHome.getData().getTodayincome() + "");
-                    view.setUserNumb(responseHome.getData().getTel() + "");
-                    view.setTodaynumb(responseHome.getData().getTodayordernum() + "");
-                    view.setMendianName(responseHome.getData().getName());
-                }
-            }
-        });
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        super.onNext(baseResponse);
+                        if (baseResponse instanceof ResponseHome) {
+                            if (((ResponseHome) baseResponse).getCode() == 1) {
+                                List<String> list = new ArrayList<String>();
+                                for (ResponseHome.DataBean.BlistBean r : ((ResponseHome) baseResponse).getData().getBlist()) {
+                                    list.add(r.getImgsrc());
+                                }
+                                view.setBanner(list);
+                                view.setMendianNumb(((ResponseHome) baseResponse).getData().getCode());
+                                view.setMonthComin(((ResponseHome) baseResponse).getData().getMonthincome());
+                                view.setTodayComin(((ResponseHome) baseResponse).getData().getTodayincome() + "");
+                                view.setUserNumb(((ResponseHome) baseResponse).getData().getTel() + "");
+                                view.setTodaynumb(((ResponseHome) baseResponse).getData().getTodayordernum() + "");
+                                view.setMendianName(((ResponseHome) baseResponse).getData().getName());
+                            }
+                        }
+                    }
+                });
     }
 
     HomeView view;
 
     @Override
     public void getMendianList() {
-        AppRequest.getAPI().getHomeMendianList(new RequsetHomeMendianList().setUid("3")).
+        AppRequest.getAPI().getHomeMendianList(new RequsetHomeMendianList().setUid(AppRequestResoult.getInstance().getUid())).
                 subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).
-                subscribe(new Observer<ResponseMendianHomeList>() {
-            @Override
-            public void onCompleted() {
+                subscribe(new MObeserver(view) {
+                    @Override
+                    public void onCompleted() {
+                        super.onCompleted();
+                    }
 
-            }
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
 
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(ResponseMendianHomeList responseMendianHomeList) {
-                if (responseMendianHomeList.getCode() == 1) {
-                    view.setMendianList(responseMendianHomeList.getData());
-                }
-            }
-        });
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        super.onNext(baseResponse);
+                        if (baseResponse instanceof ResponseMendianHomeList) {
+                            if (baseResponse.getCode() == 1) {
+                                view.setMendianList(((ResponseMendianHomeList) baseResponse).getData());
+                            }
+                        }
+                    }
+                });
     }
 
     @Override

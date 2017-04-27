@@ -1,7 +1,12 @@
 package com.cndll.chgj.mvp.presenter.impl;
 
+import com.cndll.chgj.mvp.MObeserver;
 import com.cndll.chgj.mvp.mode.AppRequest;
+import com.cndll.chgj.mvp.mode.bean.request.RequestVerify;
+import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseArea;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseStoreTye;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseVerify;
 import com.cndll.chgj.mvp.presenter.RegisterPresenter;
 import com.cndll.chgj.mvp.view.RegisterView;
 
@@ -70,5 +75,63 @@ public class RegisterImpl implements RegisterPresenter {
                         view.showArea(item0, item1, o);
                     }
                 });
+    }
+
+    public String getVerify() {
+        return verify;
+    }
+
+    private String verify = null;
+
+    @Override
+    public void getVerify(String tel) {
+        AppRequest.getAPI().getVerify(new RequestVerify().setTel(tel)).
+                subscribeOn(Schedulers.io()).
+                observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(view) {
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+            }
+
+            @Override
+            public void onNext(BaseResponse baseResponse) {
+                super.onNext(baseResponse);
+                if (baseResponse instanceof ResponseVerify) {
+                    if (baseResponse.getCode() == 1) {
+                        verify = String.valueOf(((ResponseVerify) baseResponse).getData());
+                        view.showMesg("验证码已发送成功");
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getStoreType() {
+        AppRequest.getAPI().getStoreType().subscribeOn(Schedulers.io()).
+                observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(view) {
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+            }
+
+            @Override
+            public void onNext(BaseResponse baseResponse) {
+                super.onNext(baseResponse);
+                if (baseResponse.getCode() == 1) {
+                    view.showStoreType(((ResponseStoreTye) baseResponse).getData());
+                }
+            }
+        });
     }
 }

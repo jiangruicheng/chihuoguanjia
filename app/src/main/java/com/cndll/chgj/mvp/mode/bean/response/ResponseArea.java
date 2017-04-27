@@ -6,7 +6,7 @@ import java.util.List;
  * Created by kongqing on 2017/4/12.
  */
 
-public class ResponseArea {
+public class ResponseArea extends BaseResponse {
 
     /**
      * code : 1
@@ -14,17 +14,10 @@ public class ResponseArea {
      * extra : 获取成功
      */
 
-    private int code;
-    private String extra;
+
+
     private List<DataBean> data;
 
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
 
     public String getExtra() {
         return extra;

@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
-import android.widget.Toast;
 
 /**
  * Created by kongqing on 2017/4/21.
@@ -116,7 +115,7 @@ public class PagerLayoutManager extends RecyclerView.LayoutManager {
                         "bottom:" + (rect.bottom - offsetY) + "\n");
             }
         }
-        Toast.makeText(context, "" + getChildCount(), Toast.LENGTH_SHORT).show();
+
     }
 
     @Override

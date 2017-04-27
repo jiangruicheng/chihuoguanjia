@@ -8,6 +8,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
 import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -56,11 +57,6 @@ public class PopUpViewUtil {
                 if (onDismissAction != null) {
                     onDismissAction.onDismiss();
                 }
-            }
-        });
-        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
                 dismiss();
             }
         });
@@ -78,6 +74,7 @@ public class PopUpViewUtil {
     public void showDialog(@NonNull Activity context, View layout, int locationX, int locationY, int width, int heigth, @StyleRes int style) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(context, style);
         alertDialog = dialog.create();
+        alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
         Window window = alertDialog.getWindow();
         window.setContentView(layout);
@@ -90,13 +87,18 @@ public class PopUpViewUtil {
         alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
+                if (onDismissAction != null) {
+                    onDismissAction.onDismiss();
+                }
                 dismiss();
             }
         });
     }
 
     public void showDialog(@NonNull Activity context, @LayoutRes int layout, int locationX, int locationY, int width, int heigth, @StyleRes int style) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(context, style);
+        View view = LayoutInflater.from(context).inflate(layout, null, false);
+        showDialog(context, view, locationX, locationY, width, heigth, style);
+       /* AlertDialog.Builder dialog = new AlertDialog.Builder(context, style);
         alertDialog = dialog.create();
         alertDialog.show();
         Window window = alertDialog.getWindow();
@@ -110,9 +112,12 @@ public class PopUpViewUtil {
         alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
+                if (onDismissAction != null) {
+                    onDismissAction.onDismiss();
+                }
                 dismiss();
             }
-        });
+        });*/
     }
 
     public interface OnDismissAction {

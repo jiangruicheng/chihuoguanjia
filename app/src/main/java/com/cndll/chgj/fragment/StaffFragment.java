@@ -4,19 +4,17 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
-import com.cndll.chgj.mvp.mode.bean.request.RequestLogin;
-import com.cndll.chgj.mvp.presenter.LoginPresenter;
-import com.cndll.chgj.mvp.presenter.impl.RegisterImpl;
-import com.cndll.chgj.mvp.view.LoginView;
-import com.cndll.chgj.weight.MesgShow;
+import com.cndll.chgj.util.PopUpViewUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,49 +26,44 @@ import butterknife.Unbinder;
  * Activities that contain this fragment must implement the
  * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link LoginFragment#newInstance} factory method to
+ * Use the {@link StaffFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LoginFragment extends BaseFragment implements LoginView {
+public class StaffFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     @BindView(R.id.back)
     Button back;
-
-    @OnClick(R.id.back)
-    void onclick_back() {
-        popBackFragment();
-    }
-
     @BindView(R.id.title)
     TextView title;
-    @BindView(R.id.info)
-    TextView info;
-    @BindView(R.id.number)
-    EditText number;
-    @BindView(R.id.tel)
-    EditText tel;
-    @BindView(R.id.password)
-    EditText password;
-    @BindView(R.id.login)
-    Button login;
-
-    @OnClick(R.id.login)
-    void onclick_login() {
-        presenter.login(new RequestLogin().setCode(number.getText().toString()).setTel(tel.getText().toString()).setPassword(password.getText().toString()));
-    }
-
+    @BindView(R.id.title_left)
+    TextView titleLeft;
+    @BindView(R.id.title_right)
+    TextView titleRight;
+    @BindView(R.id.title_tow)
+    LinearLayout titleTow;
+    @BindView(R.id.right_text)
+    TextView rightText;
+    @BindView(R.id.textView4)
+    TextView textView4;
+    @BindView(R.id.list)
+    ListView list;
     @BindView(R.id.register)
     Button register;
 
     @OnClick(R.id.register)
     void onclick_register() {
-        replaceFragmentAddToBackStack(RegisterFragment.newInstance(null, null), new RegisterImpl());
-        //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame, RegisterFragment.newInstance(null, null)).addToBackStack("").commit();
+        PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.popview_staff, null, false);
+        popUpViewUtil.popListWindow(parent, view,
+                popUpViewUtil.getWindowManager(parent.getContext()).getDefaultDisplay().getWidth(),
+                popUpViewUtil.getWindowManager(parent.getContext()).getDefaultDisplay().getHeight() / 2, Gravity.CENTER, null);
     }
 
+    @BindView(R.id.parent)
+    LinearLayout parent;
     Unbinder unbinder;
 
     // TODO: Rename and change types of parameters
@@ -79,7 +72,7 @@ public class LoginFragment extends BaseFragment implements LoginView {
 
     private OnFragmentInteractionListener mListener;
 
-    public LoginFragment() {
+    public StaffFragment() {
         // Required empty public constructor
     }
 
@@ -89,11 +82,11 @@ public class LoginFragment extends BaseFragment implements LoginView {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment LoginFragment.
+     * @return A new instance of fragment StaffFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static LoginFragment newInstance(String param1, String param2) {
-        LoginFragment fragment = new LoginFragment();
+    public static StaffFragment newInstance(String param1, String param2) {
+        StaffFragment fragment = new StaffFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -114,7 +107,7 @@ public class LoginFragment extends BaseFragment implements LoginView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
+        View view = inflater.inflate(R.layout.fragment_staff, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
@@ -129,7 +122,7 @@ public class LoginFragment extends BaseFragment implements LoginView {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        /*if (context instanceof OnFragmentInteractionListener) {
+       /* if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
@@ -147,46 +140,6 @@ public class LoginFragment extends BaseFragment implements LoginView {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-    }
-
-    @Override
-    public void showMesg(String mesg) {
-        MesgShow.showMesg("", mesg, login, new MesgShow.OnButtonListener() {
-
-            @Override
-            public void onListerner() {
-
-            }
-        }, new MesgShow.OnButtonListener() {
-            @Override
-            public void onListerner() {
-
-            }
-        }, false);
-    }
-
-    @Override
-    public void showProg(String mesg) {
-
-    }
-
-    private LoginPresenter presenter;
-
-    @Override
-    public void setPresenter(LoginPresenter presenter) {
-        this.presenter = presenter;
-        presenter.setView(this);
-    }
-
-    @Override
-    public void loginSucces() {
-        //replaceFragment(HomeFragment.newInstance(null, null), null);
-        popBackFragment();
-    }
-
-    @Override
-    public void showUserMesg(String[] strings) {
-
     }
 
     /**

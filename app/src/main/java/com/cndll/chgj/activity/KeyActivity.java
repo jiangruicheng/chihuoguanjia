@@ -19,9 +19,9 @@ public class KeyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         ViewGroup group = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.activity_key, null, false);
-        setContentView(group);
+      /*  setContentView(group);
         key = (LinearLayout) group.findViewById(R.id.key);
-        setOnclick(group);
+        setOnclick(group);*/
     }
 
     private void setOnclick(View view) {
@@ -49,7 +49,7 @@ public class KeyActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             if (v instanceof TextView) {
-                if (v.getId() == R.id.tran) {
+                if (v.getId() == R.id.acp) {
                     setCap(key, cap);
                     cap = !cap;
                 }

@@ -6,25 +6,18 @@ import java.util.List;
  * Created by kongqing on 2017/4/12.
  */
 
-public class ResponseHome {
+public class ResponseHome extends BaseResponse {
+
 
     /**
      * code : 1
-     * data : {"name":"老乡店(宝安店)","code":"54845454","tel":null,"todayincome":123,"todayordernum":123,"monthincome":"5.3万","blist":[{"url":"","imgsrc":"http://dc.idc.zhonxing.com/Uploads/Picture/2017-03-30/58dccc1ed2d9f.png"},{"url":"","imgsrc":"http://dc.idc.zhonxing.com/Uploads/Picture/2017-03-30/58dccc1ed2d9f.png"}]}
+     * data : {"id":"3","name":"乡村18碗","code":"732820","type":"湘菜馆","province":"广东","city":"深圳","cre_tm":"1490682839","uid":"3","over_tm":"2088-02-25","tel":"15220163615","todayincome":"0万","todayordernum":"0","monthincome":"0万","blist":[{"url":"http://baidu.com","imgsrc":"http://dc.idc.zhonxing.com/Uploads/Picture/2017-03-30/58dccc1ed2d9f.png"},{"url":"http://sina.com","imgsrc":"http://dc.idc.zhonxing.com/Uploads/Picture/2017-03-30/58dccc1ed2d9f.png"}]}
      * extra : 获取成功
      */
 
-    private int code;
     private DataBean data;
-    private String extra;
 
-    public int getCode() {
-        return code;
-    }
 
-    public void setCode(int code) {
-        this.code = code;
-    }
 
     public DataBean getData() {
         return data;
@@ -44,22 +37,44 @@ public class ResponseHome {
 
     public static class DataBean {
         /**
-         * name : 老乡店(宝安店)
-         * code : 54845454
-         * tel : null
-         * todayincome : 123
-         * todayordernum : 123
-         * monthincome : 5.3万
-         * blist : [{"url":"","imgsrc":"http://dc.idc.zhonxing.com/Uploads/Picture/2017-03-30/58dccc1ed2d9f.png"},{"url":"","imgsrc":"http://dc.idc.zhonxing.com/Uploads/Picture/2017-03-30/58dccc1ed2d9f.png"}]
+         * id : 3
+         * name : 乡村18碗
+         * code : 732820
+         * type : 湘菜馆
+         * province : 广东
+         * city : 深圳
+         * cre_tm : 1490682839
+         * uid : 3
+         * over_tm : 2088-02-25
+         * tel : 15220163615
+         * todayincome : 0万
+         * todayordernum : 0
+         * monthincome : 0万
+         * blist : [{"url":"http://baidu.com","imgsrc":"http://dc.idc.zhonxing.com/Uploads/Picture/2017-03-30/58dccc1ed2d9f.png"},{"url":"http://sina.com","imgsrc":"http://dc.idc.zhonxing.com/Uploads/Picture/2017-03-30/58dccc1ed2d9f.png"}]
          */
 
+        private String id;
         private String name;
         private String code;
-        private Object tel;
-        private int todayincome;
-        private int todayordernum;
+        private String type;
+        private String province;
+        private String city;
+        private String cre_tm;
+        private String uid;
+        private String over_tm;
+        private String tel;
+        private String todayincome;
+        private String todayordernum;
         private String monthincome;
         private List<BlistBean> blist;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
 
         public String getName() {
             return name;
@@ -77,27 +92,75 @@ public class ResponseHome {
             this.code = code;
         }
 
-        public Object getTel() {
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public String getProvince() {
+            return province;
+        }
+
+        public void setProvince(String province) {
+            this.province = province;
+        }
+
+        public String getCity() {
+            return city;
+        }
+
+        public void setCity(String city) {
+            this.city = city;
+        }
+
+        public String getCre_tm() {
+            return cre_tm;
+        }
+
+        public void setCre_tm(String cre_tm) {
+            this.cre_tm = cre_tm;
+        }
+
+        public String getUid() {
+            return uid;
+        }
+
+        public void setUid(String uid) {
+            this.uid = uid;
+        }
+
+        public String getOver_tm() {
+            return over_tm;
+        }
+
+        public void setOver_tm(String over_tm) {
+            this.over_tm = over_tm;
+        }
+
+        public String getTel() {
             return tel;
         }
 
-        public void setTel(Object tel) {
+        public void setTel(String tel) {
             this.tel = tel;
         }
 
-        public int getTodayincome() {
+        public String getTodayincome() {
             return todayincome;
         }
 
-        public void setTodayincome(int todayincome) {
+        public void setTodayincome(String todayincome) {
             this.todayincome = todayincome;
         }
 
-        public int getTodayordernum() {
+        public String getTodayordernum() {
             return todayordernum;
         }
 
-        public void setTodayordernum(int todayordernum) {
+        public void setTodayordernum(String todayordernum) {
             this.todayordernum = todayordernum;
         }
 
@@ -119,7 +182,7 @@ public class ResponseHome {
 
         public static class BlistBean {
             /**
-             * url :
+             * url : http://baidu.com
              * imgsrc : http://dc.idc.zhonxing.com/Uploads/Picture/2017-03-30/58dccc1ed2d9f.png
              */
 

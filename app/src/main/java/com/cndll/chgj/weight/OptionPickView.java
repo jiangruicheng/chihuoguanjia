@@ -33,6 +33,7 @@ public class OptionPickView {
     private View rootview;
     private List<String> item0;
     private List<List<String>> item1;
+    List<List<List<String>>> s;
     private Button cancel;
     private Button sure;
 

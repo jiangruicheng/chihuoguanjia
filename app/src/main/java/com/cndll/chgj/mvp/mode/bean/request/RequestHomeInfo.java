@@ -11,23 +11,23 @@ public class RequestHomeInfo  {
      * mid : 3
      */
 
-    private int uid;
-    private int mid;
+    private String uid;
+    private String mid;
 
-    public int getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public RequestHomeInfo setUid(int uid) {
+    public RequestHomeInfo setUid(String uid) {
         this.uid = uid;
         return this;
     }
 
-    public int getMid() {
+    public String getMid() {
         return mid;
     }
 
-    public RequestHomeInfo setMid(int mid) {
+    public RequestHomeInfo setMid(String mid) {
         this.mid = mid;
         return this;
     }

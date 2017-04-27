@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,13 @@ import com.cndll.chgj.R;
 import com.cndll.chgj.util.LinearPagerLayoutManager;
 import com.cndll.chgj.util.PagerLayoutManager;
 import com.cndll.chgj.util.PagingScrollHelper;
+import com.cndll.chgj.util.PopUpViewUtil;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
+
+import static butterknife.ButterKnife.bind;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,8 +55,6 @@ public class OrderDishFragment extends BaseFragment {
     LinearLayout titleTow;
     @BindView(R.id.right_text)
     TextView rightText;
-    @BindView(R.id.number_all)
-    TextView numberAll;
     @BindView(R.id.textView6)
     TextView textView6;
     @BindView(R.id.textView7)
@@ -81,7 +83,117 @@ public class OrderDishFragment extends BaseFragment {
     Button dazhe;
     @BindView(R.id.pay)
     Button pay;
+    @BindView(R.id.number_edit)
+    TextView numberEdit;
+    View key;
+    TextView show;
+    TextView abcKey;
+    TextView numberKey;
 
+    @OnClick(R.id.number_edit)
+    void onclick_number_edit() {
+        popUpkey(0, "");
+    }
+
+    PopUpViewUtil popUpViewUtil;
+
+    private void popUpkey(int mode, String hint) {
+        if (popUpViewUtil == null)
+            popUpViewUtil = PopUpViewUtil.getInstance();
+        if (key == null) {
+            key = LayoutInflater.from(getContext()).inflate(R.layout.popview_key, null, false);
+            setOnclick(key);
+        }
+        int[] locations = new int[2];
+        numberEdit.getLocationOnScreen(locations);
+        locations[1] = locations[1] - popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 2;
+        popUpViewUtil.popListWindow(numberEdit, key,
+                popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getWidth(),
+                popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 2,
+                Gravity.NO_GRAVITY, locations);
+        popUpViewUtil.setOnDismissAction(new PopUpViewUtil.OnDismissAction() {
+            @Override
+            public void onDismiss() {
+                if (showbuffer.length() > 0) {
+                    showbuffer.delete(0, showbuffer.length());
+                    popUpViewUtil = null;
+                }
+            }
+        });
+        // ((TextView)key.findViewById(R.id.tran)).setText(".");
+        if (show == null) {
+            show = (TextView) key.findViewById(R.id.show);
+        }
+        show.setText(showbuffer.toString());
+
+        //setCap(key, cap);
+    }
+
+    private void setOnclick(View view) {
+        if (!(view instanceof ViewGroup)) {
+            (view).setOnClickListener(listener);
+        } else if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                setOnclick(((ViewGroup) view).getChildAt(i));
+            }
+        }
+    }
+
+    private void setCap(View view, boolean iscap) {
+        if (view instanceof TextView) {
+            ((TextView) view).setAllCaps(iscap);
+        } else if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                setCap(((ViewGroup) view).getChildAt(i), iscap);
+            }
+        }
+    }
+
+    boolean cap = false;
+    private StringBuffer showbuffer = new StringBuffer();
+    private View.OnClickListener listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (v instanceof TextView) {
+                if (v.getId() == R.id.acp) {
+                    setCap(key, cap);
+                    cap = !cap;
+                    return;
+                }
+                if (v.getId() == R.id.key_exit) {
+                    if (popUpViewUtil != null) {
+                        popUpViewUtil.dismiss();
+                    }
+                    return;
+                }
+                if (v.getId() == R.id.show) {
+                    return;
+                }
+                if (v.getId() == R.id.delete_abc || v.getId() == R.id.delete_number) {
+                    if (showbuffer.length() > 0) {
+                        showbuffer.deleteCharAt(showbuffer.length() - 1);
+                        show.setText(showbuffer.toString());
+                    }
+                    return;
+                }
+                if (v.getId() == R.id.tran_number) {
+                    key.findViewById(R.id.number_key).setVisibility(View.VISIBLE);
+                    key.findViewById(R.id.abc_key).setVisibility(View.GONE);
+                    return;
+                }
+                if (v.getId() == R.id.tran && ((TextView) v).getText().equals("ABC")) {
+                    key.findViewById(R.id.number_key).setVisibility(View.GONE);
+                    key.findViewById(R.id.abc_key).setVisibility(View.VISIBLE);
+                    return;
+                }
+                if (show == null) {
+                    show = (TextView) key.findViewById(R.id.show);
+                }
+                showbuffer.append(((TextView) v).getText());
+                show.setText(showbuffer.toString());
+            }
+        }
+    };
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -124,7 +236,7 @@ public class OrderDishFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_order_dish, container, false);
-        unbinder = ButterKnife.bind(this, view);
+        unbinder = bind(this, view);
         initlistview();
 
         return view;

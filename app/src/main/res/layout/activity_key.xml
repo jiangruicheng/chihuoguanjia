@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/yinse"
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/key"
+        android:id="@+id/abc_key"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,6 +23,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="q" />
 
@@ -30,6 +32,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="w" />
 
@@ -38,6 +41,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="e" />
 
@@ -46,6 +50,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="r" />
 
@@ -54,6 +59,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="t" />
 
@@ -62,6 +68,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="y" />
 
@@ -70,6 +77,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="u" />
 
@@ -78,24 +86,25 @@
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="i" />
 
             <Button
-                android:id="@+id/button6"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="o" />
 
             <Button
-                android:id="@+id/button5"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="p" />
 
@@ -117,6 +126,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="a" />
 
@@ -125,6 +135,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="s" />
 
@@ -133,6 +144,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="d" />
 
@@ -141,6 +153,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="f" />
 
@@ -149,15 +162,16 @@
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="g" />
 
             <Button
-                android:id="@+id/button7"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="h" />
 
@@ -166,6 +180,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="j" />
 
@@ -174,6 +189,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="k" />
 
@@ -182,6 +198,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="l" />
 
@@ -199,11 +216,12 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/tran"
+                android:id="@+id/acp"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1.5"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="[]" />
 
@@ -212,15 +230,16 @@
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="z" />
 
             <Button
-                android:id="@+id/button8"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="x" />
 
@@ -229,6 +248,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="c" />
 
@@ -237,15 +257,16 @@
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="v" />
 
             <Button
-                android:id="@+id/button9"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="b" />
 
@@ -254,6 +275,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="n" />
 
@@ -262,15 +284,18 @@
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="m" />
 
 
             <Button
+                android:id="@+id/delete_abc"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1.5"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="X" />
 
@@ -283,34 +308,40 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/tran_number"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:text="123" />
 
 
             <Button
+
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="3"
-                android:text="" />
+                android:background="@drawable/shape_dialog_fillet_solid"
+                android:text=" " />
 
             <Button
+                android:id="@+id/key_exit"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:text="退出" />
 
         </LinearLayout>
     </LinearLayout>
 
     <TableLayout
+        android:id="@+id/number_key"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
+        android:layout_height="match_parent">
 
         <TableRow android:layout_weight="1">
 
@@ -318,19 +349,21 @@
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:text="7" />
 
             <Button
-                android:id="@+id/button3"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:text="8" />
 
             <Button
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:text="9" />
         </TableRow>
 
@@ -343,19 +376,21 @@
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:text="4" />
 
             <Button
-                android:id="@+id/button4"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:text="5" />
 
             <Button
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:text="6" />
         </TableRow>
 
@@ -365,40 +400,47 @@
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:text="1" />
 
             <Button
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:text="2" />
 
             <Button
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:text="3" />
         </TableRow>
 
         <TableRow android:layout_weight="1">
 
             <Button
+                android:id="@+id/tran"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:text="ABC" />
 
             <Button
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:text="0" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/delete_number"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
                 android:text="x" />
         </TableRow>
     </TableLayout>
