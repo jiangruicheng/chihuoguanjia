@@ -153,66 +153,14 @@ public class RegisterFragment extends Fragment implements RegisterView {
         mListener = null;
     }
 
-    ArrayAdapter arrayAdapter;
+    private RegisterInfo registerInfo;
 
     private void popview() {
-        final ViewGroup view = (ViewGroup) LayoutInflater.from(getActivity()).inflate(R.layout.popview_register_info, parent, false);
-        final PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
-        TextView spinner = (TextView) view.findViewById(R.id.type);
-        spinner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                final PopUpViewUtil popupSpinner = PopUpViewUtil.getInstance();
-                View spinner_list = LayoutInflater.from(getContext()).inflate(R.layout.popview_spinner_list, null, false);
-                arrayAdapter = new ArrayAdapter(getActivity(), R.layout.spinner_register_item, dataString);
-                ListView spinnerItem = (ListView) spinner_list.findViewById(R.id.spinner);
-                spinnerItem.setAdapter(arrayAdapter);
-                spinnerItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        ((TextView) v).setText(dataBean.get(position).getName());
-                        popupSpinner.dismiss();
-                    }
-                });
-                popupSpinner.popListWindow(list, spinner_list,
-                        popUpViewUtil.getWindowManager(getContext()).
-                                getDefaultDisplay().getWidth() * 19 / 20, popUpViewUtil.getWindowManager(getContext()).
-                                getDefaultDisplay().getHeight() * 3 / 5, Gravity.CENTER, null);
-            }
-        });
-
-        Button cancel, save, delete, getverify;
-        TextView shi, sheng;
-        EditText name, tel, edi_verify;
-        delete = (Button) view.findViewById(R.id.delete);
-        delete.setVisibility(View.GONE);
-        cancel = (Button) view.findViewById(R.id.cancel);
-        save = (Button) view.findViewById(R.id.save);
-
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                arrayAdapter = null;
-                popUpViewUtil.dismiss();
-            }
-        });
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (optionPickView == null) {
-                    presenter.getArea();
-                } else {
-                    optionPickView.show();
-                }
-                arrayAdapter = null;
-            }
-        });
-        /*spinner.setAdapter(arrayAdapter);*/
-        popUpViewUtil.popListWindow(list, view,
-                popUpViewUtil.getWindowManager(getContext()).
-                        getDefaultDisplay().getWidth() * 19 / 20, popUpViewUtil.getWindowManager(getContext()).
-                        getDefaultDisplay().getHeight() * 3 / 5, Gravity.CENTER, null);
-        presenter.getStoreType();
+        if (registerInfo == null) {
+            registerInfo = new RegisterInfo();
+            registerInfo.init();
+        }
+        registerInfo.popUpView();
     }
 
     @Override
@@ -244,32 +192,18 @@ public class RegisterFragment extends Fragment implements RegisterView {
 
     }
 
-    private OptionPickView optionPickView;
-    private List<ResponseStoreTye.DataBean> dataBean;
-    private List<String> dataString = new ArrayList<>();
 
     public void showArea(List<String> item0, List<List<String>> item1, ResponseArea responseArea) {
-        if (optionPickView == null) {
-            optionPickView = new OptionPickView(getActivity(), R.layout.dialog_opitionpick);
-            optionPickView.setLooper(false, false);
-            optionPickView.setOptionItem(item0, item1);
+        if (registerInfo != null) {
+            registerInfo.showAre(item0, item1, responseArea);
         }
-        optionPickView.show();
-
     }
 
     @Override
     public void showStoreType(List<ResponseStoreTye.DataBean> dataBean) {
-        this.dataBean = dataBean;
-        if (dataString == null) {
-            dataString = new ArrayList<>();
-        } else {
-            dataString.clear();
+        if (registerInfo != null) {
+            registerInfo.showStroeType(dataBean);
         }
-        for (int i = 0; i < dataBean.size(); i++) {
-            dataString.add(dataBean.get(i).getName());
-        }
-        arrayAdapter.notifyDataSetChanged();
     }
 
 
@@ -287,4 +221,146 @@ public class RegisterFragment extends Fragment implements RegisterView {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    private class RegisterInfo {
+        ViewGroup view = (ViewGroup) LayoutInflater.from(getActivity()).
+                inflate(R.layout.popview_register_info, parent, false);
+        PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
+        TextView spinner = (TextView) view.findViewById(R.id.type);
+        ArrayAdapter arrayAdapter;
+        Button cancel, save, delete, getverify;
+        TextView shi, sheng;
+        EditText name, tel, edi_verify;
+        OptionPickView optionPickView;
+        List<ResponseStoreTye.DataBean> dataBean;
+        List<String> dataString = new ArrayList<>();
+        int selectDataBean = -1;
+
+        private void init() {
+            spinner.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    presenter.getStoreType();
+                    final PopUpViewUtil popupSpinner = PopUpViewUtil.getInstance();
+                    View spinner_list = LayoutInflater.from(getContext()).inflate(R.layout.popview_spinner_list, null, false);
+                    arrayAdapter = new ArrayAdapter(getActivity(), R.layout.spinner_register_item, dataString);
+                    ListView spinnerItem = (ListView) spinner_list.findViewById(R.id.spinner);
+                    spinnerItem.setAdapter(arrayAdapter);
+                    spinnerItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            ((TextView) v).setText(dataBean.get(position).getName());
+                            selectDataBean = position;
+                            popupSpinner.dismiss();
+                        }
+                    });
+                    int[] locations = new int[2];
+                    spinner.getLocationOnScreen(locations);
+                    locations[1] = locations[1] + spinner.getHeight();
+                    popupSpinner.popListWindow(list, spinner_list,
+                            spinner.getWidth(), popupSpinner.getWindowManager(getContext()).
+                                    getDefaultDisplay().getHeight() * 1 / 5, Gravity.NO_GRAVITY, locations);
+                }
+            });
+            delete = (Button) view.findViewById(R.id.delete);
+            delete.setVisibility(View.GONE);
+            cancel = (Button) view.findViewById(R.id.cancel);
+            save = (Button) view.findViewById(R.id.save);
+            shi = (TextView) view.findViewById(R.id.shi);
+            sheng = (TextView) view.findViewById(R.id.sheng);
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    arrayAdapter = null;
+                    popUpViewUtil.dismiss();
+                }
+            });
+            shi.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (optionPickView == null) {
+                        presenter.getArea();
+                    } else {
+                        optionPickView.show();
+                    }
+                }
+            });
+            sheng.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (optionPickView == null) {
+                        presenter.getArea();
+                    } else {
+                        optionPickView.show();
+                    }
+                }
+            });
+            save.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    arrayAdapter = null;
+                }
+            });
+            popUpViewUtil.setOnDismissAction(new PopUpViewUtil.OnDismissAction() {
+                @Override
+                public void onDismiss() {
+                    selectDataBean = -1;
+                    shengPostion = -1;
+                    shiPostion = -1;
+                }
+            });
+        }
+
+        private void popUpView() {
+            popUpViewUtil.popListWindow(list, view,
+                    popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().
+                            getWidth() * 19 / 20,
+                    popUpViewUtil.getWindowManager(getContext()).
+                            getDefaultDisplay().getHeight() * 3 / 5,
+                    Gravity.CENTER, null);
+
+        }
+
+        private ResponseArea responseArea;
+        private int shengPostion;
+        private int shiPostion;
+
+        /*spinner.setAdapter(arrayAdapter);*/
+        private void showAre(List<String> item0, List<List<String>> item1, final ResponseArea responseArea) {
+            this.responseArea = responseArea;
+            if (optionPickView == null) {
+                optionPickView = new OptionPickView(getActivity(), R.layout.dialog_opitionpick);
+                optionPickView.setLooper(false, false);
+                optionPickView.setOptionItem(item0, item1);
+            }
+            if (optionPickView.getOnOptionPickViewSelect() == null) {
+                optionPickView.setOnOptionPickViewSelect(new OptionPickView.OnOptionPickViewSelect() {
+                    @Override
+                    public void onSelect(int sheng, int shi) {
+                        shengPostion = sheng;
+                        shiPostion = shi;
+                        RegisterInfo.this.sheng.setText(responseArea.getData().get(sheng).getName());
+                        RegisterInfo.this.shi.setText(responseArea.getData().get(sheng).getCitys().get(shi).getName());
+
+                    }
+                });
+            }
+            optionPickView.show();
+        }
+
+        private void showStroeType(List<ResponseStoreTye.DataBean> dataBean) {
+            this.dataBean = dataBean;
+            if (dataString == null) {
+                dataString = new ArrayList<>();
+            } else {
+                dataString.clear();
+            }
+            for (int i = 0; i < dataBean.size(); i++) {
+                dataString.add(dataBean.get(i).getName());
+            }
+            arrayAdapter.notifyDataSetChanged();
+        }
+    }
+
+
 }

@@ -22,6 +22,20 @@ public class OptionPickView {
     private Activity context;
     private int layout;
 
+    public interface OnOptionPickViewSelect {
+        void onSelect(int sheng, int shi);
+    }
+
+    public void setOnOptionPickViewSelect(OnOptionPickViewSelect onOptionPickViewSelect) {
+        this.onOptionPickViewSelect = onOptionPickViewSelect;
+    }
+
+    public OnOptionPickViewSelect getOnOptionPickViewSelect() {
+        return onOptionPickViewSelect;
+    }
+
+    OnOptionPickViewSelect onOptionPickViewSelect;
+
     public OptionPickView(Activity context, @LayoutRes int layout) {
         this.context = context;
         this.layout = layout;
@@ -42,7 +56,27 @@ public class OptionPickView {
         loopView0 = (LoopView) rootview.findViewById(R.id.loopview0);
         loopView1 = (LoopView) rootview.findViewById(R.id.loopview1);
         cancel = (Button) rootview.findViewById(R.id.cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (popUpViewUtil != null) {
+                    popUpViewUtil.dismiss();
+                }
+            }
+        });
         sure = (Button) rootview.findViewById(R.id.sure);
+
+        sure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onOptionPickViewSelect != null) {
+                    onOptionPickViewSelect.onSelect(loopView0.getSelectedItem(), loopView1.getSelectedItem());
+                    if (popUpViewUtil != null) {
+                        popUpViewUtil.dismiss();
+                    }
+                }
+            }
+        });
     }
 
     public void setOptionItem(List<String> item0, List<List<String>> item1) {
@@ -60,11 +94,15 @@ public class OptionPickView {
         });
     }
 
+    private PopUpViewUtil popUpViewUtil;
+
     public void show() {
         if (rootview.getParent() != null) {
             ((ViewGroup) (rootview.getParent())).removeView(rootview);
         }
-        PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
+        if (popUpViewUtil == null) {
+            popUpViewUtil = PopUpViewUtil.getInstance();
+        }
         popUpViewUtil.showDialog(context, rootview,
                 0,
                 popUpViewUtil.getWindowManager(context).

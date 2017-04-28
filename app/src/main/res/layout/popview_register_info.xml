@@ -26,7 +26,9 @@
             android:layout_margin="12dp"
             android:layout_weight="3"
             android:background="@color/white"
-            android:textColor="@color/buttonStork" />
+            android:padding="4dp"
+            android:textColor="@color/buttonStork"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -51,7 +53,11 @@
             android:layout_weight="3"
             android:background="@color/white"
             android:drawableRight="@mipmap/down"
-            android:paddingRight="4dp" />
+            android:gravity="center_vertical|left"
+            android:padding="4dp"
+            android:paddingRight="4dp"
+            android:textColor="@color/buttonStork"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -74,8 +80,10 @@
             android:layout_margin="12dp"
             android:layout_weight="3"
             android:background="@color/white"
-            android:enabled="false"
-            android:textColor="@color/buttonStork" />
+            android:inputType="number"
+            android:padding="4dp"
+            android:textColor="@color/buttonStork"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -104,10 +112,10 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-
                 android:background="@color/white"
-                android:enabled="false"
-                android:textColor="@color/buttonStork" />
+                android:padding="4dp"
+                android:textColor="@color/buttonStork"
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/get_verify"
@@ -143,8 +151,10 @@
             android:layout_weight="1.5"
             android:background="@color/white"
             android:drawableRight="@mipmap/down"
+            android:padding="4dp"
             android:paddingRight="4dp"
-            android:textColor="@color/buttonStork" />
+            android:textColor="@color/buttonStork"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/shi"
@@ -157,8 +167,10 @@
             android:background="@color/white"
             android:drawableRight="@mipmap/down"
             android:drawableTintMode="multiply"
+            android:padding="4dp"
             android:paddingRight="4dp"
-            android:textColor="@color/buttonStork" />
+            android:textColor="@color/buttonStork"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
