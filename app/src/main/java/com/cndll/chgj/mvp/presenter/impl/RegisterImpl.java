@@ -105,7 +105,9 @@ public class RegisterImpl implements RegisterPresenter {
                     if (baseResponse.getCode() == 1) {
                         verify = String.valueOf(((ResponseVerify) baseResponse).getData());
                         view.showMesg("验证码已发送成功");
+                        view.setVerify(String.valueOf(((ResponseVerify) baseResponse).getData()));
                     }
+
                 }
             }
         });

@@ -16,4 +16,5 @@ public interface RegisterView extends BaseView<RegisterPresenter> {
     void showArea(List<String> item0, List<List<String>> item1, ResponseArea responseArea);
 
     void showStoreType(List<ResponseStoreTye.DataBean> dataBean);
+    void setVerify(String verify);
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/yinse"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/yinse"
+              android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="门店名称" />
+            android:text="门店名称"/>
 
         <EditText
             android:id="@+id/edit_name"
@@ -28,7 +28,7 @@
             android:background="@color/white"
             android:padding="4dp"
             android:textColor="@color/buttonStork"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
     </LinearLayout>
 
     <LinearLayout
@@ -42,7 +42,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="门店类型" />
+            android:text="门店类型"/>
 
         <TextView
             android:id="@+id/type"
@@ -57,7 +57,7 @@
             android:padding="4dp"
             android:paddingRight="4dp"
             android:textColor="@color/buttonStork"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
     </LinearLayout>
 
     <LinearLayout
@@ -71,7 +71,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="手机号码" />
+            android:text="手机号码"/>
 
         <EditText
             android:id="@+id/edit_tel"
@@ -83,10 +83,11 @@
             android:inputType="number"
             android:padding="4dp"
             android:textColor="@color/buttonStork"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/verify_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -97,7 +98,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="验证码" />
+            android:text="验证码"/>
 
         <RelativeLayout
             android:layout_width="0dp"
@@ -115,7 +116,7 @@
                 android:background="@color/white"
                 android:padding="4dp"
                 android:textColor="@color/buttonStork"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <Button
                 android:id="@+id/get_verify"
@@ -126,7 +127,7 @@
                 android:layout_marginRight="12dp"
                 android:background="@drawable/shape_verify_button"
                 android:text="获取"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"/>
         </RelativeLayout>
     </LinearLayout>
 
@@ -141,7 +142,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="门店区域" />
+            android:text="门店区域"/>
 
         <TextView
             android:id="@+id/sheng"
@@ -154,7 +155,7 @@
             android:padding="4dp"
             android:paddingRight="4dp"
             android:textColor="@color/buttonStork"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/shi"
@@ -170,10 +171,11 @@
             android:padding="4dp"
             android:paddingRight="4dp"
             android:textColor="@color/buttonStork"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/story_id_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -185,22 +187,21 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="门店号" />
+            android:text="门店号"/>
 
-        <EditText
-
-            android:id="@+id/editText"
+        <TextView
+            android:id="@+id/story_id"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="12dp"
             android:layout_weight="3"
-            android:background="@color/white" />
+            android:background="@color/white"/>
     </LinearLayout>
 
     <include
         layout="@layout/popview_button"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.7" />
+        android:layout_weight="0.7"/>
 
 </LinearLayout>

@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.adapter.ListAdapter;
 import com.cndll.chgj.adapter.RegisterListAdpater;
 import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
 import com.cndll.chgj.itemtouchhelperdemo.helper.SimpleItemTouchHelperCallback;
@@ -28,6 +29,8 @@ import com.cndll.chgj.mvp.mode.bean.response.ResponseStoreTye;
 import com.cndll.chgj.mvp.presenter.RegisterPresenter;
 import com.cndll.chgj.mvp.view.RegisterView;
 import com.cndll.chgj.util.PopUpViewUtil;
+import com.cndll.chgj.util.StringHelp;
+import com.cndll.chgj.weight.MesgShow;
 import com.cndll.chgj.weight.OptionPickView;
 
 import java.util.ArrayList;
@@ -106,12 +109,7 @@ public class RegisterFragment extends Fragment implements RegisterView {
     }
 
     private ItemTouchHelper mItemTouchHelper;
-    RegisterListAdpater adapter = new RegisterListAdpater(getActivity(), new OnStartDragListener() {
-        @Override
-        public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-            mItemTouchHelper.startDrag(viewHolder);
-        }
-    });
+    RegisterListAdpater adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -119,12 +117,24 @@ public class RegisterFragment extends Fragment implements RegisterView {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_regist, container, false);
         unbinder = ButterKnife.bind(this, view);
+        adapter = new RegisterListAdpater(getActivity(), new OnStartDragListener() {
+            @Override
+            public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+                mItemTouchHelper.startDrag(viewHolder);
+            }
+        });
+        adapter.setReEidetClick(new ListAdapter.OnReEidetClick() {
+            @Override
+            public void onReEidetClick(View view, int position) {
+                adapter.getItemCount();
+                popview("a");
+            }
+        });
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
+        mItemTouchHelper = new ItemTouchHelper(callback);
         list.setHasFixedSize(true);
         list.setAdapter(adapter);
         list.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
-        mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(list);
         return view;
     }
@@ -155,11 +165,15 @@ public class RegisterFragment extends Fragment implements RegisterView {
 
     private RegisterInfo registerInfo;
 
+    private void popview(String a) {
+        registerInfo = new RegisterInfo();
+        registerInfo.init("暴走丸族", "油炸馆", "15001372759", 1, 1, "1234456");
+        registerInfo.popUpView();
+    }
+
     private void popview() {
-        if (registerInfo == null) {
-            registerInfo = new RegisterInfo();
-            registerInfo.init();
-        }
+        registerInfo = new RegisterInfo();
+        registerInfo.init();
         registerInfo.popUpView();
     }
 
@@ -171,7 +185,7 @@ public class RegisterFragment extends Fragment implements RegisterView {
 
     @Override
     public void showMesg(String mesg) {
-
+        MesgShow.showMesg("", mesg, register, null, null, false);
     }
 
     @Override
@@ -206,6 +220,13 @@ public class RegisterFragment extends Fragment implements RegisterView {
         }
     }
 
+    @Override
+    public void setVerify(String verify) {
+        if (registerInfo != null) {
+            registerInfo.setEdi_verify(verify);
+        }
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -226,17 +247,43 @@ public class RegisterFragment extends Fragment implements RegisterView {
         ViewGroup view = (ViewGroup) LayoutInflater.from(getActivity()).
                 inflate(R.layout.popview_register_info, parent, false);
         PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
-        TextView spinner = (TextView) view.findViewById(R.id.type);
+        TextView spinner;
         ArrayAdapter arrayAdapter;
+        LinearLayout verifyLayout, storyIdLayout;
         Button cancel, save, delete, getverify;
-        TextView shi, sheng;
+        TextView shi, sheng, storyId;
         EditText name, tel, edi_verify;
         OptionPickView optionPickView;
+
         List<ResponseStoreTye.DataBean> dataBean;
         List<String> dataString = new ArrayList<>();
         int selectDataBean = -1;
 
-        private void init() {
+        private void init(String pname, String typename, String ptel, int pshengPostion, int pshiPostion, String storyId) {
+            spinner = (TextView) view.findViewById(R.id.type);
+            delete = (Button) view.findViewById(R.id.delete);
+            delete.setVisibility(View.GONE);
+            name = (EditText) view.findViewById(R.id.edit_name);
+            cancel = (Button) view.findViewById(R.id.cancel);
+            save = (Button) view.findViewById(R.id.save);
+            shi = (TextView) view.findViewById(R.id.shi);
+            sheng = (TextView) view.findViewById(R.id.sheng);
+            this.storyId = (TextView) view.findViewById(R.id.story_id);
+            getverify = (Button) view.findViewById(R.id.get_verify);
+            tel = (EditText) view.findViewById(R.id.edit_tel);
+            edi_verify = (EditText) view.findViewById(R.id.edit_verify);
+            verifyLayout = (LinearLayout) view.findViewById(R.id.verify_layout);
+            storyIdLayout = (LinearLayout) view.findViewById(R.id.story_id_layout);
+            name.setHint(pname);
+            spinner.setText(typename);
+            if (ptel != null) {
+                tel.setHint(ptel);
+                tel.setEnabled(false);
+                verifyLayout.setVisibility(View.GONE);
+                storyIdLayout.setVisibility(View.VISIBLE);
+                this.storyId.setText(storyId);
+            }
+
             spinner.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
@@ -262,17 +309,21 @@ public class RegisterFragment extends Fragment implements RegisterView {
                                     getDefaultDisplay().getHeight() * 1 / 5, Gravity.NO_GRAVITY, locations);
                 }
             });
-            delete = (Button) view.findViewById(R.id.delete);
-            delete.setVisibility(View.GONE);
-            cancel = (Button) view.findViewById(R.id.cancel);
-            save = (Button) view.findViewById(R.id.save);
-            shi = (TextView) view.findViewById(R.id.shi);
-            sheng = (TextView) view.findViewById(R.id.sheng);
+
+            getverify.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (StringHelp.isMobileNO(tel.getText().toString())) {
+                        presenter.getVerify(tel.getText().toString());
+                    } else {
+                        showMesg("手机号输入有误，请重新输入");
+                    }
+                }
+            });
             cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    arrayAdapter = null;
-                    popUpViewUtil.dismiss();
+                    dismiss();
                 }
             });
             shi.setOnClickListener(new View.OnClickListener() {
@@ -298,7 +349,12 @@ public class RegisterFragment extends Fragment implements RegisterView {
             save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    arrayAdapter = null;
+                    if (!verify.equals(edi_verify.getText().toString())) {
+                        showMesg("验证码不对,请重新输入");
+                        return;
+                    }
+
+                    dismiss();
                 }
             });
             popUpViewUtil.setOnDismissAction(new PopUpViewUtil.OnDismissAction() {
@@ -311,6 +367,10 @@ public class RegisterFragment extends Fragment implements RegisterView {
             });
         }
 
+        private void init() {
+            init("", "", null, -1, -1, "");
+        }
+
         private void popUpView() {
             popUpViewUtil.popListWindow(list, view,
                     popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().
@@ -319,6 +379,11 @@ public class RegisterFragment extends Fragment implements RegisterView {
                             getDefaultDisplay().getHeight() * 3 / 5,
                     Gravity.CENTER, null);
 
+        }
+
+        private void dismiss() {
+            arrayAdapter = null;
+            popUpViewUtil.dismiss();
         }
 
         private ResponseArea responseArea;
@@ -346,6 +411,12 @@ public class RegisterFragment extends Fragment implements RegisterView {
                 });
             }
             optionPickView.show();
+        }
+
+        private String verify = "";
+
+        private void setEdi_verify(String verify) {
+            this.verify = verify;
         }
 
         private void showStroeType(List<ResponseStoreTye.DataBean> dataBean) {

@@ -42,6 +42,16 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ItemViewHolder
         notifyDataSetChanged();
     }
 
+    public interface OnReEidetClick {
+        void onReEidetClick(View view, int position);
+    }
+
+    protected OnReEidetClick reEidetClick;
+
+    public void setReEidetClick(OnReEidetClick onReEidetClick) {
+        this.reEidetClick = onReEidetClick;
+    }
+
     public void addMitems(DataList dataList) {
         if (mitems == null) {
             mitems = new ArrayList<>();
