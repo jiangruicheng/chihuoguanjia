@@ -11,8 +11,11 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.cndll.chgj.R;
-import com.cndll.chgj.adapter.RecyclerListAdapter;
+import com.cndll.chgj.adapter.CaiPinListAdapter;
 import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,7 +29,7 @@ import butterknife.Unbinder;
  * Use the {@link CaipinFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CaipinFragment extends BaseFragment<RecyclerListAdapter> {
+public class CaipinFragment extends BaseFragment<CaiPinListAdapter> {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -65,6 +68,10 @@ public class CaipinFragment extends BaseFragment<RecyclerListAdapter> {
         return fragment;
     }
 
+    public void setadpaterList(List<ResponseGetCaipinList.DataBean> data) {
+        adapter.setMitems(data);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +82,7 @@ public class CaipinFragment extends BaseFragment<RecyclerListAdapter> {
     }
 
     /*private ItemTouchHelper mItemTouchHelper;*/
+    private CaiPinListAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,22 +90,22 @@ public class CaipinFragment extends BaseFragment<RecyclerListAdapter> {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_caipin, container, false);
         unbinder = ButterKnife.bind(this, view);
-        adapter = new RecyclerListAdapter(getContext(), new OnStartDragListener() {
+        adapter = new CaiPinListAdapter(getContext(), new OnStartDragListener() {
             @Override
             public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
                 mItemTouchHelper.startDrag(viewHolder);
             }
         });
-        adapter.setType(RecyclerListAdapter.CAIPIN);
+        adapter.setType(CaiPinListAdapter.CAIPIN);
         setListViewAdapter(list);
-        /*RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), new OnStartDragListener() {
+        /*CaiPinListAdapter adapter = new CaiPinListAdapter(getActivity(), new OnStartDragListener() {
             @Override
             public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
                 mItemTouchHelper.startDrag(viewHolder);
             }
         });
 
-        adapter.setType(RecyclerListAdapter.CAIPIN);
+        adapter.setType(CaiPinListAdapter.CAIPIN);
         list.setHasFixedSize(true);
         list.setAdapter(adapter);
         list.setLayoutManager(new LinearLayoutManager(getActivity()));

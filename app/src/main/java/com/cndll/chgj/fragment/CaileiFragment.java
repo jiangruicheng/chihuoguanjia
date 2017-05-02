@@ -10,8 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cndll.chgj.R;
-import com.cndll.chgj.adapter.RecyclerListAdapter;
+import com.cndll.chgj.adapter.CaiLeiListAdapter;
+import com.cndll.chgj.adapter.CaiPinListAdapter;
 import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
+import com.cndll.chgj.util.LinearPagerLayoutManager;
+import com.cndll.chgj.util.PagingScrollHelper;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,7 +31,7 @@ import butterknife.Unbinder;
  * Use the {@link CaileiFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CaileiFragment extends BaseFragment<RecyclerListAdapter> {
+public class CaileiFragment extends BaseFragment<CaiPinListAdapter> {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -63,6 +69,9 @@ public class CaileiFragment extends BaseFragment<RecyclerListAdapter> {
     }
 
     /*private ItemTouchHelper mItemTouchHelper;*/
+    public void setAdapterList(List<ResponseGetCaileiList.DataBean> data) {
+        adapter.setMitems(data);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,29 +82,44 @@ public class CaileiFragment extends BaseFragment<RecyclerListAdapter> {
         }
     }
 
+    private CaiLeiListAdapter adapter;
+
+    public int getDcId() {
+        return dcId;
+    }
+
+    public void setDcId(int dcId) {
+        this.dcId = dcId;
+    }
+
+    private int dcId = -1;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cailei, container, false);
         unbinder = ButterKnife.bind(this, view);
-        adapter = new RecyclerListAdapter(getContext(), new OnStartDragListener() {
+        LinearPagerLayoutManager linearPagerLayoutManager = new LinearPagerLayoutManager(getContext(), 5, 1);
+        menuList.setLayoutManager(linearPagerLayoutManager);
+        PagingScrollHelper scrollHelper = new PagingScrollHelper();
+        scrollHelper.setUpRecycleView(menuList);
+        adapter = new CaiLeiListAdapter(getContext(), new OnStartDragListener() {
             @Override
             public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
                 mItemTouchHelper.startDrag(viewHolder);
             }
         });
-        adapter.setType(RecyclerListAdapter.CAILEI);
         setListViewAdapter(menuList);
 
-        /*RecyclerListAdapter adapter = new RecyclerListAdapter(getActivity(), new OnStartDragListener() {
+        /*CaiPinListAdapter adapter = new CaiPinListAdapter(getActivity(), new OnStartDragListener() {
             @Override
             public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
                 mItemTouchHelper.startDrag(viewHolder);
             }
         });
 
-        adapter.setType(RecyclerListAdapter.CAILEI);
+        adapter.setType(CaiPinListAdapter.CAILEI);
         menuList.setHasFixedSize(true);
         menuList.setAdapter(adapter);
         menuList.setLayoutManager(new LinearLayoutManager(getActivity()));

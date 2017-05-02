@@ -18,24 +18,24 @@ import java.util.List;
  * Created by kongqing on 2017/4/1.
  */
 
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ItemViewHolder>
+public class ListAdapter<T extends DataList> extends RecyclerView.Adapter<ListAdapter.ItemViewHolder>
         implements ItemTouchHelperAdapter {
     protected final OnStartDragListener mDragStartListener;
     protected Context context;
 
-    public List<DataList> getMitems() {
+    public List<? extends DataList> getMitems() {
         return mitems;
     }
 
-    public void setMitems(List<DataList> mitems) {
+    public void setMitems(List<T> mitems) {
         this.mitems = mitems;
         mitemscopy = mitems;
         notifyDataSetChanged();
     }
 
-    public void addMitems(List<DataList> dataLists) {
+    public void addMitems(List<T> dataLists) {
         if (this.mitems != null) {
-            this.mitems.addAll(mitems);
+            this.mitems.addAll(dataLists);
         } else {
             this.mitems = dataLists;
         }
@@ -52,7 +52,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ItemViewHolder
         this.reEidetClick = onReEidetClick;
     }
 
-    public void addMitems(DataList dataList) {
+    public void addMitems(T dataList) {
         if (mitems == null) {
             mitems = new ArrayList<>();
         }
@@ -60,8 +60,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ItemViewHolder
         notifyDataSetChanged();
     }
 
-    protected List<DataList> mitems;
-    protected List<DataList> mitemscopy;
+    protected List<T> mitems;
+    protected List<T> mitemscopy;
 
     public ListAdapter(Context context, OnStartDragListener dragStartListener) {
         mDragStartListener = dragStartListener;
@@ -96,7 +96,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ItemViewHolder
         return true;
     }
 
-    public List<DataList> getOrdlist() {
+    public List<T> getOrdlist() {
         if (mitems != null) {
             for (int i = 0; i < mitems.size(); i++) {
                 mitems.get(i).setOrder(i);

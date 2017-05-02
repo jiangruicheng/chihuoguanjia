@@ -24,7 +24,9 @@ import com.cndll.chgj.adapter.ListAdapter;
 import com.cndll.chgj.adapter.RegisterListAdpater;
 import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
 import com.cndll.chgj.itemtouchhelperdemo.helper.SimpleItemTouchHelperCallback;
+import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseArea;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetStoreList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseStoreTye;
 import com.cndll.chgj.mvp.presenter.RegisterPresenter;
 import com.cndll.chgj.mvp.view.RegisterView;
@@ -126,8 +128,10 @@ public class RegisterFragment extends Fragment implements RegisterView {
         adapter.setReEidetClick(new ListAdapter.OnReEidetClick() {
             @Override
             public void onReEidetClick(View view, int position) {
-                adapter.getItemCount();
-                popview("a");
+                if (adapter.getMitems() != null) {
+                    ResponseGetStoreList.DataBean dataBean = ((ResponseGetStoreList.DataBean) adapter.getMitems().get(position));
+                    popview(dataBean.getName(), dataBean.getType(), AppMode.getInstance().getTel(), Integer.valueOf(dataBean.getProvince()), Integer.valueOf(dataBean.getCity()), dataBean.getCode());
+                }
             }
         });
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
@@ -136,6 +140,9 @@ public class RegisterFragment extends Fragment implements RegisterView {
         list.setAdapter(adapter);
         list.setLayoutManager(new LinearLayoutManager(getActivity()));
         mItemTouchHelper.attachToRecyclerView(list);
+        if (AppMode.getInstance().getUid() != null) {
+            presenter.getStoreList(AppMode.getInstance().getUid());
+        }
         return view;
     }
 
@@ -165,9 +172,9 @@ public class RegisterFragment extends Fragment implements RegisterView {
 
     private RegisterInfo registerInfo;
 
-    private void popview(String a) {
+    private void popview(String name, String type, String tel, int province, int city, String storeid) {
         registerInfo = new RegisterInfo();
-        registerInfo.init("暴走丸族", "油炸馆", "15001372759", 1, 1, "1234456");
+        registerInfo.init(name, type, tel, province, city, storeid);
         registerInfo.popUpView();
     }
 
@@ -202,8 +209,8 @@ public class RegisterFragment extends Fragment implements RegisterView {
     }
 
     @Override
-    public void loadListView() {
-
+    public void loadListView(List<ResponseGetStoreList.DataBean> list) {
+        adapter.setMitems(list);
     }
 
 
@@ -254,12 +261,43 @@ public class RegisterFragment extends Fragment implements RegisterView {
         TextView shi, sheng, storyId;
         EditText name, tel, edi_verify;
         OptionPickView optionPickView;
+        View.OnClickListener register = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (name.getText().toString() == null || name.getText().toString().trim().equals("")) {
+                    showMesg("请输入名称");
+                    return;
+                }
+                if (spinner.getText().toString() == null || spinner.getText().toString().trim().equals("")) {
+                    showMesg("请选择门店类型");
+                }
+                if (verify.equals("")) {
+                    showMesg("请获取验证码");
+                    return;
+                }
+                if (!verify.equals(edi_verify.getText().toString())) {
+                    showMesg("验证码不对,请重新输入");
+                    return;
+                }
+                if (shengPostion == -1 || shiPostion == -1) {
+                    showMesg("请选择地址");
+                    return;
+                }
 
+
+                presenter.register(spinner.getText().toString(), tel.getText().toString(), name.getText().toString(), shengPostion, shiPostion);
+                dismiss();
+            }
+        };
         List<ResponseStoreTye.DataBean> dataBean;
         List<String> dataString = new ArrayList<>();
         int selectDataBean = -1;
+        private boolean isShowAreList;
 
-        private void init(String pname, String typename, String ptel, int pshengPostion, int pshiPostion, String storyId) {
+        private void init(String pname, final String typename, String ptel, int pshengPostion, int pshiPostion, String storyId) {
+            presenter.getArea();
+            shiPostion = pshiPostion;
+            shengPostion = pshengPostion;
             spinner = (TextView) view.findViewById(R.id.type);
             delete = (Button) view.findViewById(R.id.delete);
             delete.setVisibility(View.GONE);
@@ -282,6 +320,14 @@ public class RegisterFragment extends Fragment implements RegisterView {
                 verifyLayout.setVisibility(View.GONE);
                 storyIdLayout.setVisibility(View.VISIBLE);
                 this.storyId.setText(storyId);
+                save.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+            } else {
+                save.setOnClickListener(register);
             }
 
             spinner.setOnClickListener(new View.OnClickListener() {
@@ -329,32 +375,13 @@ public class RegisterFragment extends Fragment implements RegisterView {
             shi.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (optionPickView == null) {
-                        presenter.getArea();
-                    } else {
-                        optionPickView.show();
-                    }
+                    showArePopUpView();
                 }
             });
             sheng.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (optionPickView == null) {
-                        presenter.getArea();
-                    } else {
-                        optionPickView.show();
-                    }
-                }
-            });
-            save.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!verify.equals(edi_verify.getText().toString())) {
-                        showMesg("验证码不对,请重新输入");
-                        return;
-                    }
-
-                    dismiss();
+                    showArePopUpView();
                 }
             });
             popUpViewUtil.setOnDismissAction(new PopUpViewUtil.OnDismissAction() {
@@ -387,12 +414,13 @@ public class RegisterFragment extends Fragment implements RegisterView {
         }
 
         private ResponseArea responseArea;
-        private int shengPostion;
-        private int shiPostion;
+        private int shengPostion = -1;
+        private int shiPostion = -1;
 
         /*spinner.setAdapter(arrayAdapter);*/
         private void showAre(List<String> item0, List<List<String>> item1, final ResponseArea responseArea) {
             this.responseArea = responseArea;
+
             if (optionPickView == null) {
                 optionPickView = new OptionPickView(getActivity(), R.layout.dialog_opitionpick);
                 optionPickView.setLooper(false, false);
@@ -402,18 +430,65 @@ public class RegisterFragment extends Fragment implements RegisterView {
                 optionPickView.setOnOptionPickViewSelect(new OptionPickView.OnOptionPickViewSelect() {
                     @Override
                     public void onSelect(int sheng, int shi) {
-                        shengPostion = sheng;
-                        shiPostion = shi;
+                        shengPostion = Integer.valueOf(responseArea.getData().get(sheng).getId());
+                        shiPostion = Integer.valueOf(responseArea.getData().get(sheng).getCitys().get(shi).getId());
                         RegisterInfo.this.sheng.setText(responseArea.getData().get(sheng).getName());
                         RegisterInfo.this.shi.setText(responseArea.getData().get(sheng).getCitys().get(shi).getName());
+                        isShowAreList = false;
+                    }
 
+                    @Override
+                    public void onCancel() {
+                        isShowAreList = false;
                     }
                 });
             }
-            optionPickView.show();
+            if (isShowAreList) {
+                optionPickView.show();
+            } else {
+                new Thread() {
+                    @Override
+                    public void run() {
+                        super.run();
+                        for (int i = 0; i < responseArea.getData().size(); i++) {
+                            if (responseArea.getData().get(i).getId().equals(String.valueOf(shengPostion))) {
+                                final int finalI = i;
+                                sheng.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        sheng.setText(responseArea.getData().get(finalI).getName());
+                                    }
+                                });
+                                for (int j = 0; j < responseArea.getData().get(i).getCitys().size(); j++) {
+                                    if (responseArea.getData().get(i).getCitys().get(j).getId().equals(String.valueOf(shiPostion))) {
+                                        final int finalJ = j;
+                                        final int finalI1 = i;
+                                        shi.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                shi.setText(responseArea.getData().get(finalI1).getCitys().get(finalJ).getName());
+                                                return;
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }.start();
+            }
         }
 
         private String verify = "";
+
+        private void showArePopUpView() {
+            isShowAreList = true;
+            if (optionPickView == null) {
+                presenter.getArea();
+            } else {
+                optionPickView.show();
+            }
+        }
 
         private void setEdi_verify(String verify) {
             this.verify = verify;

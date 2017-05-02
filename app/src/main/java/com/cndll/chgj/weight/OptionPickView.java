@@ -24,6 +24,8 @@ public class OptionPickView {
 
     public interface OnOptionPickViewSelect {
         void onSelect(int sheng, int shi);
+
+        void onCancel();
     }
 
     public void setOnOptionPickViewSelect(OnOptionPickViewSelect onOptionPickViewSelect) {

@@ -5,15 +5,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.cndll.chgj.R;
 import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetStoreList;
 
 /**
  * Created by kongqing on 2017/4/4.
  */
 
-public class RegisterListAdpater extends ListAdapter {
+public class RegisterListAdpater extends ListAdapter<ResponseGetStoreList.DataBean> {
     @Override
     public RegistHolderView onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mendian, parent, false);
@@ -31,11 +33,15 @@ public class RegisterListAdpater extends ListAdapter {
                 }
             }
         });
+        ((RegistHolderView) holder).name.setText(mitems.get(position).getName());
+        ((RegistHolderView) holder).id.setText(mitems.get(position).getId());
     }
 
     @Override
     public int getItemCount() {
-        return super.getItemCount();
+        if (mitems != null)
+            return mitems.size();
+        return 0;
     }
 
     public RegisterListAdpater(Context context, OnStartDragListener dragStartListener) {
@@ -44,10 +50,13 @@ public class RegisterListAdpater extends ListAdapter {
 
     public static class RegistHolderView extends ItemViewHolder {
         Button reEidet;
+        TextView name, id;
 
         public RegistHolderView(View itemView) {
             super(itemView);
             reEidet = (Button) itemView.findViewById(R.id.revise);
+            name = (TextView) itemView.findViewById(R.id.store_name);
+            id = (TextView) itemView.findViewById(R.id.store_id);
         }
     }
 }

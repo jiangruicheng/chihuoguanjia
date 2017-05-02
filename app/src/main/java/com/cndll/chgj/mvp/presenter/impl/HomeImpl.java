@@ -2,7 +2,7 @@ package com.cndll.chgj.mvp.presenter.impl;
 
 import com.cndll.chgj.mvp.MObeserver;
 import com.cndll.chgj.mvp.mode.AppRequest;
-import com.cndll.chgj.mvp.mode.AppRequestResoult;
+import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.mode.bean.request.RequestHomeInfo;
 import com.cndll.chgj.mvp.mode.bean.request.RequsetHomeMendianList;
 import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
@@ -25,8 +25,8 @@ public class HomeImpl implements HomePresenter {
     @Override
     public void getHomeInfo() {
         AppRequest.getAPI().getHomeInfo(new RequestHomeInfo().
-                setMid(AppRequestResoult.getInstance().getMid()).
-                setUid(AppRequestResoult.getInstance().getUid())).
+                setMid(AppMode.getInstance().getMid()).
+                setUid(AppMode.getInstance().getUid())).
                 subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
                 subscribe(new MObeserver(view) {
                     @Override
@@ -65,7 +65,7 @@ public class HomeImpl implements HomePresenter {
 
     @Override
     public void getMendianList() {
-        AppRequest.getAPI().getHomeMendianList(new RequsetHomeMendianList().setUid(AppRequestResoult.getInstance().getUid())).
+        AppRequest.getAPI().getHomeMendianList(new RequsetHomeMendianList().setUid(AppMode.getInstance().getUid())).
                 subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).
                 subscribe(new MObeserver(view) {

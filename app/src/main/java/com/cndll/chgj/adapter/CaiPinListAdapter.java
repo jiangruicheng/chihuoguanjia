@@ -30,6 +30,7 @@ import com.cndll.chgj.R;
 import com.cndll.chgj.itemtouchhelperdemo.helper.ItemTouchHelperAdapter;
 import com.cndll.chgj.itemtouchhelperdemo.helper.ItemTouchHelperViewHolder;
 import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,23 +42,13 @@ import java.util.List;
  *
  * @author Paul Burke (ipaulpro)
  */
-public class RecyclerListAdapter extends ListAdapter {
+public class CaiPinListAdapter extends ListAdapter<ResponseGetCaipinList.DataBean> {
     private final List<String> mItems = new ArrayList<>();
-    public static final int CAILEI = 0;
-    public static final int CAIPIN = 1;
 
-    public int getType() {
-        return type;
-    }
 
-    public void setType(int type) {
-        this.type = type;
-    }
-
-    private int type = -1;
     private final OnStartDragListener mDragStartListener;
 
-    public RecyclerListAdapter(Context context, OnStartDragListener dragStartListener) {
+    public CaiPinListAdapter(Context context, OnStartDragListener dragStartListener) {
         super(context, dragStartListener);
         mDragStartListener = dragStartListener;
         // mItems.addAll(Arrays.asList(context.getResources().getStringArray(R.array.dummy_items)));
@@ -72,17 +63,8 @@ public class RecyclerListAdapter extends ListAdapter {
 
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, int position) {
-        //holder.name.setText(mItems.get(position));
-        switch (type) {
-            case CAILEI:
-                ((ListItemViewHolder) holder).info.setVisibility(View.GONE);
-                ((ListItemViewHolder) holder).price.setVisibility(View.GONE);
-                break;
-            case CAIPIN:
-                ((ListItemViewHolder) holder).info.setVisibility(View.VISIBLE);
-                ((ListItemViewHolder) holder).price.setVisibility(View.VISIBLE);
-                break;
-        }
+        ((ListItemViewHolder) holder).info.setVisibility(View.VISIBLE);
+        ((ListItemViewHolder) holder).price.setVisibility(View.VISIBLE);
         ((ListItemViewHolder) holder).revise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

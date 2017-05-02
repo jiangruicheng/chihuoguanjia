@@ -2,9 +2,13 @@ package com.cndll.chgj.mvp.presenter.impl;
 
 import com.cndll.chgj.mvp.MObeserver;
 import com.cndll.chgj.mvp.mode.AppRequest;
+import com.cndll.chgj.mvp.mode.bean.info.AppMode;
+import com.cndll.chgj.mvp.mode.bean.request.RequestGetStoreList;
+import com.cndll.chgj.mvp.mode.bean.request.RequestRegister;
 import com.cndll.chgj.mvp.mode.bean.request.RequestVerify;
 import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseArea;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetStoreList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseStoreTye;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseVerify;
 import com.cndll.chgj.mvp.presenter.RegisterPresenter;
@@ -31,8 +35,30 @@ public class RegisterImpl implements RegisterPresenter {
     }
 
     @Override
-    public void register(String storeId, String storeType, String tel, String storeName, String address) {
+    public void register(String storeType, String tel, String storeName, int province, int city) {
+        AppRequest.getAPI().register(new RequestRegister().setCity(city).
+                setName(storeName).setProvince(province).
+                setTel(tel).setType(storeType)).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(view) {
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+            }
 
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+            }
+
+            @Override
+            public void onNext(BaseResponse baseResponse) {
+                super.onNext(baseResponse);
+                if (baseResponse.getCode() == 1) {
+                    view.showMesg("注册成功");
+                    getStoreList(AppMode.getInstance().getUid());
+                }
+            }
+        });
     }
 
 
@@ -132,6 +158,30 @@ public class RegisterImpl implements RegisterPresenter {
                 super.onNext(baseResponse);
                 if (baseResponse.getCode() == 1) {
                     view.showStoreType(((ResponseStoreTye) baseResponse).getData());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getStoreList(String uid) {
+        AppRequest.getAPI().getStoreList(new RequestGetStoreList().setUid(uid)).subscribeOn(Schedulers.io()).
+                observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(view) {
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+            }
+
+            @Override
+            public void onNext(BaseResponse baseResponse) {
+                super.onNext(baseResponse);
+                if (baseResponse.getCode() == 1) {
+                    view.loadListView(((ResponseGetStoreList) baseResponse).getData());
                 }
             }
         });

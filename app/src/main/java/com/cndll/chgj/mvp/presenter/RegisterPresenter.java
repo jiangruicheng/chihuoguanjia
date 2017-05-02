@@ -7,11 +7,13 @@ import com.cndll.chgj.mvp.view.RegisterView;
  */
 
 public interface RegisterPresenter extends BasePresenter<RegisterView> {
-    void register(String storeId, String storeType, String tel, String storeName, String address);
+    void register(String storeType, String tel, String storeName, int province, int city);
 
     void getArea();
 
     void getVerify(String tel);
 
     void getStoreType();
+
+    void getStoreList(String uid);
 }
