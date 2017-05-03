@@ -2,12 +2,18 @@ package com.cndll.chgj.mvp.mode;
 
 
 import com.cndll.chgj.mvp.mode.bean.request.RequestAddCailei;
+import com.cndll.chgj.mvp.mode.bean.request.RequestAddCaipin;
+import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteCailei;
+import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteCaipin;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetCaipinList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetStoreList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestHomeInfo;
 import com.cndll.chgj.mvp.mode.bean.request.RequestLogin;
+import com.cndll.chgj.mvp.mode.bean.request.RequestMendianOrd;
 import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestRegister;
+import com.cndll.chgj.mvp.mode.bean.request.RequestUpdaCailei;
+import com.cndll.chgj.mvp.mode.bean.request.RequestUpdaCaipin;
 import com.cndll.chgj.mvp.mode.bean.request.RequestVerify;
 import com.cndll.chgj.mvp.mode.bean.request.RequsetHomeMendianList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseAddCaipin;
@@ -19,10 +25,13 @@ import com.cndll.chgj.mvp.mode.bean.response.ResponseGetStoreList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseHome;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseLogin;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseMendianHomeList;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseOrd;
 import com.cndll.chgj.mvp.mode.bean.response.ResponsePrintList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseRegister;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseStoreTye;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseVerify;
+
+import java.util.List;
 
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -75,4 +84,21 @@ public interface Api {
     @POST("Dish/adddc")
     Observable<ResponseCailei> AddCailei(@Body RequestAddCailei requestGetCaipinList);
 
+    @POST("Dish/adddish")
+    Observable<ResponseCailei> addCaipin(@Body RequestAddCaipin requestGetCaipinList);
+
+    @POST("Dish/updc")
+    Observable<ResponseOrd> updateCailei(@Body RequestUpdaCailei requestGetCaipinList);
+
+    @POST("Dish/updish")
+    Observable<ResponseOrd> updateCaipin(@Body RequestUpdaCaipin requestGetCaipinList);
+
+    @POST("Dish/deldc")
+    Observable<ResponseOrd> deleteCailei(@Body RequestDeleteCailei requestGetCaipinList);
+
+    @POST("Dish/deldish")
+    Observable<ResponseOrd> deleteCaipin(@Body RequestDeleteCaipin requestGetCaipinList);
+
+    @POST("store/multisort")
+    Observable<ResponseOrd> ordMendian(@Body List<RequestMendianOrd> list);
 }

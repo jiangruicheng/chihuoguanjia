@@ -8,10 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.cndll.chgj.R;
 import com.cndll.chgj.adapter.CaiLeiListAdapter;
-import com.cndll.chgj.adapter.CaiPinListAdapter;
+import com.cndll.chgj.adapter.ListAdapter;
 import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
 import com.cndll.chgj.util.LinearPagerLayoutManager;
@@ -31,7 +34,7 @@ import butterknife.Unbinder;
  * Use the {@link CaileiFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CaileiFragment extends BaseFragment<CaiPinListAdapter> {
+public class CaileiFragment extends BaseFragment<CaiLeiListAdapter> {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -39,6 +42,12 @@ public class CaileiFragment extends BaseFragment<CaiPinListAdapter> {
     @BindView(R.id.menu_list)
     RecyclerView menuList;
     Unbinder unbinder;
+    @BindView(R.id.menu_name)
+    TextView menuName;
+    @BindView(R.id.revise)
+    Button revise;
+    @BindView(R.id.edit)
+    LinearLayout edit;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -82,17 +91,16 @@ public class CaileiFragment extends BaseFragment<CaiPinListAdapter> {
         }
     }
 
-    private CaiLeiListAdapter adapter;
-
-    public int getDcId() {
-        return dcId;
+    public void setMenuEvent(MenuEditorFragment.MenuEvent menuEvent) {
+        this.menuEvent = menuEvent;
     }
 
-    public void setDcId(int dcId) {
-        this.dcId = dcId;
-    }
+    /*CaiLeiListAdapter adapter;*/
+    private MenuEditorFragment.MenuEvent menuEvent;
 
-    private int dcId = -1;
+    public CaiLeiListAdapter getAdapter() {
+        return adapter;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -110,6 +118,20 @@ public class CaileiFragment extends BaseFragment<CaiPinListAdapter> {
                 mItemTouchHelper.startDrag(viewHolder);
             }
         });
+        adapter.setOnItemClick(new ListAdapter.OnItemsClick() {
+            @Override
+            public void onReEidetClick(View view, int position) {
+
+            }
+
+            @Override
+            public void onItemClick(View view, int position) {
+                if (menuEvent != null) {
+                    menuEvent.trunCaipin(((List<ResponseGetCaileiList.DataBean>) adapter.getMitems()).get(position).getId());
+                }
+            }
+        });
+
         setListViewAdapter(menuList);
 
         /*CaiPinListAdapter adapter = new CaiPinListAdapter(getActivity(), new OnStartDragListener() {
@@ -133,6 +155,7 @@ public class CaileiFragment extends BaseFragment<CaiPinListAdapter> {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);

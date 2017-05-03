@@ -7,13 +7,15 @@ package com.cndll.chgj.adapter;
 public class DataList {
 
 
-    public String getID() {
+    public String getIDList() {
         return null;
     }
 
+    public int getOrderList() {
+        return -1;
+    }
 
-
-    public void setOrder(int i) {
+    public void setOrderList(int i) {
 
     }
 

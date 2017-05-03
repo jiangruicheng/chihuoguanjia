@@ -39,10 +39,10 @@ public class DeskListAdapter extends ListAdapter {
         });
     }
 
-    @Override
+    /*@Override
     public int getItemCount() {
-        return 8;
-    }
+        return super.getItemCount();
+    }*/
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {

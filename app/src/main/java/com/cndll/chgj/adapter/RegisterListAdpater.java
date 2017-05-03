@@ -1,7 +1,9 @@
 package com.cndll.chgj.adapter;
 
 import android.content.Context;
+import android.support.v4.view.MotionEventCompat;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -28,9 +30,18 @@ public class RegisterListAdpater extends ListAdapter<ResponseGetStoreList.DataBe
         ((RegistHolderView) holder).reEidet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (reEidetClick != null) {
-                    reEidetClick.onReEidetClick(null, position);
+                if (onItemClick != null) {
+                    onItemClick.onReEidetClick(null, position);
                 }
+            }
+        });
+        ((RegistHolderView)holder).move.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+                    mDragStartListener.onStartDrag(holder);
+                }
+                return false;
             }
         });
         ((RegistHolderView) holder).name.setText(mitems.get(position).getName());
@@ -50,10 +61,11 @@ public class RegisterListAdpater extends ListAdapter<ResponseGetStoreList.DataBe
 
     public static class RegistHolderView extends ItemViewHolder {
         Button reEidet;
-        TextView name, id;
+        TextView name, id, move;
 
         public RegistHolderView(View itemView) {
             super(itemView);
+            move = (TextView) itemView.findViewById(R.id.move);
             reEidet = (Button) itemView.findViewById(R.id.revise);
             name = (TextView) itemView.findViewById(R.id.store_name);
             id = (TextView) itemView.findViewById(R.id.store_id);

@@ -29,13 +29,18 @@ public class ResponseGetCaipinList extends BaseResponse {
 
     public static class DataBean extends DataList {
         @Override
-        public String getID() {
+        public String getIDList() {
             return id;
         }
 
         @Override
-        public void setOrder(int i) {
+        public void setOrderList(int i) {
             ord = String.valueOf(i);
+        }
+
+        @Override
+        public int getOrderList() {
+            return Integer.valueOf(ord);
         }
 
         /**

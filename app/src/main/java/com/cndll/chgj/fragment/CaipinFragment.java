@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.widget.EditText;
 
 import com.cndll.chgj.R;
 import com.cndll.chgj.adapter.CaiPinListAdapter;
+import com.cndll.chgj.adapter.ListAdapter;
 import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
 
@@ -44,11 +47,31 @@ public class CaipinFragment extends BaseFragment<CaiPinListAdapter> {
     private String mParam1;
     private String mParam2;
 
+    public String getDcId() {
+        return dcId;
+    }
+
+    public void setDcId(String dcId) {
+        this.dcId = dcId;
+    }
+
+    public CaiPinListAdapter getAdapter() {
+        return adapter;
+    }
+
+    private String dcId;
+
     private OnFragmentInteractionListener mListener;
 
     public CaipinFragment() {
         // Required empty public constructor
     }
+
+    public void setEvent(MenuEditorFragment.MenuEvent event) {
+        this.event = event;
+    }
+
+    private MenuEditorFragment.MenuEvent event;
 
     /**
      * Use this factory method to create a new instance of
@@ -82,7 +105,8 @@ public class CaipinFragment extends BaseFragment<CaiPinListAdapter> {
     }
 
     /*private ItemTouchHelper mItemTouchHelper;*/
-    private CaiPinListAdapter adapter;
+
+     /*CaiPinListAdapter adapter;*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -90,13 +114,42 @@ public class CaipinFragment extends BaseFragment<CaiPinListAdapter> {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_caipin, container, false);
         unbinder = ButterKnife.bind(this, view);
+        searchCaipin.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                event.queryCaipin(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         adapter = new CaiPinListAdapter(getContext(), new OnStartDragListener() {
             @Override
             public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
                 mItemTouchHelper.startDrag(viewHolder);
             }
         });
-        adapter.setType(CaiPinListAdapter.CAIPIN);
+        adapter.setOnItemClick(new ListAdapter.OnItemsClick() {
+            @Override
+            public void onReEidetClick(View view, int position) {
+                if (event != null) {
+                    event.updateCaipin(position);
+                }
+            }
+
+            @Override
+            public void onItemClick(View view, int position) {
+
+            }
+        });
         setListViewAdapter(list);
         /*CaiPinListAdapter adapter = new CaiPinListAdapter(getActivity(), new OnStartDragListener() {
             @Override

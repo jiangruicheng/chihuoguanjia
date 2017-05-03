@@ -45,6 +45,11 @@ public class ResponseGetStoreList extends BaseResponse {
         private String type;
         private String ord;
 
+        @Override
+        public int getOrderList() {
+            return Integer.valueOf(ord);
+        }
+
         public String getId() {
             return id;
         }
@@ -102,12 +107,12 @@ public class ResponseGetStoreList extends BaseResponse {
         }
 
         @Override
-        public String getID() {
+        public String getIDList() {
             return id;
         }
 
         @Override
-        public void setOrder(int i) {
+        public void setOrderList(int i) {
             ord = String.valueOf(i);
         }
     }

@@ -26,6 +26,7 @@ import com.cndll.chgj.adapter.MendianListAdpater;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseMendianHomeList;
 import com.cndll.chgj.mvp.presenter.HomePresenter;
 import com.cndll.chgj.mvp.presenter.impl.LoginImpl;
+import com.cndll.chgj.mvp.presenter.impl.MenuImpl;
 import com.cndll.chgj.mvp.presenter.impl.RegisterImpl;
 import com.cndll.chgj.mvp.view.HomeView;
 import com.cndll.chgj.util.PopUpViewUtil;
@@ -258,7 +259,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
         circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragmentAddToBackStack(MenuEditorFragment.newInstance(null, null), null);
+                replaceFragmentAddToBackStack(MenuEditorFragment.newInstance(null, null), new MenuImpl());
             }
         });
         logoff.setOnClickListener(new View.OnClickListener() {

@@ -38,6 +38,11 @@ public class ResponseGetCaileiList extends BaseResponse {
         private String id;
         private String ord;
 
+        @Override
+        public int getOrderList() {
+            return Integer.valueOf(ord);
+        }
+
         public String getName() {
             return name;
         }
@@ -63,12 +68,12 @@ public class ResponseGetCaileiList extends BaseResponse {
         }
 
         @Override
-        public String getID() {
+        public String getIDList() {
             return id;
         }
 
         @Override
-        public void setOrder(int i) {
+        public void setOrderList(int i) {
             ord = String.valueOf(i);
         }
     }

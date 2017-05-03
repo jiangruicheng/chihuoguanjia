@@ -12,25 +12,25 @@ public class RequestGetCaipinList {
      * name :
      */
 
-    private int mid;
-    private int uid;
+    private String mid;
+    private String uid;
     private String dc_id;
     private String name;
 
-    public int getMid() {
+    public String getMid() {
         return mid;
     }
 
-    public RequestGetCaipinList setMid(int mid) {
+    public RequestGetCaipinList setMid(String mid) {
         this.mid = mid;
         return this;
     }
 
-    public int getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public RequestGetCaipinList setUid(int uid) {
+    public RequestGetCaipinList setUid(String uid) {
         this.uid = uid;
         return this;
     }
@@ -51,4 +51,5 @@ public class RequestGetCaipinList {
     public RequestGetCaipinList setName(String name) {
         this.name = name;
         return this;
-    }}
+    }
+}

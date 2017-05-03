@@ -1,6 +1,9 @@
 package com.cndll.chgj.mvp.presenter;
 
+import com.cndll.chgj.mvp.mode.bean.request.RequestMendianOrd;
 import com.cndll.chgj.mvp.view.RegisterView;
+
+import java.util.List;
 
 /**
  * Created by kongqing on 2017/4/11.
@@ -16,4 +19,5 @@ public interface RegisterPresenter extends BasePresenter<RegisterView> {
     void getStoreType();
 
     void getStoreList(String uid);
+    void ordStore(List<RequestMendianOrd> list);
 }

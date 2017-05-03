@@ -14,10 +14,18 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.adapter.PopCaileiListAdpater;
+import com.cndll.chgj.mvp.mode.bean.info.AppMode;
+import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteCaipin;
+import com.cndll.chgj.mvp.mode.bean.request.RequestGetCaipinList;
+import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponsePrintList;
 import com.cndll.chgj.mvp.presenter.MenuPrenster;
 import com.cndll.chgj.mvp.view.MenuView;
@@ -51,6 +59,14 @@ public class MenuEditorFragment extends Fragment implements MenuView {
     Unbinder unbinder;
     @BindView(R.id.back)
     Button back;
+    @BindView(R.id.title_left)
+    TextView titleLeft;
+    @BindView(R.id.title_right)
+    TextView titleRight;
+    @BindView(R.id.title_tow)
+    LinearLayout titleTow;
+    @BindView(R.id.right_text)
+    TextView rightText;
 
     @OnClick(R.id.back)
     void onclick_back() {
@@ -68,13 +84,10 @@ public class MenuEditorFragment extends Fragment implements MenuView {
     void onclick_cailei() {
         if (!fragments.get(CAILEI).isVisible()) {
             switchFragment(CAILEI);
+            title.setText("菜类编辑");
+            rightText.setVisibility(View.GONE);
         } else {
-            PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
-            View view = LayoutInflater.from(getActivity()).inflate(R.layout.popview_add_cailei, null, false);
-            popUpViewUtil.popListWindow(addCailei,
-                    view,
-                    popUpViewUtil.getWindowManager(getActivity()).getDefaultDisplay().getWidth(),
-                    popUpViewUtil.getWindowManager(getActivity()).getDefaultDisplay().getHeight() / 10 * 2, Gravity.CENTER, null);
+            popAddCailei(-1);
         }
     }
 
@@ -86,6 +99,16 @@ public class MenuEditorFragment extends Fragment implements MenuView {
     void onclick_caipin() {
         if (!fragments.get(CAIPIN).isVisible()) {
             switchFragment(CAIPIN);
+            title.setText("菜品编辑");
+            rightText.setVisibility(View.VISIBLE);
+            rightText.setText("菜类");
+            rightText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popupCaileiList();
+                }
+            });
+
         } else {
             popview = new AddCaiPin();
             popview.init();
@@ -94,6 +117,94 @@ public class MenuEditorFragment extends Fragment implements MenuView {
     }
 
     FragmentManager fragmentManager;
+
+    private void popupCaileiList() {
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.list_mendian, null, false);
+        ListView listView = (ListView) view.findViewById(R.id.list_mendian);
+        final PopCaileiListAdpater popCaileiListAdpater = new PopCaileiListAdpater();
+        listView.setAdapter(popCaileiListAdpater);
+        popCaileiListAdpater.setList((List<ResponseGetCaileiList.DataBean>) ((CaileiFragment) fragments.get(CAILEI)).getAdapter().getMitems());
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                presenter.getCaipinList(new RequestGetCaipinList().
+                        setMid(AppMode.getInstance().getMid()).
+                        setUid(AppMode.getInstance().getUid()).
+                        setDc_id(popCaileiListAdpater.getList().
+                                get(position).getId()));
+                ((CaipinFragment) fragments.get(CAIPIN)).setDcId(popCaileiListAdpater.getList().
+                        get(position).getId());
+            }
+        });
+        PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
+        popUpViewUtil.setOnDismissAction(new PopUpViewUtil.OnDismissAction() {
+            @Override
+            public void onDismiss() {
+
+            }
+        });
+        int[] locations = new int[2];
+        rightText.getLocationOnScreen(locations);
+        locations[1] = locations[1] + rightText.getHeight();
+        popUpViewUtil.popListWindow(rightText, view,
+                popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getWidth() / 3 * 2,
+                popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 10 * 4, Gravity.NO_GRAVITY, locations);
+    }
+
+    public interface MenuEvent {
+        void queryCaipin(String name);
+
+        void trunCaipin(String dcid);
+
+        void updateCaipin(int position);
+
+        void updataCailei(int position);
+
+    }
+
+    private MenuEvent menuEvent = new MenuEvent() {
+        @Override
+        public void queryCaipin(String name) {
+            presenter.getCaipinList(new RequestGetCaipinList().setName(name).setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()));
+        }
+
+        @Override
+        public void trunCaipin(String dcid) {
+            switchFragment(CAIPIN);
+            ((CaipinFragment) fragments.get(CAIPIN)).setDcId(dcid);
+            presenter.getCaipinList(new RequestGetCaipinList().setDc_id(dcid).setUid(AppMode.getInstance().getUid()).setMid(AppMode.getInstance().getMid()));
+        }
+
+        @Override
+        public void updateCaipin(int position) {
+            popview = new AddCaiPin();
+            popview.init();
+            popview.setData(position);
+            popview.show();
+        }
+
+        @Override
+        public void updataCailei(int position) {
+            popAddCailei(position);
+        }
+
+    };
+
+    private void popAddCailei(int position) {
+        int a = position;
+        PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.popview_add_cailei, null, false);
+        popUpViewUtil.popListWindow(addCailei,
+                view,
+                popUpViewUtil.getWindowManager(getActivity()).getDefaultDisplay().getWidth(),
+                popUpViewUtil.getWindowManager(getActivity()).getDefaultDisplay().getHeight() / 10 * 2, Gravity.CENTER, null);
+    }
 
     private void switchFragment(String name) {
         Iterator iterator = fragments.values().iterator();
@@ -160,6 +271,9 @@ public class MenuEditorFragment extends Fragment implements MenuView {
         fragments.put(CAIPIN, CaipinFragment.newInstance(null, null));
         fragmentManager = getActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction().add(R.id.frame1, fragments.get(CAILEI)).add(R.id.frame1, fragments.get(CAIPIN)).hide(fragments.get(CAIPIN)).commit();
+        presenter.getCaileiList(new RequestPrintList().setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()));
+        ((CaipinFragment) fragments.get(CAIPIN)).setEvent(menuEvent);
+        ((CaileiFragment) fragments.get(CAILEI)).setMenuEvent(menuEvent);
         return view;
     }
 
@@ -203,9 +317,12 @@ public class MenuEditorFragment extends Fragment implements MenuView {
 
     }
 
+    MenuPrenster presenter;
+
     @Override
     public void setPresenter(MenuPrenster presenter) {
-
+        this.presenter = presenter;
+        presenter.setView(this);
     }
 
     @Override
@@ -213,6 +330,24 @@ public class MenuEditorFragment extends Fragment implements MenuView {
         if (popview != null) {
             popview.showPrint(dataBeen);
         }
+    }
+
+    @Override
+    public void setCaileiList(List<ResponseGetCaileiList.DataBean> dataBeen) {
+        ((CaileiFragment) fragments.get(CAILEI)).setAdapterList(dataBeen);
+        presenter.getCaipinList(new RequestGetCaipinList().setDc_id(dataBeen.get(0).getId()).setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()));
+    }
+
+    @Override
+    public void setCaipinList(List<ResponseGetCaipinList.DataBean> dataBeen) {
+        ((CaipinFragment) fragments.get(CAIPIN)).setadpaterList(dataBeen);
+    }
+
+    @Override
+    public void updataCaiPinList() {
+        presenter.getCaipinList(new RequestGetCaipinList().
+                setDc_id(((CaipinFragment) fragments.get(CAIPIN)).getDcId()).
+                setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()));
     }
 
     /**
@@ -231,6 +366,7 @@ public class MenuEditorFragment extends Fragment implements MenuView {
     }
 
     private class AddCaiPin {
+        int position = -1;
         ArrayAdapter arrayAdapter;
         List<String> dataString = new ArrayList<>();
         PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
@@ -243,12 +379,47 @@ public class MenuEditorFragment extends Fragment implements MenuView {
         TextView printer;
         Button cancel, delete, save;
 
+        public void setData(int position) {
+            if (position == -1) {
+                return;
+            }
+            if (position == -2) {
+                name.setText("");
+                unit.setText("");
+                price.setText("");
+                printer.setText("");
+                queryid.setText("");
+                dazhe.setLeft(true);
+                over.setLeft(true);
+                print.setLeft(true);
+                return;
+            }
+            this.position = position;
+            ResponseGetCaipinList.DataBean data = (ResponseGetCaipinList.DataBean) ((CaipinFragment) fragments.get(CAIPIN)).getAdapter().getMitems().get(position);
+            name.setText(data.getName());
+            unit.setText(data.getUnit());
+            price.setText(data.getPrice());
+            printer.setText(data.getMachine());
+            queryid.setText(data.getCode());
+            if (data.getIs_discount().equals("1")) {
+                dazhe.setLeft(true);
+            } else {
+                dazhe.setLeft(false);
+            }
+            if (data.getIs_over().equals("1")) {
+                over.setLeft(true);
+            } else {
+                over.setLeft(false);
+            }
+            if (data.getIs_print().equals("1")) {
+                print.setLeft(true);
+            } else {
+                print.setLeft(false);
+            }
+        }
 
         public void init() {
-            dataString.add("1234");
-            dataString.add("1234");
-            dataString.add("1234");
-            dataString.add("1234");
+
             name = (EditText) view.findViewById(R.id.name);
             unit = (EditText) view.findViewById(R.id.unit);
             price = (EditText) view.findViewById(R.id.price);
@@ -260,11 +431,28 @@ public class MenuEditorFragment extends Fragment implements MenuView {
             dazhe = initSiwtch(buttonSwitch, "可", "否");
             print = initSiwtch(buttonSwitch2, "可", "否");
             over = initSiwtch(buttonSwitch1, "可", "否");
-
             cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     popUpViewUtil.dismiss();
+                }
+            });
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (position > -1) {
+                        presenter.deleteCaipin(new RequestDeleteCaipin().setId(((ResponseGetCaipinList.DataBean) ((CaipinFragment) fragments.get(CAIPIN)).getAdapter().getMitems().get(position)).getId()));
+                    }
+                }
+            });
+            save.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (position < 0) {
+                        setData(-2);
+                    } else {
+                        popUpViewUtil.dismiss();
+                    }
                 }
             });
             printer.setOnClickListener(new View.OnClickListener() {
@@ -289,6 +477,7 @@ public class MenuEditorFragment extends Fragment implements MenuView {
                     popupSpinner.popListWindow(frame, spinner_list,
                             printer.getWidth(), popupSpinner.getWindowManager(getContext()).
                                     getDefaultDisplay().getHeight() * 1 / 5, Gravity.NO_GRAVITY, locations);
+                    presenter.getPrintList(AppMode.getInstance().getUid(), AppMode.getInstance().getMid());
                 }
             });
         }

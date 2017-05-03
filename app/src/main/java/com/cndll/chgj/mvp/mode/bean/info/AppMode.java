@@ -32,7 +32,7 @@ public class AppMode {
         return this;
     }
 
-    private String mid;
+    private String mid = "3";
     private String token;
     private String uid = "3";
     private boolean isBoss;

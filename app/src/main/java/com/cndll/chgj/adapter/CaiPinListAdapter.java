@@ -32,9 +32,6 @@ import com.cndll.chgj.itemtouchhelperdemo.helper.ItemTouchHelperViewHolder;
 import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 /**
  * Simple RecyclerView.Adapter that implements {@link ItemTouchHelperAdapter} to respond to move and
@@ -43,7 +40,7 @@ import java.util.List;
  * @author Paul Burke (ipaulpro)
  */
 public class CaiPinListAdapter extends ListAdapter<ResponseGetCaipinList.DataBean> {
-    private final List<String> mItems = new ArrayList<>();
+    /*private final List<String> mItems = new ArrayList<>();*/
 
 
     private final OnStartDragListener mDragStartListener;
@@ -62,13 +59,32 @@ public class CaiPinListAdapter extends ListAdapter<ResponseGetCaipinList.DataBea
     }
 
     @Override
-    public void onBindViewHolder(final ItemViewHolder holder, int position) {
+    public void onBindViewHolder(final ItemViewHolder holder, final int position) {
+        String isDiscount = "";
+        if (mitems.get(position).getIs_discount().equals("1")) {
+            isDiscount = "折扣:可 ";
+        } else {
+            isDiscount = "折扣:否 ";
+        }
         ((ListItemViewHolder) holder).info.setVisibility(View.VISIBLE);
         ((ListItemViewHolder) holder).price.setVisibility(View.VISIBLE);
+        ((ListItemViewHolder) holder).name.setText(mitems.get(position).getName());
+        ((ListItemViewHolder) holder).price.setText("￥ " + mitems.get(position).getPrice());
+        ((ListItemViewHolder) holder).info.setText(isDiscount + "编号: " + mitems.get(position).getCode() + " " + mitems.get(position).getMachine());
+        ((ListItemViewHolder) holder).name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemClick != null) {
+                    onItemClick.onItemClick(v, position);
+                }
+            }
+        });
         ((ListItemViewHolder) holder).revise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (onItemClick != null) {
+                    onItemClick.onReEidetClick(v, position);
+                }
             }
         });
         // Start a drag whenever the handle view it touched
@@ -90,15 +106,11 @@ public class CaiPinListAdapter extends ListAdapter<ResponseGetCaipinList.DataBea
     }
 
     @Override
-    public boolean onItemMove(int fromPosition, int toPosition) {
-        // Collections.swap(mItems, fromPosition, toPosition);
-        notifyItemMoved(fromPosition, toPosition);
-        return true;
-    }
-
-    @Override
     public int getItemCount() {
-        return 8;
+        if (mitems != null) {
+            return mitems.size();
+        }
+        return 0;
     }
 
     /**

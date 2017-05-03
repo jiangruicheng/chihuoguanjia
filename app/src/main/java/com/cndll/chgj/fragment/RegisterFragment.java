@@ -25,6 +25,7 @@ import com.cndll.chgj.adapter.RegisterListAdpater;
 import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
 import com.cndll.chgj.itemtouchhelperdemo.helper.SimpleItemTouchHelperCallback;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
+import com.cndll.chgj.mvp.mode.bean.request.RequestMendianOrd;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseArea;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetStoreList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseStoreTye;
@@ -51,7 +52,7 @@ import butterknife.Unbinder;
  * Use the {@link RegisterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RegisterFragment extends Fragment implements RegisterView {
+public class RegisterFragment extends BaseFragment<RegisterListAdpater> implements RegisterView {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -111,7 +112,7 @@ public class RegisterFragment extends Fragment implements RegisterView {
     }
 
     private ItemTouchHelper mItemTouchHelper;
-    RegisterListAdpater adapter;
+    /*RegisterListAdpater adapter;*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -125,13 +126,18 @@ public class RegisterFragment extends Fragment implements RegisterView {
                 mItemTouchHelper.startDrag(viewHolder);
             }
         });
-        adapter.setReEidetClick(new ListAdapter.OnReEidetClick() {
+        adapter.setOnItemClick(new ListAdapter.OnItemsClick() {
             @Override
             public void onReEidetClick(View view, int position) {
                 if (adapter.getMitems() != null) {
                     ResponseGetStoreList.DataBean dataBean = ((ResponseGetStoreList.DataBean) adapter.getMitems().get(position));
                     popview(dataBean.getName(), dataBean.getType(), AppMode.getInstance().getTel(), Integer.valueOf(dataBean.getProvince()), Integer.valueOf(dataBean.getCity()), dataBean.getCode());
                 }
+            }
+
+            @Override
+            public void onItemClick(View view, int position) {
+
             }
         });
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
@@ -168,6 +174,17 @@ public class RegisterFragment extends Fragment implements RegisterView {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        List<ResponseGetStoreList.DataBean> a = (List<ResponseGetStoreList.DataBean>) adapter.getMitems();
+        List<RequestMendianOrd> b = new ArrayList<>();
+        for (int i = 0; i < a.size(); i++) {
+            b.add(new RequestMendianOrd().setId(Integer.valueOf(a.get(i).getId())).setOrd(a.get(i).getOrderList()));
+        }
+        presenter.ordStore(b);
     }
 
     private RegisterInfo registerInfo;

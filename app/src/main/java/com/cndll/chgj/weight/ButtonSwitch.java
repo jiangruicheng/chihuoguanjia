@@ -21,7 +21,14 @@ public class ButtonSwitch {
     }
 
     public void setLeft(boolean left) {
-        // isLeft = left;
+        isLeft = left;
+        if (left) {
+            this.left.setBackgroundResource(leftBackground);
+            right.setBackgroundResource(rightBackground);
+        } else {
+            this.left.setBackgroundResource(rightBackground);
+            right.setBackgroundResource(leftBackground);
+        }
     }
 
     private boolean isLeft = true;

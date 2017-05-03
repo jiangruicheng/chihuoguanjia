@@ -12,6 +12,7 @@ import com.cndll.chgj.itemtouchhelperdemo.helper.ItemTouchHelperViewHolder;
 import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -42,14 +43,16 @@ public class ListAdapter<T extends DataList> extends RecyclerView.Adapter<ListAd
         notifyDataSetChanged();
     }
 
-    public interface OnReEidetClick {
+    public interface OnItemsClick {
         void onReEidetClick(View view, int position);
+
+        void onItemClick(View view, int position);
     }
 
-    protected OnReEidetClick reEidetClick;
+    protected OnItemsClick onItemClick;
 
-    public void setReEidetClick(OnReEidetClick onReEidetClick) {
-        this.reEidetClick = onReEidetClick;
+    public void setOnItemClick(OnItemsClick onItemsClick) {
+        this.onItemClick = onItemsClick;
     }
 
     public void addMitems(T dataList) {
@@ -80,7 +83,10 @@ public class ListAdapter<T extends DataList> extends RecyclerView.Adapter<ListAd
 
     @Override
     public int getItemCount() {
-        return 8;
+        if (mitems != null) {
+            return mitems.size();
+        }
+        return 0;
     }
 
     @Override
@@ -91,7 +97,14 @@ public class ListAdapter<T extends DataList> extends RecyclerView.Adapter<ListAd
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
-        // Collections.swap(mItems, fromPosition, toPosition);
+        if (mitems != null) {
+            int a = mitems.get(fromPosition).getOrderList();
+            if (a != -1) {
+                mitems.get(fromPosition).setOrderList(mitems.get(toPosition).getOrderList());
+            }
+            mitems.get(toPosition).setOrderList(a);
+            Collections.swap(mitems, fromPosition, toPosition);
+        }
         notifyItemMoved(fromPosition, toPosition);
         return true;
     }
@@ -99,7 +112,7 @@ public class ListAdapter<T extends DataList> extends RecyclerView.Adapter<ListAd
     public List<T> getOrdlist() {
         if (mitems != null) {
             for (int i = 0; i < mitems.size(); i++) {
-                mitems.get(i).setOrder(i);
+                mitems.get(i).setOrderList(i);
             }
             return mitems;
         }

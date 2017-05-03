@@ -32,9 +32,6 @@ import com.cndll.chgj.itemtouchhelperdemo.helper.ItemTouchHelperViewHolder;
 import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 /**
  * Simple RecyclerView.Adapter that implements {@link ItemTouchHelperAdapter} to respond to move and
@@ -43,7 +40,7 @@ import java.util.List;
  * @author Paul Burke (ipaulpro)
  */
 public class CaiLeiListAdapter extends ListAdapter<ResponseGetCaileiList.DataBean> {
-    private final List<String> mItems = new ArrayList<>();
+    /*private final List<String> mItems = new ArrayList<>();*/
 
     private final OnStartDragListener mDragStartListener;
 
@@ -61,13 +58,24 @@ public class CaiLeiListAdapter extends ListAdapter<ResponseGetCaileiList.DataBea
     }
 
     @Override
-    public void onBindViewHolder(final ItemViewHolder holder, int position) {
+    public void onBindViewHolder(final ItemViewHolder holder, final int position) {
         ((ListItemViewHolder) holder).info.setVisibility(View.GONE);
         ((ListItemViewHolder) holder).price.setVisibility(View.GONE);
+        ((ListItemViewHolder) holder).name.setText(mitems.get(position).getName());
+        ((ListItemViewHolder) holder).name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemClick != null) {
+                    onItemClick.onItemClick(v, position);
+                }
+            }
+        });
         ((ListItemViewHolder) holder).revise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (onItemClick != null) {
+                    onItemClick.onReEidetClick(v, position);
+                }
             }
         });
         // Start a drag whenever the handle view it touched
@@ -82,22 +90,13 @@ public class CaiLeiListAdapter extends ListAdapter<ResponseGetCaileiList.DataBea
         });
     }
 
-    @Override
-    public void onItemDismiss(int position) {
-        //mItems.remove(position);
-        notifyItemRemoved(position);
-    }
-
-    @Override
-    public boolean onItemMove(int fromPosition, int toPosition) {
-        //Collections.swap(mItems, fromPosition, toPosition);
-        notifyItemMoved(fromPosition, toPosition);
-        return true;
-    }
 
     @Override
     public int getItemCount() {
-        return 8;
+        if (mitems != null) {
+            return mitems.size();
+        }
+        return 0;
     }
 
     /**
