@@ -5,42 +5,43 @@ package com.cndll.chgj.mvp.mode.bean.request;
  */
 
 public class RequestUpdaCaipin {
-    private int mid;
-    private int uid;
+    private String mid;
+    private String uid;
     private String name;
     private String unit;
     private int is_discount;
-    private int price;
+    private String price;
     private int is_over;
     private String machine;
     private int is_print;
     private String code;
-    private int dc_id;
+    private String dc_id;
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public RequestUpdaCaipin setId(String id) {
         this.id = id;
+        return this;
     }
 
     private String id;
 
-    public int getMid() {
+    public String getMid() {
         return mid;
     }
 
-    public RequestUpdaCaipin setMid(int mid) {
+    public RequestUpdaCaipin setMid(String mid) {
         this.mid = mid;
         return this;
     }
 
-    public int getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public RequestUpdaCaipin setUid(int uid) {
+    public RequestUpdaCaipin setUid(String uid) {
         this.uid = uid;
         return this;
     }
@@ -72,11 +73,11 @@ public class RequestUpdaCaipin {
         return this;
     }
 
-    public int getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public RequestUpdaCaipin setPrice(int price) {
+    public RequestUpdaCaipin setPrice(String price) {
         this.price = price;
         return this;
     }
@@ -117,11 +118,11 @@ public class RequestUpdaCaipin {
         return this;
     }
 
-    public int getDc_id() {
+    public String getDc_id() {
         return dc_id;
     }
 
-    public RequestUpdaCaipin setDc_id(int dc_id) {
+    public RequestUpdaCaipin setDc_id(String dc_id) {
         this.dc_id = dc_id;
         return this;
     }

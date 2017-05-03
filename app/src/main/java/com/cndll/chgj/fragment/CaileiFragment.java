@@ -121,7 +121,7 @@ public class CaileiFragment extends BaseFragment<CaiLeiListAdapter> {
         adapter.setOnItemClick(new ListAdapter.OnItemsClick() {
             @Override
             public void onReEidetClick(View view, int position) {
-
+        menuEvent.updataCailei(position);
             }
 
             @Override

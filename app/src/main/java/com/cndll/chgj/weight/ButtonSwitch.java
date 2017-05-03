@@ -16,6 +16,14 @@ public class ButtonSwitch {
     private Button left;
     private Button right;
 
+    public int isLeftInt() {
+        if (isLeft) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
     public boolean isLeft() {
         return isLeft;
     }

@@ -20,32 +20,32 @@ public class RequestAddCaipin {
      * dc_id : 3
      */
 
-    private int mid;
-    private int uid;
+    private String mid;
+    private String uid;
     private String name;
     private String unit;
     private int is_discount;
-    private int price;
+    private String price;
     private int is_over;
     private String machine;
     private int is_print;
     private String code;
-    private int dc_id;
+    private String dc_id;
 
-    public int getMid() {
+    public String getMid() {
         return mid;
     }
 
-    public RequestAddCaipin setMid(int mid) {
+    public RequestAddCaipin setMid(String mid) {
         this.mid = mid;
         return this;
     }
 
-    public int getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public RequestAddCaipin setUid(int uid) {
+    public RequestAddCaipin setUid(String uid) {
         this.uid = uid;
         return this;
     }
@@ -77,11 +77,11 @@ public class RequestAddCaipin {
         return this;
     }
 
-    public int getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public RequestAddCaipin setPrice(int price) {
+    public RequestAddCaipin setPrice(String price) {
         this.price = price;
         return this;
     }
@@ -122,11 +122,11 @@ public class RequestAddCaipin {
         return this;
     }
 
-    public int getDc_id() {
+    public String getDc_id() {
         return dc_id;
     }
 
-    public RequestAddCaipin setDc_id(int dc_id) {
+    public RequestAddCaipin setDc_id(String dc_id) {
         this.dc_id = dc_id;
         return this;
     }
