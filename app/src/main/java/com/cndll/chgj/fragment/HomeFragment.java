@@ -23,6 +23,7 @@ import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.cndll.chgj.R;
 import com.cndll.chgj.adapter.MendianListAdpater;
+import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseMendianHomeList;
 import com.cndll.chgj.mvp.presenter.HomePresenter;
 import com.cndll.chgj.mvp.presenter.impl.LoginImpl;
@@ -79,6 +80,8 @@ public class HomeFragment extends BaseFragment implements HomeView {
     ConvenientBanner banner;
     @BindView(R.id.resetpassword)
     Button resetpassword;
+    @BindView(R.id.mode_image)
+    ImageView modeImage;
 
     @OnClick(R.id.resetpassword)
     void onclick_resetpassword() {
@@ -155,17 +158,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @OnClick(R.id.kefu)
     void onclick_kefu() {
-        MesgShow.showMesg("", "", kefu, new MesgShow.OnButtonListener() {
-            @Override
-            public void onListerner() {
 
-            }
-        }, new MesgShow.OnButtonListener() {
-            @Override
-            public void onListerner() {
-
-            }
-        }, false);
     }
 
     @BindView(R.id.mode_switch)
@@ -173,11 +166,39 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @OnClick(R.id.mode_switch)
     void onclick_modeswitch() {
+        final PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
         WindowManager m = getActivity().getWindowManager();
         Display d = m.getDefaultDisplay();  //为获取屏幕宽、高
-        PopUpViewUtil.getInstance().
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_mode_switch, null, false);
+        TextView nodesk, havedesk, cancel;
+        nodesk = (TextView) view.findViewById(R.id.mode_not_desk);
+        havedesk = (TextView) view.findViewById(R.id.mode_yes_desk);
+        cancel = (TextView) view.findViewById(R.id.cancel);
+        nodesk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppMode.getInstance().setDeskMode(false);
+                modeImage.setImageResource(R.mipmap.mode_not_desk);
+                popUpViewUtil.dismiss();
+            }
+        });
+        havedesk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppMode.getInstance().setDeskMode(true);
+                modeImage.setImageResource(R.mipmap.mode_yes_desk);
+                popUpViewUtil.dismiss();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popUpViewUtil.dismiss();
+            }
+        });
+        popUpViewUtil.
                 showDialog(getActivity(),
-                        R.layout.dialog_mode_switch,
+                        view,
                         0,
                         (int) (d.getHeight() * 0.5),
                         (int) (d.getWidth() * 0.9),
@@ -192,7 +213,12 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @OnClick(R.id.order)
     void onclick_order() {
-        replaceFragmentAddToBackStack(OrderDishFragment.newInstance(null, null), null);
+        if (AppMode.getInstance().isDeskMode()) {
+            replaceFragmentAddToBackStack(DeskFragment.newInstance(null, null), null);
+
+        } else {
+            replaceFragmentAddToBackStack(OrderDishFragment.newInstance(null, null), null);
+        }
     }
 
     @OnClick(R.id.register)
@@ -334,7 +360,17 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @Override
     public void showMesg(String mesg) {
+        MesgShow.showMesg("", "", kefu, new MesgShow.OnButtonListener() {
+            @Override
+            public void onListerner() {
 
+            }
+        }, new MesgShow.OnButtonListener() {
+            @Override
+            public void onListerner() {
+
+            }
+        }, false);
     }
 
     @Override

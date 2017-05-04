@@ -4,13 +4,13 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
@@ -29,7 +29,7 @@ import butterknife.Unbinder;
  * Use the {@link StaffFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class StaffFragment extends Fragment {
+public class StaffFragment extends BaseFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -49,7 +49,7 @@ public class StaffFragment extends Fragment {
     @BindView(R.id.textView4)
     TextView textView4;
     @BindView(R.id.list)
-    ListView list;
+    RecyclerView list;
     @BindView(R.id.register)
     Button register;
 

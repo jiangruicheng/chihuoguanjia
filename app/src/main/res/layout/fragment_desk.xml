@@ -1,12 +1,34 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:weightSum="10"
+    android:background="@color/black"
     tools:context="com.cndll.chgj.fragment.DeskFragment">
 
     <include
+        android:id="@+id/top"
         layout="@layout/title_bar"
-         />
-</LinearLayout>
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentTop="true"
+        />
+
+    <TextView
+        android:id="@+id/toast"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_below="@id/top"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="请选择需要操作的桌台"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/desk_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/toast"
+        android:layout_weight="9"/>
+</RelativeLayout>

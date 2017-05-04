@@ -57,6 +57,16 @@ public class AppMode {
 
     private String tel;
 
+    public boolean isDeskMode() {
+        return isDeskMode;
+    }
+
+    public void setDeskMode(boolean deskMode) {
+        isDeskMode = deskMode;
+    }
+
+    private boolean isDeskMode = true;
+
     private AppMode() {
 
     }

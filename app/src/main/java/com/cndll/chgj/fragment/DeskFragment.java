@@ -4,25 +4,52 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.adapter.OrderDeskListAdapter;
+import com.cndll.chgj.util.LinearPagerLayoutManager;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link DeskFragment.OnFragmentInteractionListener} interface
+ * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link DeskFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DeskFragment extends Fragment {
+public class DeskFragment extends BaseFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    @BindView(R.id.back)
+    Button back;
+    @BindView(R.id.title)
+    TextView title;
+    @BindView(R.id.title_left)
+    TextView titleLeft;
+    @BindView(R.id.title_right)
+    TextView titleRight;
+    @BindView(R.id.title_tow)
+    LinearLayout titleTow;
+    @BindView(R.id.right_text)
+    TextView rightText;
+    @BindView(R.id.toast)
+    TextView toast;
+    @BindView(R.id.desk_list)
+    RecyclerView deskList;
+    Unbinder unbinder;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -61,11 +88,26 @@ public class DeskFragment extends Fragment {
         }
     }
 
+    private OrderDeskListAdapter adapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_desk, container, false);
+        View view = inflater.inflate(R.layout.fragment_desk, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        adapter = new OrderDeskListAdapter();
+        adapter.setOnItemClickLister(new OrderDeskListAdapter.OnItemClickLister() {
+            @Override
+            public void OnItemClick(View view, int position) {
+                replaceFragmentAddToBackStack(OrderDishFragment.newInstance(null, null), null);
+            }
+        });
+
+        LinearPagerLayoutManager layoutManager = new LinearPagerLayoutManager(getContext(), 6, 4);
+        deskList.setLayoutManager(layoutManager);
+        deskList.setAdapter(adapter);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -78,18 +120,24 @@ public class DeskFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
+/*        if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
-        }
+        }*/
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     /**
