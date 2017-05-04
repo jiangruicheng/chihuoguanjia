@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +13,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.adapter.DcListAdapter;
 import com.cndll.chgj.adapter.DeshListAdapter;
+import com.cndll.chgj.adapter.OnItemClickLister;
+import com.cndll.chgj.mvp.mode.bean.info.AppMode;
+import com.cndll.chgj.mvp.mode.bean.request.RequestGetCaipinList;
+import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
+import com.cndll.chgj.mvp.presenter.OrderPresenter;
+import com.cndll.chgj.mvp.view.OrderView;
 import com.cndll.chgj.util.LinearPagerLayoutManager;
 import com.cndll.chgj.util.PagerLayoutManager;
 import com.cndll.chgj.util.PagingScrollHelper;
 import com.cndll.chgj.util.PopUpViewUtil;
+import com.cndll.chgj.weight.KeyWeight;
+
+import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
@@ -34,7 +46,7 @@ import static butterknife.ButterKnife.bind;
  * Use the {@link OrderDishFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class OrderDishFragment extends BaseFragment {
+public class OrderDishFragment extends BaseFragment implements OrderView {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -44,7 +56,7 @@ public class OrderDishFragment extends BaseFragment {
     @BindView(R.id.title)
     TextView title;
     @BindView(R.id.desh_menue_list)
-    RecyclerView deshMenueList;
+    RecyclerView dcList;
     @BindView(R.id.desh_list)
     RecyclerView deshList;
     Unbinder unbinder;
@@ -86,10 +98,9 @@ public class OrderDishFragment extends BaseFragment {
     Button pay;
     @BindView(R.id.number_edit)
     TextView numberEdit;
-    View key;
-    TextView show;
-    TextView abcKey;
-    TextView numberKey;
+    @BindView(R.id.layout_center)
+    LinearLayout layoutCenter;
+    Unbinder unbinder1;
 
     @OnClick(R.id.number_edit)
     void onclick_number_edit() {
@@ -99,102 +110,11 @@ public class OrderDishFragment extends BaseFragment {
     PopUpViewUtil popUpViewUtil;
 
     private void popUpkey(int mode, String hint) {
-        if (popUpViewUtil == null)
-            popUpViewUtil = PopUpViewUtil.getInstance();
-        if (key == null) {
-            key = LayoutInflater.from(getContext()).inflate(R.layout.popview_key, null, false);
-            setOnclick(key);
-        }
-        int[] locations = new int[2];
-        numberEdit.getLocationOnScreen(locations);
-        locations[1] = locations[1] - popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 2;
-        popUpViewUtil.popListWindow(numberEdit, key,
-                popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getWidth(),
-                popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 2,
-                Gravity.NO_GRAVITY, locations);
-        popUpViewUtil.setOnDismissAction(new PopUpViewUtil.OnDismissAction() {
-            @Override
-            public void onDismiss() {
-                if (showbuffer.length() > 0) {
-                    showbuffer.delete(0, showbuffer.length());
-                    popUpViewUtil = null;
-                }
-            }
-        });
-        // ((TextView)key.findViewById(R.id.tran)).setText(".");
-        if (show == null) {
-            show = (TextView) key.findViewById(R.id.show);
-        }
-        show.setText(showbuffer.toString());
-
-        //setCap(key, cap);
+        KeyWeight keyWeight = new KeyWeight();
+        keyWeight.init(getContext(), numberEdit);
     }
 
-    private void setOnclick(View view) {
-        if (!(view instanceof ViewGroup)) {
-            (view).setOnClickListener(listener);
-        } else if (view instanceof ViewGroup) {
-            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-                setOnclick(((ViewGroup) view).getChildAt(i));
-            }
-        }
-    }
 
-    private void setCap(View view, boolean iscap) {
-        if (view instanceof TextView) {
-            ((TextView) view).setAllCaps(iscap);
-        } else if (view instanceof ViewGroup) {
-            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-                setCap(((ViewGroup) view).getChildAt(i), iscap);
-            }
-        }
-    }
-
-    boolean cap = false;
-    private StringBuffer showbuffer = new StringBuffer();
-    private View.OnClickListener listener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (v instanceof TextView) {
-                if (v.getId() == R.id.acp) {
-                    setCap(key, cap);
-                    cap = !cap;
-                    return;
-                }
-                if (v.getId() == R.id.key_exit) {
-                    if (popUpViewUtil != null) {
-                        popUpViewUtil.dismiss();
-                    }
-                    return;
-                }
-                if (v.getId() == R.id.show) {
-                    return;
-                }
-                if (v.getId() == R.id.delete_abc || v.getId() == R.id.delete_number) {
-                    if (showbuffer.length() > 0) {
-                        showbuffer.deleteCharAt(showbuffer.length() - 1);
-                        show.setText(showbuffer.toString());
-                    }
-                    return;
-                }
-                if (v.getId() == R.id.tran_number) {
-                    key.findViewById(R.id.number_key).setVisibility(View.VISIBLE);
-                    key.findViewById(R.id.abc_key).setVisibility(View.GONE);
-                    return;
-                }
-                if (v.getId() == R.id.tran && ((TextView) v).getText().equals("ABC")) {
-                    key.findViewById(R.id.number_key).setVisibility(View.GONE);
-                    key.findViewById(R.id.abc_key).setVisibility(View.VISIBLE);
-                    return;
-                }
-                if (show == null) {
-                    show = (TextView) key.findViewById(R.id.show);
-                }
-                showbuffer.append(((TextView) v).getText());
-                show.setText(showbuffer.toString());
-            }
-        }
-    };
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -236,24 +156,37 @@ public class OrderDishFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_order_dish, container, false);
+        View view = inflater.inflate(R.layout.fragment_order_desh, container, false);
         unbinder = bind(this, view);
         initlistview();
 
+        unbinder1 = ButterKnife.bind(this, view);
         return view;
     }
 
+    private DeshListAdapter deshListAdapter;
+    private DcListAdapter dcListAdapter;
+
     private void initlistview() {
-        DeshListAdapter deshListAdapter = new DeshListAdapter();
+
+        deshListAdapter = new DeshListAdapter();
+        dcListAdapter = new DcListAdapter();
+        dcListAdapter.setOnItemClickLister(new OnItemClickLister() {
+            @Override
+            public void OnItemClick(View view, int position) {
+                dcId = dcListAdapter.getMitems().get(position).getId();
+                getDeshList(dcId);
+            }
+        });
         deshList.setAdapter(deshListAdapter);
-        deshMenueList.setAdapter(new DeshListAdapter());
+        dcList.setAdapter(dcListAdapter);
 
         /*HorizontalPageLayoutManager gridLayoutManager = new HorizontalPageLayoutManager(5, 3);
         deshList.setLayoutManager(gridLayoutManager);*/
         PagerLayoutManager horizontalPageLayoutManager = new PagerLayoutManager(getContext(), 5, 3);
         deshList.setLayoutManager(horizontalPageLayoutManager);
         LinearPagerLayoutManager pagerLayoutManaer = new LinearPagerLayoutManager(getContext(), 5, 1);
-        deshMenueList.setLayoutManager(pagerLayoutManaer);
+        dcList.setLayoutManager(pagerLayoutManaer);
         PagingScrollHelper scrollHelper = new PagingScrollHelper();
         scrollHelper.setUpRecycleView(deshList);
         //设置页面滚动监听
@@ -263,6 +196,7 @@ public class OrderDishFragment extends BaseFragment {
                 // Toast.makeText(getActivity(), "" + index, Toast.LENGTH_SHORT).show();
             }
         });
+        presenter.getDcList(new RequestPrintList().setUid(AppMode.getInstance().getUid()).setMid(AppMode.getInstance().getMid()));
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -297,6 +231,50 @@ public class OrderDishFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void showMesg(String mesg) {
+
+    }
+
+    @Override
+    public void showProg(String mesg) {
+
+    }
+
+
+    private OrderPresenter presenter;
+
+    @Override
+    public void setPresenter(OrderPresenter presenter) {
+        this.presenter = presenter;
+        this.presenter.setView(this);
+    }
+
+    private boolean isFirstLoadDc = true;
+    private String dcId;
+
+    @Override
+    public void setDcList(List<ResponseGetCaileiList.DataBean> data) {
+        dcListAdapter.setMitems(data);
+        if (isFirstLoadDc) {
+            dcId = data.get(0).getId();
+            isFirstLoadDc = false;
+        }
+        getDeshList(dcId);
+    }
+
+    private void getDeshList(String dcid) {
+        presenter.getDeshList(new RequestGetCaipinList().
+                setDc_id(dcid).
+                setUid(AppMode.getInstance().getUid()).
+                setMid(AppMode.getInstance().getMid()));
+    }
+
+    @Override
+    public void setDeshList(List<ResponseGetCaipinList.DataBean> deshList) {
+        deshListAdapter.setMitems(deshList);
     }
 
     /**

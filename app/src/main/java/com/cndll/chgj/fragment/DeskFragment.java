@@ -13,7 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.adapter.OnItemClickLister;
 import com.cndll.chgj.adapter.OrderDeskListAdapter;
+import com.cndll.chgj.mvp.presenter.impl.OrderImpl;
 import com.cndll.chgj.util.LinearPagerLayoutManager;
 
 import butterknife.BindView;
@@ -97,10 +99,10 @@ public class DeskFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_desk, container, false);
         unbinder = ButterKnife.bind(this, view);
         adapter = new OrderDeskListAdapter();
-        adapter.setOnItemClickLister(new OrderDeskListAdapter.OnItemClickLister() {
+        adapter.setOnItemClickLister(new OnItemClickLister() {
             @Override
             public void OnItemClick(View view, int position) {
-                replaceFragmentAddToBackStack(OrderDishFragment.newInstance(null, null), null);
+                replaceFragmentAddToBackStack(OrderDishFragment.newInstance(null, null), new OrderImpl());
             }
         });
 

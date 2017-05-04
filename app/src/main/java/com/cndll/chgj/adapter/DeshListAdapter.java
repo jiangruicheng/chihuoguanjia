@@ -8,13 +8,33 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
 
-public class DeshListAdapter extends RecyclerView.Adapter<DeshListAdapter.ItemViewHolder> {
+import java.util.List;
 
+public class DeshListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
+    public OnItemClickLister getOnItemClickLister() {
+        return onItemClickLister;
+    }
+
+    public void setOnItemClickLister(OnItemClickLister onItemClickLister) {
+        this.onItemClickLister = onItemClickLister;
+    }
+
+    private OnItemClickLister onItemClickLister;
+
+    public List<ResponseGetCaipinList.DataBean> getMitems() {
+        return mitems;
+    }
+
+    public void setMitems(List<ResponseGetCaipinList.DataBean> mitems) {
+        this.mitems = mitems;
+        notifyDataSetChanged();
+    }
+
+    List<ResponseGetCaipinList.DataBean> mitems;
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -23,27 +43,31 @@ public class DeshListAdapter extends RecyclerView.Adapter<DeshListAdapter.ItemVi
     }
 
     @Override
-    public void onBindViewHolder(ItemViewHolder holder, int position) {
+    public void onBindViewHolder(ItemViewHolder holder, final int position) {
         holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid);
-        holder.name.setText(position + "");
-            /*GridLayoutManager.LayoutParams params = (GridLayoutManager.LayoutParams) holder.parent.getLayoutParams();
-            params.height = w/5;
-            holder.parent.setLayoutParams(params);*/
+        holder.parent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemClickLister != null) {
+                    onItemClickLister.OnItemClick(v, position);
+                }
+            }
+        });
+        holder.number.setVisibility(View.GONE);
+        if (mitems != null) {
+            holder.name.setText(mitems.get(position).getName());
+            holder.price.setText(mitems.get(position).getPrice());
+        }
+
     }
 
     @Override
     public int getItemCount() {
-        return 46;
-    }
-
-    public static class ItemViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout parent;
-        TextView name;
-
-        public ItemViewHolder(View itemView, ViewGroup v) {
-            super(itemView);
-            parent = (LinearLayout) itemView.findViewById(R.id.parent);
-            name = (TextView) itemView.findViewById(R.id.name);
+        if (mitems != null) {
+            return mitems.size();
         }
+        return 0;
     }
+
+
 }

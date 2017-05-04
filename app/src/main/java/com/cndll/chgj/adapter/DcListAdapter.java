@@ -10,16 +10,31 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
 
-public class OrderDeskListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
+import java.util.List;
 
-
+public class DcListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
+    public OnItemClickLister getOnItemClickLister() {
+        return onItemClickLister;
+    }
 
     public void setOnItemClickLister(OnItemClickLister onItemClickLister) {
         this.onItemClickLister = onItemClickLister;
     }
 
     private OnItemClickLister onItemClickLister;
+
+    public List<ResponseGetCaileiList.DataBean> getMitems() {
+        return mitems;
+    }
+
+    public void setMitems(List<ResponseGetCaileiList.DataBean> mitems) {
+        this.mitems = mitems;
+        notifyDataSetChanged();
+    }
+
+    List<ResponseGetCaileiList.DataBean> mitems;
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -30,6 +45,7 @@ public class OrderDeskListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
     @Override
     public void onBindViewHolder(ItemViewHolder holder, final int position) {
         holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid);
+        holder.price.setVisibility(View.GONE);
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,7 +54,10 @@ public class OrderDeskListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
                 }
             }
         });
-        holder.name.setText(position + "");
+        holder.number.setVisibility(View.GONE);
+        if (mitems != null) {
+            holder.name.setText(mitems.get(position).getName());
+        }
             /*GridLayoutManager.LayoutParams params = (GridLayoutManager.LayoutParams) holder.parent.getLayoutParams();
             params.height = w/5;
             holder.parent.setLayoutParams(params);*/
@@ -46,7 +65,10 @@ public class OrderDeskListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
     @Override
     public int getItemCount() {
-        return 46;
+        if (mitems != null) {
+            return mitems.size();
+        }
+        return 0;
     }
 
 

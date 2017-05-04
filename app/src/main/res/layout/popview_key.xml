@@ -29,15 +29,23 @@
         android:layout_weight="2">
 
         <Button
+            android:id="@+id/cancel"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="4dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@drawable/shape_fillet_solid"
+            android:text="取消"
+            android:textColor="@color/white" />
 
         <Button
+            android:id="@+id/sure"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="4dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@drawable/shape_button_yellow"
+            android:text="确定"
+            android:textColor="@color/white" />
     </LinearLayout>
 </LinearLayout>

@@ -28,6 +28,7 @@ import com.cndll.chgj.mvp.mode.bean.response.ResponseMendianHomeList;
 import com.cndll.chgj.mvp.presenter.HomePresenter;
 import com.cndll.chgj.mvp.presenter.impl.LoginImpl;
 import com.cndll.chgj.mvp.presenter.impl.MenuImpl;
+import com.cndll.chgj.mvp.presenter.impl.OrderImpl;
 import com.cndll.chgj.mvp.presenter.impl.RegisterImpl;
 import com.cndll.chgj.mvp.view.HomeView;
 import com.cndll.chgj.util.PopUpViewUtil;
@@ -215,9 +216,8 @@ public class HomeFragment extends BaseFragment implements HomeView {
     void onclick_order() {
         if (AppMode.getInstance().isDeskMode()) {
             replaceFragmentAddToBackStack(DeskFragment.newInstance(null, null), null);
-
         } else {
-            replaceFragmentAddToBackStack(OrderDishFragment.newInstance(null, null), null);
+            replaceFragmentAddToBackStack(OrderDishFragment.newInstance(null, null), new OrderImpl());
         }
     }
 

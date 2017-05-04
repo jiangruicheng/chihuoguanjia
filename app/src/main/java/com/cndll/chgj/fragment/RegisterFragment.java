@@ -300,8 +300,6 @@ public class RegisterFragment extends BaseFragment<RegisterListAdpater> implemen
                     showMesg("请选择地址");
                     return;
                 }
-
-
                 presenter.register(spinner.getText().toString(), tel.getText().toString(), name.getText().toString(), shengPostion, shiPostion);
                 dismiss();
             }

@@ -37,6 +37,7 @@ public class PagerLayoutManager extends RecyclerView.LayoutManager {
     @Override
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
         if (getItemCount() == 0) {
+            detachAndScrapAttachedViews(recycler);
             return;
         }
         if (state.isPreLayout()) {

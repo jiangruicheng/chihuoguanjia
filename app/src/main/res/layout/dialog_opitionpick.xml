@@ -15,14 +15,17 @@
             android:layout_width="68dp"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
-            android:background="@drawable/shape_dialog_fillet_solid" />
+            android:background="@drawable/shape_dialog_fillet_solid"
+            android:text="取消" />
 
         <Button
             android:id="@+id/sure"
             android:layout_width="68dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:background="@drawable/shape_fillet_solid" />
+            android:background="@drawable/shape_fillet_solid"
+            android:text="确定"
+            android:textColor="@color/white" />
     </RelativeLayout>
 
     <LinearLayout
