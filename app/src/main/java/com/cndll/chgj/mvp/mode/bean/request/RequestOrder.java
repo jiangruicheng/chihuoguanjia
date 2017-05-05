@@ -173,7 +173,7 @@ public class RequestOrder {
         private String id;
         private String dish_name;
         private int dish_num;
-        private int dish_money;
+        private float dish_money;
         private String dish_method;
 
         public String getDish_name() {
@@ -194,11 +194,11 @@ public class RequestOrder {
             return this;
         }
 
-        public int getDish_money() {
+        public float getDish_money() {
             return dish_money;
         }
 
-        public ItemsBean setDish_money(int dish_money) {
+        public ItemsBean setDish_money(float dish_money) {
             this.dish_money = dish_money;
             return this;
         }

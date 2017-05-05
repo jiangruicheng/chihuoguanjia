@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.cndll.chgj.adapter.DcListAdapter;
 import com.cndll.chgj.adapter.DeshListAdapter;
 import com.cndll.chgj.adapter.OnItemClickLister;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
+import com.cndll.chgj.mvp.mode.bean.request.RequestAddMethod;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetCaipinList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestOrder;
 import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
@@ -116,7 +118,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
     private void popUpkey(int mode, String hint) {
         KeyWeight keyWeight = new KeyWeight();
-        keyWeight.init(getContext(), numberEdit);
+        keyWeight.init(getContext(), numberEdit, 1);
     }
 
 
@@ -158,7 +160,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     }
 
     private String tableId;
-    private List<RequestOrder.ItemsBean> order = new ArrayList<>();
+    // private List<RequestOrder.ItemsBean> order = new ArrayList<>();
     private OrderInfo orderInfolayout;
     private OrderItemMesg orderItemMesglayout;
 
@@ -179,6 +181,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
     private DeshListAdapter deshListAdapter;
     private DcListAdapter dcListAdapter;
+    private Orders orders = new Orders();
 
     private void initlistview() {
 
@@ -212,10 +215,15 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         deshListAdapter.setOnItemClickLister(new OnItemClickLister() {
             @Override
             public void OnItemClick(View view, int position) {
-                if (orderItemMesglayout != null) {
-                    orderItemMesglayout.setPrice(deshListAdapter.getMitems().get(position).getPrice()).
-                            setName(deshListAdapter.getMitems().get(position).getName() + deshListAdapter.getMitems().get(position).getPrice());
+                if (orders.Iscontan(deshListAdapter.getMitems().get(position).getId())) {
 
+                } else {
+                    orders.setOrders(deshListAdapter.getMitems().get(position).getId(), new Orders.Order());
+                    if (orderItemMesglayout != null) {
+                        orderItemMesglayout.setPrice(deshListAdapter.getMitems().get(position).getPrice()).
+                                setName(deshListAdapter.getMitems().get(position).getName() + deshListAdapter.getMitems().get(position).getPrice());
+
+                    }
                 }
             }
         });
@@ -315,5 +323,59 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         void onFragmentInteraction(Uri uri);
     }
 
+    private static class Orders {
+        private ArrayMap<String, Order> orders = new ArrayMap<>();
+
+        public void setOrders(String id, Order order) {
+            orders.put(id, order);
+        }
+
+        public boolean Iscontan(String id) {
+            return orders.containsKey(id);
+        }
+
+        public Order getOrder(String id) {
+            return orders.get(id);
+        }
+
+        public List<Order> getAll() {
+            return new ArrayList<>(orders.values());
+        }
+
+        private static class Order {
+            public Order setCount(float count) {
+                this.count = count;
+                return this;
+            }
+
+            float count = 1;
+            boolean isGive = false;
+
+            public Order setItemsBean(RequestOrder.ItemsBean itemsBean) {
+                this.itemsBean = itemsBean;
+                return this;
+            }
+
+            RequestOrder.ItemsBean itemsBean = new RequestOrder.ItemsBean();
+            List<RequestAddMethod> methods = new ArrayList<>();
+
+            public Order setIsGive(boolean isGive) {
+                this.isGive = isGive;
+                return this;
+            }
+
+            public float getAllPrice() {
+                if (isGive) {
+                    return 0;
+                } else {
+                    float price = 0;
+                    for (int i = 0; i < methods.size(); i++) {
+                        price = price + Float.valueOf(methods.get(i).getPrice());
+                    }
+                    return price + (float) itemsBean.getDish_money();
+                }
+            }
+        }
+    }
 
 }

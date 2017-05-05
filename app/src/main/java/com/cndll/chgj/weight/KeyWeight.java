@@ -22,13 +22,24 @@ public class KeyWeight {
     private TextView show;
     private TextView abcKey;
     private TextView numberKey;
+    public final static int Mode_NoButton = 1;
+    public final static int Mode_OnlyNumb = 2;
 
-    public void init(Context context, View location) {
+
+    public void init(Context context, View location, int Mode) {
         if (popUpViewUtil == null)
             popUpViewUtil = PopUpViewUtil.getInstance();
         if (key == null) {
             key = LayoutInflater.from(context).inflate(R.layout.popview_key, null, false);
             setOnclick(key);
+        }
+        TextView tran = (TextView) key.findViewById(R.id.tran);
+        View layout = key.findViewById(R.id.buttonlayout);
+        if (Mode == Mode_NoButton) {
+            layout.setVisibility(View.GONE);
+        }
+        if (Mode == Mode_OnlyNumb) {
+            tran.setText(".");
         }
         int[] locations = new int[2];
         location.getLocationOnScreen(locations);
@@ -65,7 +76,9 @@ public class KeyWeight {
 
     private void setCap(View view, boolean iscap) {
         if (view instanceof TextView) {
-            ((TextView) view).setAllCaps(iscap);
+            if (view.getId() != R.id.show) {
+                ((TextView) view).setAllCaps(iscap);
+            }
         } else if (view instanceof ViewGroup) {
             for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
                 setCap(((ViewGroup) view).getChildAt(i), iscap);
