@@ -5,19 +5,34 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
 import com.cndll.chgj.adapter.CaipinFunctionListAdpater;
+import com.cndll.chgj.adapter.ListAdapter;
 import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
+import com.cndll.chgj.mvp.mode.bean.info.AppMode;
+import com.cndll.chgj.mvp.mode.bean.request.RequestAddMethod;
+import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteMethod;
+import com.cndll.chgj.mvp.mode.bean.request.RequestGetMethodList;
+import com.cndll.chgj.mvp.mode.bean.request.RequestUpdateMethod;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseMethod;
+import com.cndll.chgj.mvp.presenter.DeshMethodPresenter;
+import com.cndll.chgj.mvp.view.DeshMethodView;
+import com.cndll.chgj.util.PopUpViewUtil;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
@@ -28,7 +43,7 @@ import butterknife.Unbinder;
  * Use the {@link CaiPinFunctionFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CaiPinFunctionFragment extends BaseFragment<CaipinFunctionListAdpater> {
+public class CaiPinFunctionFragment extends BaseFragment<CaipinFunctionListAdpater> implements DeshMethodView {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -42,6 +57,23 @@ public class CaiPinFunctionFragment extends BaseFragment<CaipinFunctionListAdpat
     @BindView(R.id.list)
     RecyclerView list;
     Unbinder unbinder;
+    @BindView(R.id.title_left)
+    TextView titleLeft;
+    @BindView(R.id.title_right)
+    TextView titleRight;
+    @BindView(R.id.title_tow)
+    LinearLayout titleTow;
+    @BindView(R.id.right_text)
+    TextView rightText;
+    @BindView(R.id.add_method)
+    Button addMethod;
+
+    @OnClick(R.id.add_method)
+    void onclick_addMethod() {
+        DeshMethod deshMethod = new DeshMethod();
+        deshMethod.init(-1);
+        deshMethod.show();
+    }
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -94,6 +126,20 @@ public class CaiPinFunctionFragment extends BaseFragment<CaipinFunctionListAdpat
             }
         });
         setListViewAdapter(list);
+        adapter.setOnItemClick(new ListAdapter.OnItemsClick() {
+            @Override
+            public void onReEidetClick(View view, int position) {
+                DeshMethod deshMethod = new DeshMethod();
+                deshMethod.init(position);
+                deshMethod.show();
+            }
+
+            @Override
+            public void onItemClick(View view, int position) {
+
+            }
+        });
+        presenter.getDeshMethodList(new RequestGetMethodList().setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()));
        /* CaipinFunctionListAdpater adapter = new CaipinFunctionListAdpater(getActivity(), new OnStartDragListener() {
             @Override
             public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
@@ -143,6 +189,29 @@ public class CaiPinFunctionFragment extends BaseFragment<CaipinFunctionListAdpat
         unbinder.unbind();
     }
 
+    @Override
+    public void showMesg(String mesg) {
+
+    }
+
+    @Override
+    public void showProg(String mesg) {
+
+    }
+
+    DeshMethodPresenter presenter;
+
+    @Override
+    public void setPresenter(DeshMethodPresenter presenter) {
+        this.presenter = presenter;
+        this.presenter.setView(this);
+    }
+
+    @Override
+    public void showMethodList(List<ResponseMethod.DataBean> dataBeen) {
+        adapter.setMitems(dataBeen);
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -156,5 +225,65 @@ public class CaiPinFunctionFragment extends BaseFragment<CaipinFunctionListAdpat
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private class DeshMethod {
+        private PopUpViewUtil popUpViewUtil;
+        private View view;
+        private EditText name, price;
+        private Button cancel, save, delete;
+        private int position;
+
+        public void init(final int position) {
+            this.position = position;
+
+            popUpViewUtil = PopUpViewUtil.getInstance();
+            view = LayoutInflater.from(getContext()).inflate(R.layout.popview_desh_method, null, false);
+            name = (EditText) view.findViewById(R.id.edit_add_cailei);
+            save = (Button) view.findViewById(R.id.save);
+            delete = (Button) view.findViewById(R.id.delete);
+            cancel = (Button) view.findViewById(R.id.cancel);
+            price = (EditText) view.findViewById(R.id.add_price);
+            price.setHint("0");
+            if (position > -1) {
+                price.setText(((ResponseMethod.DataBean) adapter.getMitems().get(position)).getPrice());
+                name.setText(((ResponseMethod.DataBean) adapter.getMitems().get(position)).getName());
+            }
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popUpViewUtil.dismiss();
+                }
+            });
+            save.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (position == -1) {
+                        presenter.addDeshMethod(new RequestAddMethod().setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()).setName(name.getText().toString()).setPrice(price.getText().toString()));
+                        name.setText("");
+                        price.clearComposingText();
+                    } else {
+                        presenter.updateDeshMethod(new RequestUpdateMethod().setId(((ResponseMethod.DataBean) adapter.getMitems().get(position)).getId()).setName(name.getText().toString()).setPrice(price.getText().toString()));
+                        popUpViewUtil.dismiss();
+                    }
+                }
+            });
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (position > -1) {
+                        presenter.deleteDeshMethod(new RequestDeleteMethod().setId(((ResponseMethod.DataBean) adapter.getMitems().get(position)).getId()));
+                    }
+                }
+            });
+        }
+
+        public void show() {
+            popUpViewUtil.popListWindow(addMethod,
+                    view,
+                    popUpViewUtil.getWindowManager(getActivity()).getDefaultDisplay().getWidth(),
+                    popUpViewUtil.getWindowManager(getActivity()).getDefaultDisplay().getHeight() / 10 * 4, Gravity.CENTER, null);
+        }
+
     }
 }

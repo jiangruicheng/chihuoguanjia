@@ -10,12 +10,13 @@ import android.widget.Toast;
 
 import com.cndll.chgj.R;
 import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseMethod;
 
 /**
  * Created by kongqing on 2017/4/1.
  */
 
-public class CaipinFunctionListAdpater extends ListAdapter {
+public class CaipinFunctionListAdpater extends ListAdapter<ResponseMethod.DataBean> {
     public CaipinFunctionListAdpater(Context context, OnStartDragListener dragStartListener) {
         super(context, dragStartListener);
     }
@@ -27,7 +28,7 @@ public class CaipinFunctionListAdpater extends ListAdapter {
     }
 
     @Override
-    public void onBindViewHolder(final ItemViewHolder holder, int position) {
+    public void onBindViewHolder(final ItemViewHolder holder, final int position) {
         ((CaipinViewHolder) holder).handler.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -35,12 +36,20 @@ public class CaipinFunctionListAdpater extends ListAdapter {
                 return false;
             }
         });
+        ((CaipinViewHolder) holder).name.setText(mitems.get(position).getName());
+        if (mitems.get(position).getPrice() != null && Float.valueOf(mitems.get(position).getPrice()) != 0) {
+            ((CaipinViewHolder) holder).info.setText("附加价格" + mitems.get(position).getPrice());
+        }
+        ((CaipinViewHolder) holder).revise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemClick != null) {
+                    onItemClick.onReEidetClick(v, position);
+                }
+            }
+        });
     }
 
-    @Override
-    public int getItemCount() {
-        return 9;
-    }
 
     @Override
     public void onItemDismiss(int position) {

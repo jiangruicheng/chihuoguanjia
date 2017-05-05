@@ -26,6 +26,7 @@ import com.cndll.chgj.adapter.MendianListAdpater;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseMendianHomeList;
 import com.cndll.chgj.mvp.presenter.HomePresenter;
+import com.cndll.chgj.mvp.presenter.impl.DeshMethodImpl;
 import com.cndll.chgj.mvp.presenter.impl.LoginImpl;
 import com.cndll.chgj.mvp.presenter.impl.MenuImpl;
 import com.cndll.chgj.mvp.presenter.impl.OrderImpl;
@@ -229,7 +230,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @OnClick(R.id.caipin_do)
     void onclick_do() {
-        replaceFragmentAddToBackStack(CaiPinFunctionFragment.newInstance(null, null), null);
+        replaceFragmentAddToBackStack(CaiPinFunctionFragment.newInstance(null, null), new DeshMethodImpl());
     }
 
     @OnClick(R.id.desk_edit)

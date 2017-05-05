@@ -48,7 +48,6 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical|left"
                 android:paddingLeft="8dp"
-                android:text="12314414123"
                 android:textColor="@color/white"
                 android:textSize="10sp" />
         </LinearLayout>

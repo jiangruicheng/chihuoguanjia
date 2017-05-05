@@ -14,7 +14,7 @@ import com.cndll.chgj.mvp.view.MenuView;
  * Created by kongqing on 2017/5/2.
  */
 
-public interface MenuPrenster extends BasePresenter<MenuView> {
+public interface MenuPresenter extends BasePresenter<MenuView> {
     void getPrintList(String uid, String mid);
 
     void getCaileiList(RequestPrintList requestGetCaileiList);

@@ -32,7 +32,7 @@ import com.cndll.chgj.mvp.mode.bean.request.RequestUpdaCaipin;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponsePrintList;
-import com.cndll.chgj.mvp.presenter.MenuPrenster;
+import com.cndll.chgj.mvp.presenter.MenuPresenter;
 import com.cndll.chgj.mvp.view.MenuView;
 import com.cndll.chgj.util.PopUpViewUtil;
 import com.cndll.chgj.weight.ButtonSwitch;
@@ -355,10 +355,10 @@ public class MenuEditorFragment extends Fragment implements MenuView {
 
     }
 
-    MenuPrenster presenter;
+    MenuPresenter presenter;
 
     @Override
-    public void setPresenter(MenuPrenster presenter) {
+    public void setPresenter(MenuPresenter presenter) {
         this.presenter = presenter;
         presenter.setView(this);
     }

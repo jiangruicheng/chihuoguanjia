@@ -3,9 +3,12 @@ package com.cndll.chgj.mvp.mode;
 
 import com.cndll.chgj.mvp.mode.bean.request.RequestAddCailei;
 import com.cndll.chgj.mvp.mode.bean.request.RequestAddCaipin;
+import com.cndll.chgj.mvp.mode.bean.request.RequestAddMethod;
 import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteCailei;
 import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteCaipin;
+import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteMethod;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetCaipinList;
+import com.cndll.chgj.mvp.mode.bean.request.RequestGetMethodList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetStoreList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestHomeInfo;
 import com.cndll.chgj.mvp.mode.bean.request.RequestLogin;
@@ -14,6 +17,7 @@ import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestRegister;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdaCailei;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdaCaipin;
+import com.cndll.chgj.mvp.mode.bean.request.RequestUpdateMethod;
 import com.cndll.chgj.mvp.mode.bean.request.RequestVerify;
 import com.cndll.chgj.mvp.mode.bean.request.RequsetHomeMendianList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseAddCaipin;
@@ -25,6 +29,7 @@ import com.cndll.chgj.mvp.mode.bean.response.ResponseGetStoreList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseHome;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseLogin;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseMendianHomeList;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseMethod;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseOrd;
 import com.cndll.chgj.mvp.mode.bean.response.ResponsePrintList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseRegister;
@@ -101,4 +106,16 @@ public interface Api {
 
     @POST("store/multisort")
     Observable<ResponseOrd> ordMendian(@Body List<RequestMendianOrd> list);
+
+    @POST("Dish/adddishmethod")
+    Observable<ResponseCailei> addMethod(@Body RequestAddMethod requestAddMethod);
+
+    @POST("Dish/deldishmethod")
+    Observable<ResponseCailei> deletMethod(@Body RequestDeleteMethod requestAddMethod);
+
+    @POST("Dish/updishmethod")
+    Observable<ResponseCailei> updateMethod(@Body RequestUpdateMethod requestAddMethod);
+
+    @POST("Dish/getdishmethodlist")
+    Observable<ResponseMethod> getMethodList(@Body RequestGetMethodList requestAddMethod);
 }

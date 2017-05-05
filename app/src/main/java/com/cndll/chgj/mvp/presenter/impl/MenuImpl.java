@@ -15,7 +15,7 @@ import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponsePrintList;
-import com.cndll.chgj.mvp.presenter.MenuPrenster;
+import com.cndll.chgj.mvp.presenter.MenuPresenter;
 import com.cndll.chgj.mvp.view.MenuView;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -25,7 +25,7 @@ import rx.schedulers.Schedulers;
  * Created by kongqing on 2017/5/2.
  */
 
-public class MenuImpl implements MenuPrenster {
+public class MenuImpl implements MenuPresenter {
     MenuView view;
 
     @Override
