@@ -9,12 +9,13 @@ import android.widget.TextView;
 
 import com.cndll.chgj.R;
 import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetDeskList;
 
 /**
  * Created by kongqing on 2017/4/1.
  */
 
-public class DeskListAdapter extends ListAdapter {
+public class DeskListAdapter extends ListAdapter<ResponseGetDeskList.DataBean> {
 
 
     public DeskListAdapter(Context context, OnStartDragListener dragStartListener) {
@@ -28,13 +29,21 @@ public class DeskListAdapter extends ListAdapter {
     }
 
     @Override
-    public void onBindViewHolder(final ItemViewHolder holder, int position) {
-        ((DeskViewHolder) holder).id.setText(position + 1 + "号桌台");
+    public void onBindViewHolder(final ItemViewHolder holder, final int position) {
+        ((DeskViewHolder) holder).id.setText(mitems.get(position).getName());
         ((DeskViewHolder) holder).handler.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 mDragStartListener.onStartDrag(holder);
                 return false;
+            }
+        });
+        ((DeskViewHolder) holder).revise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemClick != null) {
+                    onItemClick.onReEidetClick(v, position);
+                }
             }
         });
     }

@@ -10,10 +10,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetDeskList;
+
+import java.util.List;
 
 public class OrderDeskListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
+    public List<ResponseGetDeskList.DataBean> getItems() {
+        return items;
+    }
 
+    public void setItems(List<ResponseGetDeskList.DataBean> items) {
+        this.items = items;
+         notifyDataSetChanged();
+    }
+
+    List<ResponseGetDeskList.DataBean> items;
 
     public void setOnItemClickLister(OnItemClickLister onItemClickLister) {
         this.onItemClickLister = onItemClickLister;
@@ -29,7 +41,16 @@ public class OrderDeskListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
     @Override
     public void onBindViewHolder(ItemViewHolder holder, final int position) {
-        holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid);
+
+        if (items.get(position).getIsoc().equals("1")) {
+            holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid);
+            holder.price.setText(items.get(position).getMoney());
+            holder.number.setText(items.get(position).getNum());
+        } else {
+            holder.parent.setBackgroundResource(R.drawable.shape_button_yellow);
+            holder.price.setText("");
+            holder.number.setText("");
+        }
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,15 +59,16 @@ public class OrderDeskListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
                 }
             }
         });
-        holder.name.setText(position + "");
-            /*GridLayoutManager.LayoutParams params = (GridLayoutManager.LayoutParams) holder.parent.getLayoutParams();
-            params.height = w/5;
-            holder.parent.setLayoutParams(params);*/
+        holder.name.setText(items.get(position).getName());
+
     }
 
     @Override
     public int getItemCount() {
-        return 46;
+        if (items != null) {
+            return items.size();
+        }
+        return 0;
     }
 
 

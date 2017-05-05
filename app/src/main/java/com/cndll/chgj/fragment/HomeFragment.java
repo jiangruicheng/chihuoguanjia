@@ -26,6 +26,7 @@ import com.cndll.chgj.adapter.MendianListAdpater;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseMendianHomeList;
 import com.cndll.chgj.mvp.presenter.HomePresenter;
+import com.cndll.chgj.mvp.presenter.impl.AddDeskImpl;
 import com.cndll.chgj.mvp.presenter.impl.DeshMethodImpl;
 import com.cndll.chgj.mvp.presenter.impl.LoginImpl;
 import com.cndll.chgj.mvp.presenter.impl.MenuImpl;
@@ -216,7 +217,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
     @OnClick(R.id.order)
     void onclick_order() {
         if (AppMode.getInstance().isDeskMode()) {
-            replaceFragmentAddToBackStack(DeskFragment.newInstance(null, null), null);
+            replaceFragmentAddToBackStack(DeskFragment.newInstance(null, null), new AddDeskImpl());
         } else {
             replaceFragmentAddToBackStack(OrderDishFragment.newInstance(null, null), new OrderImpl());
         }
@@ -235,7 +236,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @OnClick(R.id.desk_edit)
     void oclick_desk() {
-        replaceFragmentAddToBackStack(DeskEditorFragment.newInstance(null, null), null);
+        replaceFragmentAddToBackStack(DeskEditorFragment.newInstance(null, null), new AddDeskImpl());
     }
 
     // TODO: Rename and change types of parameters

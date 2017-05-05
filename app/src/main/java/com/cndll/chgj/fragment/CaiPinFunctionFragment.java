@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -140,21 +142,22 @@ public class CaiPinFunctionFragment extends BaseFragment<CaipinFunctionListAdpat
             }
         });
         presenter.getDeshMethodList(new RequestGetMethodList().setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()));
-       /* CaipinFunctionListAdpater adapter = new CaipinFunctionListAdpater(getActivity(), new OnStartDragListener() {
+        searchCaipin.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-                mItemTouchHelper.startDrag(viewHolder);
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                presenter.getDeshMethodList(new RequestGetMethodList().setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()).setName(s.toString()));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
-
-
-        list.setHasFixedSize(true);
-        list.setAdapter(adapter);
-        list.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
-        mItemTouchHelper = new ItemTouchHelper(callback);
-        mItemTouchHelper.attachToRecyclerView(list);*/
 
         return view;
     }
@@ -273,6 +276,7 @@ public class CaiPinFunctionFragment extends BaseFragment<CaipinFunctionListAdpat
                 public void onClick(View v) {
                     if (position > -1) {
                         presenter.deleteDeshMethod(new RequestDeleteMethod().setId(((ResponseMethod.DataBean) adapter.getMitems().get(position)).getId()));
+                        popUpViewUtil.dismiss();
                     }
                 }
             });
@@ -282,7 +286,7 @@ public class CaiPinFunctionFragment extends BaseFragment<CaipinFunctionListAdpat
             popUpViewUtil.popListWindow(addMethod,
                     view,
                     popUpViewUtil.getWindowManager(getActivity()).getDefaultDisplay().getWidth(),
-                    popUpViewUtil.getWindowManager(getActivity()).getDefaultDisplay().getHeight() / 10 * 4, Gravity.CENTER, null);
+                    popUpViewUtil.getWindowManager(getActivity()).getDefaultDisplay().getHeight() / 10 * 3, Gravity.CENTER, null);
         }
 
     }

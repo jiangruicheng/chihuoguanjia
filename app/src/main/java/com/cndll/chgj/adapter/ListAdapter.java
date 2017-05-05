@@ -10,6 +10,7 @@ import android.widget.Filter;
 import com.cndll.chgj.itemtouchhelperdemo.helper.ItemTouchHelperAdapter;
 import com.cndll.chgj.itemtouchhelperdemo.helper.ItemTouchHelperViewHolder;
 import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
+import com.cndll.chgj.mvp.mode.bean.request.RequestMendianOrd;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -69,6 +70,14 @@ public class ListAdapter<T extends DataList> extends RecyclerView.Adapter<ListAd
     public ListAdapter(Context context, OnStartDragListener dragStartListener) {
         mDragStartListener = dragStartListener;
         this.context = context;
+    }
+
+    public List<RequestMendianOrd> getOrd() {
+        List<RequestMendianOrd> b = new ArrayList<>();
+        for (int i = 0; i < mitems.size(); i++) {
+            b.add(new RequestMendianOrd().setId(Integer.valueOf(mitems.get(i).getIDList())).setOrd(mitems.get(i).getOrderList()));
+        }
+        return b;
     }
 
     @Override

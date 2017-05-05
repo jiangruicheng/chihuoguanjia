@@ -15,8 +15,15 @@ import android.widget.TextView;
 import com.cndll.chgj.R;
 import com.cndll.chgj.adapter.OnItemClickLister;
 import com.cndll.chgj.adapter.OrderDeskListAdapter;
+import com.cndll.chgj.mvp.mode.bean.info.AppMode;
+import com.cndll.chgj.mvp.mode.bean.request.RequestGetDeskList;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetDeskList;
+import com.cndll.chgj.mvp.presenter.AddDeskPresenter;
 import com.cndll.chgj.mvp.presenter.impl.OrderImpl;
-import com.cndll.chgj.util.LinearPagerLayoutManager;
+import com.cndll.chgj.mvp.view.AddDeskView;
+import com.cndll.chgj.util.PagerLayoutManager;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,7 +37,7 @@ import butterknife.Unbinder;
  * Use the {@link DeskFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DeskFragment extends BaseFragment {
+public class DeskFragment extends BaseFragment implements AddDeskView {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -106,9 +113,10 @@ public class DeskFragment extends BaseFragment {
             }
         });
 
-        LinearPagerLayoutManager layoutManager = new LinearPagerLayoutManager(getContext(), 6, 4);
+        PagerLayoutManager layoutManager = new PagerLayoutManager(getContext(), 6, 4);
         deskList.setLayoutManager(layoutManager);
         deskList.setAdapter(adapter);
+        presenter.getDeskList(new RequestGetDeskList().setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()));
         return view;
     }
 
@@ -140,6 +148,29 @@ public class DeskFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void showMesg(String mesg) {
+
+    }
+
+    @Override
+    public void showProg(String mesg) {
+
+    }
+
+    AddDeskPresenter presenter;
+
+    @Override
+    public void setPresenter(AddDeskPresenter presenter) {
+        this.presenter = presenter;
+        this.presenter.setView(this);
+    }
+
+    @Override
+    public void showDeskList(List<ResponseGetDeskList.DataBean> dataBeen) {
+        adapter.setItems(dataBeen);
     }
 
     /**

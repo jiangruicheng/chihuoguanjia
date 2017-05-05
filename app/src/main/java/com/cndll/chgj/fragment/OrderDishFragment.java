@@ -18,6 +18,7 @@ import com.cndll.chgj.adapter.DeshListAdapter;
 import com.cndll.chgj.adapter.OnItemClickLister;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetCaipinList;
+import com.cndll.chgj.mvp.mode.bean.request.RequestOrder;
 import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
@@ -26,17 +27,17 @@ import com.cndll.chgj.mvp.view.OrderView;
 import com.cndll.chgj.util.LinearPagerLayoutManager;
 import com.cndll.chgj.util.PagerLayoutManager;
 import com.cndll.chgj.util.PagingScrollHelper;
-import com.cndll.chgj.util.PopUpViewUtil;
 import com.cndll.chgj.weight.KeyWeight;
+import com.cndll.chgj.weight.OrderInfo;
+import com.cndll.chgj.weight.OrderItemMesg;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-
-import static butterknife.ButterKnife.bind;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,11 +56,6 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     Button back;
     @BindView(R.id.title)
     TextView title;
-    @BindView(R.id.desh_menue_list)
-    RecyclerView dcList;
-    @BindView(R.id.desh_list)
-    RecyclerView deshList;
-    Unbinder unbinder;
     @BindView(R.id.title_left)
     TextView titleLeft;
     @BindView(R.id.title_right)
@@ -68,12 +64,24 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     LinearLayout titleTow;
     @BindView(R.id.right_text)
     TextView rightText;
-    @BindView(R.id.textView6)
-    TextView textView6;
-    @BindView(R.id.textView7)
-    TextView textView7;
+    @BindView(R.id.desh_menue_list)
+    RecyclerView deshMenueList;
+    @BindView(R.id.desh_list)
+    RecyclerView deshList;
+    @BindView(R.id.number_edit)
+    TextView numberEdit;
+    @BindView(R.id.desh_name)
+    TextView deshName;
+    @BindView(R.id.desh_method)
+    TextView deshMethod;
+    @BindView(R.id.layout_center)
+    LinearLayout layoutCenter;
+    @BindView(R.id.all_price)
+    TextView allPrice;
     @BindView(R.id.yaoqiu)
     TextView yaoqiu;
+    @BindView(R.id.item_mesg)
+    LinearLayout itemMesg;
     @BindView(R.id.number)
     TextView number;
     @BindView(R.id.allcount)
@@ -84,6 +92,8 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     TextView zengsong;
     @BindView(R.id.lastprice)
     TextView lastprice;
+    @BindView(R.id.orderInfo)
+    LinearLayout orderInfo;
     @BindView(R.id.query)
     Button query;
     @BindView(R.id.send)
@@ -96,18 +106,13 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     Button dazhe;
     @BindView(R.id.pay)
     Button pay;
-    @BindView(R.id.number_edit)
-    TextView numberEdit;
-    @BindView(R.id.layout_center)
-    LinearLayout layoutCenter;
-    Unbinder unbinder1;
+    Unbinder unbinder;
 
     @OnClick(R.id.number_edit)
-    void onclick_number_edit() {
+    void onclick_numberEdit() {
         popUpkey(0, "");
     }
 
-    PopUpViewUtil popUpViewUtil;
 
     private void popUpkey(int mode, String hint) {
         KeyWeight keyWeight = new KeyWeight();
@@ -152,15 +157,23 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         }
     }
 
+    private String tableId;
+    private List<RequestOrder.ItemsBean> order = new ArrayList<>();
+    private OrderInfo orderInfolayout;
+    private OrderItemMesg orderItemMesglayout;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_order_desh, container, false);
-        unbinder = bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         initlistview();
+        orderInfolayout = new OrderInfo();
+        orderItemMesglayout = new OrderItemMesg();
+        orderItemMesglayout.init(itemMesg);
+        orderInfolayout.init(orderInfo);
 
-        unbinder1 = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -179,14 +192,14 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             }
         });
         deshList.setAdapter(deshListAdapter);
-        dcList.setAdapter(dcListAdapter);
+        deshMenueList.setAdapter(dcListAdapter);
 
         /*HorizontalPageLayoutManager gridLayoutManager = new HorizontalPageLayoutManager(5, 3);
         deshList.setLayoutManager(gridLayoutManager);*/
         PagerLayoutManager horizontalPageLayoutManager = new PagerLayoutManager(getContext(), 5, 3);
         deshList.setLayoutManager(horizontalPageLayoutManager);
         LinearPagerLayoutManager pagerLayoutManaer = new LinearPagerLayoutManager(getContext(), 5, 1);
-        dcList.setLayoutManager(pagerLayoutManaer);
+        deshMenueList.setLayoutManager(pagerLayoutManaer);
         PagingScrollHelper scrollHelper = new PagingScrollHelper();
         scrollHelper.setUpRecycleView(deshList);
         //设置页面滚动监听
@@ -194,6 +207,16 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             @Override
             public void onPageChange(int index) {
                 // Toast.makeText(getActivity(), "" + index, Toast.LENGTH_SHORT).show();
+            }
+        });
+        deshListAdapter.setOnItemClickLister(new OnItemClickLister() {
+            @Override
+            public void OnItemClick(View view, int position) {
+                if (orderItemMesglayout != null) {
+                    orderItemMesglayout.setPrice(deshListAdapter.getMitems().get(position).getPrice()).
+                            setName(deshListAdapter.getMitems().get(position).getName() + deshListAdapter.getMitems().get(position).getPrice());
+
+                }
             }
         });
         presenter.getDcList(new RequestPrintList().setUid(AppMode.getInstance().getUid()).setMid(AppMode.getInstance().getMid()));

@@ -6,7 +6,7 @@ import java.util.List;
  * Created by kongqing on 2017/5/4.
  */
 
-public class RquestOrder {
+public class RequestOrder {
     /**
      * tab_id : 1
      * uid : 3
@@ -41,114 +41,136 @@ public class RquestOrder {
         return tab_id;
     }
 
-    public void setTab_id(String tab_id) {
+    public RequestOrder setTab_id(String tab_id) {
         this.tab_id = tab_id;
+        return this;
     }
 
     public String getUid() {
         return uid;
     }
 
-    public void setUid(String uid) {
+    public RequestOrder setUid(String uid) {
         this.uid = uid;
+        return this;
     }
 
     public String getMid() {
         return mid;
     }
 
-    public void setMid(String mid) {
+    public RequestOrder setMid(String mid) {
         this.mid = mid;
+        return this;
     }
 
     public String getTabname() {
         return tabname;
     }
 
-    public void setTabname(String tabname) {
+    public RequestOrder setTabname(String tabname) {
         this.tabname = tabname;
+        return this;
     }
 
     public String getPernum() {
         return pernum;
     }
 
-    public void setPernum(String pernum) {
+    public RequestOrder setPernum(String pernum) {
         this.pernum = pernum;
+        return this;
     }
 
     public String getPayee() {
         return payee;
     }
 
-    public void setPayee(String payee) {
+    public RequestOrder setPayee(String payee) {
         this.payee = payee;
+        return this;
     }
 
     public String getTmoney() {
         return tmoney;
     }
 
-    public void setTmoney(String tmoney) {
+    public RequestOrder setTmoney(String tmoney) {
         this.tmoney = tmoney;
+        return this;
     }
 
     public String getZk() {
         return zk;
     }
 
-    public void setZk(String zk) {
+    public RequestOrder setZk(String zk) {
         this.zk = zk;
+        return this;
     }
 
     public String getZkmoney() {
         return zkmoney;
     }
 
-    public void setZkmoney(String zkmoney) {
+    public RequestOrder setZkmoney(String zkmoney) {
         this.zkmoney = zkmoney;
+        return this;
     }
 
     public String getSmoney() {
         return smoney;
     }
 
-    public void setSmoney(String smoney) {
+    public RequestOrder setSmoney(String smoney) {
         this.smoney = smoney;
+        return this;
     }
 
     public String getYsmoney() {
         return ysmoney;
     }
 
-    public void setYsmoney(String ysmoney) {
+    public RequestOrder setYsmoney(String ysmoney) {
         this.ysmoney = ysmoney;
+        return this;
     }
 
     public String getSsmoney() {
         return ssmoney;
     }
 
-    public void setSsmoney(String ssmoney) {
+    public RequestOrder setSsmoney(String ssmoney) {
         this.ssmoney = ssmoney;
+        return this;
     }
 
     public List<ItemsBean> getItems() {
         return items;
     }
 
-    public void setItems(List<ItemsBean> items) {
+    public RequestOrder setItems(List<ItemsBean> items) {
         this.items = items;
+        return this;
     }
 
     public static class ItemsBean {
+        public String getId() {
+            return id;
+        }
+
+        public ItemsBean setId(String id) {
+            this.id = id;
+            return this;
+        }
+
         /**
          * dish_name : 宫保鸡丁1
          * dish_num : 1
          * dish_money : 24
          * dish_method : 加辣
          */
-
+        private String id;
         private String dish_name;
         private int dish_num;
         private int dish_money;
@@ -158,32 +180,36 @@ public class RquestOrder {
             return dish_name;
         }
 
-        public void setDish_name(String dish_name) {
+        public ItemsBean setDish_name(String dish_name) {
             this.dish_name = dish_name;
+            return this;
         }
 
         public int getDish_num() {
             return dish_num;
         }
 
-        public void setDish_num(int dish_num) {
+        public ItemsBean setDish_num(int dish_num) {
             this.dish_num = dish_num;
+            return this;
         }
 
         public int getDish_money() {
             return dish_money;
         }
 
-        public void setDish_money(int dish_money) {
+        public ItemsBean setDish_money(int dish_money) {
             this.dish_money = dish_money;
+            return this;
         }
 
         public String getDish_method() {
             return dish_method;
         }
 
-        public void setDish_method(String dish_method) {
+        public ItemsBean setDish_method(String dish_method) {
             this.dish_method = dish_method;
+            return this;
         }
     }
 }

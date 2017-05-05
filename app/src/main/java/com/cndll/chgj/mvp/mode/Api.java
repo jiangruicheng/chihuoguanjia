@@ -3,7 +3,9 @@ package com.cndll.chgj.mvp.mode;
 
 import com.cndll.chgj.mvp.mode.bean.request.RequestAddCailei;
 import com.cndll.chgj.mvp.mode.bean.request.RequestAddCaipin;
+import com.cndll.chgj.mvp.mode.bean.request.RequestAddDesk;
 import com.cndll.chgj.mvp.mode.bean.request.RequestAddMethod;
+import com.cndll.chgj.mvp.mode.bean.request.RequestDelete;
 import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteCailei;
 import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteCaipin;
 import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteMethod;
@@ -17,14 +19,17 @@ import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestRegister;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdaCailei;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdaCaipin;
+import com.cndll.chgj.mvp.mode.bean.request.RequestUpdaDesk;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdateMethod;
 import com.cndll.chgj.mvp.mode.bean.request.RequestVerify;
 import com.cndll.chgj.mvp.mode.bean.request.RequsetHomeMendianList;
+import com.cndll.chgj.mvp.mode.bean.request.RequestGetDeskList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseAddCaipin;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseArea;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseCailei;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetDeskList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetStoreList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseHome;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseLogin;
@@ -118,4 +123,17 @@ public interface Api {
 
     @POST("Dish/getdishmethodlist")
     Observable<ResponseMethod> getMethodList(@Body RequestGetMethodList requestAddMethod);
+
+    @POST("table/addtable")
+    Observable<ResponseCailei> addDesk(@Body RequestAddDesk requestAddCailei);
+
+    @POST("table/uptableord")
+    Observable<ResponseCailei> updatDesk(@Body RequestUpdaDesk requestAddCailei);
+
+    @POST("table/deltable")
+    Observable<ResponseCailei> deleteDesk(@Body RequestDelete requestAddCailei);
+
+    @POST("table/gettablelist")
+    Observable<ResponseGetDeskList> getDeskList(@Body RequestGetDeskList requestAddCailei);
+
 }

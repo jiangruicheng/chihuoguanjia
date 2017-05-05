@@ -25,7 +25,6 @@ import com.cndll.chgj.adapter.RegisterListAdpater;
 import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
 import com.cndll.chgj.itemtouchhelperdemo.helper.SimpleItemTouchHelperCallback;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
-import com.cndll.chgj.mvp.mode.bean.request.RequestMendianOrd;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseArea;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetStoreList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseStoreTye;
@@ -179,12 +178,12 @@ public class RegisterFragment extends BaseFragment<RegisterListAdpater> implemen
     @Override
     public void onStop() {
         super.onStop();
-        List<ResponseGetStoreList.DataBean> a = (List<ResponseGetStoreList.DataBean>) adapter.getMitems();
+        /*List<ResponseGetStoreList.DataBean> a = (List<ResponseGetStoreList.DataBean>) adapter.getMitems();
         List<RequestMendianOrd> b = new ArrayList<>();
         for (int i = 0; i < a.size(); i++) {
             b.add(new RequestMendianOrd().setId(Integer.valueOf(a.get(i).getId())).setOrd(a.get(i).getOrderList()));
-        }
-        presenter.ordStore(b);
+        }*/
+        presenter.ordStore(adapter.getOrd());
     }
 
     private RegisterInfo registerInfo;

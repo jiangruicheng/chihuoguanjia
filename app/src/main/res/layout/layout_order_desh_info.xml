@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_mesg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -34,16 +35,19 @@
                 android:paddingLeft="16dp">
 
                 <TextView
-                    android:id="@+id/textView6"
+                    android:id="@+id/desh_name"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="2"
+                    android:ellipsize="end"
                     android:gravity="center_vertical|left"
+                    android:lines="2"
                     android:text="沙拉三110"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
 
                 <TextView
-                    android:id="@+id/textView7"
+                    android:id="@+id/desh_method"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -55,6 +59,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/all_price"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
