@@ -97,7 +97,9 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
             @Override
             public void onGive() {
-
+                if (orders != null) {
+                    orders.getOrder(orders.getCurrPosition()).setGiveCount(orders.getOrder(orders.getCurrPosition()).getGiveCount() + 1);
+                }
             }
 
             @Override
@@ -471,6 +473,11 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
             boolean isSend = false;
             float count = 1;
+
+            public float getGiveCount() {
+                return giveCount;
+            }
+
             float giveCount;
 
             public Order setItemsBean(RequestOrder.ItemsBean itemsBean) {
