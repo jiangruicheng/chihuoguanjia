@@ -123,7 +123,6 @@ public class PagerLayoutManager extends RecyclerView.LayoutManager {
 
     @Override
     public int scrollVerticallyBy(int dy, RecyclerView.Recycler recycler, RecyclerView.State state) {
-
         detachAndScrapAttachedViews(recycler);
         int newY = offsetY + dy;
         int result = dy;

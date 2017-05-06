@@ -15,7 +15,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.util.StringHelp;
+import com.cndll.chgj.weight.KeyWeight;
 import com.cndll.chgj.weight.OrderInfo;
+import com.cndll.chgj.weight.OrderItemMesg;
 
 import java.util.List;
 
@@ -28,10 +31,10 @@ import butterknife.Unbinder;
  * Activities that contain this fragment must implement the
  * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link OrderRequestFragment#newInstance} factory method to
+ * Use the {@link OrderInfoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class OrderRequestFragment extends Fragment {
+public class OrderInfoFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -82,7 +85,13 @@ public class OrderRequestFragment extends Fragment {
         return order;
     }
 
-    public OrderRequestFragment setOrderList(OrderDishFragment.Orders order) {
+    private void popUpkey(int mode, String hint, KeyWeight.OnKeyClick onKeyClick) {
+        KeyWeight keyWeight = new KeyWeight();
+        keyWeight.init(getContext(), orderListView, 2);
+        keyWeight.setOnKeyClick(onKeyClick);
+    }
+
+    public OrderInfoFragment setOrderList(OrderDishFragment.Orders order) {
         this.order = order;
         if (adapter != null) {
             adapter.setOrderList(order);
@@ -92,7 +101,7 @@ public class OrderRequestFragment extends Fragment {
 
     private OrderDishFragment.Orders order;
 
-    public OrderRequestFragment() {
+    public OrderInfoFragment() {
         // Required empty public constructor
     }
 
@@ -102,11 +111,11 @@ public class OrderRequestFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment OrderRequestFragment.
+     * @return A new instance of fragment OrderInfoFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static OrderRequestFragment newInstance(String param1, String param2) {
-        OrderRequestFragment fragment = new OrderRequestFragment();
+    public static OrderInfoFragment newInstance(String param1, String param2) {
+        OrderInfoFragment fragment = new OrderInfoFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -128,7 +137,7 @@ public class OrderRequestFragment extends Fragment {
     OrderInfo orderInfo;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_order_request, container, false);
@@ -141,6 +150,34 @@ public class OrderRequestFragment extends Fragment {
         orderInfo = new OrderInfo();
         orderInfo.init(orderinfolayout);
         orderInfo.setMesg(order);
+        adapter.setOnItemClick(new OrderListAdapter.OnItemClick() {
+            @Override
+            public void onNumbClick(final OrderDishFragment.Orders order, final List<OrderDishFragment.Orders.Order> orders, final int position, View Item) {
+                popUpkey(0, "", new KeyWeight.OnKeyClick() {
+                    @Override
+                    public void onKeyCancel(String s) {
+
+                    }
+
+                    @Override
+                    public void onKeySure(String s) {
+                        OrderItemMesg orderItemMesg = new OrderItemMesg();
+                        orderItemMesg.init(container);
+
+                        if (StringHelp.isFloat(s)) {
+                            orders.get(position).setCount(Float.valueOf(s));
+                            setOrderInfolayout(orders.get(position), order, orderInfo, orderItemMesg);
+                        }
+                        orderItemMesg.setCount(s);
+                    }
+
+                    @Override
+                    public void onKeyNub(String s) {
+
+                    }
+                });
+            }
+        });
         return view;
     }
 
@@ -148,6 +185,15 @@ public class OrderRequestFragment extends Fragment {
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    private void setOrderInfolayout(OrderDishFragment.Orders.Order order, OrderDishFragment.Orders orders, OrderInfo orderInfolayout, OrderItemMesg orderItemMesglayout) {
+        if (orderItemMesglayout != null)
+            orderItemMesglayout.setPrice(order.getAllPrice() + "").
+                    setName(order.getDeshName() + order.getDeshPrice()).setMethod(order.getMethodName() + order.getMethodPrice());
+        if (orderInfolayout != null) {
+            orderInfolayout.setMesg(orders);
         }
     }
 
@@ -190,6 +236,19 @@ public class OrderRequestFragment extends Fragment {
     }
 
     public static class OrderListAdapter extends BaseAdapter {
+        public interface OnItemClick {
+            void onNumbClick(OrderDishFragment.Orders order, List<OrderDishFragment.Orders.Order> orders, int position, View Item);
+        }
+
+        public OnItemClick getOnItemClick() {
+            return onItemClick;
+        }
+
+        public void setOnItemClick(OnItemClick onItemClick) {
+            this.onItemClick = onItemClick;
+        }
+
+        private OnItemClick onItemClick;
         private OrderDishFragment.Orders order;
 
         public List<OrderDishFragment.Orders.Order> getOrderList() {
@@ -226,10 +285,19 @@ public class OrderRequestFragment extends Fragment {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_order_desh_info, parent, false);
             ViewHolder viewHolder = new ViewHolder(convertView);
             viewHolder.numberEdit.setText(orderList.get(position).getCount() + "");
+            final View finalConvertView = convertView;
+            viewHolder.numberEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onItemClick != null) {
+                        onItemClick.onNumbClick(order, orderList, position, finalConvertView);
+                    }
+                }
+            });
             viewHolder.deshName.setText(orderList.get(position).getDeshName() + orderList.get(position).getDeshPrice());
             viewHolder.deshMethod.setText(orderList.get(position).getMethodName() + orderList.get(position).getMethodPrice());
             viewHolder.sendstatue.setVisibility(View.VISIBLE);

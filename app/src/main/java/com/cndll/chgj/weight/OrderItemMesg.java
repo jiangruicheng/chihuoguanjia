@@ -36,7 +36,7 @@ public class OrderItemMesg {
         return this;
     }
 
-    public OrderItemMesg seCount(String name) {
+    public OrderItemMesg setCount(String name) {
         this.countEdit.setText(name);
         return this;
     }

@@ -46,7 +46,9 @@ public class DcListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, final int position) {
+        holder.setIsRecyclable(false);
         if (position == selecteItems) {
+
             holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid);
         } else {
             holder.parent.setBackgroundResource(R.drawable.shape_button_yellow);
@@ -60,7 +62,6 @@ public class DcListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
                 }
                 selecteItems = position;
                 notifyDataSetChanged();
-
             }
         });
         holder.number.setVisibility(View.GONE);

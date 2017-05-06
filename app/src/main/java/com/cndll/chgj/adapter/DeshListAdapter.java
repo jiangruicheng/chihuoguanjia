@@ -44,7 +44,22 @@ public class DeshListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
     @Override
     public void onBindViewHolder(ItemViewHolder holder, final int position) {
-        holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid);
+        if ((position / 3) % 5 == 0) {
+            holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid);
+        }
+        if ((position / 3) % 5 == 1) {
+            holder.parent.setBackgroundResource(R.drawable.shape_button_yellow);
+        }
+        if ((position / 3) % 5 == 2) {
+            holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid_green);
+        }
+        if ((position / 3) % 5 == 3) {
+            holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid_red);
+        }
+        if ((position / 3) % 5 == 4) {
+            holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid_blue);
+        }
+        // holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid);
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,10 +69,12 @@ public class DeshListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
             }
         });
         holder.number.setVisibility(View.GONE);
+
         if (mitems != null) {
             holder.name.setText(mitems.get(position).getName());
             holder.price.setText(mitems.get(position).getPrice());
         }
+
 
     }
 

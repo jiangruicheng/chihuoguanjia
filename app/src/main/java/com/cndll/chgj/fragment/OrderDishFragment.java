@@ -25,6 +25,7 @@ import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
 import com.cndll.chgj.mvp.presenter.OrderPresenter;
+import com.cndll.chgj.mvp.presenter.impl.OrderImpl;
 import com.cndll.chgj.mvp.view.OrderView;
 import com.cndll.chgj.util.LinearPagerLayoutManager;
 import com.cndll.chgj.util.PagerLayoutManager;
@@ -33,6 +34,7 @@ import com.cndll.chgj.util.StringHelp;
 import com.cndll.chgj.weight.KeyWeight;
 import com.cndll.chgj.weight.OrderInfo;
 import com.cndll.chgj.weight.OrderItemMesg;
+import com.cndll.chgj.weight.PopOrderRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,6 +86,28 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     @BindView(R.id.yaoqiu)
     TextView yaoqiu;
 
+    @OnClick(R.id.yaoqiu)
+    void onclick_yaoqiu() {
+        PopOrderRequest popOrderRequest = new PopOrderRequest();
+        popOrderRequest.setOnItemClick(new PopOrderRequest.onItemClick() {
+            @Override
+            public void onMethod() {
+
+            }
+
+            @Override
+            public void onGive() {
+
+            }
+
+            @Override
+            public void onDelete() {
+
+            }
+        });
+        popOrderRequest.init(getContext(), yaoqiu);
+    }
+
 
     @BindView(R.id.item_mesg)
     LinearLayout itemMesg;
@@ -110,9 +134,9 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     @OnClick(R.id.info)
     void onclick_info() {
         if (orders != null && orders.getAll() != null) {
-            replaceFragmentAddToBackStack(OrderRequestFragment.newInstance(null, null).setOrderList(orders), null);
+            replaceFragmentAddToBackStack(OrderInfoFragment.newInstance(null, null).setOrderList(orders), null);
         } else {
-            replaceFragmentAddToBackStack(OrderRequestFragment.newInstance(null, null), null);
+            replaceFragmentAddToBackStack(OrderInfoFragment.newInstance(null, null), null);
         }
     }
 
@@ -221,6 +245,14 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     private DcListAdapter dcListAdapter;
     private Orders orders;
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (orders != null) {
+            setOrderInfolayout(orders.getCurrPosition());
+        }
+    }
+
     private void initlistview() {
 
         deshListAdapter = new DeshListAdapter();
@@ -237,9 +269,9 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
         /*HorizontalPageLayoutManager gridLayoutManager = new HorizontalPageLayoutManager(5, 3);
         deshList.setLayoutManager(gridLayoutManager);*/
-        PagerLayoutManager horizontalPageLayoutManager = new PagerLayoutManager(getContext(), 5, 3);
+        PagerLayoutManager horizontalPageLayoutManager = new PagerLayoutManager(getContext(), 6, 3);
         deshList.setLayoutManager(horizontalPageLayoutManager);
-        LinearPagerLayoutManager pagerLayoutManaer = new LinearPagerLayoutManager(getContext(), 5, 1);
+        LinearPagerLayoutManager pagerLayoutManaer = new LinearPagerLayoutManager(getContext(), 6, 1);
         deshMenueList.setLayoutManager(pagerLayoutManaer);
         PagingScrollHelper scrollHelper = new PagingScrollHelper();
         scrollHelper.setUpRecycleView(deshList);
@@ -264,13 +296,16 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                     orders.setOrders(deshListAdapter.getMitems().get(position).getId(), order);
 
                 }
-
                 orders.setCurrPosition(deshListAdapter.getMitems().get(position).getId());
                 numberEdit.setText(orders.getOrder(orders.getCurrPosition()).getCount() + "");
                 setOrderInfolayout(deshListAdapter.getMitems().get(position).getId());
 
             }
         });
+        if (presenter == null) {
+            presenter = new OrderImpl();
+            presenter.setView(this);
+        }
         presenter.getDcList(new RequestPrintList().setUid(AppMode.getInstance().getUid()).setMid(AppMode.getInstance().getMid()));
     }
 

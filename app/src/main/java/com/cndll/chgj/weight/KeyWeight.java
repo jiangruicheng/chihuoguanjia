@@ -41,13 +41,21 @@ public class KeyWeight {
         if (Mode == Mode_OnlyNumb) {
             tran.setText(".");
         }
-        int[] locations = new int[2];
-        location.getLocationOnScreen(locations);
-        locations[1] = locations[1] - popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 2;
-        popUpViewUtil.popListWindow(location, key,
-                popUpViewUtil.getWindowManager(context).getDefaultDisplay().getWidth(),
-                popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 2,
-                Gravity.NO_GRAVITY, locations);
+        if (location != null) {
+            int[] locations = new int[2];
+            location.getLocationOnScreen(locations);
+            locations[1] = locations[1] - popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 2;
+            popUpViewUtil.popListWindow(location, key,
+                    popUpViewUtil.getWindowManager(context).getDefaultDisplay().getWidth(),
+                    popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 2,
+                    Gravity.NO_GRAVITY, locations);
+
+        } else {
+            popUpViewUtil.popListWindow(location, key,
+                    popUpViewUtil.getWindowManager(context).getDefaultDisplay().getWidth(),
+                    popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 2,
+                    Gravity.NO_GRAVITY,null);
+        }
         popUpViewUtil.setOnDismissAction(new PopUpViewUtil.OnDismissAction() {
             @Override
             public void onDismiss() {
