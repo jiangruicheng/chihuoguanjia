@@ -36,11 +36,13 @@ public class PagerLayoutManager extends RecyclerView.LayoutManager {
 
     @Override
     public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+        removeAllViews();
         if (getItemCount() == 0) {
             detachAndScrapAttachedViews(recycler);
             return;
         }
         if (state.isPreLayout()) {
+
             return;
         }
         detachAndScrapAttachedViews(recycler);
@@ -70,7 +72,7 @@ public class PagerLayoutManager extends RecyclerView.LayoutManager {
                     height * (mrow + 1) + margin + 2 * mrow * margin);
 
             allItemFrames.put(i, rect);
-            if ((i + 1) % (count * row) == 0) {
+            if ((i + 1) % (count * (row)) == 0) {
                 removeAndRecycleAllViews(recycler);
             }
         }

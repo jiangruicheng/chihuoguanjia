@@ -29,6 +29,7 @@ import com.cndll.chgj.mvp.view.OrderView;
 import com.cndll.chgj.util.LinearPagerLayoutManager;
 import com.cndll.chgj.util.PagerLayoutManager;
 import com.cndll.chgj.util.PagingScrollHelper;
+import com.cndll.chgj.util.StringHelp;
 import com.cndll.chgj.weight.KeyWeight;
 import com.cndll.chgj.weight.OrderInfo;
 import com.cndll.chgj.weight.OrderItemMesg;
@@ -82,6 +83,8 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     TextView allPrice;
     @BindView(R.id.yaoqiu)
     TextView yaoqiu;
+
+
     @BindView(R.id.item_mesg)
     LinearLayout itemMesg;
     @BindView(R.id.number)
@@ -96,12 +99,23 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     TextView lastprice;
     @BindView(R.id.orderInfo)
     LinearLayout orderInfo;
+
     @BindView(R.id.query)
     Button query;
     @BindView(R.id.send)
     Button send;
     @BindView(R.id.info)
     Button info;
+
+    @OnClick(R.id.info)
+    void onclick_info() {
+        if (orders != null && orders.getAll() != null) {
+            replaceFragmentAddToBackStack(OrderRequestFragment.newInstance(null, null).setOrderList(orders), null);
+        } else {
+            replaceFragmentAddToBackStack(OrderRequestFragment.newInstance(null, null), null);
+        }
+    }
+
     @BindView(R.id.other)
     Button other;
     @BindView(R.id.dazhe)
@@ -112,13 +126,37 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
     @OnClick(R.id.number_edit)
     void onclick_numberEdit() {
-        popUpkey(0, "");
+        if (orders != null) {
+            popUpkey(0, "", new KeyWeight.OnKeyClick() {
+                @Override
+                public void onKeyCancel(String s) {
+
+                }
+
+                @Override
+                public void onKeySure(String s) {
+
+                    if (StringHelp.isFloat(s)) {
+                        orders.getOrder(orders.getCurrPosition()).setCount(Float.valueOf(s));
+                        setOrderInfolayout(orders.getCurrPosition());
+                    }
+                    numberEdit.setText(s);
+
+                }
+
+                @Override
+                public void onKeyNub(String s) {
+
+                }
+            });
+        }
     }
 
 
-    private void popUpkey(int mode, String hint) {
+    private void popUpkey(int mode, String hint, KeyWeight.OnKeyClick onKeyClick) {
         KeyWeight keyWeight = new KeyWeight();
-        keyWeight.init(getContext(), numberEdit, 1);
+        keyWeight.init(getContext(), numberEdit, 2);
+        keyWeight.setOnKeyClick(onKeyClick);
     }
 
 
@@ -181,7 +219,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
     private DeshListAdapter deshListAdapter;
     private DcListAdapter dcListAdapter;
-    private Orders orders = new Orders();
+    private Orders orders;
 
     private void initlistview() {
 
@@ -215,19 +253,34 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         deshListAdapter.setOnItemClickLister(new OnItemClickLister() {
             @Override
             public void OnItemClick(View view, int position) {
+                if (orders == null) {
+                    orders = new Orders();
+                }
                 if (orders.Iscontan(deshListAdapter.getMitems().get(position).getId())) {
 
                 } else {
-                    orders.setOrders(deshListAdapter.getMitems().get(position).getId(), new Orders.Order());
-                    if (orderItemMesglayout != null) {
-                        orderItemMesglayout.setPrice(deshListAdapter.getMitems().get(position).getPrice()).
-                                setName(deshListAdapter.getMitems().get(position).getName() + deshListAdapter.getMitems().get(position).getPrice());
+                    Orders.Order order = new Orders.Order();
+                    order.setCount(1).setItemsBean(new RequestOrder.ItemsBean().setDish_money(Float.valueOf(deshListAdapter.getMitems().get(position).getPrice())).setDish_name(deshListAdapter.getMitems().get(position).getName()).setId(deshListAdapter.getMitems().get(position).getId()));
+                    orders.setOrders(deshListAdapter.getMitems().get(position).getId(), order);
 
-                    }
                 }
+
+                orders.setCurrPosition(deshListAdapter.getMitems().get(position).getId());
+                numberEdit.setText(orders.getOrder(orders.getCurrPosition()).getCount() + "");
+                setOrderInfolayout(deshListAdapter.getMitems().get(position).getId());
+
             }
         });
         presenter.getDcList(new RequestPrintList().setUid(AppMode.getInstance().getUid()).setMid(AppMode.getInstance().getMid()));
+    }
+
+    private void setOrderInfolayout(String id) {
+        if (orderItemMesglayout != null)
+            orderItemMesglayout.setPrice(orders.getOrder(id).getAllPrice() + "").
+                    setName(orders.getOrder(id).getDeshName() + orders.getOrder(id).getDeshPrice()).setMethod(orders.getOrder(id).getMethodName() + orders.getOrder(id).getMethodPrice());
+        if (orderInfolayout != null) {
+            orderInfolayout.setMesg(orders);
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -323,8 +376,28 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         void onFragmentInteraction(Uri uri);
     }
 
-    private static class Orders {
+    public static class Orders {
         private ArrayMap<String, Order> orders = new ArrayMap<>();
+
+        public float getDisconut() {
+            return disconut;
+        }
+
+        public void setDisconut(float disconut) {
+            this.disconut = disconut;
+        }
+
+        private float disconut = 1;
+
+        public String getCurrPosition() {
+            return currPosition;
+        }
+
+        public void setCurrPosition(String currPosition) {
+            this.currPosition = currPosition;
+        }
+
+        String currPosition;
 
         public void setOrders(String id, Order order) {
             orders.put(id, order);
@@ -342,14 +415,28 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             return new ArrayList<>(orders.values());
         }
 
-        private static class Order {
+        public static class Order {
             public Order setCount(float count) {
                 this.count = count;
                 return this;
             }
 
+
+            public float getCount() {
+                return count;
+            }
+
+            public boolean isSend() {
+                return isSend;
+            }
+
+            public void setSend(boolean send) {
+                isSend = send;
+            }
+
+            boolean isSend = false;
             float count = 1;
-            boolean isGive = false;
+            float giveCount;
 
             public Order setItemsBean(RequestOrder.ItemsBean itemsBean) {
                 this.itemsBean = itemsBean;
@@ -359,21 +446,44 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             RequestOrder.ItemsBean itemsBean = new RequestOrder.ItemsBean();
             List<RequestAddMethod> methods = new ArrayList<>();
 
-            public Order setIsGive(boolean isGive) {
-                this.isGive = isGive;
+            public Order setGiveCount(float giveCount) {
+                this.giveCount = giveCount;
                 return this;
             }
 
-            public float getAllPrice() {
-                if (isGive) {
-                    return 0;
-                } else {
-                    float price = 0;
-                    for (int i = 0; i < methods.size(); i++) {
-                        price = price + Float.valueOf(methods.get(i).getPrice());
-                    }
-                    return price + (float) itemsBean.getDish_money();
+            public String getDeshName() {
+                return itemsBean.getDish_name();
+            }
+
+            public float getDeshPrice() {
+                return count * itemsBean.getDish_money();
+            }
+
+            public String getMethodName() {
+                if (methods != null && methods.size() > 0) {
+                    return methods.get(0).getName();
                 }
+                return "";
+            }
+
+            public String getMethodPrice() {
+                if (methods != null && methods.size() > 0) {
+                    return methods.get(0).getPrice();
+                }
+                return "";
+            }
+
+            public float getGivePrice() {
+                return giveCount * itemsBean.getDish_money();
+            }
+
+            public float getAllPrice() {
+                float price = 0;
+                for (int i = 0; i < methods.size(); i++) {
+                    price = price + Float.valueOf(methods.get(i).getPrice());
+                }
+                return price + itemsBean.getDish_money() * count;
+
             }
         }
     }

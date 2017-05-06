@@ -174,6 +174,18 @@ public class RequestOrder {
         private String dish_name;
         private int dish_num;
         private float dish_money;
+
+        public float getDish_mmoney() {
+            return dish_mmoney;
+        }
+
+        public ItemsBean setDish_mmoney(float dish_mmoney) {
+            this.dish_mmoney = dish_mmoney;
+            return this;
+        }
+
+        private float dish_mmoney;
+
         private String dish_method;
 
         public String getDish_name() {

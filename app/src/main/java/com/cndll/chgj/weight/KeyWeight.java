@@ -86,14 +86,14 @@ public class KeyWeight {
         }
     }
 
-    private StringBuffer showbuffer = new StringBuffer();
+    private StringBuilder showbuffer = new StringBuilder();
     private View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             if (v instanceof TextView) {
                 if (v.getId() == R.id.cancel) {
                     if (onKeyClick != null) {
-                        onKeyClick.onKeyCancel();
+                        onKeyClick.onKeyCancel(showbuffer.toString());
                     }
                     if (popUpViewUtil != null) {
                         popUpViewUtil.dismiss();
@@ -102,7 +102,7 @@ public class KeyWeight {
                 }
                 if (v.getId() == R.id.sure) {
                     if (onKeyClick != null) {
-                        onKeyClick.onKeySure();
+                        onKeyClick.onKeySure(showbuffer.toString());
                     }
                     if (popUpViewUtil != null) {
                         popUpViewUtil.dismiss();
@@ -146,7 +146,7 @@ public class KeyWeight {
                 showbuffer.append(((TextView) v).getText());
                 show.setText(showbuffer.toString());
                 if (onKeyClick != null) {
-                    onKeyClick.onKeyNub();
+                    onKeyClick.onKeyNub(showbuffer.toString());
                 }
             }
         }
@@ -154,11 +154,11 @@ public class KeyWeight {
     boolean cap = false;
 
     public interface OnKeyClick {
-        void onKeyCancel();
+        void onKeyCancel(String s);
 
-        void onKeySure();
+        void onKeySure(String s);
 
-        void onKeyNub();
+        void onKeyNub(String s);
     }
 
     public OnKeyClick getOnKeyClick() {

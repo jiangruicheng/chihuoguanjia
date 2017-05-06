@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/item_mesg"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<LinearLayout android:id="@+id/item_mesg"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="56dp"
+              android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
             android:background="@drawable/shape_dialog_fillet_solid"
             android:gravity="center"
             android:text="1"
-            android:textColor="#050BFA" />
+            android:textColor="#050BFA"/>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -42,9 +42,8 @@
                     android:ellipsize="end"
                     android:gravity="center_vertical|left"
                     android:lines="2"
-                    android:text="沙拉三110"
                     android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"/>
 
                 <TextView
                     android:id="@+id/desh_method"
@@ -53,20 +52,37 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical|left"
                     android:paddingRight="8dp"
-                    android:text="饮料+10"
                     android:textColor="@color/white"
-                    android:textSize="10sp" />
+                    android:textSize="10sp"/>
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/all_price"
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:gravity="center_vertical|right"
-                android:paddingRight="16dp"
-                android:text="100"
-                android:textColor="@color/white" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/all_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|right"
+                    android:paddingRight="16dp"
+                    android:text="0"
+                    android:textColor="@color/white"/>
+
+                <TextView
+                    android:id="@+id/sendstatue"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|right"
+                    android:paddingRight="16dp"
+                    android:text="100"
+                    android:textColor="@color/white"
+                    android:visibility="gone"/>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/yaoqiu"
@@ -76,7 +92,7 @@
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
                 android:text="要求"
-                android:textColor="#050BFA" />
+                android:textColor="#050BFA"/>
         </LinearLayout>
 
     </LinearLayout>

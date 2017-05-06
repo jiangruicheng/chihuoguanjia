@@ -12,6 +12,7 @@ import com.cndll.chgj.R;
 public class OrderItemMesg {
     private TextView name, method, price, countEdit, rquest;
 
+
     public void init(View view) {
         name = (TextView) view.findViewById(R.id.desh_name);
         method = (TextView) view.findViewById(R.id.desh_method);

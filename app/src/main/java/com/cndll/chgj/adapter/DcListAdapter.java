@@ -19,6 +19,8 @@ public class DcListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
         return onItemClickLister;
     }
 
+    private int selecteItems = 0;
+
     public void setOnItemClickLister(OnItemClickLister onItemClickLister) {
         this.onItemClickLister = onItemClickLister;
     }
@@ -43,8 +45,12 @@ public class DcListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ItemViewHolder holder, final int position) {
-        holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid);
+    public void onBindViewHolder(final ItemViewHolder holder, final int position) {
+        if (position == selecteItems) {
+            holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid);
+        } else {
+            holder.parent.setBackgroundResource(R.drawable.shape_button_yellow);
+        }
         holder.price.setVisibility(View.GONE);
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +58,9 @@ public class DcListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
                 if (onItemClickLister != null) {
                     onItemClickLister.OnItemClick(v, position);
                 }
+                selecteItems = position;
+                notifyDataSetChanged();
+
             }
         });
         holder.number.setVisibility(View.GONE);

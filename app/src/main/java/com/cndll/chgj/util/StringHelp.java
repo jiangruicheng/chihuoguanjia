@@ -15,4 +15,10 @@ public class StringHelp {
         return m.matches();
 
     }
+
+    public static boolean isFloat(String num) {
+        Pattern pattern = Pattern.compile("^(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*))$");
+        Matcher matcher = pattern.matcher(num);
+        return matcher.matches();
+    }
 }
