@@ -20,7 +20,7 @@ public class PopOrderRequest {
     public interface onItemClick {
         void onMethod();
 
-        void onGive();
+        void onGive(View view);
 
         void onDelete();
     }
@@ -54,7 +54,7 @@ public class PopOrderRequest {
             @Override
             public void onClick(View v) {
                 if (onItemClick != null) {
-                    onItemClick.onGive();
+                    onItemClick.onGive(v);
                 }
             }
         });
@@ -74,5 +74,11 @@ public class PopOrderRequest {
                 popUpViewUtil.getWindowManager(context).getDefaultDisplay().getWidth() / 3,
                 popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 4,
                 Gravity.NO_GRAVITY, locations);
+    }
+
+    public void dismiss() {
+        if (popUpViewUtil != null) {
+            popUpViewUtil.dismiss();
+        }
     }
 }

@@ -1,15 +1,18 @@
 package com.cndll.chgj.fragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -24,12 +27,14 @@ import com.cndll.chgj.mvp.mode.bean.request.RequestOrder;
 import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetOrder;
 import com.cndll.chgj.mvp.presenter.OrderPresenter;
 import com.cndll.chgj.mvp.presenter.impl.OrderImpl;
 import com.cndll.chgj.mvp.view.OrderView;
 import com.cndll.chgj.util.LinearPagerLayoutManager;
 import com.cndll.chgj.util.PagerLayoutManager;
 import com.cndll.chgj.util.PagingScrollHelper;
+import com.cndll.chgj.util.PopUpViewUtil;
 import com.cndll.chgj.util.StringHelp;
 import com.cndll.chgj.weight.KeyWeight;
 import com.cndll.chgj.weight.OrderInfo;
@@ -88,26 +93,41 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
     @OnClick(R.id.yaoqiu)
     void onclick_yaoqiu() {
-        PopOrderRequest popOrderRequest = new PopOrderRequest();
-        popOrderRequest.setOnItemClick(new PopOrderRequest.onItemClick() {
-            @Override
-            public void onMethod() {
+        if (orders != null) {
+            final PopOrderRequest popOrderRequest = new PopOrderRequest();
+            popOrderRequest.setOnItemClick(new PopOrderRequest.onItemClick() {
+                @Override
+                public void onMethod() {
 
-            }
-
-            @Override
-            public void onGive() {
-                if (orders != null) {
-                    orders.getOrder(orders.getCurrPosition()).setGiveCount(orders.getOrder(orders.getCurrPosition()).getGiveCount() + 1);
                 }
-            }
 
-            @Override
-            public void onDelete() {
+                @Override
+                public void onGive(View view) {
+                    if (orders != null) {
+                        orders.getOrder(orders.getCurrPosition()).addGiveCount();
+                        setOrderInfolayout(orders.getCurrPosition());
+                        if (orders.getOrder(orders.getCurrPosition()).getCount() == 0) {
+                            view.setBackgroundColor(Color.GRAY);
+                        }
+                    }
+                }
 
-            }
-        });
-        popOrderRequest.init(getContext(), yaoqiu);
+                @Override
+                public void onDelete() {
+                    orders.removeOrders(orders.getCurrPosition());
+                    if (orders.getOrders().size() != 0) {
+                        orders.setCurrPosition(orders.getOrders().keyAt(0));
+                        setOrderInfolayout(orders.getCurrPosition());
+                    } else {
+                        orderItemMesglayout.setMethod("").setCount("1").setName("").setPrice("");
+                        orderInfolayout.setAllMoney("0").setCount("0").setDiscount("0").setGive("0").setLastMoney("0");
+                        orders = null;
+                        popOrderRequest.dismiss();
+                    }
+                }
+            });
+            popOrderRequest.init(getContext(), yaoqiu);
+        }
     }
 
 
@@ -130,6 +150,57 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     Button query;
     @BindView(R.id.send)
     Button send;
+    private PopUpViewUtil sendPopview;
+
+    @OnClick(R.id.send)
+    void onclick_send() {
+        if (sendPopview == null)
+            sendPopview = PopUpViewUtil.getInstance();
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.popview_order_send, null, false);
+        final EditText table, personCount, note;
+        table = (EditText) view.findViewById(R.id.tablename);
+        personCount = (EditText) view.findViewById(R.id.person_count);
+        note = (EditText) view.findViewById(R.id.note);
+        Button save, delete, cancel;
+        save = (Button) view.findViewById(R.id.save);
+        delete = (Button) view.findViewById(R.id.delete);
+        cancel = (Button) view.findViewById(R.id.cancel);
+        delete.setVisibility(View.GONE);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendPopview.dismiss();
+            }
+        });
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.sendOrder(new RequestOrder().
+                        setItems(orders.getItems()).
+                        setMid(AppMode.getInstance().getMid()).
+                        setUid(AppMode.getInstance().getUid()).
+                        setPernum(personCount.getText().toString()).
+                        setSmoney(orderInfolayout.getGivePrice() + "").
+                        setSsmoney(orderInfolayout.getLastPrice() + "").
+                        setZk(orders.getDisconut() + "").
+                        setZkmoney(orderInfolayout.getDiscountPrice() + "").
+                        setTmoney(orderInfolayout.getAllPrice() + "").
+                        setTabname(tabname).
+                        setTab_id(tableId).setPayee("1234").
+                        setYsmoney(orderInfolayout.getLastPrice() + ""));
+            }
+        });
+        if (tabname == null) {
+            table.setText("");
+        } else {
+            table.setText(tabname);
+        }
+        sendPopview.popListWindow(send, view,
+                sendPopview.getWindowManager(getContext()).getDefaultDisplay().getWidth(),
+                sendPopview.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 3,
+                Gravity.NO_GRAVITY, null);
+    }
+
     @BindView(R.id.info)
     Button info;
 
@@ -148,6 +219,15 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     Button dazhe;
     @BindView(R.id.pay)
     Button pay;
+
+    @OnClick(R.id.pay)
+    void onclick_pay() {
+        if (orderId != 0) {
+            replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(orderId).setOrders(orders), null);
+
+        }
+    }
+
     Unbinder unbinder;
 
     @OnClick(R.id.number_edit)
@@ -166,7 +246,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                         orders.getOrder(orders.getCurrPosition()).setCount(Float.valueOf(s));
                         setOrderInfolayout(orders.getCurrPosition());
                     }
-                    numberEdit.setText(s);
+
 
                 }
 
@@ -223,7 +303,37 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         }
     }
 
+    public String getTableId() {
+        return tableId;
+    }
+
+    public OrderDishFragment setTableId(String tableId) {
+        this.tableId = tableId;
+        return this;
+    }
+
     private String tableId;
+
+    public String getTabname() {
+        return tabname;
+    }
+
+    public OrderDishFragment setTabname(String tabname) {
+        this.tabname = tabname;
+        return this;
+    }
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public OrderDishFragment setOrderId(int orderId) {
+        this.orderId = orderId;
+        return this;
+    }
+
+    private int orderId;
+    private String tabname;
     // private List<RequestOrder.ItemsBean> order = new ArrayList<>();
     private OrderInfo orderInfolayout;
     private OrderItemMesg orderItemMesglayout;
@@ -294,7 +404,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
                 } else {
                     Orders.Order order = new Orders.Order();
-                    order.setCount(1).setItemsBean(new RequestOrder.ItemsBean().setDish_money(Float.valueOf(deshListAdapter.getMitems().get(position).getPrice())).setDish_name(deshListAdapter.getMitems().get(position).getName()).setId(deshListAdapter.getMitems().get(position).getId()));
+                    order.setItemsBean(new RequestOrder.ItemsBean().setDish_money(Float.valueOf(deshListAdapter.getMitems().get(position).getPrice())).setDish_name(deshListAdapter.getMitems().get(position).getName()).setId(deshListAdapter.getMitems().get(position).getId()).setDish_num(1)).setCount(1);
                     orders.setOrders(deshListAdapter.getMitems().get(position).getId(), order);
 
                 }
@@ -311,10 +421,19 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         presenter.getDcList(new RequestPrintList().setUid(AppMode.getInstance().getUid()).setMid(AppMode.getInstance().getMid()));
     }
 
+    private void setOrderInfolayout(Orders.Order id) {
+        if (orderItemMesglayout != null)
+            orderItemMesglayout.setPrice(id.getAllPrice() + "").
+                    setName(id.getDeshName() + id.getDeshPrice()).setMethod(id.getMethodName() + id.getMethodPrice());
+        if (orderInfolayout != null) {
+            orderInfolayout.setMesg(orders);
+        }
+    }
+
     private void setOrderInfolayout(String id) {
         if (orderItemMesglayout != null)
             orderItemMesglayout.setPrice(orders.getOrder(id).getAllPrice() + "").
-                    setName(orders.getOrder(id).getDeshName() + orders.getOrder(id).getDeshPrice()).setMethod(orders.getOrder(id).getMethodName() + orders.getOrder(id).getMethodPrice());
+                    setName(orders.getOrder(id).getDeshName() + orders.getOrder(id).getDeshPrice()).setMethod(orders.getOrder(id).getMethodName() + orders.getOrder(id).getMethodPrice()).setCount(orders.getOrder(id).getCount() + orders.getOrder(id).getGiveCount() + "");
         if (orderInfolayout != null) {
             orderInfolayout.setMesg(orders);
         }
@@ -398,6 +517,27 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         deshListAdapter.setMitems(deshList);
     }
 
+    @Override
+    public void sendSucc() {
+        if (sendPopview != null) {
+            sendPopview.dismiss();
+        }
+    }
+
+    @Override
+    public void setOrder(ResponseGetOrder getOrder) {
+        if (orders == null) {
+            orders = new Orders();
+        }
+        List<ResponseGetOrder.DataBean.ItemsBean> itemsBeen = getOrder.getData().getItems();
+        for (int i = 0; i < itemsBeen.size(); i++) {
+            orders.setOrders(itemsBeen.get(i).getId() + "" + itemsBeen.get(i).getDc_id(),
+                    new Orders.Order().
+                            setCount(itemsBeen.get(i).getCount()).
+                            setGiveCount(itemsBeen.get(i).getGiveCount()));
+        }
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -414,6 +554,10 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     }
 
     public static class Orders {
+        public ArrayMap<String, Order> getOrders() {
+            return orders;
+        }
+
         private ArrayMap<String, Order> orders = new ArrayMap<>();
 
         public float getDisconut() {
@@ -427,6 +571,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         private float disconut = 1;
 
         public String getCurrPosition() {
+
             return currPosition;
         }
 
@@ -438,6 +583,10 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
         public void setOrders(String id, Order order) {
             orders.put(id, order);
+        }
+
+        public void removeOrders(String id) {
+            orders.remove(id);
         }
 
         public boolean Iscontan(String id) {
@@ -452,9 +601,19 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             return new ArrayList<>(orders.values());
         }
 
+        public List<RequestOrder.ItemsBean> getItems() {
+            List<RequestOrder.ItemsBean> itemsBeen = new ArrayList<>();
+            List<Order> orderList = new ArrayList<>(orders.values());
+            for (int i = 0; i < orderList.size(); i++) {
+                itemsBeen.add(orderList.get(i).getItemsBean());
+            }
+            return itemsBeen;
+        }
+
         public static class Order {
             public Order setCount(float count) {
                 this.count = count;
+                itemsBean.setDish_num((int) (this.count + giveCount));
                 return this;
             }
 
@@ -485,11 +644,25 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 return this;
             }
 
-            RequestOrder.ItemsBean itemsBean = new RequestOrder.ItemsBean();
+            public RequestOrder.ItemsBean getItemsBean() {
+                return itemsBean;
+            }
+
+            RequestOrder.ItemsBean itemsBean;/*= new RequestOrder.ItemsBean().setDish_num(1);*/
             List<RequestAddMethod> methods = new ArrayList<>();
 
-            public Order setGiveCount(float giveCount) {
-                this.giveCount = giveCount;
+            public Order setGiveCount(float count) {
+                this.giveCount = count;
+                itemsBean.setDish_num((int) (this.giveCount + count));
+                return this;
+            }
+
+            public Order addGiveCount() {
+                if (count >= 1) {
+                    giveCount = giveCount + 1;
+                    count = count - 1;
+                }
+                itemsBean.setDish_num((int) (this.giveCount + count));
                 return this;
             }
 

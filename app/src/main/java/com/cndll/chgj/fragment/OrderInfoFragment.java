@@ -288,7 +288,7 @@ public class OrderInfoFragment extends Fragment {
         public View getView(final int position, View convertView, ViewGroup parent) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_order_desh_info, parent, false);
             ViewHolder viewHolder = new ViewHolder(convertView);
-            viewHolder.numberEdit.setText(orderList.get(position).getCount() + "");
+            viewHolder.numberEdit.setText(orderList.get(position).getCount() + orderList.get(position).getGiveCount() + "");
             final View finalConvertView = convertView;
             viewHolder.numberEdit.setOnClickListener(new View.OnClickListener() {
                 @Override

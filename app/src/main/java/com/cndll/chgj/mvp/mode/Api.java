@@ -5,31 +5,37 @@ import com.cndll.chgj.mvp.mode.bean.request.RequestAddCailei;
 import com.cndll.chgj.mvp.mode.bean.request.RequestAddCaipin;
 import com.cndll.chgj.mvp.mode.bean.request.RequestAddDesk;
 import com.cndll.chgj.mvp.mode.bean.request.RequestAddMethod;
+import com.cndll.chgj.mvp.mode.bean.request.RequestAddPrint;
 import com.cndll.chgj.mvp.mode.bean.request.RequestDelete;
 import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteCailei;
 import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteCaipin;
 import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteMethod;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetCaipinList;
+import com.cndll.chgj.mvp.mode.bean.request.RequestGetDeskList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetMethodList;
+import com.cndll.chgj.mvp.mode.bean.request.RequestGetOrder;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetStoreList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestHomeInfo;
 import com.cndll.chgj.mvp.mode.bean.request.RequestLogin;
 import com.cndll.chgj.mvp.mode.bean.request.RequestMendianOrd;
+import com.cndll.chgj.mvp.mode.bean.request.RequestOrder;
 import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestRegister;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdaCailei;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdaCaipin;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdaDesk;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdateMethod;
+import com.cndll.chgj.mvp.mode.bean.request.RequestUpdatePrint;
 import com.cndll.chgj.mvp.mode.bean.request.RequestVerify;
 import com.cndll.chgj.mvp.mode.bean.request.RequsetHomeMendianList;
-import com.cndll.chgj.mvp.mode.bean.request.RequestGetDeskList;
-import com.cndll.chgj.mvp.mode.bean.response.ResponseAddCaipin;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseAddPrint;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseArea;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseCailei;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseDeletePrint;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetDeskList;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetOrder;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetStoreList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseHome;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseLogin;
@@ -39,6 +45,7 @@ import com.cndll.chgj.mvp.mode.bean.response.ResponseOrd;
 import com.cndll.chgj.mvp.mode.bean.response.ResponsePrintList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseRegister;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseStoreTye;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseUpdatePrint;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseVerify;
 
 import java.util.List;
@@ -82,8 +89,14 @@ public interface Api {
     @POST("Print/prlist")
     Observable<ResponsePrintList> getPrintList(@Body RequestPrintList requestPrintList);
 
-    @POST("Dish/adddish")
-    Observable<ResponseAddCaipin> addCaipinList(@Body ResponseAddCaipin responseAddCaipin);
+    @POST("Print/add")
+    Observable<ResponseAddPrint> addPrint(@Body RequestAddPrint requestPrintList);
+
+    @POST("Print/printdelete")
+    Observable<ResponseDeletePrint> deletePrint(@Body RequestDelete requestPrintList);
+
+    @POST("Print/modify")
+    Observable<ResponseUpdatePrint> updatePrint(@Body RequestUpdatePrint requestPrintList);
 
     @POST("Dish/getdishlist")
     Observable<ResponseGetCaipinList> getCaipinList(@Body RequestGetCaipinList requestGetCaipinList);
@@ -135,5 +148,11 @@ public interface Api {
 
     @POST("table/gettablelist")
     Observable<ResponseGetDeskList> getDeskList(@Body RequestGetDeskList requestAddCailei);
+
+    @POST("order/addorder")
+    Observable<ResponseOrd> sendOrd(@Body RequestOrder requestAddCailei);
+
+    @POST("order/orderdetail")
+    Observable<ResponseGetOrder> getOrd(@Body RequestGetOrder requestAddCailei);
 
 }

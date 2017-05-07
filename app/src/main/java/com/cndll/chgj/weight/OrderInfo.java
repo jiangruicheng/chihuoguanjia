@@ -14,9 +14,36 @@ import java.util.List;
 
 public class OrderInfo {
     private View view;
-    private TextView count, allMoney, discount, give, lastMoney;
+    private TextView vcount, allMoney, discount, give, lastMoney;
+
+    public float getCount() {
+        return count;
+    }
+
+    public float getAllPrice() {
+        return allPrice;
+    }
+
+    public float getDiscountPrice() {
+        return discountPrice;
+    }
+
+    public float getGivePrice() {
+        return givePrice;
+    }
+
+    public float getLastPrice() {
+        return lastPrice;
+    }
+
+    float count = 0, allPrice = 0, discountPrice = 0, givePrice = 0, lastPrice = 0;
 
     public void setMesg(OrderDishFragment.Orders order) {
+        count = 0;
+        allPrice = 0;
+        discountPrice = 0;
+        givePrice = 0;
+        lastPrice = 0;
         if (order == null) {
             return;
         }
@@ -24,47 +51,47 @@ public class OrderInfo {
         if (orders == null) {
             return;
         }
-        float count = 0, allPrice = 0, discountPrice = 0, givePrice = 0, lastPrice = 0;
         for (int i = 0; i < orders.size(); i++) {
-            count = count + orders.get(i).getCount();
+            count = count + orders.get(i).getCount() + orders.get(i).getGiveCount();
             allPrice = allPrice + orders.get(i).getAllPrice();
             givePrice = givePrice + orders.get(i).getGivePrice();
         }
         discountPrice = allPrice - allPrice * order.getDisconut();
         lastPrice = allPrice * order.getDisconut();
         setCount(count + "").setAllMoney(allPrice + "").setDiscount(discountPrice + "").setLastMoney(lastPrice + "").setGive(givePrice + "");
+
     }
 
     public void init(View view) {
         this.view = view;
-        count = (TextView) view.findViewById(R.id.number);
+        vcount = (TextView) view.findViewById(R.id.number);
         allMoney = (TextView) view.findViewById(R.id.allcount);
         discount = (TextView) view.findViewById(R.id.zhekou);
         give = (TextView) view.findViewById(R.id.zengsong);
         lastMoney = (TextView) view.findViewById(R.id.lastprice);
     }
 
-    private OrderInfo setCount(String count) {
-        this.count.setText(count);
+    public OrderInfo setCount(String count) {
+        this.vcount.setText(count);
         return this;
     }
 
-    private OrderInfo setAllMoney(String count) {
+    public OrderInfo setAllMoney(String count) {
         this.allMoney.setText(count);
         return this;
     }
 
-    private OrderInfo setDiscount(String count) {
+    public OrderInfo setDiscount(String count) {
         this.discount.setText(count);
         return this;
     }
 
-    private OrderInfo setGive(String count) {
+    public OrderInfo setGive(String count) {
         this.give.setText(count);
         return this;
     }
 
-    private OrderInfo setLastMoney(String count) {
+    public OrderInfo setLastMoney(String count) {
         this.lastMoney.setText(count);
         return this;
     }

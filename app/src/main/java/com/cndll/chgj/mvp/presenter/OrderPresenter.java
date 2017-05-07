@@ -1,6 +1,8 @@
 package com.cndll.chgj.mvp.presenter;
 
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetCaipinList;
+import com.cndll.chgj.mvp.mode.bean.request.RequestGetOrder;
+import com.cndll.chgj.mvp.mode.bean.request.RequestOrder;
 import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
 import com.cndll.chgj.mvp.view.OrderView;
 
@@ -10,5 +12,10 @@ import com.cndll.chgj.mvp.view.OrderView;
 
 public interface OrderPresenter extends BasePresenter<OrderView> {
     void getDcList(RequestPrintList requestGetCaileiList);
+
     void getDeshList(RequestGetCaipinList requestGetCaipinList);
+
+    void sendOrder(RequestOrder order);
+
+    void getOrder(RequestGetOrder order);
 }

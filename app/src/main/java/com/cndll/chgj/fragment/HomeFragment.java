@@ -31,6 +31,7 @@ import com.cndll.chgj.mvp.presenter.impl.DeshMethodImpl;
 import com.cndll.chgj.mvp.presenter.impl.LoginImpl;
 import com.cndll.chgj.mvp.presenter.impl.MenuImpl;
 import com.cndll.chgj.mvp.presenter.impl.OrderImpl;
+import com.cndll.chgj.mvp.presenter.impl.PrintListImpl;
 import com.cndll.chgj.mvp.presenter.impl.RegisterImpl;
 import com.cndll.chgj.mvp.view.HomeView;
 import com.cndll.chgj.util.PopUpViewUtil;
@@ -141,7 +142,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @OnClick(R.id.set_print)
     void onclick_setpirng() {
-        replaceFragmentAddToBackStack(PrintSetingFragment.newInstance(null, null), null);
+        replaceFragmentAddToBackStack(PrintSetingFragment.newInstance(null, null), new PrintListImpl());
     }
 
     @BindView(R.id.staff)

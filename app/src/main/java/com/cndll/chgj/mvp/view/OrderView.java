@@ -2,6 +2,7 @@ package com.cndll.chgj.mvp.view;
 
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetOrder;
 import com.cndll.chgj.mvp.presenter.OrderPresenter;
 
 import java.util.List;
@@ -14,4 +15,8 @@ public interface OrderView extends BaseView<OrderPresenter> {
     void setDcList(List<ResponseGetCaileiList.DataBean> data);
 
     void setDeshList(List<ResponseGetCaipinList.DataBean> deshList);
+
+    void sendSucc();
+
+    void setOrder(ResponseGetOrder getOrder);
 }

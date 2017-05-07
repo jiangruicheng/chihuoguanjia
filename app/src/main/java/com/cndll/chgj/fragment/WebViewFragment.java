@@ -4,26 +4,16 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
-import com.cndll.chgj.adapter.OnItemClickLister;
-import com.cndll.chgj.adapter.OrderDeskListAdapter;
-import com.cndll.chgj.mvp.mode.bean.info.AppMode;
-import com.cndll.chgj.mvp.mode.bean.request.RequestGetDeskList;
-import com.cndll.chgj.mvp.mode.bean.response.ResponseGetDeskList;
-import com.cndll.chgj.mvp.presenter.AddDeskPresenter;
-import com.cndll.chgj.mvp.presenter.impl.OrderImpl;
-import com.cndll.chgj.mvp.view.AddDeskView;
-import com.cndll.chgj.util.PagerLayoutManager;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,10 +24,10 @@ import butterknife.Unbinder;
  * Activities that contain this fragment must implement the
  * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link DeskFragment#newInstance} factory method to
+ * Use the {@link WebViewFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DeskFragment extends BaseFragment implements AddDeskView {
+public class WebViewFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -54,10 +44,8 @@ public class DeskFragment extends BaseFragment implements AddDeskView {
     LinearLayout titleTow;
     @BindView(R.id.right_text)
     TextView rightText;
-    @BindView(R.id.toast)
-    TextView toast;
-    @BindView(R.id.desk_list)
-    RecyclerView deskList;
+    @BindView(R.id.webview)
+    WebView webview;
     Unbinder unbinder;
 
     // TODO: Rename and change types of parameters
@@ -66,7 +54,7 @@ public class DeskFragment extends BaseFragment implements AddDeskView {
 
     private OnFragmentInteractionListener mListener;
 
-    public DeskFragment() {
+    public WebViewFragment() {
         // Required empty public constructor
     }
 
@@ -76,11 +64,11 @@ public class DeskFragment extends BaseFragment implements AddDeskView {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment DeskFragment.
+     * @return A new instance of fragment WebViewFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DeskFragment newInstance(String param1, String param2) {
-        DeskFragment fragment = new DeskFragment();
+    public static WebViewFragment newInstance(String param1, String param2) {
+        WebViewFragment fragment = new WebViewFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -97,26 +85,15 @@ public class DeskFragment extends BaseFragment implements AddDeskView {
         }
     }
 
-    private OrderDeskListAdapter adapter;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_desk, container, false);
+        View view = inflater.inflate(R.layout.fragment_pay, container, false);
         unbinder = ButterKnife.bind(this, view);
-        adapter = new OrderDeskListAdapter();
-        adapter.setOnItemClickLister(new OnItemClickLister() {
-            @Override
-            public void OnItemClick(View view, int position) {
-                replaceFragmentAddToBackStack(OrderDishFragment.newInstance(null, null).setTableId(adapter.getItems().get(position).getId()).setTabname(adapter.getItems().get(position).getName()).setOrderId(adapter.getItems().get(position).getOid()), new OrderImpl());
-            }
-        });
-
-        PagerLayoutManager layoutManager = new PagerLayoutManager(getContext(), 6, 4);
-        deskList.setLayoutManager(layoutManager);
-        deskList.setAdapter(adapter);
-        presenter.getDeskList(new RequestGetDeskList().setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()));
+        WebSettings webSettings = webview.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webview.loadUrl(mParam1);
         return view;
     }
 
@@ -130,7 +107,7 @@ public class DeskFragment extends BaseFragment implements AddDeskView {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-/*        if (context instanceof OnFragmentInteractionListener) {
+       /* if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
@@ -148,29 +125,6 @@ public class DeskFragment extends BaseFragment implements AddDeskView {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-    }
-
-    @Override
-    public void showMesg(String mesg) {
-
-    }
-
-    @Override
-    public void showProg(String mesg) {
-
-    }
-
-    AddDeskPresenter presenter;
-
-    @Override
-    public void setPresenter(AddDeskPresenter presenter) {
-        this.presenter = presenter;
-        this.presenter.setView(this);
-    }
-
-    @Override
-    public void showDeskList(List<ResponseGetDeskList.DataBean> dataBeen) {
-        adapter.setItems(dataBeen);
     }
 
     /**

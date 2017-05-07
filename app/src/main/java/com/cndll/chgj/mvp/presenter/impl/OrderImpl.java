@@ -3,10 +3,13 @@ package com.cndll.chgj.mvp.presenter.impl;
 import com.cndll.chgj.mvp.MObeserver;
 import com.cndll.chgj.mvp.mode.AppRequest;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetCaipinList;
+import com.cndll.chgj.mvp.mode.bean.request.RequestGetOrder;
+import com.cndll.chgj.mvp.mode.bean.request.RequestOrder;
 import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
 import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetOrder;
 import com.cndll.chgj.mvp.presenter.OrderPresenter;
 import com.cndll.chgj.mvp.view.OrderView;
 
@@ -74,6 +77,60 @@ public class OrderImpl implements OrderPresenter {
                         if (baseResponse.getCode() == 1) {
                             view.setDeshList(((ResponseGetCaipinList) baseResponse).getData()
                             );
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void sendOrder(RequestOrder order) {
+        AppRequest.getAPI().
+                sendOrd(order).
+                subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
+                subscribe(new MObeserver(view) {
+                    @Override
+                    public void onCompleted() {
+                        super.onCompleted();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        super.onNext(baseResponse);
+                        if (baseResponse.getCode() == 1) {
+                            view.sendSucc();
+                            // view.setDeshList(((ResponseGetCaipinList) baseResponse).getData());
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void getOrder(RequestGetOrder order) {
+        AppRequest.getAPI().
+                getOrd(order).
+                subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
+                subscribe(new MObeserver(view) {
+                    @Override
+                    public void onCompleted() {
+                        super.onCompleted();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        super.onNext(baseResponse);
+                        if (baseResponse.getCode() == 1) {
+                            view.setOrder((ResponseGetOrder) baseResponse);
+                            // view.setDeshList(((ResponseGetCaipinList) baseResponse).getData());
                         }
                     }
                 });
