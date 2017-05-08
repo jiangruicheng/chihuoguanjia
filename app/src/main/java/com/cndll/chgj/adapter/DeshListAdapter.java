@@ -31,7 +31,7 @@ public class DeshListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
     public void setMitems(List<ResponseGetCaipinList.DataBean> mitems) {
         this.mitems = mitems;
-        notifyDataSetChanged();
+        /*notifyDataSetChanged();*/
     }
 
     List<ResponseGetCaipinList.DataBean> mitems;
@@ -85,6 +85,5 @@ public class DeshListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
         }
         return 0;
     }
-
 
 }
