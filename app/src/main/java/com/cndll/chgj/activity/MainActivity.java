@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.fragment.BaseFragment;
 import com.cndll.chgj.fragment.HomeFragment;
 import com.cndll.chgj.mvp.presenter.impl.HomeImpl;
 
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         HomeImpl h = new HomeImpl();
         fragment.setPresenter(h);
         fragmentManager.beginTransaction().add(R.id.frame, fragment).commit();
+        BaseFragment.fragmentList.add(fragment);
     }
 
     public interface BackPressEvent {
