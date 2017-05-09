@@ -9,8 +9,9 @@ public class RequestGetOrder {
         return id;
     }
 
-    public void setId(int id) {
+    public RequestGetOrder setId(int id) {
         this.id = id;
+        return this;
     }
 
     private int id;

@@ -33,6 +33,7 @@ import com.cndll.chgj.mvp.presenter.impl.MenuImpl;
 import com.cndll.chgj.mvp.presenter.impl.OrderImpl;
 import com.cndll.chgj.mvp.presenter.impl.PrintListImpl;
 import com.cndll.chgj.mvp.presenter.impl.RegisterImpl;
+import com.cndll.chgj.mvp.presenter.impl.StaffImpl;
 import com.cndll.chgj.mvp.view.HomeView;
 import com.cndll.chgj.util.PopUpViewUtil;
 import com.cndll.chgj.weight.MesgShow;
@@ -150,7 +151,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @OnClick(R.id.staff)
     void onclick_staff() {
-        replaceFragmentAddToBackStack(StaffFragment.newInstance(null, null), null);
+        replaceFragmentAddToBackStack(StaffFragment.newInstance(null, null), new StaffImpl());
     }
 
     @BindView(R.id.search_bear)

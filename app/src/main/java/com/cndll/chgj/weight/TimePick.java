@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.cndll.chgj.R;
 import com.cndll.chgj.util.PopUpViewUtil;
@@ -27,6 +28,24 @@ public class TimePick {
     private List<String> year, moth, day;
     private List<String> bigmoth;
     private int curryYear, curryMoth, curryDay;
+    private Button cancel;
+    private Button sure;
+
+    public interface OnTimePickSlect {
+        void onSelect(int year, int moth, int day);
+
+        void onCancel();
+    }
+
+    public OnTimePickSlect getOnTimePickSlect() {
+        return onTimePickSlect;
+    }
+
+    public void setOnTimePickSlect(OnTimePickSlect onTimePickSlect) {
+        this.onTimePickSlect = onTimePickSlect;
+    }
+
+    private OnTimePickSlect onTimePickSlect;
 
     public TimePick(Activity context) {
         this.context = context;
@@ -38,6 +57,8 @@ public class TimePick {
         Vyear = (LoopView) view.findViewById(R.id.year);
         Vmoth = (LoopView) view.findViewById(R.id.moth);
         Vday = (LoopView) view.findViewById(R.id.day);
+        cancel = (Button) view.findViewById(R.id.cancel);
+        sure = (Button) view.findViewById(R.id.sure);
         year = getNumb(Calendar.getInstance().get(Calendar.YEAR) - 1, Calendar.getInstance().get(Calendar.YEAR) + 1);
         bigmoth = new ArrayList<>();
         bigmoth.add("1");
@@ -59,6 +80,22 @@ public class TimePick {
         curryYear = Calendar.getInstance().get(Calendar.YEAR);
         curryMoth = Calendar.getInstance().get(Calendar.MONTH) + 1;
         curryDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (popUpViewUtil != null) {
+                    popUpViewUtil.dismiss();
+                }
+            }
+        });
+        sure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onTimePickSlect != null) {
+                    onTimePickSlect.onSelect(curryYear, curryMoth, curryDay);
+                }
+            }
+        });
         Vyear.setListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(int index) {
@@ -105,11 +142,13 @@ public class TimePick {
         return numb;
     }
 
+    private PopUpViewUtil popUpViewUtil;
+
     public void show() {
         if (view.getParent() != null) {
             ((ViewGroup) (view.getParent())).removeView(view);
         }
-        PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
+        popUpViewUtil = PopUpViewUtil.getInstance();
         popUpViewUtil.showDialog(context, view,
                 0,
                 popUpViewUtil.getWindowManager(context).

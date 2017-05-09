@@ -16,6 +16,6 @@ public interface OrderPresenter extends BasePresenter<OrderView> {
     void getDeshList(RequestGetCaipinList requestGetCaipinList);
 
     void sendOrder(RequestOrder order);
-
+    void updateOreder(RequestOrder order);
     void getOrder(RequestGetOrder order);
 }

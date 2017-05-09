@@ -28,59 +28,177 @@ public class ResponseGetCaipinList extends BaseResponse {
     }
 
     public static class DataBean extends DataList {
-        @Override
-        public String getIDList() {
-            return id;
-        }
-
-        @Override
-        public void setOrderList(int i) {
-            ord = String.valueOf(i);
-        }
-
-        @Override
-        public int getOrderList() {
-            return Integer.valueOf(ord);
-        }
 
         /**
-         * id : 2
-         * name : 青椒炒肉
-         * unit : 盘
+         * id : 81
+         * unit : 份
+         * mid : 51
+         * machine : 厨房打印机
+         * uid : 24
+         * cre_tm : 1494001306
+         * count : 1
+         * giveCount : 0
+         * price : 20.00
          * is_discount : 1
-         * price : 18.00
-         * is_over : 0
-         * machine : 厨房打印
          * is_print : 1
-         * code : 120
-         * mid : 3
-         * uid : 3
-         * ord : 2
-         * cre_tm : 1490758958
-         * dc_id : 3
+         * code : 101
+         * ord : 0
+         * is_over : 0
+         * remark : {"id":"81","remarks":[{"ord":"2","uid":"24","cre_tm":"1494001501","id":"51","price":"2.00","mid":"51","name":"加冰"}],"count":"1"}
+         * name : 小炒肉
+         * dc_id : 39
          */
 
         private String id;
-        private String name;
         private String unit;
-        private String is_discount;
-        private String price;
-        private String is_over;
+        private String mid;
         private String machine;
+        private String uid;
+        private String cre_tm;
+        private String count;
+        private int giveCount;
+        private String price;
+        private String is_discount;
         private String is_print;
         private String code;
-        private String mid;
-        private String uid;
         private String ord;
-        private String cre_tm;
+        private String is_over;
+        private RemarkBean remark;
+        private String name;
         private String dc_id;
 
         public String getId() {
             return id;
         }
 
-        public void setId(String id) {
+        public DataBean setId(String id) {
             this.id = id;
+            return this;
+        }
+
+        public String getUnit() {
+            return unit;
+        }
+
+        public DataBean setUnit(String unit) {
+            this.unit = unit;
+            return this;
+        }
+
+        public String getMid() {
+            return mid;
+        }
+
+        public DataBean setMid(String mid) {
+            this.mid = mid;
+            return this;
+        }
+
+        public String getMachine() {
+            return machine;
+        }
+
+        public DataBean setMachine(String machine) {
+            this.machine = machine;
+            return this;
+        }
+
+        public String getUid() {
+            return uid;
+        }
+
+        public DataBean setUid(String uid) {
+            this.uid = uid;
+            return this;
+        }
+
+        public String getCre_tm() {
+            return cre_tm;
+        }
+
+        public DataBean setCre_tm(String cre_tm) {
+            this.cre_tm = cre_tm;
+            return this;
+        }
+
+        public String getCount() {
+            return count;
+        }
+
+        public DataBean setCount(String count) {
+            this.count = count;
+            return this;
+        }
+
+        public int getGiveCount() {
+            return giveCount;
+        }
+
+        public DataBean setGiveCount(int giveCount) {
+            this.giveCount = giveCount;
+            return this;
+        }
+
+        public String getPrice() {
+            return price;
+        }
+
+        public DataBean setPrice(String price) {
+            this.price = price;
+            return this;
+        }
+
+        public String getIs_discount() {
+            return is_discount;
+        }
+
+        public DataBean setIs_discount(String is_discount) {
+            this.is_discount = is_discount;
+            return this;
+        }
+
+        public String getIs_print() {
+            return is_print;
+        }
+
+        public DataBean setIs_print(String is_print) {
+            this.is_print = is_print;
+            return this;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public DataBean setCode(String code) {
+            this.code = code;
+            return this;
+        }
+
+        public String getOrd() {
+            return ord;
+        }
+
+        public DataBean setOrd(String ord) {
+            this.ord = ord;
+            return this;
+        }
+
+        public String getIs_over() {
+            return is_over;
+        }
+
+        public DataBean setIs_over(String is_over) {
+            this.is_over = is_over;
+            return this;
+        }
+
+        public RemarkBean getRemark() {
+            return remark;
+        }
+
+        public void setRemark(RemarkBean remark) {
+            this.remark = remark;
         }
 
         public String getName() {
@@ -91,100 +209,124 @@ public class ResponseGetCaipinList extends BaseResponse {
             this.name = name;
         }
 
-        public String getUnit() {
-            return unit;
-        }
-
-        public void setUnit(String unit) {
-            this.unit = unit;
-        }
-
-        public String getIs_discount() {
-            return is_discount;
-        }
-
-        public void setIs_discount(String is_discount) {
-            this.is_discount = is_discount;
-        }
-
-        public String getPrice() {
-            return price;
-        }
-
-        public void setPrice(String price) {
-            this.price = price;
-        }
-
-        public String getIs_over() {
-            return is_over;
-        }
-
-        public void setIs_over(String is_over) {
-            this.is_over = is_over;
-        }
-
-        public String getMachine() {
-            return machine;
-        }
-
-        public void setMachine(String machine) {
-            this.machine = machine;
-        }
-
-        public String getIs_print() {
-            return is_print;
-        }
-
-        public void setIs_print(String is_print) {
-            this.is_print = is_print;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public void setCode(String code) {
-            this.code = code;
-        }
-
-        public String getMid() {
-            return mid;
-        }
-
-        public void setMid(String mid) {
-            this.mid = mid;
-        }
-
-        public String getUid() {
-            return uid;
-        }
-
-        public void setUid(String uid) {
-            this.uid = uid;
-        }
-
-        public String getOrd() {
-            return ord;
-        }
-
-        public void setOrd(String ord) {
-            this.ord = ord;
-        }
-
-        public String getCre_tm() {
-            return cre_tm;
-        }
-
-        public void setCre_tm(String cre_tm) {
-            this.cre_tm = cre_tm;
-        }
-
         public String getDc_id() {
             return dc_id;
         }
 
         public void setDc_id(String dc_id) {
             this.dc_id = dc_id;
+        }
+
+        public static class RemarkBean {
+            /**
+             * id : 81
+             * remarks : [{"ord":"2","uid":"24","cre_tm":"1494001501","id":"51","price":"2.00","mid":"51","name":"加冰"}]
+             * count : 1
+             */
+
+            private String id;
+            private String count;
+            private List<ResponseMethod.DataBean> remarks;
+
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+
+            public String getCount() {
+                return count;
+            }
+
+            public void setCount(String count) {
+                this.count = count;
+            }
+
+            public List<ResponseMethod.DataBean> getRemarks() {
+                return remarks;
+            }
+
+            public void setRemarks(List<ResponseMethod.DataBean> remarks) {
+                this.remarks = remarks;
+            }
+
+           /* public static class RemarksBean {
+                *//**
+             * ord : 2
+             * uid : 24
+             * cre_tm : 1494001501
+             * id : 51
+             * price : 2.00
+             * mid : 51
+             * name : 加冰
+             *//*
+
+                private String ord;
+                private String uid;
+                private String cre_tm;
+                private String id;
+                private String price;
+                private String mid;
+                private String name;
+
+                public String getOrd() {
+                    return ord;
+                }
+
+                public void setOrd(String ord) {
+                    this.ord = ord;
+                }
+
+                public String getUid() {
+                    return uid;
+                }
+
+                public void setUid(String uid) {
+                    this.uid = uid;
+                }
+
+                public String getCre_tm() {
+                    return cre_tm;
+                }
+
+                public void setCre_tm(String cre_tm) {
+                    this.cre_tm = cre_tm;
+                }
+
+                public String getId() {
+                    return id;
+                }
+
+                public void setId(String id) {
+                    this.id = id;
+                }
+
+                public String getPrice() {
+                    return price;
+                }
+
+                public void setPrice(String price) {
+                    this.price = price;
+                }
+
+                public String getMid() {
+                    return mid;
+                }
+
+                public void setMid(String mid) {
+                    this.mid = mid;
+                }
+
+                public String getName() {
+                    return name;
+                }
+
+                public void setName(String name) {
+                    this.name = name;
+                }
+            }*/
         }
     }
 }

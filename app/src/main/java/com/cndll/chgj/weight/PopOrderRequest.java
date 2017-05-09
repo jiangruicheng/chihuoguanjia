@@ -15,14 +15,38 @@ import com.cndll.chgj.util.PopUpViewUtil;
 
 public class PopOrderRequest {
     PopUpViewUtil popUpViewUtil;
-    TextView method, give, delete;
+    TextView first, second, third;
+
+    public void setFirstText(String s) {
+        first.setText(s);
+    }
+
+    public void setFirstVisable(int visable) {
+        first.setVisibility(visable);
+    }
+
+    public void setSecondText(String s) {
+        second.setText(s);
+    }
+
+    public void setSecondVisble(int visable) {
+        second.setVisibility(visable);
+    }
+
+    public void setThirdText(String s) {
+        third.setText(s);
+    }
+
+    public void setThirdVisble(int visable) {
+        third.setVisibility(visable);
+    }
 
     public interface onItemClick {
-        void onMethod();
+        void onFirst(View view);
 
-        void onGive(View view);
+        void onSecond(View view);
 
-        void onDelete();
+        void onThird(View view);
     }
 
     public PopOrderRequest.onItemClick getOnItemClick() {
@@ -34,38 +58,46 @@ public class PopOrderRequest {
     }
 
     onItemClick onItemClick;
-
+    View location;
+    Context context;
+    View view;
     public void init(Context context, View location) {
+        this.context = context;
+        this.location = location;
         popUpViewUtil = PopUpViewUtil.getInstance();
-        View view = LayoutInflater.from(context).inflate(R.layout.popview_order_request, null, false);
-        method = (TextView) view.findViewById(R.id.method);
-        give = (TextView) view.findViewById(R.id.give);
-        delete = (TextView) view.findViewById(R.id.delete);
+        view = LayoutInflater.from(context).inflate(R.layout.popview_order_request, null, false);
+        first = (TextView) view.findViewById(R.id.method);
+        second = (TextView) view.findViewById(R.id.give);
+        third = (TextView) view.findViewById(R.id.delete);
 
-        method.setOnClickListener(new View.OnClickListener() {
+        first.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (onItemClick != null) {
-                    onItemClick.onMethod();
+                    onItemClick.onFirst(v);
                 }
             }
         });
-        give.setOnClickListener(new View.OnClickListener() {
+        second.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (onItemClick != null) {
-                    onItemClick.onGive(v);
+                    onItemClick.onSecond(v);
                 }
             }
         });
-        delete.setOnClickListener(new View.OnClickListener() {
+        third.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (onItemClick != null) {
-                    onItemClick.onDelete();
+                    onItemClick.onThird(v);
                 }
             }
         });
+
+    }
+
+    public void show() {
         int[] locations = new int[2];
         location.getLocationOnScreen(locations);
         locations[0] = locations[0] - popUpViewUtil.getWindowManager(context).getDefaultDisplay().getWidth() / 3;

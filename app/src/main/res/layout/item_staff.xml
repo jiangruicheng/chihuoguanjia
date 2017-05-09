@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:background="@color/white"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_margin="4dp"
+        android:layout_weight="0.5"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="42dp"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@mipmap/avatar" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_margin="4dp"
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/staff"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/satff_password"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/staff_quanxian"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/sting"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_margin="12dp"
+        android:layout_weight="0.7"
+        android:background="@drawable/shape_fillet_solid"
+        android:text="修改"
+        android:textColor="@color/white" />
+</LinearLayout>

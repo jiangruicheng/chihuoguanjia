@@ -95,9 +95,12 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="3" />
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:text="打折权限" />
 
                 <com.cndll.chgj.weight.SelectView
+                    android:id="@+id/is_dicount"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1" />
@@ -112,9 +115,13 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="3" />
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:text="赠送权限" />
 
                 <com.cndll.chgj.weight.SelectView
+
+                    android:id="@+id/is_give"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1" />
@@ -129,9 +136,12 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="3" />
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:text="退菜权限" />
 
                 <com.cndll.chgj.weight.SelectView
+                    android:id="@+id/is_retrun"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1" />
@@ -150,9 +160,12 @@
                     android:id="@+id/textView5"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="3" />
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:text="结账权限" />
 
                 <com.cndll.chgj.weight.SelectView
+                    android:id="@+id/is_order"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1" />
@@ -167,9 +180,12 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="3" />
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:text="报表权限" />
 
                 <com.cndll.chgj.weight.SelectView
+                    android:id="@+id/is_excl"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1" />

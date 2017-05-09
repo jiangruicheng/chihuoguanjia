@@ -5,21 +5,21 @@ package com.cndll.chgj.mvp.mode.bean.response;
  */
 
 public class ResponseOrd extends BaseResponse {
+
     /**
-     * code : 1
-     * data : ’’
-     * extra :
+     * data : {}
      */
 
-    private String data;
+    private DataBean data;
 
-
-    public String getData() {
+    public DataBean getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(DataBean data) {
         this.data = data;
     }
 
+    public static class DataBean {
+    }
 }

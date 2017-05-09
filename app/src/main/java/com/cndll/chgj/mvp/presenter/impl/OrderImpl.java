@@ -110,6 +110,34 @@ public class OrderImpl implements OrderPresenter {
     }
 
     @Override
+    public void updateOreder(RequestOrder order) {
+        AppRequest.getAPI().
+                updateOrd(order).
+                subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
+                subscribe(new MObeserver(view) {
+                    @Override
+                    public void onCompleted() {
+                        super.onCompleted();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        super.onNext(baseResponse);
+                        if (baseResponse.getCode() == 1) {
+                            view.sendSucc();
+                            view.showMesg("更新成功");
+                            // view.setDeshList(((ResponseGetCaipinList) baseResponse).getData());
+                        }
+                    }
+                });
+    }
+
+    @Override
     public void getOrder(RequestGetOrder order) {
         AppRequest.getAPI().
                 getOrd(order).

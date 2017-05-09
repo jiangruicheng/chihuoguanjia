@@ -4,24 +4,51 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="68dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/shape_dialog_fillet_solid"
+            android:text="取消" />
+
+        <Button
+            android:id="@+id/sure"
+            android:layout_width="68dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/shape_fillet_solid"
+            android:text="确定"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="8">
+
         <com.weigan.loopview.LoopView
             android:id="@+id/year"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
+
         <com.weigan.loopview.LoopView
             android:id="@+id/moth"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
+
         <com.weigan.loopview.LoopView
             android:id="@+id/day"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
     </LinearLayout>
 </LinearLayout>

@@ -1,5 +1,7 @@
 package com.cndll.chgj.mvp.mode.bean.response;
 
+import com.cndll.chgj.mvp.mode.bean.request.RequestOrder;
+
 import java.util.List;
 
 /**
@@ -103,8 +105,8 @@ public class ResponseGetOrder extends BaseResponse {
          * unit : 盘
          */
 
-        private List<ItemsBean> items;
-        private List<?> allremarks;
+        private List<ResponseGetCaipinList.DataBean> items;
+        private List<RequestOrder.AllremarksBean> allremarks;
 
         public String getId() {
             return id;
@@ -306,19 +308,19 @@ public class ResponseGetOrder extends BaseResponse {
             this.type_txt = type_txt;
         }
 
-        public List<ItemsBean> getItems() {
+        public List<ResponseGetCaipinList.DataBean> getItems() {
             return items;
         }
 
-        public void setItems(List<ItemsBean> items) {
+        public void setItems(List<ResponseGetCaipinList.DataBean> items) {
             this.items = items;
         }
 
-        public List<?> getAllremarks() {
+        public List<RequestOrder.AllremarksBean> getAllremarks() {
             return allremarks;
         }
 
-        public void setAllremarks(List<?> allremarks) {
+        public void setAllremarks(List<RequestOrder.AllremarksBean> allremarks) {
             this.allremarks = allremarks;
         }
 

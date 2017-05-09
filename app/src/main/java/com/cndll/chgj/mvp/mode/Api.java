@@ -6,6 +6,7 @@ import com.cndll.chgj.mvp.mode.bean.request.RequestAddCaipin;
 import com.cndll.chgj.mvp.mode.bean.request.RequestAddDesk;
 import com.cndll.chgj.mvp.mode.bean.request.RequestAddMethod;
 import com.cndll.chgj.mvp.mode.bean.request.RequestAddPrint;
+import com.cndll.chgj.mvp.mode.bean.request.RequestAddStaff;
 import com.cndll.chgj.mvp.mode.bean.request.RequestDelete;
 import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteCailei;
 import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteCaipin;
@@ -26,6 +27,7 @@ import com.cndll.chgj.mvp.mode.bean.request.RequestUpdaCaipin;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdaDesk;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdateMethod;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdatePrint;
+import com.cndll.chgj.mvp.mode.bean.request.RequestUpdateStaff;
 import com.cndll.chgj.mvp.mode.bean.request.RequestVerify;
 import com.cndll.chgj.mvp.mode.bean.request.RequsetHomeMendianList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseAddPrint;
@@ -36,6 +38,7 @@ import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetDeskList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetOrder;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetStaffList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetStoreList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseHome;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseLogin;
@@ -152,7 +155,22 @@ public interface Api {
     @POST("order/addorder")
     Observable<ResponseOrd> sendOrd(@Body RequestOrder requestAddCailei);
 
+    @POST("order/modifyorder ")
+    Observable<ResponseOrd> updateOrd(@Body RequestOrder requestAddCailei);
+
     @POST("order/orderdetail")
     Observable<ResponseGetOrder> getOrd(@Body RequestGetOrder requestAddCailei);
+
+    @POST("Staff/add")
+    Observable<ResponseAddPrint> addStaff(@Body RequestAddStaff requestAddCailei);
+
+    @POST("Staff/modify")
+    Observable<ResponseAddPrint> updateStaff(@Body RequestUpdateStaff requestAddCailei);
+
+    @POST("Staff/del")
+    Observable<ResponseAddPrint> deleteStaff(@Body RequestDelete requestAddCailei);
+
+    @POST("Staff/getlist")
+    Observable<ResponseGetStaffList> getStaffList(@Body RequestPrintList requestAddCailei);
 
 }

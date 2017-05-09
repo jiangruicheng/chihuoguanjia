@@ -101,21 +101,25 @@ public class PagerLayoutManager extends RecyclerView.LayoutManager {
         }
 
         for (int i = 0; i < getItemCount(); i++) {
-            if (Rect.intersects(displayRect, allItemFrames.get(i))) {
-                View view = recycler.getViewForPosition(i);
-                addView(view);
-                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) view.getLayoutParams();
-                params.width = width;
-                params.height = height;
-                view.setLayoutParams(params);
-                measureChildWithMargins(view, 0, 0);
-                Rect rect = allItemFrames.get(i);
-                layoutDecorated(view, rect.left, rect.top - offsetY, rect.right, rect.bottom - offsetY);
-                Log.d("Loaction " + i + "  ", "recyclerFillAndAttach: " + "" + "\n" +
-                        "left:" + (rect.left) + "\n" +
-                        "top:" + (rect.top - offsetY) + "\n" +
-                        "right:" + (rect.right) + "\n" +
-                        "bottom:" + (rect.bottom - offsetY) + "\n");
+            try {
+                if (Rect.intersects(displayRect, allItemFrames.get(i))) {
+                    View view = recycler.getViewForPosition(i);
+                    addView(view);
+                    RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) view.getLayoutParams();
+                    params.width = width;
+                    params.height = height;
+                    view.setLayoutParams(params);
+                    measureChildWithMargins(view, 0, 0);
+                    Rect rect = allItemFrames.get(i);
+                    layoutDecorated(view, rect.left, rect.top - offsetY, rect.right, rect.bottom - offsetY);
+                    Log.d("Loaction " + i + "  ", "recyclerFillAndAttach: " + "" + "\n" +
+                            "left:" + (rect.left) + "\n" +
+                            "top:" + (rect.top - offsetY) + "\n" +
+                            "right:" + (rect.right) + "\n" +
+                            "bottom:" + (rect.bottom - offsetY) + "\n");
+                }
+            } catch (Exception e) {
+
             }
         }
 

@@ -52,7 +52,7 @@ public class BaseFragment<T extends ListAdapter> extends Fragment {
         if (fragment instanceof BaseView && presenter != null) {
             ((BaseView) fragment).setPresenter(presenter);
         }
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(fragment.getTag()).commit();
+        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.frame, fragment).addToBackStack(fragment.getTag()).commit();
     }
 
     protected void replaceFragment(Fragment fragment, BasePresenter presenter) {
@@ -63,6 +63,8 @@ public class BaseFragment<T extends ListAdapter> extends Fragment {
     }
 
     protected void popBackFragment() {
-        getActivity().getSupportFragmentManager().popBackStack();
+        getActivity().
+                getSupportFragmentManager().
+                popBackStack();
     }
 }
