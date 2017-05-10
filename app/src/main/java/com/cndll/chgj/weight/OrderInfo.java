@@ -6,6 +6,7 @@ import android.widget.TextView;
 import com.cndll.chgj.R;
 import com.cndll.chgj.fragment.OrderDishFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,6 +56,16 @@ public class OrderInfo {
             count = count + orders.get(i).getCount() + orders.get(i).getGiveCount();
             allPrice = allPrice + orders.get(i).getAllPrice();
             givePrice = givePrice + orders.get(i).getGivePrice();
+        }
+        if (order.writeDish != null) {
+            List<OrderDishFragment.Orders.Write> writes = new ArrayList<>(order.writeDish.values());
+            if (order.writeDish != null && order.writeDish.size() > 0) {
+                for (int i = 0; i < writes.size(); i++) {
+                    count = count + Float.valueOf(writes.get(i).getCount()) + Float.valueOf(writes.get(i).getGiveCount());
+                    allPrice = allPrice + Float.valueOf(writes.get(i).getAllPrice());
+                    givePrice = givePrice + Float.valueOf(writes.get(i).getGivePrice());
+                }
+            }
         }
         discountPrice = allPrice - allPrice * order.getDisconut();
         lastPrice = allPrice * order.getDisconut();

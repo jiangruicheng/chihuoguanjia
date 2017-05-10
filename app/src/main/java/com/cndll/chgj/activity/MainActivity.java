@@ -1,7 +1,9 @@
 package com.cndll.chgj.activity;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.util.ArrayMap;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 
@@ -10,8 +12,7 @@ import com.cndll.chgj.fragment.BaseFragment;
 import com.cndll.chgj.fragment.HomeFragment;
 import com.cndll.chgj.mvp.presenter.impl.HomeImpl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,14 +27,17 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (backPressEvents.size() != 0) {
             for (int i = 0; i < backPressEvents.size(); i++) {
-                backPressEvents.get(i).onBackPress();
+                if (BaseFragment.fragmentList.get(BaseFragment.fragmentList.size() - 1).equals((backPressEvents.keyAt(i)))) {
+                    backPressEvents.get(backPressEvents.keyAt(i)).onBackPress();
+                    return;
+                }
             }
-            return;
+
         }
         super.onBackPressed();
     }
 
-    public static List<BackPressEvent> getBackPressEvents() {
+    public static Map<Fragment, BackPressEvent> getBackPressEvents() {
         return backPressEvents;
     }
 
@@ -41,11 +45,11 @@ public class MainActivity extends AppCompatActivity {
         backPressEvents.remove(backPressEvent);
     }
 
-    public static void setBackPressEvent(BackPressEvent backPressEvent) {
-        backPressEvents.add(backPressEvent);
+    public static void setBackPressEvent(BackPressEvent backPressEvent, Fragment fragment) {
+        backPressEvents.put(fragment, backPressEvent);
     }
 
-    public static List<BackPressEvent> backPressEvents = new ArrayList<>();
+    public static ArrayMap<Fragment, BackPressEvent> backPressEvents = new ArrayMap<>();
 
     @Override
 

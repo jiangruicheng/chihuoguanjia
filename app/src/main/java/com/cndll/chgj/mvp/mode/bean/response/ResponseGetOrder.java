@@ -83,7 +83,7 @@ public class ResponseGetOrder extends BaseResponse {
         private String ordernum;
         private Object ym;
         private Object note;
-        private Object writedishs;
+        private List<RequestOrder.WriteDishBean> writedishs;
         private String storename;
         private String type_txt;
         /**
@@ -106,7 +106,7 @@ public class ResponseGetOrder extends BaseResponse {
          */
 
         private List<ResponseGetCaipinList.DataBean> items;
-        private List<RequestOrder.AllremarksBean> allremarks;
+        private List<ResponseGetCaipinList.DataBean.RemarkBean> allremarks;
 
         public String getId() {
             return id;
@@ -284,11 +284,11 @@ public class ResponseGetOrder extends BaseResponse {
             this.note = note;
         }
 
-        public Object getWritedishs() {
+        public List<RequestOrder.WriteDishBean> getWritedishs() {
             return writedishs;
         }
 
-        public void setWritedishs(Object writedishs) {
+        public void setWritedishs(List<RequestOrder.WriteDishBean> writedishs) {
             this.writedishs = writedishs;
         }
 
@@ -316,11 +316,11 @@ public class ResponseGetOrder extends BaseResponse {
             this.items = items;
         }
 
-        public List<RequestOrder.AllremarksBean> getAllremarks() {
+        public List<ResponseGetCaipinList.DataBean.RemarkBean> getAllremarks() {
             return allremarks;
         }
 
-        public void setAllremarks(List<RequestOrder.AllremarksBean> allremarks) {
+        public void setAllremarks(List<ResponseGetCaipinList.DataBean.RemarkBean> allremarks) {
             this.allremarks = allremarks;
         }
 

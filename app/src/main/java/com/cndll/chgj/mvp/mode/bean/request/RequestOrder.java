@@ -70,11 +70,11 @@ public class RequestOrder {
     private String ordernum;
     private Object ym;
     private Object note;
-    private Object writedishs;
+    private List<WriteDishBean> writedishs;
     private String storename;
     private String type_txt;
     private List<ResponseGetCaipinList.DataBean> items;
-    private List<AllremarksBean> allremarks;
+    private List<ResponseGetCaipinList.DataBean.RemarkBean> allremarks;
 
     public String getId() {
         return id;
@@ -274,11 +274,11 @@ public class RequestOrder {
         return this;
     }
 
-    public Object getWritedishs() {
+    public List<WriteDishBean> getWritedishs() {
         return writedishs;
     }
 
-    public RequestOrder setWritedishs(Object writedishs) {
+    public RequestOrder setWritedishs(List<WriteDishBean> writedishs) {
         this.writedishs = writedishs;
         return this;
     }
@@ -310,11 +310,11 @@ public class RequestOrder {
         return this;
     }
 
-    public List<AllremarksBean> getAllremarks() {
+    public List<ResponseGetCaipinList.DataBean.RemarkBean> getAllremarks() {
         return allremarks;
     }
 
-    public RequestOrder setAllremarks(List<AllremarksBean> allremarks) {
+    public RequestOrder setAllremarks(List<ResponseGetCaipinList.DataBean.RemarkBean> allremarks) {
         this.allremarks = allremarks;
         return this;
     }
@@ -356,7 +356,7 @@ public class RequestOrder {
         private String is_over;
         private String name;
         private String dc_id;
-        private RemarkBean remark;
+        private ResponseGetCaipinList.DataBean.RemarkBean remark;
 
         public String getId() {
             return id;
@@ -486,11 +486,11 @@ public class RequestOrder {
             this.dc_id = dc_id;
         }
 
-        public RemarkBean getRemark() {
+        public ResponseGetCaipinList.DataBean.RemarkBean getRemark() {
             return remark;
         }
 
-        public void setRemark(RemarkBean remark) {
+        public void setRemark(ResponseGetCaipinList.DataBean.RemarkBean remark) {
             this.remark = remark;
         }
 
@@ -503,7 +503,7 @@ public class RequestOrder {
 
             private String id;
             private String count;
-            private List<RemarksBean> remarks;
+            private List<ResponseMethod.DataBean> remarks;
 
             public String getId() {
                 return id;
@@ -521,11 +521,11 @@ public class RequestOrder {
                 this.count = count;
             }
 
-            public List<RemarksBean> getRemarks() {
+            public List<ResponseMethod.DataBean> getRemarks() {
                 return remarks;
             }
 
-            public void setRemarks(List<RemarksBean> remarks) {
+            public void setRemarks(List<ResponseMethod.DataBean> remarks) {
                 this.remarks = remarks;
             }
 
@@ -607,6 +607,71 @@ public class RequestOrder {
         }
     }
 
+    public static class WriteDishBean {
+        public String getCount() {
+            return count;
+        }
+
+        public WriteDishBean setCount(String count) {
+            this.count = count;
+            return this;
+        }
+
+        public String getGiveCount() {
+            return giveCount;
+        }
+
+        public WriteDishBean setGiveCount(String giveCount) {
+            this.giveCount = giveCount;
+            return this;
+        }
+
+        public String getIsWrite() {
+            return isWrite;
+        }
+
+        public WriteDishBean setIsWrite(String isWrite) {
+            this.isWrite = isWrite;
+            return this;
+        }
+
+        public ResponseGetCaipinList.DataBean.RemarkBean getRemarks() {
+            return remarks;
+        }
+
+        public WriteDishBean setRemarks(ResponseGetCaipinList.DataBean.RemarkBean remarks) {
+            this.remarks = remarks;
+            return this;
+        }
+
+        public String getPrice() {
+            return price;
+        }
+
+        public WriteDishBean setPrice(String price) {
+            this.price = price;
+            return this;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public WriteDishBean setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        private String count;
+        private String giveCount;
+        private String isWrite;
+        private ResponseGetCaipinList.DataBean.RemarkBean remarks;
+        private String price;
+        private String name;
+
+
+    }
+
     public static class AllremarksBean {
         /**
          * id : 81
@@ -647,14 +712,14 @@ public class RequestOrder {
 
       /*  public static class RemarksBeanX {
             *//**
-             * ord : 2
-             * uid : 24
-             * cre_tm : 1494001501
-             * id : 51
-             * price : 2.00
-             * mid : 51
-             * name : 加冰
-             *//*
+         * ord : 2
+         * uid : 24
+         * cre_tm : 1494001501
+         * id : 51
+         * price : 2.00
+         * mid : 51
+         * name : 加冰
+         *//*
 
             private String ord;
             private String uid;

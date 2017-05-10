@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +23,6 @@ import com.cndll.chgj.adapter.DcListAdapter;
 import com.cndll.chgj.adapter.DeshListAdapter;
 import com.cndll.chgj.adapter.OnItemClickLister;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
-import com.cndll.chgj.mvp.mode.bean.request.RequestAddMethod;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetCaipinList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetOrder;
 import com.cndll.chgj.mvp.mode.bean.request.RequestOrder;
@@ -31,6 +31,7 @@ import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetOrder;
 import com.cndll.chgj.mvp.presenter.OrderPresenter;
+import com.cndll.chgj.mvp.presenter.impl.NoteImpl;
 import com.cndll.chgj.mvp.presenter.impl.OrderImpl;
 import com.cndll.chgj.mvp.view.OrderView;
 import com.cndll.chgj.util.LinearPagerLayoutManager;
@@ -97,7 +98,13 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     @OnClick(R.id.yaoqiu)
     void onclick_yaoqiu() {
         if (orders != null) {
-            if (orders.getOrder(orders.getCurrPosition()).isSend) {
+            boolean iss;
+            if (isOrderWrite) {
+                iss = orders.writeDish.get(orders.getCurrPosition()).isSend();
+            } else {
+                iss = orders.getOrder(orders.getCurrPosition()).isSend;
+            }
+            if (iss) {
                 final PopOrderRequest popOrderRequest = new PopOrderRequest();
                 popOrderRequest.init(getContext(), yaoqiu);
                 popOrderRequest.setFirstText("赠送");
@@ -106,36 +113,46 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                     popOrderRequest.setThirdVisble(View.GONE);
                 } else {
                     popOrderRequest.setThirdText("取消赠送");
-
                 }
                 popOrderRequest.setOnItemClick(new PopOrderRequest.onItemClick() {
                     @Override
                     public void onFirst(View view) {
-                        orders.getOrder(orders.getCurrPosition()).addGiveCount();
+                        if (!isOrderWrite) {
+                            orders.getOrder(orders.getCurrPosition()).addGiveCount();
+                        } else {
+                            orders.writeDish.get(orders.getCurrPosition()).addGiveCount();
+                        }
                         if (orders.getOrder(orders.getCurrPosition()).getGiveCount() == 0) {
                             popOrderRequest.setThirdVisble(View.GONE);
                         } else {
                             popOrderRequest.setThirdVisble(View.VISIBLE);
                             popOrderRequest.setThirdText("取消赠送");
                         }
-                        setOrderInfolayout(orders.getCurrPosition());
+                        setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
                     }
 
                     @Override
                     public void onSecond(View view) {
-                        orders.getOrders().remove(orders.getCurrPosition());
+                        if (!isOrderWrite)
+                            orders.getOrders().remove(orders.getCurrPosition());
+                        else
+                            orders.removeWriteDish(orders.getCurrPosition());
                         if (orders.getOrders().size() == 0) {
                             orders.setCurrPosition(null);
                         } else {
                             orders.setCurrPosition(orders.getOrders().keyAt(0));
                         }
-                        setOrderInfolayout(orders.getCurrPosition());
+                        setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
                     }
 
                     @Override
                     public void onThird(View view) {
-                        orders.getOrder(orders.getCurrPosition()).cancelGive();
-                        setOrderInfolayout(orders.getCurrPosition());
+                        if (!isOrderWrite) {
+                            orders.getOrder(orders.getCurrPosition()).cancelGive();
+                        } else {
+                            orders.writeDish.get(orders.getCurrPosition()).cancelGive();
+                        }
+                        setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
 
                     }
                 });
@@ -145,16 +162,27 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 popOrderRequest.setOnItemClick(new PopOrderRequest.onItemClick() {
                     @Override
                     public void onFirst(View v) {
-
+                        replaceFragmentAddToBackStack(NoteFragment.newInstance(null, null).setOrder(orders.getOrder(orders.getCurrPosition())), new NoteImpl());
+                        popOrderRequest.dismiss();
                     }
 
                     @Override
                     public void onSecond(View view) {
                         if (orders != null) {
-                            orders.getOrder(orders.getCurrPosition()).addGiveCount();
-                            setOrderInfolayout(orders.getCurrPosition());
-                            if (orders.getOrder(orders.getCurrPosition()).getCount() == 0) {
-                                view.setBackgroundColor(Color.GRAY);
+                            if (!isOrderWrite) {
+                                orders.getOrder(orders.getCurrPosition()).addGiveCount();
+                            } else {
+                                orders.writeDish.get(orders.getCurrPosition()).addGiveCount();
+                            }
+                            setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
+                            if (!isOrderWrite) {
+                                if (orders.getOrder(orders.getCurrPosition()).getCount() == 0) {
+                                    view.setBackgroundColor(Color.GRAY);
+                                }
+                            } else {
+                                if (orders.writeDish.get(orders.getCurrPosition()).getCount() == 0) {
+                                    view.setBackgroundColor(Color.GRAY);
+                                }
                             }
                         }
                     }
@@ -164,7 +192,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                         orders.removeOrders(orders.getCurrPosition());
                         if (orders.getOrders().size() != 0) {
                             orders.setCurrPosition(orders.getOrders().keyAt(0));
-                            setOrderInfolayout(orders.getCurrPosition());
+                            setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
                         } else {
                             orderItemMesglayout.setMethod("").setCount("1").setName("").setPrice("");
                             orderInfolayout.setAllMoney("0").setCount("0").setDiscount("0").setGive("0").setLastMoney("0");
@@ -260,7 +288,9 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                             setE_tm(responseOrd.getData().getE_tm()).
                             setOrdernum(responseOrd.getData().getOrdernum()).
                             setOrdnum(responseOrd.getData().getOrdnum()).
-                            setYm(responseOrd.getData().getYm()).setWritedishs(responseOrd.getData().getWritedishs()).setAllremarks(responseOrd.getData().getAllremarks())
+                            setYm(responseOrd.getData().getYm()).
+                            setWritedishs(orders.getWriteDish()).
+                            setAllremarks(orders.getAllMethod())
                             .setStorename(responseOrd.getData().getStorename())
                             .setType_txt(responseOrd.getData().getType_txt())
                     );
@@ -297,8 +327,101 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
     @BindView(R.id.other)
     Button other;
+
+    @OnClick(R.id.other)
+    void onclick_other() {
+        final PopviewOther popviewOther = new PopviewOther();
+        popviewOther.init();
+        popviewOther.popUpViewUtil.setOnDismissAction(new PopUpViewUtil.OnDismissAction() {
+            @Override
+            public void onDismiss() {
+                popviewOther.unbinder.unbind();
+            }
+        });
+        popviewOther.writeDesh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View view = LayoutInflater.from(getContext()).inflate(R.layout.popview_order_write, null, false);
+                final EditText name, number, price;
+                Button cancel, delete, save;
+                final PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
+                name = (EditText) view.findViewById(R.id.name);
+                number = (EditText) view.findViewById(R.id.number);
+                price = (EditText) view.findViewById(R.id.price);
+                cancel = (Button) view.findViewById(R.id.cancel);
+                delete = (Button) view.findViewById(R.id.delete);
+                save = (Button) view.findViewById(R.id.save);
+                delete.setVisibility(View.GONE);
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popUpViewUtil.dismiss();
+                    }
+                });
+                save.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        RequestOrder.WriteDishBean writeDishBean = new RequestOrder.WriteDishBean();
+                        if (orders == null) {
+                            orders = new Orders();
+                        }
+                        orders.addWriteDish(name.getText().toString(), new Orders.Write().setItemsBean(writeDishBean.
+                                setIsWrite("1").
+                                setCount(number.getText().toString()).
+                                setGiveCount("0").
+                                setPrice(price.getText().toString()).
+                                setName(name.getText().toString())).
+                                setCount(Float.valueOf(number.getText().toString())).setGiveCount(0));
+                        isOrderWrite = true;
+                        orders.setCurrPosition(name.getText().toString());
+                        setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
+                        numberEdit.setText(orders.writeDish.get(orders.getCurrPosition()).getCount() + "");
+
+                    }
+                });
+                popUpViewUtil.popListWindow(send, view,
+                        popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getWidth(),
+                        popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 3,
+                        Gravity.NO_GRAVITY, null);
+            }
+        });
+        popviewOther.popUpViewUtil.popListWindow(send, popviewOther.view,
+                popviewOther.popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getWidth(),
+                popviewOther.popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 3,
+                Gravity.BOTTOM, null);
+    }
+
     @BindView(R.id.dazhe)
     Button dazhe;
+
+    @OnClick(R.id.dazhe)
+    void onclick_discount() {
+        popUpkey(0, "", new KeyWeight.OnKeyClick() {
+            @Override
+            public void onKeyCancel(String s) {
+
+            }
+
+            @Override
+            public void onKeySure(String s) {
+
+                if (StringHelp.isFloat(s)) {
+                    if (Float.valueOf(s) <= 0.99 && Float.valueOf(s) >= 0.1) {
+                        orders.setDisconut(Float.valueOf(s));
+                        setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onKeyNub(String s) {
+
+            }
+        });
+    }
+
     @BindView(R.id.pay)
     Button pay;
 
@@ -325,8 +448,12 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 public void onKeySure(String s) {
 
                     if (StringHelp.isFloat(s)) {
-                        orders.getOrder(orders.getCurrPosition()).setCount(Float.valueOf(s));
-                        setOrderInfolayout(orders.getCurrPosition());
+                        if (!isOrderWrite) {
+                            orders.getOrder(orders.getCurrPosition()).setCount(Float.valueOf(s));
+                        } else {
+                            orders.writeDish.get(orders.getCurrPosition()).setCount(Float.valueOf(s));
+                        }
+                        setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
                     }
 
 
@@ -420,7 +547,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     private OrderInfo orderInfolayout;
     private OrderItemMesg orderItemMesglayout;
 
-    private MainActivity.BackPressEvent backPressEvent = new MainActivity.BackPressEvent() {
+    public MainActivity.BackPressEvent backPressEvent = new MainActivity.BackPressEvent() {
         @Override
         public void onBackPress() {
             if (!isSend) {
@@ -458,14 +585,15 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     private DeshListAdapter deshListAdapter;
     private DcListAdapter dcListAdapter;
     private Orders orders;
+    private boolean isOrderWrite = false;
 
     @Override
     public void onResume() {
         super.onResume();
         if (orders != null) {
-            setOrderInfolayout(orders.getCurrPosition());
+            setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
         }
-        MainActivity.setBackPressEvent(backPressEvent);
+        MainActivity.setBackPressEvent(backPressEvent, this);
     }
 
     @Override
@@ -520,7 +648,9 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 }
                 orders.setCurrPosition(deshListAdapter.getMitems().get(position).getId());
                 numberEdit.setText(orders.getOrder(orders.getCurrPosition()).getCount() + "");
-                setOrderInfolayout(deshListAdapter.getMitems().get(position).getId());
+                isOrderWrite = false;
+
+                setOrderInfolayout(deshListAdapter.getMitems().get(position).getId(), isOrderWrite);
                 isSend = false;
             }
         });
@@ -534,10 +664,27 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         presenter.getDcList(new RequestPrintList().setUid(AppMode.getInstance().getUid()).setMid(AppMode.getInstance().getMid()));
     }
 
-    private void setOrderInfolayout(Orders.Order id) {
+    private void setOrderInfolayout(String id, boolean iswrite) {
+        if (iswrite) {
+            setOrderInfolayoutWrite(id);
+        } else {
+            setOrderInfolayout(id);
+        }
+    }
+
+    private void setOrderInfolayoutWrite(String id) {
+        if (id == null) {
+            orderItemMesglayout.setMethod("").setCount("1").setName("").setPrice("");
+        }
         if (orderItemMesglayout != null)
-            orderItemMesglayout.setPrice(id.getAllPrice() + "").
-                    setName(id.getDeshName() + id.getDeshPrice()).setMethod(id.getMethodName() + id.getMethodPrice());
+            Log.d("at", "setOrderInfolayoutWrite: " + orders.writeDish.get(id));
+        orderItemMesglayout.setPrice(orders.writeDish.get(id).getAllPrice() + "").
+                setName(orders.writeDish.get(id).getDeshName() + orders.writeDish.get(id).getDeshPrice()).setCount(orders.writeDish.get(id).getCount() + "");
+        if (orders.writeDish.get(id).getItemsBean().getRemarks() != null) {
+            orderItemMesglayout.setMethod(orders.writeDish.get(id).getItemsBean().getRemarks().getRemarks().get(0).getName() + orders.writeDish.get(id).getItemsBean().getRemarks().getRemarks().get(0).getPrice());
+        } else {
+            orderItemMesglayout.setMethod(" ");
+        }
         if (orderInfolayout != null) {
             orderInfolayout.setMesg(orders);
         }
@@ -663,7 +810,15 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             orders = new Orders();
         }
         this.responseOrd = getOrder;
+        List<RequestOrder.WriteDishBean> writedishs = null;
+        if (getOrder.getData().getWritedishs() != null) {
+            writedishs = getOrder.getData().getWritedishs();
+            for (int i = 0; i < writedishs.size(); i++) {
+                orders.addWriteDish(writedishs.get(i).getName(), new Orders.Write().setItemsBean(writedishs.get(i)).setSend(isSend).setCount(Float.valueOf(writedishs.get(i).getCount())).setGiveCount(Float.valueOf(writedishs.get(i).getGiveCount())));
+            }
+        }
         List<ResponseGetCaipinList.DataBean> itemsBeen = getOrder.getData().getItems();
+        orders.setDisconut(Float.valueOf(getOrder.getData().getZk()));
         for (int i = 0; i < itemsBeen.size(); i++) {
             if (orders.getOrders().containsKey(itemsBeen.get(i).getId() + "" + itemsBeen.get(i).getDc_id())) {
                 orders.getOrder(itemsBeen.get(i).getId() + "" + itemsBeen.get(i).getDc_id()).setSend(true).
@@ -677,8 +832,18 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                                         getGiveCount()));
             }
         }
-        orders.setCurrPosition(orders.getOrders().keyAt(0));
-        setOrderInfolayout(orders.getCurrPosition());
+        if (itemsBeen.size() != 0) {
+            isOrderWrite = false;
+            orders.setCurrPosition(orders.getOrders().keyAt(0));
+        } else if (writedishs != null && writedishs.size() != 0) {
+            isOrderWrite = true;
+            orders.setCurrPosition(orders.writeDish.keyAt(0));
+
+        } else {
+            orders.setCurrPosition(null);
+        }
+
+        setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
         isSend = true;
     }
 
@@ -702,6 +867,35 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             return orders;
         }
 
+        public List<RequestOrder.WriteDishBean> getWriteDish() {
+            List<RequestOrder.WriteDishBean> w = new ArrayList<>();
+            if (writeDish != null) {
+                List<Write> s = new ArrayList<>(writeDish.values());
+                for (int i = 0; i < s.size(); i++) {
+                    w.add(s.get(i).getItemsBean());
+                }
+                return w;
+            } else {
+                return null;
+            }
+
+        }
+
+        public ArrayMap<String, Write> writeDish;
+
+        private void addWriteDish(String id, Write writeDishBean) {
+            if (writeDish == null) {
+                writeDish = new ArrayMap<>();
+            }
+            writeDish.put(id, writeDishBean);
+        }
+
+        private void removeWriteDish(String id) {
+            if (writeDish != null) {
+                writeDish.remove(id);
+            }
+        }
+
         private ArrayMap<String, Order> orders = new ArrayMap<>();
 
         public float getDisconut() {
@@ -712,7 +906,19 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             this.disconut = disconut;
         }
 
+        List<ResponseGetCaipinList.DataBean.RemarkBean> allRemarklist;
         private float disconut = 1;
+
+        public List<ResponseGetCaipinList.DataBean.RemarkBean> getAllMethod() {
+            if (allRemarklist == null) {
+                allRemarklist = new ArrayList<>();
+            }
+            for (int i = 0; i < orders.size(); i++) {
+                allRemarklist.add(orders.get(orders.keyAt(i)).getItemsBean().getRemark());
+            }
+
+            return allRemarklist;
+        }
 
         public String getCurrPosition() {
 
@@ -752,6 +958,109 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 itemsBeen.add(orderList.get(i).getItemsBean());
             }
             return itemsBeen;
+        }
+
+        public static class Write {
+            public Write setCount(float count) {
+                this.count = count;
+                itemsBean.setCount((this.count) + "");
+                return this;
+            }
+
+
+            public float getCount() {
+                return count;
+            }
+
+            public boolean isSend() {
+                return isSend;
+            }
+
+            public Write setSend(boolean send) {
+                isSend = send;
+                return this;
+            }
+
+            boolean isSend = false;
+            float count = 1;
+
+            public float getGiveCount() {
+                return giveCount;
+            }
+
+            float giveCount;
+
+            public Write setItemsBean(RequestOrder.WriteDishBean itemsBean) {
+                this.itemsBean = itemsBean;
+                return this;
+            }
+
+            public RequestOrder.WriteDishBean getItemsBean() {
+                return itemsBean;
+            }
+
+            RequestOrder.WriteDishBean itemsBean;/*= new RequestOrder.ItemsBean().setDish_num(1);*/
+
+            public Write setGiveCount(float count) {
+                this.giveCount = count;
+                itemsBean.setGiveCount((int) giveCount + "");
+                return this;
+            }
+
+            public Write cancelGive() {
+                count = count + giveCount;
+                giveCount = 0;
+                itemsBean.setGiveCount((int) giveCount + "");
+                itemsBean.setCount((int) count + "");
+                return this;
+            }
+
+            public Write addGiveCount() {
+                if (count >= 1) {
+                    giveCount = giveCount + 1;
+                    count = count - 1;
+                }
+                itemsBean.setCount(count + "");
+                itemsBean.setGiveCount((int) (this.giveCount) + "");
+                return this;
+            }
+
+            public String getDeshName() {
+                return itemsBean.getName();
+            }
+
+            public float getDeshPrice() {
+                return count * Float.valueOf(itemsBean.getPrice());
+            }
+
+            public String getMethodName() {
+                if (itemsBean.getRemarks() != null && itemsBean.getRemarks().getRemarks().size() > 0) {
+                    return itemsBean.getRemarks().getRemarks().get(0).getName();
+                }
+                return "";
+            }
+
+            public String getMethodPrice() {
+                if (itemsBean.getRemarks() != null && itemsBean.getRemarks().getRemarks().size() > 0) {
+                    return itemsBean.getRemarks().getRemarks().get(0).getPrice();
+                }
+                return "";
+            }
+
+            public float getGivePrice() {
+                return giveCount * Float.valueOf(itemsBean.getPrice());
+            }
+
+            public float getAllPrice() {
+                float price = 0;
+                if (itemsBean.getRemarks() != null && itemsBean.getRemarks().getRemarks() != null)
+                    for (int i = 0; i < itemsBean.getRemarks().getRemarks().size(); i++) {
+                        if (itemsBean.getRemarks().getRemarks().get(i).getPrice() != null)
+                            price = price + Float.valueOf(itemsBean.getRemarks().getRemarks().get(i).getPrice());
+                    }
+                return price + Float.valueOf(itemsBean.getPrice()) * count;
+
+            }
         }
 
         public static class Order {
@@ -794,7 +1103,6 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             }
 
             ResponseGetCaipinList.DataBean itemsBean;/*= new RequestOrder.ItemsBean().setDish_num(1);*/
-            List<RequestAddMethod> methods = new ArrayList<>();
 
             public Order setGiveCount(float count) {
                 this.giveCount = count;
@@ -829,15 +1137,15 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             }
 
             public String getMethodName() {
-                if (methods != null && methods.size() > 0) {
-                    return methods.get(0).getName();
+                if (itemsBean.getRemark() != null && itemsBean.getRemark().getRemarks().size() > 0) {
+                    return itemsBean.getRemark().getRemarks().get(0).getName();
                 }
                 return "";
             }
 
             public String getMethodPrice() {
-                if (methods != null && methods.size() > 0) {
-                    return methods.get(0).getPrice();
+                if (itemsBean.getRemark() != null && itemsBean.getRemark().getRemarks().size() > 0) {
+                    return itemsBean.getRemark().getRemarks().get(0).getPrice();
                 }
                 return "";
             }
@@ -848,13 +1156,36 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
             public float getAllPrice() {
                 float price = 0;
-                for (int i = 0; i < methods.size(); i++) {
-                    price = price + Float.valueOf(methods.get(i).getPrice());
-                }
+                if (itemsBean.getRemark() != null && itemsBean.getRemark().getRemarks() != null)
+                    for (int i = 0; i < itemsBean.getRemark().getRemarks().size(); i++) {
+                        if (itemsBean.getRemark().getRemarks().get(i).getPrice() != null)
+                            price = price + Float.valueOf(itemsBean.getRemark().getRemarks().get(i).getPrice());
+                    }
                 return price + Float.valueOf(itemsBean.getPrice()) * count;
 
             }
         }
     }
 
+    public class PopviewOther {
+        PopUpViewUtil popUpViewUtil;
+        View view;
+        @BindView(R.id.write_desh)
+        TextView writeDesh;
+        @BindView(R.id.remove_desk)
+        TextView removeDesk;
+        @BindView(R.id.trun_desk)
+        TextView trunDesk;
+        @BindView(R.id.print_order)
+        TextView printOrder;
+        @BindView(R.id.cancel)
+        TextView cancel;
+        Unbinder unbinder;
+
+        private void init() {
+            popUpViewUtil = PopUpViewUtil.getInstance();
+            view = LayoutInflater.from(getContext()).inflate(R.layout.popview_oderdesh_other, null, false);
+            unbinder = ButterKnife.bind(this, view);
+        }
+    }
 }

@@ -10,7 +10,6 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.cndll.chgj.R;
 import com.cndll.chgj.adapter.ListAdapter;
@@ -61,12 +60,15 @@ public class BaseFragment<T extends ListAdapter> extends Fragment {
         if (fragment instanceof BaseView && presenter != null) {
             ((BaseView) fragment).setPresenter(presenter);
         }
-        fragmentList.add(fragment);
-        for (int i = 0; i < fragmentList.size() - 1; i++) {
-            fragmentManager.beginTransaction().hide(fragment);
+        if (fragmentList.size() > 0) {
+            fragmentManager.beginTransaction().hide(fragmentList.get(fragmentList.size() - 1)).commit();
         }
-        /*fragmentTransaction.commit();*/
+        fragmentList.add(fragment);
         fragmentManager.beginTransaction().add(R.id.frame, fragment).addToBackStack(fragment.getTag()).commit();
+        /*for (int i = 0; i < fragmentList.size(); i++) {
+            fragmentManager.beginTransaction().hide(fragment).commit();
+        }*/
+        /*fragmentTransaction.commit();*/
     }
 
     protected void replaceFragment(Fragment fragment, BasePresenter presenter) {
@@ -79,8 +81,11 @@ public class BaseFragment<T extends ListAdapter> extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        fragmentList.remove(fragmentList.get(fragmentList.size() - 1));
-        Toast.makeText(getActivity(), fragmentList.get(fragmentList.size() - 1).getClass().toString() + "" + fragmentList.size(), Toast.LENGTH_SHORT).show();
+        if (fragmentList.size() > 0) {
+            fragmentList.remove(fragmentList.get(fragmentList.size() - 1));
+            getActivity().getSupportFragmentManager().beginTransaction().show(fragmentList.get(fragmentList.size() - 1)).commit();
+        }
+        //  Toast.makeText(getActivity(), fragmentList.get(fragmentList.size() - 1).getClass().toString() + "" + fragmentList.size(), Toast.LENGTH_SHORT).show();
     }
 
     protected void popBackFragment() {
