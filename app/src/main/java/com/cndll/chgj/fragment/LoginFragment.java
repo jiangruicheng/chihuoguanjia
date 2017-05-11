@@ -1,6 +1,7 @@
 package com.cndll.chgj.fragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,7 +62,7 @@ public class LoginFragment extends BaseFragment implements LoginView {
 
     @OnClick(R.id.login)
     void onclick_login() {
-        presenter.login(new RequestLogin().setCode(number.getText().toString()).setTel(tel.getText().toString()).setPassword(password.getText().toString()));
+        presenter.login(new RequestLogin().setCode(number.getText().toString()).setTel(tel.getText().toString()).setPassword(password.getText().toString()), getContext());
     }
 
     @BindView(R.id.register)
@@ -116,6 +119,17 @@ public class LoginFragment extends BaseFragment implements LoginView {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         unbinder = ButterKnife.bind(this, view);
+        title.setText("登录");
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popBackFragment();
+            }
+        });
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("CHGJ", MODE_PRIVATE);
+        info.setText(sharedPreferences.getString("mdname", ""));
+        number.setText(sharedPreferences.getString("mdcode", ""));
+        tel.setText(sharedPreferences.getString("tel", ""));
         return view;
     }
 

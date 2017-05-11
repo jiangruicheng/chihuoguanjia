@@ -120,10 +120,17 @@ public class DeskEditorFragment extends BaseFragment<DeskListAdapter> implements
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_desk_editor, container, false);
         unbinder = ButterKnife.bind(this, view);
+        title.setText("桌台情况");
         adapter = new DeskListAdapter(getActivity(), new OnStartDragListener() {
             @Override
             public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
                 mItemTouchHelper.startDrag(viewHolder);
+            }
+        });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popBackFragment();
             }
         });
         adapter.setOnItemClick(new ListAdapter.OnItemsClick() {

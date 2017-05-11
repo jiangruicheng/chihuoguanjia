@@ -121,10 +121,17 @@ public class CaiPinFunctionFragment extends BaseFragment<CaipinFunctionListAdpat
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cai_pin_function, container, false);
         unbinder = ButterKnife.bind(this, view);
+        title.setText("做法情况");
         adapter = new CaipinFunctionListAdpater(getContext(), new OnStartDragListener() {
             @Override
             public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
                 mItemTouchHelper.startDrag(viewHolder);
+            }
+        });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popBackFragment();
             }
         });
         setListViewAdapter(list);

@@ -48,7 +48,7 @@ public class DeshListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
             holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid);
         }
         if ((position / 3) % 5 == 1) {
-            holder.parent.setBackgroundResource(R.drawable.shape_button_yellow);
+            holder.parent.setBackgroundResource(R.drawable.shape_verify_button);
         }
         if ((position / 3) % 5 == 2) {
             holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid_green);

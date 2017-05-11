@@ -51,7 +51,7 @@ public class DcListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
             holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid);
         } else {
-            holder.parent.setBackgroundResource(R.drawable.shape_button_yellow);
+            holder.parent.setBackgroundResource(R.drawable.shape_verify_button);
         }
         holder.price.setVisibility(View.GONE);
         holder.parent.setOnClickListener(new View.OnClickListener() {

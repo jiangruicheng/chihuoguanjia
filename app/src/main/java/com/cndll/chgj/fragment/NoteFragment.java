@@ -153,6 +153,13 @@ public class NoteFragment extends BaseFragment implements NoteView {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_note, container, false);
         unbinder = ButterKnife.bind(this, view);
+        title.setText("备注要求");
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popBackFragment();
+            }
+        });
         allMethodAdapter = new AllMethodAdapter();
         selectMethodAdapter = new SelectMethodAdapter();
         selectMethod.setAdapter(selectMethodAdapter);

@@ -1,21 +1,24 @@
 package com.cndll.chgj.fragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
@@ -23,10 +26,10 @@ import butterknife.Unbinder;
  * Activities that contain this fragment must implement the
  * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FindPasswordFragment#newInstance} factory method to
+ * Use the {@link PayAppFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FindPasswordFragment extends BaseFragment {
+public class PayAppFragment extends BaseFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -43,15 +46,31 @@ public class FindPasswordFragment extends BaseFragment {
     LinearLayout titleTow;
     @BindView(R.id.right_text)
     TextView rightText;
-    @BindView(R.id.password)
-    EditText password;
-    @BindView(R.id.verify)
-    EditText verify;
-    @BindView(R.id.get_verify)
-    Button getVerify;
-    @BindView(R.id.sure)
-    Button sure;
+    @BindView(R.id.one)
+    TextView one;
+    @BindView(R.id.three)
+    TextView three;
+    @BindView(R.id.six)
+    TextView six;
+    @BindView(R.id.year)
+    TextView year;
+    @BindView(R.id.all)
+    TextView all;
+    @BindView(R.id.pay)
+    TextView pay;
+
+    @OnClick(R.id.pay)
+    void onclick_pay() {
+        if (name == " ") {
+
+        } else {
+            gotoWebview();
+        }
+    }
+
     Unbinder unbinder;
+    @BindView(R.id.bottons)
+    LinearLayout bottons;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -59,7 +78,7 @@ public class FindPasswordFragment extends BaseFragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public FindPasswordFragment() {
+    public PayAppFragment() {
         // Required empty public constructor
     }
 
@@ -69,11 +88,11 @@ public class FindPasswordFragment extends BaseFragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FindPasswordFragment.
+     * @return A new instance of fragment PayAppFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static FindPasswordFragment newInstance(String param1, String param2) {
-        FindPasswordFragment fragment = new FindPasswordFragment();
+    public static PayAppFragment newInstance(String param1, String param2) {
+        PayAppFragment fragment = new PayAppFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -90,20 +109,88 @@ public class FindPasswordFragment extends BaseFragment {
         }
     }
 
+    View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            setTextStyle(bottons, v.getId());
+            switch (v.getId()) {
+                case R.id.one:
+                    month = 1;
+                    name = "一个月";
+                    break;
+                case R.id.three:
+                    month = 3;
+                    name = "三个月";
+                    break;
+                case R.id.six:
+                    month = 6;
+                    name = "六个月";
+                    break;
+                case R.id.year:
+                    month = 12;
+                    name = "一年";
+                    break;
+                case R.id.all:
+                    month = 70 * 12;
+                    name = "70年";
+                    break;
+            }
+        }
+    };
+
+    private void setOnClick(View view) {
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                ((ViewGroup) view).getChildAt(i).setOnClickListener(onClickListener);
+            }
+        }
+    }
+
+    private void setTextStyle(View view, @IdRes int id) {
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                if (((ViewGroup) view).getChildAt(i).getId() == id) {
+                    ((TextView) ((ViewGroup) view).getChildAt(i)).setTextColor(Color.WHITE);
+                    ((ViewGroup) view).getChildAt(i).setBackgroundResource(R.drawable.shape_button_yellow);
+                } else {
+                    ((TextView) ((ViewGroup) view).getChildAt(i)).setTextColor(Color.rgb(255, 0xd1, 00));
+                    ((ViewGroup) view).getChildAt(i).setBackgroundResource(R.drawable.shape_fillet_button_yellow);
+                }
+            }
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_find_password, container, false);
+        View view = inflater.inflate(R.layout.fragment_pay_app, container, false);
         unbinder = ButterKnife.bind(this, view);
-        title.setText("找回密码");
+        setOnClick(bottons);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 popBackFragment();
             }
         });
+       /* rightText.setVisibility(View.VISIBLE);
+        rightText.setText("记录");*/
+        title.setText("软件缴费");
         return view;
+    }
+
+    int money = 50, month;
+    String name = " ";
+
+    private void gotoWebview() {
+        String url = String.format(
+                "http://dc.idc.zhonxing.com/web/spay?money=%d&uid=%s&mid=%s&month=%d&name=%s",
+                money * month,
+                AppMode.getInstance().getUid(),
+                AppMode.getInstance().getMid(),
+                month, name);
+        replaceFragmentAddToBackStack(WebViewFragment.newInstance(url, "软件缴费"), null);
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -116,7 +203,7 @@ public class FindPasswordFragment extends BaseFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        /*if (context instanceof OnFragmentInteractionListener) {
+       /* if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()

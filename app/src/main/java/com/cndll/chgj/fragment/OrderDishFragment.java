@@ -134,9 +134,9 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                     @Override
                     public void onSecond(View view) {
                         if (!isOrderWrite)
-                            orders.getOrders().remove(orders.getCurrPosition());
+                            orders.getOrder(orders.getCurrPosition()).backDesh();
                         else
-                            orders.removeWriteDish(orders.getCurrPosition());
+                            orders.writeDish.get(orders.getCurrPosition()).backDesh();
                         if (orders.getOrders().size() == 0) {
                             orders.setCurrPosition(null);
                         } else {
@@ -189,7 +189,11 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
                     @Override
                     public void onThird(View v) {
-                        orders.removeOrders(orders.getCurrPosition());
+                        if (isOrderWrite) {
+                            orders.removeWriteDish(orders.getCurrPosition());
+                        } else {
+                            orders.removeOrders(orders.getCurrPosition());
+                        }
                         if (orders.getOrders().size() != 0) {
                             orders.setCurrPosition(orders.getOrders().keyAt(0));
                             setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
@@ -255,6 +259,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                titleRight.setText("人数：" + personCount.getText().toString());
                 if (orderId == 0) {
                     presenter.sendOrder(new RequestOrder().
                             setItems(orders.getItems()).
@@ -319,7 +324,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     @OnClick(R.id.info)
     void onclick_info() {
         if (orders != null && orders.getAll() != null) {
-            replaceFragmentAddToBackStack(OrderInfoFragment.newInstance(null, null).setOrderList(orders), null);
+            replaceFragmentAddToBackStack(OrderInfoFragment.newInstance(titleLeft.getText().toString(), titleRight.getText().toString()).setOrderList(orders), null);
         } else {
             replaceFragmentAddToBackStack(OrderInfoFragment.newInstance(null, null), null);
         }
@@ -550,7 +555,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     public MainActivity.BackPressEvent backPressEvent = new MainActivity.BackPressEvent() {
         @Override
         public void onBackPress() {
-            if (!isSend) {
+            if (Orders.isChange) {
                 MesgShow.showMesg("", "有菜品未送单，确定退出？", info, new MesgShow.OnButtonListener() {
                     @Override
                     public void onListerner() {
@@ -574,12 +579,39 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         View view = inflater.inflate(R.layout.fragment_order_desh, container, false);
         unbinder = ButterKnife.bind(this, view);
         initlistview();
+        title.setText("");
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popBackFragment();
+            }
+        });
+        if (responseOrd != null) {
+            titleRight.setText("人数：" + responseOrd.getData().getPernum());
+        } else {
+            titleRight.setText("人数：2");
+        }
+        titleLeft.setText(" 桌台: " + tabname);
+
         orderInfolayout = new OrderInfo();
         orderItemMesglayout = new OrderItemMesg();
         orderItemMesglayout.init(itemMesg);
         orderInfolayout.init(orderInfo);
 
         return view;
+    }
+
+    @Override
+    public void reload() {
+        super.reload();
+        if (orders.getOrders().size() > 0) {
+            isOrderWrite = false;
+            orders.setCurrPosition(orders.getOrders().keyAt(0));
+        } else {
+            isOrderWrite = true;
+            orders.setCurrPosition(orders.writeDish.keyAt(0));
+        }
+        setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
     }
 
     private DeshListAdapter deshListAdapter;
@@ -845,6 +877,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
         setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
         isSend = true;
+        Orders.isChange = false;
     }
 
     /**
@@ -863,6 +896,8 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     }
 
     public static class Orders {
+        public static boolean isChange = false;
+
         public ArrayMap<String, Order> getOrders() {
             return orders;
         }
@@ -888,12 +923,14 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 writeDish = new ArrayMap<>();
             }
             writeDish.put(id, writeDishBean);
+            isChange = true;
         }
 
-        private void removeWriteDish(String id) {
+        public void removeWriteDish(String id) {
             if (writeDish != null) {
                 writeDish.remove(id);
             }
+            isChange = true;
         }
 
         private ArrayMap<String, Order> orders = new ArrayMap<>();
@@ -933,10 +970,12 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
         public void setOrders(String id, Order order) {
             orders.put(id, order);
+            isChange = true;
         }
 
         public void removeOrders(String id) {
             orders.remove(id);
+            isChange = true;
         }
 
         public boolean Iscontan(String id) {
@@ -964,6 +1003,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             public Write setCount(float count) {
                 this.count = count;
                 itemsBean.setCount((this.count) + "");
+                isChange = true;
                 return this;
             }
 
@@ -1004,7 +1044,19 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             public Write setGiveCount(float count) {
                 this.giveCount = count;
                 itemsBean.setGiveCount((int) giveCount + "");
+                isChange = true;
                 return this;
+            }
+
+            public void backDesh() {
+                if (count > 0) {
+                    count = count - 1;
+                } else if (giveCount > 0) {
+                    giveCount = giveCount - 1;
+                }
+                itemsBean.setGiveCount((int) giveCount + "");
+                itemsBean.setCount((int) count + "");
+                isChange = true;
             }
 
             public Write cancelGive() {
@@ -1012,6 +1064,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 giveCount = 0;
                 itemsBean.setGiveCount((int) giveCount + "");
                 itemsBean.setCount((int) count + "");
+                isChange = true;
                 return this;
             }
 
@@ -1022,6 +1075,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 }
                 itemsBean.setCount(count + "");
                 itemsBean.setGiveCount((int) (this.giveCount) + "");
+                isChange = true;
                 return this;
             }
 
@@ -1067,9 +1121,20 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             public Order setCount(float count) {
                 this.count = count;
                 itemsBean.setCount((this.count) + "");
+                isChange = true;
                 return this;
             }
 
+            public void backDesh() {
+                if (count > 0) {
+                    count = count - 1;
+                } else if (giveCount > 0) {
+                    giveCount = giveCount - 1;
+                }
+                itemsBean.setGiveCount((int) giveCount);
+                itemsBean.setCount((int) count + "");
+                isChange = true;
+            }
 
             public float getCount() {
                 return count;
@@ -1107,6 +1172,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             public Order setGiveCount(float count) {
                 this.giveCount = count;
                 itemsBean.setGiveCount((int) giveCount);
+                isChange = true;
                 return this;
             }
 
@@ -1115,6 +1181,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 giveCount = 0;
                 itemsBean.setGiveCount((int) giveCount);
                 itemsBean.setCount((int) count + "");
+                isChange = true;
                 return this;
             }
 
@@ -1125,6 +1192,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 }
                 itemsBean.setCount(count + "");
                 itemsBean.setGiveCount((int) (this.giveCount));
+                isChange = true;
                 return this;
             }
 

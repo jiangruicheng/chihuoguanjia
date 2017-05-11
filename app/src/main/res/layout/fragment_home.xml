@@ -2,8 +2,8 @@
     android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
+    android:orientation="vertical"
     android:weightSum="20">
 
     <LinearLayout
@@ -393,9 +393,8 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="30dp"
-
                 android:scaleType="fitXY"
-                android:src="@mipmap/mode_not_desk" />
+                android:src="@mipmap/mode_yes_desk" />
         </RelativeLayout>
 
         <LinearLayout

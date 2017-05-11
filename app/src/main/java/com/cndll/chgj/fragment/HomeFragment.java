@@ -23,7 +23,10 @@ import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.cndll.chgj.R;
 import com.cndll.chgj.adapter.MendianListAdpater;
+import com.cndll.chgj.mvp.MObeserver;
+import com.cndll.chgj.mvp.mode.AppRequest;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
+import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseMendianHomeList;
 import com.cndll.chgj.mvp.presenter.HomePresenter;
 import com.cndll.chgj.mvp.presenter.impl.AddDeskImpl;
@@ -46,6 +49,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 
 /**
@@ -110,9 +115,10 @@ public class HomeFragment extends BaseFragment implements HomeView {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                AppMode.getInstance().setMid(mendianListAdpater.getList().get(position).getId());
             }
         });
+
         PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
         popUpViewUtil.setOnDismissAction(new PopUpViewUtil.OnDismissAction() {
             @Override
@@ -158,6 +164,12 @@ public class HomeFragment extends BaseFragment implements HomeView {
     CircleImageView searchBear;
     @BindView(R.id.setting)
     CircleImageView setting;
+
+    @OnClick(R.id.setting)
+    void onclick_setting() {
+        replaceFragmentAddToBackStack(SetingFragment.newInstance(null, null), null);
+    }
+
     @BindView(R.id.kefu)
     ImageButton kefu;
 
@@ -295,8 +307,40 @@ public class HomeFragment extends BaseFragment implements HomeView {
         logoff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragmentAddToBackStack(LoginFragment.newInstance(null, null), new LoginImpl());
+                if (AppMode.getInstance().isLoading()) {
+                    MesgShow.showMesg("", "确定退出登录?", logoff, new MesgShow.OnButtonListener() {
+                        @Override
+                        public void onListerner() {
 
+                        }
+                    }, new MesgShow.OnButtonListener() {
+                        @Override
+                        public void onListerner() {
+                            AppRequest.getAPI().logoff(AppMode.getInstance().getUid()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(null) {
+                                @Override
+                                public void onCompleted() {
+                                    super.onCompleted();
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    super.onError(e);
+                                }
+
+                                @Override
+                                public void onNext(BaseResponse baseResponse) {
+                                    super.onNext(baseResponse);
+                                    if (baseResponse.getCode() == 1) {
+                                        showMesg("退出成功");
+                                        AppMode.getInstance().setLoading(false);
+                                    }
+                                }
+                            });
+                        }
+                    }, true);
+                } else {
+                    replaceFragmentAddToBackStack(LoginFragment.newInstance(null, null), new LoginImpl());
+                }
             }
         });
         return view;

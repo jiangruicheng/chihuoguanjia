@@ -1,6 +1,7 @@
 package com.cndll.chgj.fragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,25 +9,33 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.mvp.MObeserver;
+import com.cndll.chgj.mvp.mode.AppRequest;
+import com.cndll.chgj.mvp.mode.bean.info.AppMode;
+import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
+import com.cndll.chgj.weight.ButtonSwitch;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FindPasswordFragment#newInstance} factory method to
+ * Use the {@link SetingFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FindPasswordFragment extends BaseFragment {
+public class SetingFragment extends BaseFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -43,15 +52,45 @@ public class FindPasswordFragment extends BaseFragment {
     LinearLayout titleTow;
     @BindView(R.id.right_text)
     TextView rightText;
-    @BindView(R.id.password)
-    EditText password;
-    @BindView(R.id.verify)
-    EditText verify;
-    @BindView(R.id.get_verify)
-    Button getVerify;
-    @BindView(R.id.sure)
-    Button sure;
+
+
     Unbinder unbinder;
+    @BindView(R.id.payapp)
+    TextView payapp;
+
+    @OnClick(R.id.payapp)
+    void onclick_payapp() {
+        replaceFragmentAddToBackStack(PayAppFragment.newInstance(null, null), null);
+    }
+
+    @BindView(R.id.save)
+    Button save;
+
+    @OnClick(R.id.save)
+    void onclick_save() {
+        AppRequest.getAPI().setting(AppMode.getInstance().getUid(),
+                AppMode.getInstance().getMid(),
+                backSet.isLeftInt() + "", printSet.isLeftInt() + "",
+                discountSet.isLeftInt() + "").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(null) {
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+            }
+
+            @Override
+            public void onNext(BaseResponse baseResponse) {
+                super.onNext(baseResponse);
+                if (baseResponse.getCode() == 1) {
+                    Toast.makeText(getContext(), "sucess", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -59,7 +98,7 @@ public class FindPasswordFragment extends BaseFragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public FindPasswordFragment() {
+    public SetingFragment() {
         // Required empty public constructor
     }
 
@@ -69,11 +108,11 @@ public class FindPasswordFragment extends BaseFragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FindPasswordFragment.
+     * @return A new instance of fragment SetingFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static FindPasswordFragment newInstance(String param1, String param2) {
-        FindPasswordFragment fragment = new FindPasswordFragment();
+    public static SetingFragment newInstance(String param1, String param2) {
+        SetingFragment fragment = new SetingFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -90,19 +129,45 @@ public class FindPasswordFragment extends BaseFragment {
         }
     }
 
+    private ButtonSwitch backSet, printSet, discountSet;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_find_password, container, false);
+        View view = inflater.inflate(R.layout.fragment_seting, container, false);
         unbinder = ButterKnife.bind(this, view);
-        title.setText("找回密码");
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 popBackFragment();
             }
         });
+        View view1 = view.findViewById(R.id.back_set);
+        View view2 = view.findViewById(R.id.print_set);
+        View view3 = view.findViewById(R.id.discount_set);
+        backSet = new ButtonSwitch();
+        printSet = new ButtonSwitch();
+        discountSet = new ButtonSwitch();
+        backSet.setText("是", "否");
+        backSet.setTextColor(Color.WHITE, Color.GRAY);
+        backSet.setRightBackground(R.drawable.shape_dialog_fillet_solid);
+        backSet.setLeftBackground(R.drawable.shape_fillet_solid_blue);
+        printSet.setText("一菜一单", "一桌一单");
+        printSet.setTextColor(Color.WHITE, Color.GRAY);
+        printSet.setRightBackground(R.drawable.shape_dialog_fillet_solid);
+        printSet.setLeftBackground(R.drawable.shape_fillet_solid_blue);
+        discountSet.setText("是", "否");
+        discountSet.setTextColor(Color.WHITE, Color.GRAY);
+        discountSet.setRightBackground(R.drawable.shape_dialog_fillet_solid);
+        discountSet.setLeftBackground(R.drawable.shape_fillet_solid_blue);
+        backSet.init(view1);
+        printSet.init(view2);
+        discountSet.init(view3);
+        backSet.setLeft(true);
+        printSet.setLeft(true);
+        discountSet.setLeft(true);
+        title.setText("高级设置");
         return view;
     }
 

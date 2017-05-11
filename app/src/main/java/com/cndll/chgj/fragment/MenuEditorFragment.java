@@ -210,7 +210,8 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
         Button delete = (Button) view.findViewById(R.id.delete);
         Button cancel = (Button) view.findViewById(R.id.cancel);
         if (position > -1) {
-            name.setHint(((ResponseGetCaileiList.DataBean) ((CaileiFragment) fragments.get(CAILEI)).getAdapter().getMitems().get(position)).getName());
+            name.setText(((ResponseGetCaileiList.DataBean) ((CaileiFragment) fragments.get(CAILEI)).getAdapter().getMitems().get(position)).getName());
+            /*name.selectAll();*/
         }
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -305,6 +306,13 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
         View view = inflater.inflate(R.layout.fragment_menu_editor, container, false);
         unbinder = ButterKnife.bind(this, view);
         fragments = new HashMap<>();
+        title.setText("菜类编辑");
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popBackFragment();
+            }
+        });
         fragments.put(CAILEI, CaileiFragment.newInstance(null, null));
         fragments.put(CAIPIN, CaipinFragment.newInstance(null, null));
         fragmentManager = getActivity().getSupportFragmentManager();

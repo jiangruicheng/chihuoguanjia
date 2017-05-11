@@ -143,6 +143,13 @@ public class RegisterFragment extends BaseFragment<RegisterListAdpater> implemen
         mItemTouchHelper = new ItemTouchHelper(callback);
         list.setHasFixedSize(true);
         list.setAdapter(adapter);
+        title.setText("我的门店");
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popBackFragment();
+            }
+        });
         list.setLayoutManager(new LinearLayoutManager(getActivity()));
         mItemTouchHelper.attachToRecyclerView(list);
         if (AppMode.getInstance().getUid() != null) {

@@ -112,6 +112,13 @@ public class PaySwitchFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_pay_switch, container, false);
         unbinder = ButterKnife.bind(this, view);
         orderInfolayout = new OrderInfo();
+        title.setText("收款");
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popBackFragment();
+            }
+        });
         orderInfolayout.init(orderInfo);
         weixin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +126,7 @@ public class PaySwitchFragment extends BaseFragment {
                 type = 2;
                 if (orderID != 0)
                     gotoWebView();
+                titlename = "微信收款";
             }
         });
         zhifubao.setOnClickListener(new View.OnClickListener() {
@@ -127,15 +135,18 @@ public class PaySwitchFragment extends BaseFragment {
                 type = 1;
                 if (orderID != 0)
                     gotoWebView();
+                titlename = "支付宝收款";
             }
         });
         setOrderInfolayout();
         return view;
     }
 
+    String titlename;
+
     private void gotoWebView() {
         String url = String.format("http://dc.idc.zhonxing.com/web/costpay?id=%d&type=%d&mid=%s", orderID, type, AppMode.getInstance().getMid());
-        replaceFragmentAddToBackStack(WebViewFragment.newInstance(url, null), null);
+        replaceFragmentAddToBackStack(WebViewFragment.newInstance(url, titlename), null);
     }
 
     private int type;

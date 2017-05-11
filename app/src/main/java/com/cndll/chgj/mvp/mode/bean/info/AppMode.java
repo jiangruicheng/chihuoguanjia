@@ -37,6 +37,17 @@ public class AppMode {
     private String uid = "3";
     private boolean isBoss;
 
+    public synchronized boolean isLoading() {
+        return isLoading;
+    }
+
+    public synchronized AppMode setLoading(boolean loading) {
+        isLoading = loading;
+        return this;
+    }
+
+    private boolean isLoading;
+
     public synchronized boolean isBoss() {
         return isBoss;
     }

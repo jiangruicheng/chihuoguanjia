@@ -52,10 +52,10 @@ public class BaseFragment<T extends ListAdapter> extends Fragment {
         mItemTouchHelper.attachToRecyclerView(view);
     }
 
-    public static List<Fragment> fragmentList = new ArrayList<>();
+    public static List<BaseFragment> fragmentList = new ArrayList<>();
 
 
-    protected void replaceFragmentAddToBackStack(Fragment fragment, BasePresenter presenter) {
+    protected void replaceFragmentAddToBackStack(BaseFragment fragment, BasePresenter presenter) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         if (fragment instanceof BaseView && presenter != null) {
             ((BaseView) fragment).setPresenter(presenter);
@@ -65,10 +65,11 @@ public class BaseFragment<T extends ListAdapter> extends Fragment {
         }
         fragmentList.add(fragment);
         fragmentManager.beginTransaction().add(R.id.frame, fragment).addToBackStack(fragment.getTag()).commit();
-        /*for (int i = 0; i < fragmentList.size(); i++) {
-            fragmentManager.beginTransaction().hide(fragment).commit();
-        }*/
-        /*fragmentTransaction.commit();*/
+
+    }
+
+    public void reload() {
+
     }
 
     protected void replaceFragment(Fragment fragment, BasePresenter presenter) {
@@ -83,9 +84,9 @@ public class BaseFragment<T extends ListAdapter> extends Fragment {
         super.onStop();
         if (fragmentList.size() > 0) {
             fragmentList.remove(fragmentList.get(fragmentList.size() - 1));
+            fragmentList.get(fragmentList.size() - 1).reload();
             getActivity().getSupportFragmentManager().beginTransaction().show(fragmentList.get(fragmentList.size() - 1)).commit();
         }
-        //  Toast.makeText(getActivity(), fragmentList.get(fragmentList.size() - 1).getClass().toString() + "" + fragmentList.size(), Toast.LENGTH_SHORT).show();
     }
 
     protected void popBackFragment() {

@@ -32,10 +32,14 @@ public class ButtonSwitch {
         isLeft = left;
         if (left) {
             this.left.setBackgroundResource(leftBackground);
+            this.left.setTextColor(leftTextColor);
             right.setBackgroundResource(rightBackground);
+            right.setTextColor(rightTextColor);
         } else {
             this.left.setBackgroundResource(rightBackground);
+            this.left.setTextColor(rightTextColor);
             right.setBackgroundResource(leftBackground);
+            right.setTextColor(leftTextColor);
         }
     }
 
@@ -79,6 +83,8 @@ public class ButtonSwitch {
             public void onClick(View v) {
                 isLeft = true;
                 left.setBackgroundResource(leftBackground);
+                left.setTextColor(leftTextColor);
+                right.setTextColor(rightTextColor);
                 right.setBackgroundResource(rightBackground);
             }
         });
@@ -88,6 +94,8 @@ public class ButtonSwitch {
                 isLeft = false;
                 left.setBackgroundResource(rightBackground);
                 right.setBackgroundResource(leftBackground);
+                right.setTextColor(leftTextColor);
+                left.setTextColor(rightTextColor);
             }
         });
     }

@@ -1,5 +1,8 @@
 package com.cndll.chgj.mvp.presenter.impl;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.cndll.chgj.mvp.MObeserver;
 import com.cndll.chgj.mvp.mode.AppRequest;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
@@ -25,7 +28,7 @@ public class LoginImpl implements LoginPresenter {
     }
 
     @Override
-    public void login(final RequestLogin login) {
+    public void login(final RequestLogin login, final Context context) {
         AppRequest.getAPI().login(login).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(view) {
             @Override
             public void onCompleted() {
@@ -43,7 +46,12 @@ public class LoginImpl implements LoginPresenter {
                 if (baseResponse instanceof ResponseLogin) {
                     if ((baseResponse).getCode() == 1) {
                         view.loginSucces();
-                        AppMode.getInstance().
+                        SharedPreferences.Editor editor = context.getSharedPreferences("CHGJ", Context.MODE_PRIVATE).edit();
+                        editor.putString("mdname", ((ResponseLogin) baseResponse).getData().getMdname());
+                        editor.putString("mdcode", ((ResponseLogin) baseResponse).getData().getCode());
+                        editor.putString("tel", login.getTel());
+                        editor.commit();
+                        AppMode.getInstance().setLoading(true).
                                 setMid(((ResponseLogin) baseResponse).getData().getMid()).
                                 setToken(((ResponseLogin) baseResponse).getData().getToken()).
                                 setUid(((ResponseLogin) baseResponse).getData().getUid()).

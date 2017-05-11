@@ -105,6 +105,13 @@ public class DeskFragment extends BaseFragment implements AddDeskView {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_desk, container, false);
         unbinder = ButterKnife.bind(this, view);
+        title.setText("管咸事");
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popBackFragment();
+            }
+        });
         adapter = new OrderDeskListAdapter();
         adapter.setOnItemClickLister(new OnItemClickLister() {
             @Override

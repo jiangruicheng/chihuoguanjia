@@ -54,6 +54,8 @@ import com.cndll.chgj.mvp.mode.bean.response.ResponseVerify;
 import java.util.List;
 
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import rx.Observable;
@@ -62,6 +64,14 @@ import rx.Observable;
  * Created by jiang_ruicheng on 16/10/27.
  */
 public interface Api {
+    @FormUrlEncoded
+    @POST("System/advset")
+    Observable<ResponseCailei> setting(@Field("uid") String uid, @Field("mid") String mid, @Field("tcis_print") String tcis_print, @Field("cd_method") String cd_method, @Field("dis_zk") String dis_zk);
+
+    @FormUrlEncoded
+    @POST("user/loginout")
+    Observable<ResponseCailei> logoff(@Field("uid") String uid);
+
     @POST("Store/getstoreinfo/")
     Observable<ResponseHome> getHomeInfo(@Body RequestHomeInfo info);
 

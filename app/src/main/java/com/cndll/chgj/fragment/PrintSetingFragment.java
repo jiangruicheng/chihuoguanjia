@@ -151,6 +151,13 @@ public class PrintSetingFragment extends BaseFragment implements PrintView {
         unbinder = ButterKnife.bind(this, view);
         adatper = new PrintAdatper();
         list.setAdapter(adatper);
+        title.setText("打印设置");
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popBackFragment();
+            }
+        });
         presenter.getPrintList(new RequestPrintList().setUid(AppMode.getInstance().getUid()).setMid(AppMode.getInstance().getMid()));
         return view;
     }

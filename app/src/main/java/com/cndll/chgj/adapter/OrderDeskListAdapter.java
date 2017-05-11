@@ -47,7 +47,7 @@ public class OrderDeskListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
             holder.price.setText(items.get(position).getMoney());
             holder.number.setText(items.get(position).getNum());
         } else {
-            holder.parent.setBackgroundResource(R.drawable.shape_button_yellow);
+            holder.parent.setBackgroundResource(R.drawable.shape_verify_button);
             holder.price.setText("");
             holder.number.setText("");
         }

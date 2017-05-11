@@ -72,6 +72,13 @@ public class StaffFragment extends BaseFragment implements StaffView {
     void onclick_register() {
         final PopviewStaff popviewStaff = new PopviewStaff();
         popviewStaff.show();
+        title.setText("我的员工");
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popBackFragment();
+            }
+        });
         popviewStaff.cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
