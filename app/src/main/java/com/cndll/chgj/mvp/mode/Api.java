@@ -30,6 +30,7 @@ import com.cndll.chgj.mvp.mode.bean.request.RequestUpdatePrint;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdateStaff;
 import com.cndll.chgj.mvp.mode.bean.request.RequestVerify;
 import com.cndll.chgj.mvp.mode.bean.request.RequsetHomeMendianList;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseAddOrd;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseAddPrint;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseArea;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseCailei;
@@ -163,7 +164,7 @@ public interface Api {
     Observable<ResponseGetDeskList> getDeskList(@Body RequestGetDeskList requestAddCailei);
 
     @POST("order/addorder")
-    Observable<ResponseOrd> sendOrd(@Body RequestOrder requestAddCailei);
+    Observable<ResponseAddOrd> sendOrd(@Body RequestOrder requestAddCailei);
 
     @POST("order/modifyorder ")
     Observable<ResponseOrd> updateOrd(@Body RequestOrder requestAddCailei);

@@ -401,30 +401,34 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
     @OnClick(R.id.dazhe)
     void onclick_discount() {
-        popUpkey(0, "", new KeyWeight.OnKeyClick() {
-            @Override
-            public void onKeyCancel(String s) {
+        if (!Orders.isChange) {
+            popUpkey(0, "", new KeyWeight.OnKeyClick() {
+                @Override
+                public void onKeyCancel(String s) {
 
-            }
-
-            @Override
-            public void onKeySure(String s) {
-
-                if (StringHelp.isFloat(s)) {
-                    if (Float.valueOf(s) <= 0.99 && Float.valueOf(s) >= 0.1) {
-                        orders.setDisconut(Float.valueOf(s));
-                        setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
-                    }
                 }
 
+                @Override
+                public void onKeySure(String s) {
 
-            }
+                    if (StringHelp.isFloat(s)) {
+                        if (Float.valueOf(s) <= 0.99 && Float.valueOf(s) >= 0.1) {
+                            orders.setDisconut(Float.valueOf(s));
+                            setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
+                        }
+                    }
 
-            @Override
-            public void onKeyNub(String s) {
 
-            }
-        });
+                }
+
+                @Override
+                public void onKeyNub(String s) {
+
+                }
+            });
+        } else {
+            MesgShow.showMesg("", "有菜品未送单,请先送单", dazhe, null, null, false);
+        }
     }
 
     @BindView(R.id.pay)
@@ -432,9 +436,13 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
     @OnClick(R.id.pay)
     void onclick_pay() {
-        if (orderId != 0) {
-            replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(orderId).setOrders(orders), null);
+        if (!Orders.isChange) {
+            if (orderId != 0) {
+                replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(orderId).setOrders(orders), null);
 
+            }
+        } else {
+            MesgShow.showMesg("", "有菜品未送单,请先送单", dazhe, null, null, false);
         }
     }
 

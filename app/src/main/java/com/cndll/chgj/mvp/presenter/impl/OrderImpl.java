@@ -7,6 +7,7 @@ import com.cndll.chgj.mvp.mode.bean.request.RequestGetOrder;
 import com.cndll.chgj.mvp.mode.bean.request.RequestOrder;
 import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
 import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseAddOrd;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetOrder;
@@ -103,6 +104,7 @@ public class OrderImpl implements OrderPresenter {
                         super.onNext(baseResponse);
                         if (baseResponse.getCode() == 1) {
                             view.sendSucc();
+                            getOrder(new RequestGetOrder().setId(((ResponseAddOrd) baseResponse).getData().getOid()));
                             // view.setDeshList(((ResponseGetCaipinList) baseResponse).getData());
                         }
                     }
@@ -110,7 +112,7 @@ public class OrderImpl implements OrderPresenter {
     }
 
     @Override
-    public void updateOreder(RequestOrder order) {
+    public void updateOreder(final RequestOrder order) {
         AppRequest.getAPI().
                 updateOrd(order).
                 subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
@@ -131,6 +133,7 @@ public class OrderImpl implements OrderPresenter {
                         if (baseResponse.getCode() == 1) {
                             view.sendSucc();
                             view.showMesg("更新成功");
+                            getOrder(new RequestGetOrder().setId(Integer.valueOf(order.getId())));
                             // view.setDeshList(((ResponseGetCaipinList) baseResponse).getData());
                         }
                     }
