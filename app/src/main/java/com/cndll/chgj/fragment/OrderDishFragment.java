@@ -34,6 +34,7 @@ import com.cndll.chgj.mvp.presenter.OrderPresenter;
 import com.cndll.chgj.mvp.presenter.impl.NoteImpl;
 import com.cndll.chgj.mvp.presenter.impl.OrderImpl;
 import com.cndll.chgj.mvp.view.OrderView;
+import com.cndll.chgj.util.HorizontalPageLayoutManager;
 import com.cndll.chgj.util.LinearPagerLayoutManager;
 import com.cndll.chgj.util.PagerLayoutManager;
 import com.cndll.chgj.util.PagingScrollHelper;
@@ -233,16 +234,69 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
     @BindView(R.id.query)
     Button query;
+    DeshListAdapter queryListAdapter;
 
     @OnClick(R.id.query)
     void onclick_query() {
         PopUpViewUtil popUpQuery = PopUpViewUtil.getInstance();
         View view = LayoutInflater.from(getContext()).inflate(R.layout.popview_orderdesh_query, null, false);
         View key = view.findViewById(R.id.key);
+        popUpQuery.setOnDismissAction(new PopUpViewUtil.OnDismissAction() {
+            @Override
+            public void onDismiss() {
+                queryListAdapter = null;
+            }
+        });
+        RecyclerView list = (RecyclerView) view.findViewById(R.id.desh_list);
+        if (queryListAdapter == null) {
+            queryListAdapter = new DeshListAdapter();
+        }
+        queryListAdapter.setOnItemClickLister(new OnItemClickLister() {
+            @Override
+            public void OnItemClick(View view, int position) {
+                if (orders == null) {
+                    orders = new Orders();
+                }
+                if (orders.Iscontan(queryListAdapter.getMitems().get(position).getId())) {
+
+                } else {
+                    Orders.Order order = new Orders.Order();
+                    order.setItemsBean(queryListAdapter.getMitems().get(position).
+                            setCount(1 + ""));
+                    orders.setOrders(queryListAdapter.getMitems().get(position).getId(), order);
+
+                }
+                orders.setCurrPosition(queryListAdapter.getMitems().get(position).getId());
+                numberEdit.setText(orders.getOrder(orders.getCurrPosition()).getCount() + "");
+                isOrderWrite = false;
+
+                setOrderInfolayout(queryListAdapter.getMitems().get(position).getId(), isOrderWrite);
+                isSend = false;
+            }
+        });
+        list.setAdapter(queryListAdapter);
+        HorizontalPageLayoutManager manager = new HorizontalPageLayoutManager(1, 3);
+        list.setLayoutManager(manager);
         KeyWeight keyWeight = new KeyWeight();
         keyWeight.setKey(key);
         keyWeight.setChilder(true);
         keyWeight.setShowHintText("输入菜品查询码，首字母查询点餐");
+        keyWeight.setOnKeyClick(new KeyWeight.OnKeyClick() {
+            @Override
+            public void onKeyCancel(String s) {
+
+            }
+
+            @Override
+            public void onKeySure(String s) {
+
+            }
+
+            @Override
+            public void onKeyNub(String s) {
+                presenter.getDeshList(new RequestGetCaipinList().setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()).setName(s));
+            }
+        });
         keyWeight.init(getContext(), view, KeyWeight.Mode_NoButton);
         int[] locations = new int[2];
         deshList.getLocationOnScreen(locations);
@@ -774,6 +828,10 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
     @Override
     public void setDeshList(List<ResponseGetCaipinList.DataBean> deshList) {
+        if (queryListAdapter != null) {
+            queryListAdapter.setMitems(deshList);
+            return;
+        }
         deshListAdapter.setMitems(deshList);
     }
 
