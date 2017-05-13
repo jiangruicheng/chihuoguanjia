@@ -77,8 +77,20 @@ public class NoteFragment extends BaseFragment implements NoteView {
 
     @BindView(R.id.cancel)
     Button cancel;
+
+    @OnClick(R.id.cancel)
+    void onclick_cancel() {
+        popBackFragment();
+    }
+
     @BindView(R.id.makesure)
     Button makesure;
+
+    @OnClick(R.id.makesure)
+    void onclick_makesure() {
+        setNote();
+    }
+
     Unbinder unbinder;
 
     // TODO: Rename and change types of parameters
@@ -130,21 +142,45 @@ public class NoteFragment extends BaseFragment implements NoteView {
 
     private OrderDishFragment.Orders.Order order;
 
+    public NoteFragment setWrite(OrderDishFragment.Orders.Write write) {
+        this.write = write;
+        return this;
+    }
+
+    private OrderDishFragment.Orders.Write write;
+    private boolean isWrite;
     private AllMethodAdapter allMethodAdapter;
     private SelectMethodAdapter selectMethodAdapter;
 
     @Override
     public void onStop() {
         super.onStop();
-        if (order.getItemsBean().getRemark() == null) {
-            order.getItemsBean().setRemark(new ResponseGetCaipinList.DataBean.RemarkBean());
+
+    }
+
+    private void setNote() {
+        if (write != null) {
+            if (write.getItemsBean().getRemarks() == null) {
+                write.getItemsBean().setRemarks(new ResponseGetCaipinList.DataBean.RemarkBean());
+            }
+            if (write.getItemsBean().getRemarks().getRemarks() == null) {
+                write.getItemsBean().getRemarks().setRemarks(new ArrayList<ResponseMethod.DataBean>());
+            }
+            write.itemsBean.getRemarks().setRemarks(selectMethodAdapter.getMitems());
+            write.itemsBean.getRemarks().setCount(write.getCount() + "");
+            write.itemsBean.getRemarks().setId(write.getItemsBean().getName());
+        } else {
+            if (order.getItemsBean().getRemark() == null) {
+                order.getItemsBean().setRemark(new ResponseGetCaipinList.DataBean.RemarkBean());
+            }
+            if (order.getItemsBean().getRemark().getRemarks() == null) {
+                order.getItemsBean().getRemark().setRemarks(new ArrayList<ResponseMethod.DataBean>());
+            }
+            order.itemsBean.getRemark().setRemarks(selectMethodAdapter.getMitems());
+            order.itemsBean.getRemark().setCount(order.getCount() + "");
+            order.itemsBean.getRemark().setId(order.getItemsBean().getId());
         }
-        if (order.getItemsBean().getRemark().getRemarks() == null) {
-            order.getItemsBean().getRemark().setRemarks(new ArrayList<ResponseMethod.DataBean>());
-        }
-        order.itemsBean.getRemark().setRemarks(selectMethodAdapter.getMitems());
-        order.itemsBean.getRemark().setCount(order.getCount() + "");
-        order.itemsBean.getRemark().setId(order.getItemsBean().getId());
+        popBackFragment();
     }
 
     @Override

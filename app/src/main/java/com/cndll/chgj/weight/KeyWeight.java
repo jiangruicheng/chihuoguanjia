@@ -5,6 +5,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
@@ -17,23 +18,62 @@ import com.cndll.chgj.util.PopUpViewUtil;
 public class KeyWeight {
 
     private PopUpViewUtil popUpViewUtil;
+
+    public void setKey(View key) {
+        this.key = key;
+    }
+
     private View key;
 
+    public void setChilder(boolean childer) {
+        isChilder = childer;
+    }
+
+    private boolean isChilder;
     private TextView show;
     private TextView abcKey;
     private TextView numberKey;
     public final static int Mode_NoButton = 1;
     public final static int Mode_OnlyNumb = 2;
+    boolean isButtonShow;
 
+    public void buttonShowIs(boolean is) {
+        isButtonShow = is;
+    }
+
+    String showHint;
+
+    public void setShowHintText(String s) {
+        showHint = s;
+    }
+
+    String cancelText;
+
+    public void setCancelText(String s) {
+        cancelText = s;
+    }
+
+    String sureText;
+
+    public void setSureText(String s) {
+        sureText = s;
+    }
 
     public void init(Context context, View location, int Mode) {
         if (popUpViewUtil == null)
             popUpViewUtil = PopUpViewUtil.getInstance();
         if (key == null) {
             key = LayoutInflater.from(context).inflate(R.layout.popview_key, null, false);
-            setOnclick(key);
         }
+        setOnclick(key);
+        Button cancel, sure;
+        cancel = (Button) key.findViewById(R.id.cancel);
+        sure = (Button) key.findViewById(R.id.sure);
+        cancel.setText(cancelText);
+        sure.setText(sureText);
         TextView tran = (TextView) key.findViewById(R.id.tran);
+        TextView show = (TextView) key.findViewById(R.id.show);
+        show.setHint(showHint);
         View layout = key.findViewById(R.id.buttonlayout);
         if (Mode == Mode_NoButton) {
             layout.setVisibility(View.GONE);
@@ -41,20 +81,22 @@ public class KeyWeight {
         if (Mode == Mode_OnlyNumb) {
             tran.setText(".");
         }
-        if (location != null) {
-            int[] locations = new int[2];
-            location.getLocationOnScreen(locations);
-            locations[1] = locations[1] - popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 2;
-            popUpViewUtil.popListWindow(location, key,
-                    popUpViewUtil.getWindowManager(context).getDefaultDisplay().getWidth(),
-                    popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 2,
-                    Gravity.NO_GRAVITY, locations);
+        if (!isChilder) {
+            if (location != null) {
+                int[] locations = new int[2];
+                location.getLocationOnScreen(locations);
+                locations[1] = locations[1] - popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 2;
+                popUpViewUtil.popListWindow(location, key,
+                        popUpViewUtil.getWindowManager(context).getDefaultDisplay().getWidth(),
+                        popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 2,
+                        Gravity.NO_GRAVITY, locations);
 
-        } else {
-            popUpViewUtil.popListWindow(location, key,
-                    popUpViewUtil.getWindowManager(context).getDefaultDisplay().getWidth(),
-                    popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 2,
-                    Gravity.NO_GRAVITY,null);
+            } else {
+                popUpViewUtil.popListWindow(location, key,
+                        popUpViewUtil.getWindowManager(context).getDefaultDisplay().getWidth(),
+                        popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 2,
+                        Gravity.NO_GRAVITY, null);
+            }
         }
         popUpViewUtil.setOnDismissAction(new PopUpViewUtil.OnDismissAction() {
             @Override

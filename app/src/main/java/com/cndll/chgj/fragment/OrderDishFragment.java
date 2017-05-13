@@ -162,7 +162,11 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 popOrderRequest.setOnItemClick(new PopOrderRequest.onItemClick() {
                     @Override
                     public void onFirst(View v) {
-                        replaceFragmentAddToBackStack(NoteFragment.newInstance(null, null).setOrder(orders.getOrder(orders.getCurrPosition())), new NoteImpl());
+                        if (isOrderWrite) {
+                            replaceFragmentAddToBackStack(NoteFragment.newInstance(null, null).setWrite(orders.writeDish.get(orders.getCurrPosition())), new NoteImpl());
+                        } else {
+                            replaceFragmentAddToBackStack(NoteFragment.newInstance(null, null).setOrder(orders.getOrder(orders.getCurrPosition())), new NoteImpl());
+                        }
                         popOrderRequest.dismiss();
                     }
 
@@ -229,13 +233,34 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
     @BindView(R.id.query)
     Button query;
+
+    @OnClick(R.id.query)
+    void onclick_query() {
+        PopUpViewUtil popUpQuery = PopUpViewUtil.getInstance();
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.popview_orderdesh_query, null, false);
+        View key = view.findViewById(R.id.key);
+        KeyWeight keyWeight = new KeyWeight();
+        keyWeight.setKey(key);
+        keyWeight.setChilder(true);
+        keyWeight.setShowHintText("输入菜品查询码，首字母查询点餐");
+        keyWeight.init(getContext(), view, KeyWeight.Mode_NoButton);
+        int[] locations = new int[2];
+        deshList.getLocationOnScreen(locations);
+        popUpQuery.popListWindow(send, view,
+                popUpQuery.getWindowManager(getContext()).getDefaultDisplay().getWidth(),
+                deshList.getHeight(),
+                Gravity.NO_GRAVITY, locations);
+    }
+
     @BindView(R.id.send)
     Button send;
     private PopUpViewUtil sendPopview;
 
     @OnClick(R.id.send)
     void onclick_send() {
-        if (sendPopview == null)
+        replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment(this), new OrderImpl());
+
+        /*if (sendPopview == null)
             sendPopview = PopUpViewUtil.getInstance();
         View view = LayoutInflater.from(getContext()).inflate(R.layout.popview_order_send, null, false);
         final EditText table, personCount, note;
@@ -311,11 +336,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         sendPopview.popListWindow(send, view,
                 sendPopview.getWindowManager(getContext()).getDefaultDisplay().getWidth(),
                 sendPopview.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 3,
-                Gravity.NO_GRAVITY, null);
-    }
-
-    private void updateItems() {
-        //  presenter.updateOreder(new RequestUpdataDeshItems().setId(orderId + "").setItems(orders.getItems()));
+                Gravity.NO_GRAVITY, null);*/
     }
 
     @BindView(R.id.info)
@@ -534,7 +555,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         return this;
     }
 
-    private String tableId;
+    String tableId;
 
     public String getTabname() {
         return tabname;
@@ -554,10 +575,10 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         return this;
     }
 
-    private int orderId;
-    private String tabname;
+    public int orderId;
+    String tabname;
     // private List<RequestOrder.ItemsBean> order = new ArrayList<>();
-    private OrderInfo orderInfolayout;
+    protected OrderInfo orderInfolayout;
     private OrderItemMesg orderItemMesglayout;
 
     public MainActivity.BackPressEvent backPressEvent = new MainActivity.BackPressEvent() {
@@ -588,6 +609,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         unbinder = ButterKnife.bind(this, view);
         initlistview();
         title.setText("");
+        rightText.setText("修改");
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -624,7 +646,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
     private DeshListAdapter deshListAdapter;
     private DcListAdapter dcListAdapter;
-    private Orders orders;
+    Orders orders;
     private boolean isOrderWrite = false;
 
     @Override
@@ -800,7 +822,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     }
 
 
-    private OrderPresenter presenter;
+    OrderPresenter presenter;
 
     @Override
     public void setPresenter(OrderPresenter presenter) {
@@ -842,7 +864,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     }
 
     private boolean isSend = true;
-    private ResponseGetOrder responseOrd;
+    ResponseGetOrder responseOrd;
 
     @Override
     public void setOrder(ResponseGetOrder getOrder) {

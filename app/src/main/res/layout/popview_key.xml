@@ -47,6 +47,6 @@
             android:layout_weight="1"
             android:background="@drawable/shape_button_yellow"
             android:text="确定"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
     </LinearLayout>
 </LinearLayout>

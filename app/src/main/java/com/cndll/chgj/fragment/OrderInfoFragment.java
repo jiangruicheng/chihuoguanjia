@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.cndll.chgj.R;
 import com.cndll.chgj.mvp.presenter.impl.NoteImpl;
+import com.cndll.chgj.mvp.presenter.impl.OrderImpl;
 import com.cndll.chgj.weight.KeyWeight;
 import com.cndll.chgj.weight.OrderInfo;
 import com.cndll.chgj.weight.OrderItemMesg;
@@ -26,6 +27,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
@@ -71,6 +73,12 @@ public class OrderInfoFragment extends BaseFragment {
     Button other;
     @BindView(R.id.send)
     Button send;
+
+    @OnClick(R.id.send)
+    void onclick_send() {
+        replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment((OrderDishFragment) fragmentList.get(fragmentList.size() - 2)), new OrderImpl());
+    }
+
     @BindView(R.id.pay)
     Button pay;
     @BindView(R.id.dazhe)
@@ -207,7 +215,7 @@ public class OrderInfoFragment extends BaseFragment {
             @Override
             public void onRequest(final int position, View view) {
                 boolean iss;
-                boolean isOrderWrite;
+                final boolean isOrderWrite;
                 orderItemMesg = new OrderItemMesg();
                 orderItemMesg.init(container);
                 int i;
@@ -347,7 +355,11 @@ public class OrderInfoFragment extends BaseFragment {
                     popOrderRequest.setOnItemClick(new PopOrderRequest.onItemClick() {
                         @Override
                         public void onFirst(View v) {
-                            replaceFragmentAddToBackStack(NoteFragment.newInstance(null, null).setOrder(order.getOrder(order.getCurrPosition())), new NoteImpl());
+                            if (isOrderWrite) {
+                                replaceFragmentAddToBackStack(NoteFragment.newInstance(null, null).setWrite(order.writeDish.get(order.getCurrPosition())), new NoteImpl());
+                            } else {
+                                replaceFragmentAddToBackStack(NoteFragment.newInstance(null, null).setOrder(order.getOrder(order.getCurrPosition())), new NoteImpl());
+                            }
                             popOrderRequest.dismiss();
                         }
 

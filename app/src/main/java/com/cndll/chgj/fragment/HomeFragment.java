@@ -311,11 +311,6 @@ public class HomeFragment extends BaseFragment implements HomeView {
                     MesgShow.showMesg("", "确定退出登录?", logoff, new MesgShow.OnButtonListener() {
                         @Override
                         public void onListerner() {
-
-                        }
-                    }, new MesgShow.OnButtonListener() {
-                        @Override
-                        public void onListerner() {
                             AppRequest.getAPI().logoff(AppMode.getInstance().getUid()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(null) {
                                 @Override
                                 public void onCompleted() {
@@ -336,6 +331,11 @@ public class HomeFragment extends BaseFragment implements HomeView {
                                     }
                                 }
                             });
+                        }
+                    }, new MesgShow.OnButtonListener() {
+                        @Override
+                        public void onListerner() {
+
                         }
                     }, true);
                 } else {

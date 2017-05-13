@@ -1,0 +1,17 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="10"
+    tools:context="com.cndll.chgj.fragment.SendFragment">
+
+    <include layout="@layout/title_bar" />
+
+    <include
+        layout="@layout/popview_order_send"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3.5" />
+
+</LinearLayout>

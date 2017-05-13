@@ -268,6 +268,13 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
         // Required empty public constructor
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        presenter.ordCailei(((CaileiFragment) fragments.get(CAILEI)).getAdapter().getOrd());
+        presenter.ordCaipin(((CaipinFragment) fragments.get(CAIPIN)).getAdapter().getOrd());
+    }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.

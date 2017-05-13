@@ -159,6 +159,12 @@ public class DeskEditorFragment extends BaseFragment<DeskListAdapter> implements
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        presenter.ordDesk(adapter.getOrd());
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
        /* if (context instanceof OnFragmentInteractionListener) {

@@ -74,8 +74,10 @@ public class ListAdapter<T extends DataList> extends RecyclerView.Adapter<ListAd
 
     public List<RequestMendianOrd> getOrd() {
         List<RequestMendianOrd> b = new ArrayList<>();
-        for (int i = 0; i < mitems.size(); i++) {
-            b.add(new RequestMendianOrd().setId(Integer.valueOf(mitems.get(i).getIDList())).setOrd(mitems.get(i).getOrderList()));
+        if (mitems != null) {
+            for (int i = 0; i < mitems.size(); i++) {
+                b.add(new RequestMendianOrd().setId(Integer.valueOf(mitems.get(i).getIDList())).setOrd(mitems.get(i).getOrderList()));
+            }
         }
         return b;
     }

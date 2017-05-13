@@ -5,10 +5,13 @@ import com.cndll.chgj.mvp.mode.bean.request.RequestAddCaipin;
 import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteCailei;
 import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteCaipin;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetCaipinList;
+import com.cndll.chgj.mvp.mode.bean.request.RequestMendianOrd;
 import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdaCailei;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdaCaipin;
 import com.cndll.chgj.mvp.view.MenuView;
+
+import java.util.List;
 
 /**
  * Created by kongqing on 2017/5/2.
@@ -32,4 +35,8 @@ public interface MenuPresenter extends BasePresenter<MenuView> {
     void deleteCaipin(RequestDeleteCaipin requestDeleteCaipin);
 
     void deleteCailei(RequestDeleteCailei requestDeleteCailei);
+
+    void ordCailei(List<RequestMendianOrd> list);
+
+    void ordCaipin(List<RequestMendianOrd> list);
 }

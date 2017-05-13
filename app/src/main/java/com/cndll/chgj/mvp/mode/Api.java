@@ -71,7 +71,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("user/loginout")
-    Observable<ResponseCailei> logoff(@Field("uid") String uid);
+    Observable<ResponseAddPrint> logoff(@Field("uid") String uid);
 
     @POST("Store/getstoreinfo/")
     Observable<ResponseHome> getHomeInfo(@Body RequestHomeInfo info);
@@ -138,6 +138,18 @@ public interface Api {
 
     @POST("store/multisort")
     Observable<ResponseOrd> ordMendian(@Body List<RequestMendianOrd> list);
+
+    @POST("Table/multisort")
+    Observable<ResponseOrd> ordDesk(@Body List<RequestMendianOrd> list);
+
+    @POST("Dish/multisort")
+    Observable<ResponseOrd> ordCaipin(@Body List<RequestMendianOrd> list);
+
+    @POST("Dish/dc_multisort")
+    Observable<ResponseOrd> ordCailei(@Body List<RequestMendianOrd> list);
+
+    @POST("dish/dm_multisort")
+    Observable<ResponseOrd> ordMethod(@Body List<RequestMendianOrd> list);
 
     @POST("Dish/adddishmethod")
     Observable<ResponseCailei> addMethod(@Body RequestAddMethod requestAddMethod);

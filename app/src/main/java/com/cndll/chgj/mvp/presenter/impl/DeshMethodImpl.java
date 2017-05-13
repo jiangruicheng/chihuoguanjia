@@ -6,11 +6,14 @@ import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.mode.bean.request.RequestAddMethod;
 import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteMethod;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetMethodList;
+import com.cndll.chgj.mvp.mode.bean.request.RequestMendianOrd;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdateMethod;
 import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseMethod;
 import com.cndll.chgj.mvp.presenter.DeshMethodPresenter;
 import com.cndll.chgj.mvp.view.DeshMethodView;
+
+import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -112,6 +115,30 @@ public class DeshMethodImpl implements DeshMethodPresenter {
                 }
             }
         });
+    }
+
+    @Override
+    public void ordMethod(List<RequestMendianOrd> list) {
+        AppRequest.getAPI().ordMethod(list).
+                subscribeOn(Schedulers.io()).
+                observeOn(AndroidSchedulers.mainThread()).
+                subscribe(new MObeserver(view) {
+                    @Override
+                    public void onCompleted() {
+                        super.onCompleted();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        super.onNext(baseResponse);
+                        view.showMesg(baseResponse.getExtra());
+                    }
+                });
     }
 
     DeshMethodView view;
