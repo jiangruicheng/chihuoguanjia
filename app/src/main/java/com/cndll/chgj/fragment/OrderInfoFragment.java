@@ -76,7 +76,12 @@ public class OrderInfoFragment extends BaseFragment {
 
     @OnClick(R.id.send)
     void onclick_send() {
-        replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment((OrderDishFragment) fragmentList.get(fragmentList.size() - 2)), new OrderImpl());
+        if (order == null) {
+            return;
+        }
+        if (order.getOrders().size() != 0 || order.writeDish.size() != 0) {
+            replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment((OrderDishFragment) fragmentList.get(fragmentList.size() - 2)), new OrderImpl());
+        }
     }
 
     @BindView(R.id.pay)
@@ -551,12 +556,12 @@ public class OrderInfoFragment extends BaseFragment {
 
         @Override
         public int getCount() {
-            if (order.writeDish != null) {
+            if (order != null && order.writeDish != null) {
                 return order.getOrders().size() + order.writeDish.size();
-            } else {
+            } else if (order != null) {
                 return order.getOrders().size();
             }
-//            return 0;
+            return 0;
         }
 
         @Override

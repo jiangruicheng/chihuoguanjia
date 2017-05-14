@@ -178,6 +178,14 @@ public interface Api {
     @POST("order/addorder")
     Observable<ResponseAddOrd> sendOrd(@Body RequestOrder requestAddCailei);
 
+    @FormUrlEncoded
+    @POST("order/modifyorder")
+    Observable<ResponseAddOrd> removerOrder(@Field("id") String id, @Field("type") String type);
+
+    @FormUrlEncoded
+    @POST("order/modifyorder")
+    Observable<ResponseAddOrd> turnOrder(@Field("id") String id, @Field("tabname") String tabname, @Field("tab_id") String tab_id);
+
     @POST("order/modifyorder ")
     Observable<ResponseOrd> updateOrd(@Body RequestOrder requestAddCailei);
 

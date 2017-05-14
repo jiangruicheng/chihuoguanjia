@@ -22,13 +22,19 @@ import com.cndll.chgj.activity.MainActivity;
 import com.cndll.chgj.adapter.DcListAdapter;
 import com.cndll.chgj.adapter.DeshListAdapter;
 import com.cndll.chgj.adapter.OnItemClickLister;
+import com.cndll.chgj.adapter.OrderDeskListAdapter;
+import com.cndll.chgj.mvp.MObeserver;
+import com.cndll.chgj.mvp.mode.AppRequest;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetCaipinList;
+import com.cndll.chgj.mvp.mode.bean.request.RequestGetDeskList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetOrder;
 import com.cndll.chgj.mvp.mode.bean.request.RequestOrder;
 import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
+import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetDeskList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetOrder;
 import com.cndll.chgj.mvp.presenter.OrderPresenter;
 import com.cndll.chgj.mvp.presenter.impl.NoteImpl;
@@ -53,6 +59,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -312,7 +320,12 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
     @OnClick(R.id.send)
     void onclick_send() {
-        replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment(this), new OrderImpl());
+        if (orders == null) {
+            return;
+        }
+        if (orders.getOrders().size() != 0 || orders.writeDish.size() != 0) {
+            replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment(this), new OrderImpl());
+        }
     }
 
     @BindView(R.id.info)
@@ -338,6 +351,66 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             @Override
             public void onDismiss() {
                 popviewOther.unbinder.unbind();
+            }
+        });
+        popviewOther.trunDesk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final PopUpViewUtil popviewDesk = PopUpViewUtil.getInstance();
+                View view = LayoutInflater.from(getContext()).inflate(R.layout.popview_turndesk, null, false);
+                RecyclerView deskList = (RecyclerView) view.findViewById(R.id.desk_list);
+                final OrderDeskListAdapter orderDeskListAdapter = new OrderDeskListAdapter();
+                deskList.setAdapter(orderDeskListAdapter);
+                LinearPagerLayoutManager layoutManager = new LinearPagerLayoutManager(getContext(), 3, 4);
+                deskList.setLayoutManager(layoutManager);
+
+                orderDeskListAdapter.setOnItemClickLister(new OnItemClickLister() {
+                    @Override
+                    public void OnItemClick(View view, int position) {
+                        presenter.turnOrder(orderId + "", orderDeskListAdapter.getItems().get(position).getName(), orderDeskListAdapter.getItems().get(position).getId());
+                    }
+                });
+                Button cancel = (Button) view.findViewById(R.id.cancel);
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popviewDesk.dismiss();
+                    }
+                });
+                int[] locations = new int[2];
+                deshList.getLocationOnScreen(locations);
+                popviewDesk.popListWindow(send, view,
+                        popviewDesk.getWindowManager(getContext()).getDefaultDisplay().getWidth(),
+                        deshList.getHeight(),
+                        Gravity.NO_GRAVITY, locations);
+                AppRequest.getAPI().getDeskList(new RequestGetDeskList().setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()).setIsoc(2 + "")).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
+                        subscribe(new MObeserver(OrderDishFragment.this) {
+                            @Override
+                            public void onCompleted() {
+                                super.onCompleted();
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                super.onError(e);
+                            }
+
+                            @Override
+                            public void onNext(BaseResponse baseResponse) {
+                                super.onNext(baseResponse);
+                                if (baseResponse.getCode() == 1) {
+                                    orderDeskListAdapter.setItems(((ResponseGetDeskList) baseResponse).getData());
+                                }
+                            }
+                        });
+            }
+        });
+        popviewOther.removeDesk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (orderId != 0) {
+                    presenter.removeOrder(orderId + "", 2 + "");
+                }
             }
         });
         popviewOther.writeDesh.setOnClickListener(new View.OnClickListener() {
@@ -398,7 +471,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
     @OnClick(R.id.dazhe)
     void onclick_discount() {
-        if (!Orders.isChange) {
+        if (!Orders.isChange && orderId != 0) {
             popUpkey(0, "", new KeyWeight.OnKeyClick() {
                 @Override
                 public void onKeyCancel(String s) {
@@ -433,14 +506,15 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
     @OnClick(R.id.pay)
     void onclick_pay() {
-        if (!Orders.isChange) {
+        replaceFragmentAddToBackStack(ApplyPayFragment.newInstance(null, null), null);
+        /*if (!Orders.isChange) {
             if (orderId != 0) {
                 replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(orderId).setOrders(orders), null);
 
             }
         } else {
             MesgShow.showMesg("", "有菜品未送单,请先送单", dazhe, null, null, false);
-        }
+        }*/
     }
 
     Unbinder unbinder;
@@ -610,6 +684,9 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     @Override
     public void reload() {
         super.reload();
+        if (orders == null) {
+            return;
+        }
         if (orders.getOrders().size() > 0) {
             isOrderWrite = false;
             orders.setCurrPosition(orders.getOrders().keyAt(0));
