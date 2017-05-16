@@ -40,81 +40,148 @@
         android:layout_height="0dp"
         android:layout_weight="0.7" />
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="2dp"
         android:layout_marginTop="2dp"
-        android:layout_weight="1">
+        android:layout_weight="2">
 
-        <Button
-            android:id="@+id/query"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/mode_have_tesk"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_weight="1"
-            android:background="@drawable/shape_dialog_fillet_solid"
-            android:text="查询点餐"
-            android:textColor="#2DD1F8" />
+            android:orientation="vertical"
+            android:visibility="gone">
 
-        <Button
-            android:id="@+id/send"
-            android:layout_width="0dp"
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/query"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_fillet_solid"
+                    android:text="查询点餐"
+                    android:textColor="#2DD1F8" />
+
+                <Button
+                    android:id="@+id/send"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_fillet_solid"
+                    android:text="送单"
+                    android:textColor="#F70000" />
+
+                <Button
+                    android:id="@+id/info"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_fillet_solid"
+                    android:text="明细"
+                    android:textColor="#2DD1F8" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/other"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_fillet_solid"
+                    android:text="其他功能"
+                    android:textColor="#FA05DA" />
+
+                <Button
+                    android:id="@+id/dazhe"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_fillet_solid"
+                    android:text="打折"
+                    android:textColor="#050BFA" />
+
+                <Button
+                    android:id="@+id/pay"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_fillet_solid"
+                    android:text="买单"
+                    android:textColor="#F70000" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/mode_no_desk"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="2dp"
-            android:layout_weight="1"
-            android:background="@drawable/shape_dialog_fillet_solid"
-            android:text="送单"
-            android:textColor="#F70000" />
+            android:background="@color/black"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="visible"
+            android:weightSum="2">
 
-        <Button
-            android:id="@+id/info"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="2dp"
-            android:layout_weight="1"
-            android:background="@drawable/shape_dialog_fillet_solid"
-            android:text="明细"
-            android:textColor="#2DD1F8" />
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_weight="1">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="2dp"
-        android:layout_marginTop="2dp"
-        android:layout_weight="1">
+                <Button
+                    android:id="@+id/query_nodesk"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_fillet_solid"
+                    android:text="查询点餐"
+                    android:textColor="#FA05DA" />
 
-        <Button
-            android:id="@+id/other"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_weight="1"
-            android:background="@drawable/shape_dialog_fillet_solid"
-            android:text="其他功能"
-            android:textColor="#FA05DA" />
+                <Button
+                    android:id="@+id/pay_nodesk"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_fillet_solid"
+                    android:text="买单"
+                    android:textColor="#050BFA" />
 
-        <Button
-            android:id="@+id/dazhe"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="2dp"
-            android:layout_weight="1"
-            android:background="@drawable/shape_dialog_fillet_solid"
-            android:text="打折"
-            android:textColor="#050BFA" />
-
-        <Button
-            android:id="@+id/pay"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="2dp"
-            android:layout_weight="1"
-            android:background="@drawable/shape_dialog_fillet_solid"
-            android:text="买单"
-            android:textColor="#F70000" />
-    </LinearLayout>
+                <Button
+                    android:id="@+id/info_nodesk"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_fillet_solid"
+                    android:text="明细"
+                    android:textColor="#F70000" />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
 </LinearLayout>

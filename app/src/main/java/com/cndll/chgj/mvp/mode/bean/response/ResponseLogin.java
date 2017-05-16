@@ -14,9 +14,6 @@ public class ResponseLogin extends BaseResponse {
 
     private DataBean data;
 
-
-
-
     public DataBean getData() {
         return data;
     }

@@ -79,14 +79,24 @@ public class BaseFragment<T extends ListAdapter> extends Fragment {
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
     }
 
+    protected void baseShowMesg(String mesg) {
+
+    }
+
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroy() {
+        super.onDestroy();
         if (fragmentList.size() > 0) {
             fragmentList.remove(fragmentList.get(fragmentList.size() - 1));
             fragmentList.get(fragmentList.size() - 1).reload();
             getActivity().getSupportFragmentManager().beginTransaction().show(fragmentList.get(fragmentList.size() - 1)).commit();
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
     }
 
     protected void popBackFragment() {

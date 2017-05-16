@@ -29,6 +29,21 @@ public class ResponseGetCaipinList extends BaseResponse {
 
     public static class DataBean extends DataList {
 
+        @Override
+        public String getIDList() {
+            return id;
+        }
+
+        @Override
+        public int getOrderList() {
+            return Integer.valueOf(ord);
+        }
+
+        @Override
+        public void setOrderList(int i) {
+            ord = i + "";
+        }
+
         /**
          * id : 81
          * unit : 份

@@ -601,7 +601,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
                     popUpViewUtil.getWindowManager(
                             getActivity()).
                             getDefaultDisplay().
-                            getHeight() / 10 * 6, Gravity.CENTER, null);
+                            getHeight() / 10 * 4, Gravity.TOP, null);
 
         }
     }

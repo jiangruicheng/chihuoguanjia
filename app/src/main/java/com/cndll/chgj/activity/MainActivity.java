@@ -1,5 +1,6 @@
 package com.cndll.chgj.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -63,6 +64,11 @@ public class MainActivity extends AppCompatActivity {
         fragment.setPresenter(h);
         fragmentManager.beginTransaction().add(R.id.frame, fragment).commit();
         BaseFragment.fragmentList.add(fragment);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public interface BackPressEvent {

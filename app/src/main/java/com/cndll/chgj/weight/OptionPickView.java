@@ -44,6 +44,11 @@ public class OptionPickView {
         init();
     }
 
+    public OptionPickView(Activity context) {
+        this.context = context;
+        init();
+    }
+
     private LoopView loopView0;
     private LoopView loopView1;
     private View rootview;
@@ -54,7 +59,11 @@ public class OptionPickView {
     private Button sure;
 
     private void init() {
-        rootview = LayoutInflater.from(context).inflate(layout, null, false);
+        if (layout != 0) {
+            rootview = LayoutInflater.from(context).inflate(layout, null, false);
+        } else {
+            rootview = LayoutInflater.from(context).inflate(R.layout.dialog_opitionpick, null, false);
+        }
         loopView0 = (LoopView) rootview.findViewById(R.id.loopview0);
         loopView1 = (LoopView) rootview.findViewById(R.id.loopview1);
         cancel = (Button) rootview.findViewById(R.id.cancel);
@@ -81,17 +90,28 @@ public class OptionPickView {
         });
     }
 
-    public void setOptionItem(List<String> item0, List<List<String>> item1) {
+    public void setOptionItem(List<String> item0) {
+        setOptionItem(item0, null);
+    }
+
+    public void setOptionItem(List<String> item0, final List<List<String>> item1) {
         this.item0 = item0;
         this.item1 = item1;
+        if (item1 == null) {
+            loopView1.setVisibility(View.GONE);
+        } else {
+            loopView1.setItems(item1.get(0));
+        }
         loopView0.setItems(item0);
         loopView0.setInitPosition(0);
-        loopView1.setItems(item1.get(0));
+
         loopView0.setListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(int index) {
-                loopView1.setItems(OptionPickView.this.item1.get(index));
-                loopView1.setInitPosition(0);
+                if (item1 != null) {
+                    loopView1.setItems(OptionPickView.this.item1.get(index));
+                    loopView1.setInitPosition(0);
+                }
             }
         });
     }

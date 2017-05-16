@@ -5,20 +5,41 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.adapter.OnItemClickLister;
+import com.cndll.chgj.adapter.OrderDeskListAdapter;
+import com.cndll.chgj.mvp.MObeserver;
+import com.cndll.chgj.mvp.mode.AppRequest;
+import com.cndll.chgj.mvp.mode.bean.info.AppMode;
+import com.cndll.chgj.mvp.mode.bean.request.RequestGetDeskList;
+import com.cndll.chgj.mvp.mode.bean.request.RequestOrder;
+import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetDeskList;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetOrder;
+import com.cndll.chgj.mvp.presenter.OrderPresenter;
 import com.cndll.chgj.mvp.presenter.impl.NoteImpl;
 import com.cndll.chgj.mvp.presenter.impl.OrderImpl;
+import com.cndll.chgj.mvp.view.OrderView;
+import com.cndll.chgj.util.LinearPagerLayoutManager;
+import com.cndll.chgj.util.PopUpViewUtil;
+import com.cndll.chgj.util.StringHelp;
 import com.cndll.chgj.weight.KeyWeight;
+import com.cndll.chgj.weight.MesgShow;
 import com.cndll.chgj.weight.OrderInfo;
 import com.cndll.chgj.weight.OrderItemMesg;
 import com.cndll.chgj.weight.PopOrderRequest;
@@ -29,6 +50,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,7 +61,7 @@ import butterknife.Unbinder;
  * Use the {@link OrderInfoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class OrderInfoFragment extends BaseFragment {
+public class OrderInfoFragment extends BaseFragment implements OrderView {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -71,6 +94,126 @@ public class OrderInfoFragment extends BaseFragment {
     LinearLayout orderinfolayout;
     @BindView(R.id.other)
     Button other;
+
+    @OnClick(R.id.other)
+    void onclick_other() {
+        final PopviewOther popviewOther = new PopviewOther();
+        popviewOther.init();
+        popviewOther.popUpViewUtil.setOnDismissAction(new PopUpViewUtil.OnDismissAction() {
+            @Override
+            public void onDismiss() {
+                popviewOther.unbinder.unbind();
+            }
+        });
+        popviewOther.trunDesk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final PopUpViewUtil popviewDesk = PopUpViewUtil.getInstance();
+                View view = LayoutInflater.from(getContext()).inflate(R.layout.popview_turndesk, null, false);
+                RecyclerView deskList = (RecyclerView) view.findViewById(R.id.desk_list);
+                final OrderDeskListAdapter orderDeskListAdapter = new OrderDeskListAdapter();
+                deskList.setAdapter(orderDeskListAdapter);
+                LinearPagerLayoutManager layoutManager = new LinearPagerLayoutManager(getContext(), 3, 4);
+                deskList.setLayoutManager(layoutManager);
+
+                orderDeskListAdapter.setOnItemClickLister(new OnItemClickLister() {
+                    @Override
+                    public void OnItemClick(View view, int position) {
+                        presenter.turnOrder(orderId + "", orderDeskListAdapter.getItems().get(position).getName(), orderDeskListAdapter.getItems().get(position).getId());
+                    }
+                });
+                Button cancel = (Button) view.findViewById(R.id.cancel);
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popviewDesk.dismiss();
+                    }
+                });
+                int[] locations = new int[2];
+                orderListView.getLocationOnScreen(locations);
+                popviewDesk.popListWindow(send, view,
+                        popviewDesk.getWindowManager(getContext()).getDefaultDisplay().getWidth(),
+                        orderListView.getHeight(),
+                        Gravity.NO_GRAVITY, locations);
+                AppRequest.getAPI().getDeskList(new RequestGetDeskList().setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()).setIsoc(2 + "")).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
+                        subscribe(new MObeserver(OrderInfoFragment.this) {
+                            @Override
+                            public void onCompleted() {
+                                super.onCompleted();
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                super.onError(e);
+                            }
+
+                            @Override
+                            public void onNext(BaseResponse baseResponse) {
+                                super.onNext(baseResponse);
+                                if (baseResponse.getCode() == 1) {
+                                    orderDeskListAdapter.setItems(((ResponseGetDeskList) baseResponse).getData());
+                                }
+                            }
+                        });
+            }
+        });
+        popviewOther.removeDesk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (orderId != 0) {
+                    presenter.removeOrder(orderId + "", 2 + "");
+                }
+            }
+        });
+        popviewOther.writeDesh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View view = LayoutInflater.from(getContext()).inflate(R.layout.popview_order_write, null, false);
+                final EditText name, number, price;
+                Button cancel, delete, save;
+                final PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
+                name = (EditText) view.findViewById(R.id.name);
+                number = (EditText) view.findViewById(R.id.number);
+                price = (EditText) view.findViewById(R.id.price);
+                cancel = (Button) view.findViewById(R.id.cancel);
+                delete = (Button) view.findViewById(R.id.delete);
+                save = (Button) view.findViewById(R.id.save);
+                delete.setVisibility(View.GONE);
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popUpViewUtil.dismiss();
+                    }
+                });
+                save.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        RequestOrder.WriteDishBean writeDishBean = new RequestOrder.WriteDishBean();
+                        if (order == null) {
+                            order = new OrderDishFragment.Orders();
+                        }
+                        order.addWriteDish(name.getText().toString(), new OrderDishFragment.Orders.Write().setItemsBean(writeDishBean.
+                                setIsWrite("1").
+                                setCount(number.getText().toString()).
+                                setGiveCount("0").
+                                setPrice(price.getText().toString()).
+                                setName(name.getText().toString())).
+                                setCount(Float.valueOf(number.getText().toString())).setGiveCount(0));
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+                popUpViewUtil.popListWindow(send, view,
+                        popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getWidth(),
+                        popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 3,
+                        Gravity.NO_GRAVITY, null);
+            }
+        });
+        popviewOther.popUpViewUtil.popListWindow(send, popviewOther.view,
+                popviewOther.popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getWidth(),
+                popviewOther.popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 3,
+                Gravity.BOTTOM, null);
+    }
+
     @BindView(R.id.send)
     Button send;
 
@@ -86,8 +229,55 @@ public class OrderInfoFragment extends BaseFragment {
 
     @BindView(R.id.pay)
     Button pay;
+
+    @OnClick(R.id.pay)
+    void onclick_pay() {
+        // replaceFragmentAddToBackStack(ApplyPayFragment.newInstance(null, null), null);
+        if (!OrderDishFragment.Orders.isChange) {
+            if (orderId != 0) {
+                replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(orderId).setOrders(order), null);
+            }
+        } else {
+            MesgShow.showMesg("", "有菜品未送单,请先送单", dazhe, null, null, false);
+        }
+    }
+
     @BindView(R.id.dazhe)
     Button dazhe;
+
+    @OnClick(R.id.dazhe)
+    void onclick_discount() {
+        if (!OrderDishFragment.Orders.isChange && orderId != 0) {
+            popUpkey(2, "取消打折","确定", new KeyWeight.OnKeyClick() {
+                @Override
+                public void onKeyCancel(String s) {
+                    order.setDisconut(1);
+                    orderInfo.setMesg(order);
+                }
+
+                @Override
+                public void onKeySure(String s) {
+
+                    if (StringHelp.isFloat(s)) {
+                        if (Float.valueOf(s) <= 0.99 && Float.valueOf(s) >= 0.1) {
+                            order.setDisconut(Float.valueOf(s));
+                            orderInfo.setMesg(order);
+                        }
+                    }
+
+
+                }
+
+                @Override
+                public void onKeyNub(String s) {
+
+                }
+            });
+        } else {
+            MesgShow.showMesg("", "有菜品未送单,请先送单", dazhe, null, null, false);
+        }
+    }
+
     Unbinder unbinder;
 
     // TODO: Rename and change types of parameters
@@ -100,9 +290,11 @@ public class OrderInfoFragment extends BaseFragment {
         return order;
     }
 
-    private void popUpkey(int mode, String hint, KeyWeight.OnKeyClick onKeyClick) {
+    private void popUpkey(int mode, String hint,String sureHint, KeyWeight.OnKeyClick onKeyClick) {
         KeyWeight keyWeight = new KeyWeight();
-        keyWeight.init(getContext(), orderListView, 2);
+        keyWeight.setCancelText(hint);
+        keyWeight.setSureText(sureHint);
+        keyWeight.init(getContext(), orderListView, mode);
         keyWeight.setOnKeyClick(onKeyClick);
     }
 
@@ -152,6 +344,17 @@ public class OrderInfoFragment extends BaseFragment {
     OrderInfo orderInfo;
     OrderItemMesg orderItemMesg;
 
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public OrderInfoFragment setOrderId(int orderId) {
+        this.orderId = orderId;
+        return this;
+    }
+
+    int orderId;
+
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
@@ -191,7 +394,7 @@ public class OrderInfoFragment extends BaseFragment {
                     order.setCurrPosition(order.writeDish.keyAt(position));
                     isOrderWrite = true;
                 }
-                popUpkey(0, "", new KeyWeight.OnKeyClick() {
+                popUpkey(0, "取消","确定", new KeyWeight.OnKeyClick() {
                     @Override
                     public void onKeyCancel(String s) {
 
@@ -509,6 +712,54 @@ public class OrderInfoFragment extends BaseFragment {
         unbinder.unbind();
     }
 
+    @Override
+    public void showMesg(String mesg) {
+        MesgShow.showMesg("", mesg, send, new MesgShow.OnButtonListener() {
+            @Override
+            public void onListerner() {
+
+            }
+        }, new MesgShow.OnButtonListener() {
+            @Override
+            public void onListerner() {
+
+            }
+        }, false);
+    }
+
+    @Override
+    public void showProg(String mesg) {
+
+    }
+
+    OrderPresenter presenter;
+
+    @Override
+    public void setPresenter(OrderPresenter presenter) {
+        this.presenter = presenter;
+        this.presenter.setView(this);
+    }
+
+    @Override
+    public void setDcList(List<ResponseGetCaileiList.DataBean> data) {
+
+    }
+
+    @Override
+    public void setDeshList(List<ResponseGetCaipinList.DataBean> deshList) {
+
+    }
+
+    @Override
+    public void sendSucc() {
+
+    }
+
+    @Override
+    public void setOrder(ResponseGetOrder getOrder) {
+
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -670,6 +921,28 @@ public class OrderInfoFragment extends BaseFragment {
             ViewHolder(View view) {
                 ButterKnife.bind(this, view);
             }
+        }
+    }
+
+    public class PopviewOther {
+        PopUpViewUtil popUpViewUtil;
+        View view;
+        @BindView(R.id.write_desh)
+        TextView writeDesh;
+        @BindView(R.id.remove_desk)
+        TextView removeDesk;
+        @BindView(R.id.trun_desk)
+        TextView trunDesk;
+        @BindView(R.id.print_order)
+        TextView printOrder;
+        @BindView(R.id.cancel)
+        TextView cancel;
+        Unbinder unbinder;
+
+        private void init() {
+            popUpViewUtil = PopUpViewUtil.getInstance();
+            view = LayoutInflater.from(getContext()).inflate(R.layout.popview_oderdesh_other, null, false);
+            unbinder = ButterKnife.bind(this, view);
         }
     }
 }

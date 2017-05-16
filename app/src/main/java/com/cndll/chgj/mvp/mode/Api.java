@@ -11,6 +11,7 @@ import com.cndll.chgj.mvp.mode.bean.request.RequestDelete;
 import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteCailei;
 import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteCaipin;
 import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteMethod;
+import com.cndll.chgj.mvp.mode.bean.request.RequestGetBillList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetCaipinList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetDeskList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetMethodList;
@@ -22,6 +23,7 @@ import com.cndll.chgj.mvp.mode.bean.request.RequestMendianOrd;
 import com.cndll.chgj.mvp.mode.bean.request.RequestOrder;
 import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestRegister;
+import com.cndll.chgj.mvp.mode.bean.request.RequestUpLoadPayInfo;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdaCailei;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdaCaipin;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdaDesk;
@@ -33,8 +35,10 @@ import com.cndll.chgj.mvp.mode.bean.request.RequsetHomeMendianList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseAddOrd;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseAddPrint;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseArea;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseBank;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseCailei;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseDeletePrint;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetBillList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetDeskList;
@@ -46,35 +50,85 @@ import com.cndll.chgj.mvp.mode.bean.response.ResponseLogin;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseMendianHomeList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseMethod;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseOrd;
+import com.cndll.chgj.mvp.mode.bean.response.ResponsePayStqtue;
 import com.cndll.chgj.mvp.mode.bean.response.ResponsePrintList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseRegister;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseStoreTye;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseUpdatePrint;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseUploadImage;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseVerify;
 
 import java.util.List;
+import java.util.Map;
 
+import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PartMap;
 import rx.Observable;
 
 /**
  * Created by jiang_ruicheng on 16/10/27.
  */
 public interface Api {
+    @Multipart
+    @POST("File/uploadPicture")
+    Observable<ResponseUploadImage> uploadImage(@PartMap Map<String, RequestBody> pa);
+
+    @FormUrlEncoded
+    @POST("Print/printdish")
+    Observable<ResponseCailei> printOrder(@Field("id") String id,
+                                          @Field("title") String title,
+                                          @Field("date") String data,
+                                          @Field("sname") String name,
+                                          @Field("print_id") String print_id);
+
+    @FormUrlEncoded
+    @POST("Print/printorder")
+    Observable<ResponseCailei> printBill(@Field("id") String id,
+                                         @Field("printer") String name,
+                                         @Field("print_id") String print_id);
+    @FormUrlEncoded
+    @POST("Print/day_sale_print")
+    Observable<ResponseCailei> printDayReport(@Field("uid") String uid,
+                                              @Field("mid") String mid,
+                                         @Field("stm") String stm,
+                                              @Field("etm") String etm,
+                                         @Field("print_id") String print_id);
+    @FormUrlEncoded
+    @POST("Print/dish_sale_print")
+    Observable<ResponseCailei> printAllReport(@Field("uid") String uid,
+                                              @Field("mid") String mid,
+                                              @Field("stm") String stm,
+                                              @Field("etm") String etm,
+                                              @Field("print_id") String print_id);
+    @POST("System/payapply")
+    Observable<ResponseCailei> uploadPayInfo(@Body RequestUpLoadPayInfo info);
+
+    @POST("system/getbanklist")
+    Observable<ResponseBank> getBankList();
+
     @FormUrlEncoded
     @POST("System/advset")
     Observable<ResponseCailei> setting(@Field("uid") String uid, @Field("mid") String mid, @Field("tcis_print") String tcis_print, @Field("cd_method") String cd_method, @Field("dis_zk") String dis_zk);
 
     @FormUrlEncoded
     @POST("user/loginout")
-    Observable<ResponseAddPrint> logoff(@Field("uid") String uid);
+    Observable<ResponseAddOrd> logoff(@Field("uid") String uid);
 
     @POST("Store/getstoreinfo/")
     Observable<ResponseHome> getHomeInfo(@Body RequestHomeInfo info);
+
+    @POST("Order/orderlists")
+    Observable<ResponseGetBillList> getBill(@Body RequestGetBillList info);
+
+    @FormUrlEncoded
+    @POST("User/getuserpay")
+    Observable<ResponsePayStqtue> payStatue(@Field("uid") String uid, @Field("mid") String mid);
 
     @POST("Store/getstorelist")
     Observable<ResponseMendianHomeList> getHomeMendianList(@Body RequsetHomeMendianList info);

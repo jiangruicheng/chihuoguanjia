@@ -1,6 +1,7 @@
 package com.cndll.chgj.weight;
 
 import android.app.Activity;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,13 @@ public class TimePick {
         Vday = (LoopView) view.findViewById(R.id.day);
         cancel = (Button) view.findViewById(R.id.cancel);
         sure = (Button) view.findViewById(R.id.sure);
+        Vyear.setTextSize(14);
+        Vmoth.setTextSize(14);
+        Vday.setTextSize(14);
+
+        Vyear.setItemsVisibleCount(6);
+        Vday.setItemsVisibleCount(6);
+        Vmoth.setItemsVisibleCount(6);
         year = getNumb(Calendar.getInstance().get(Calendar.YEAR) - 1, Calendar.getInstance().get(Calendar.YEAR) + 1);
         bigmoth = new ArrayList<>();
         bigmoth.add("1");
@@ -93,6 +101,9 @@ public class TimePick {
             public void onClick(View v) {
                 if (onTimePickSlect != null) {
                     onTimePickSlect.onSelect(curryYear, curryMoth, curryDay);
+                }
+                if (popUpViewUtil != null) {
+                    popUpViewUtil.dismiss();
                 }
             }
         });
@@ -155,6 +166,17 @@ public class TimePick {
                         getDefaultDisplay().getHeight() / 5 * 2,
                 popUpViewUtil.getWindowManager(context).
                         getDefaultDisplay().getWidth(), popUpViewUtil.getWindowManager(context).
-                        getDefaultDisplay().getHeight() / 5 * 3, 0);
+                        getDefaultDisplay().getHeight() / 7 * 3, 0);
+    }
+
+    public void showPopView(View location) {
+        if (view.getParent() != null) {
+            ((ViewGroup) (view.getParent())).removeView(view);
+        }
+        popUpViewUtil = PopUpViewUtil.getInstance();
+        popUpViewUtil.popListWindow(location, view,
+                popUpViewUtil.getWindowManager(location.getContext()).getDefaultDisplay().getWidth(),
+                popUpViewUtil.getWindowManager(location.getContext()).getDefaultDisplay().getHeight() / 7 * 3,
+                Gravity.BOTTOM, null);
     }
 }

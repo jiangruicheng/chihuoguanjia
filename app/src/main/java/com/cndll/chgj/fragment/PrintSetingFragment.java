@@ -71,8 +71,6 @@ public class PrintSetingFragment extends BaseFragment implements PrintView {
         final PrintPopView printPopView = new PrintPopView();
         printPopView.init();
         printPopView.show();
-        printPopView.init();
-        printPopView.show();
         printPopView.cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

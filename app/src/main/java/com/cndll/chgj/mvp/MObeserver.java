@@ -29,7 +29,7 @@ public class MObeserver implements Observer<BaseResponse> {
     @Override
     public void onNext(BaseResponse baseResponse) {
         //view.showMesg(baseResponse.getExtra());
-        if (baseResponse.getCode() == 0 && view != null) {
+        if (baseResponse.getCode() != 1 && view != null) {
             view.showMesg(baseResponse.getExtra());
         }
     }

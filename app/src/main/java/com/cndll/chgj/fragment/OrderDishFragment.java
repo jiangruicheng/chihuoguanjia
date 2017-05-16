@@ -53,6 +53,7 @@ import com.cndll.chgj.weight.OrderItemMesg;
 import com.cndll.chgj.weight.PopOrderRequest;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -103,6 +104,18 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     TextView allPrice;
     @BindView(R.id.yaoqiu)
     TextView yaoqiu;
+    @BindView(R.id.sendstatue)
+    TextView sendstatue;
+    @BindView(R.id.mode_have_tesk)
+    LinearLayout modeHaveTesk;
+    @BindView(R.id.query_nodesk)
+    Button queryNodesk;
+    @BindView(R.id.pay_nodesk)
+    Button payNodesk;
+    @BindView(R.id.info_nodesk)
+    Button infoNodesk;
+    @BindView(R.id.mode_no_desk)
+    LinearLayout modeNoDesk;
 
     @OnClick(R.id.yaoqiu)
     void onclick_yaoqiu() {
@@ -334,9 +347,9 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     @OnClick(R.id.info)
     void onclick_info() {
         if (orders != null && orders.getAll() != null) {
-            replaceFragmentAddToBackStack(OrderInfoFragment.newInstance(titleLeft.getText().toString(), titleRight.getText().toString()).setOrderList(orders), null);
+            replaceFragmentAddToBackStack(OrderInfoFragment.newInstance(titleLeft.getText().toString(), titleRight.getText().toString()).setOrderList(orders).setOrderId(orderId), new OrderImpl());
         } else {
-            replaceFragmentAddToBackStack(OrderInfoFragment.newInstance(null, null), null);
+            replaceFragmentAddToBackStack(OrderInfoFragment.newInstance(null, null), new OrderImpl());
         }
     }
 
@@ -403,6 +416,31 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                                 }
                             }
                         });
+            }
+        });
+        popviewOther.printOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH) + 1;
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                AppRequest.getAPI().printOrder(orderId + "", "总出品单", year + "-" + month + "-" + day, "王小二", AppMode.getInstance().getPrint_code()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(OrderDishFragment.this) {
+                    @Override
+                    public void onCompleted() {
+                        super.onCompleted();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        super.onNext(baseResponse);
+                    }
+                });
             }
         });
         popviewOther.removeDesk.setOnClickListener(new View.OnClickListener() {
@@ -472,10 +510,11 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     @OnClick(R.id.dazhe)
     void onclick_discount() {
         if (!Orders.isChange && orderId != 0) {
-            popUpkey(0, "", new KeyWeight.OnKeyClick() {
+            popUpkey(2, "取消打折", "确定", new KeyWeight.OnKeyClick() {
                 @Override
                 public void onKeyCancel(String s) {
-
+                    orders.setDisconut(1);
+                    setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
                 }
 
                 @Override
@@ -506,15 +545,15 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
     @OnClick(R.id.pay)
     void onclick_pay() {
-        replaceFragmentAddToBackStack(ApplyPayFragment.newInstance(null, null), null);
-        /*if (!Orders.isChange) {
+        // replaceFragmentAddToBackStack(ApplyPayFragment.newInstance(null, null), null);
+        if (!Orders.isChange) {
             if (orderId != 0) {
                 replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(orderId).setOrders(orders), null);
 
             }
         } else {
             MesgShow.showMesg("", "有菜品未送单,请先送单", dazhe, null, null, false);
-        }*/
+        }
     }
 
     Unbinder unbinder;
@@ -522,7 +561,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     @OnClick(R.id.number_edit)
     void onclick_numberEdit() {
         if (orders != null) {
-            popUpkey(0, "", new KeyWeight.OnKeyClick() {
+            popUpkey(2, "取消", "确定", new KeyWeight.OnKeyClick() {
                 @Override
                 public void onKeyCancel(String s) {
 
@@ -552,9 +591,11 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     }
 
 
-    private void popUpkey(int mode, String hint, KeyWeight.OnKeyClick onKeyClick) {
+    private void popUpkey(int mode, String cancelhint, String surehint, KeyWeight.OnKeyClick onKeyClick) {
         KeyWeight keyWeight = new KeyWeight();
-        keyWeight.init(getContext(), numberEdit, 2);
+        keyWeight.setCancelText(cancelhint);
+        keyWeight.setSureText(surehint);
+        keyWeight.init(getContext(), numberEdit, mode);
         keyWeight.setOnKeyClick(onKeyClick);
     }
 
@@ -658,21 +699,28 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         View view = inflater.inflate(R.layout.fragment_order_desh, container, false);
         unbinder = ButterKnife.bind(this, view);
         initlistview();
-        title.setText("");
-        rightText.setText("修改");
+        if (tableId == null) {
+            title.setText("快餐点餐");
+            modeHaveTesk.setVisibility(View.GONE);
+            modeNoDesk.setVisibility(View.VISIBLE);
+        } else {
+            modeHaveTesk.setVisibility(View.VISIBLE);
+            modeNoDesk.setVisibility(View.GONE);
+            title.setText("");
+            rightText.setText("修改");
+            if (responseOrd != null) {
+                titleRight.setText("人数：" + responseOrd.getData().getPernum());
+            } else {
+                titleRight.setText("人数：2");
+            }
+            titleLeft.setText(" 桌台: " + tabname);
+        }
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 popBackFragment();
             }
         });
-        if (responseOrd != null) {
-            titleRight.setText("人数：" + responseOrd.getData().getPernum());
-        } else {
-            titleRight.setText("人数：2");
-        }
-        titleLeft.setText(" 桌台: " + tabname);
-
         orderInfolayout = new OrderInfo();
         orderItemMesglayout = new OrderItemMesg();
         orderItemMesglayout.init(itemMesg);
@@ -1005,7 +1053,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
         public ArrayMap<String, Write> writeDish;
 
-        private void addWriteDish(String id, Write writeDishBean) {
+        protected void addWriteDish(String id, Write writeDishBean) {
             if (writeDish == null) {
                 writeDish = new ArrayMap<>();
             }

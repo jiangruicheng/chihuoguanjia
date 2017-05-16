@@ -1,6 +1,7 @@
 package com.cndll.chgj.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,12 +13,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.activity.ApplyPayActivity;
+import com.cndll.chgj.mvp.MObeserver;
+import com.cndll.chgj.mvp.mode.AppRequest;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
+import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
+import com.cndll.chgj.mvp.presenter.BasePresenter;
+import com.cndll.chgj.mvp.view.BaseView;
 import com.cndll.chgj.weight.OrderInfo;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -125,7 +134,7 @@ public class PaySwitchFragment extends BaseFragment {
             public void onClick(View v) {
                 type = 2;
                 if (orderID != 0)
-                    gotoWebView();
+                    isHavePayCount();
                 titlename = "微信收款";
             }
         });
@@ -134,7 +143,7 @@ public class PaySwitchFragment extends BaseFragment {
             public void onClick(View v) {
                 type = 1;
                 if (orderID != 0)
-                    gotoWebView();
+                    isHavePayCount();
                 titlename = "支付宝收款";
             }
         });
@@ -217,6 +226,51 @@ public class PaySwitchFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    private boolean isHavePayCount() {
+        AppRequest.getAPI().
+                payStatue(AppMode.getInstance().getUid(), AppMode.getInstance().getMid()).
+                subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
+                subscribe(new MObeserver(
+                        new BaseView() {
+                            @Override
+                            public void showMesg(String mesg) {
+
+                            }
+
+                            @Override
+                            public void showProg(String mesg) {
+
+                            }
+
+                            @Override
+                            public void setPresenter(BasePresenter presenter) {
+
+                            }
+                        }
+                ) {
+                    @Override
+                    public void onCompleted() {
+                        super.onCompleted();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        super.onNext(baseResponse);
+                        if (baseResponse.getCode() == 1) {
+                            gotoWebView();
+                        } else {
+                            startActivity(new Intent(getActivity(), ApplyPayActivity.class));
+                        }
+                    }
+                });
+        return false;
     }
 
     /**

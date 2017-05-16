@@ -75,11 +75,16 @@ public class KeyWeight {
         TextView show = (TextView) key.findViewById(R.id.show);
         show.setHint(showHint);
         View layout = key.findViewById(R.id.buttonlayout);
+        View keyabc = key.findViewById(R.id.abc_key);
+        View keynum = key.findViewById(R.id.number_key);
         if (Mode == Mode_NoButton) {
             layout.setVisibility(View.GONE);
         }
         if (Mode == Mode_OnlyNumb) {
             tran.setText(".");
+            layout.setVisibility(View.VISIBLE);
+            keyabc.setVisibility(View.GONE);
+            keynum.setVisibility(View.VISIBLE);
         }
         if (!isChilder) {
             if (location != null) {

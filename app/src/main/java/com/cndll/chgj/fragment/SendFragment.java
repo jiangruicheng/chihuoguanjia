@@ -148,6 +148,7 @@ public class SendFragment extends BaseFragment implements OrderView {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                orderDishFragment.orderInfolayout.setMesg(orderDishFragment.orders);
                 if (orderDishFragment.orderId == 0) {
                     orderPresenter.sendOrder(new RequestOrder().
                             setItems(orderDishFragment.orders.getItems()).

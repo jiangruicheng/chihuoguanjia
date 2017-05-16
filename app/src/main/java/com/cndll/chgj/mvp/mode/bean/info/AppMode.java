@@ -37,6 +37,16 @@ public class AppMode {
     private String uid = "3";
     private boolean isBoss;
 
+    public synchronized String getPrint_code() {
+        return print_code;
+    }
+
+    public synchronized void setPrint_code(String print_code) {
+        this.print_code = print_code;
+    }
+
+    private String print_code;
+
     public synchronized boolean isLoading() {
         return isLoading;
     }

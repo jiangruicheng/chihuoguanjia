@@ -26,10 +26,13 @@ import com.cndll.chgj.adapter.MendianListAdpater;
 import com.cndll.chgj.mvp.MObeserver;
 import com.cndll.chgj.mvp.mode.AppRequest;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
+import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
 import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseMendianHomeList;
+import com.cndll.chgj.mvp.mode.bean.response.ResponsePrintList;
 import com.cndll.chgj.mvp.presenter.HomePresenter;
 import com.cndll.chgj.mvp.presenter.impl.AddDeskImpl;
+import com.cndll.chgj.mvp.presenter.impl.BillImpl;
 import com.cndll.chgj.mvp.presenter.impl.DeshMethodImpl;
 import com.cndll.chgj.mvp.presenter.impl.LoginImpl;
 import com.cndll.chgj.mvp.presenter.impl.MenuImpl;
@@ -144,6 +147,12 @@ public class HomeFragment extends BaseFragment implements HomeView {
     TextView monthComin;
     @BindView(R.id.search_baobiao)
     Button searchBaobiao;
+
+    @OnClick(R.id.search_baobiao)
+    void onclick_baobiao() {
+        replaceFragmentAddToBackStack(ReportFragment.newInstance(null, null), null);
+    }
+
     @BindView(R.id.set_print)
     CircleImageView setPrint;
 
@@ -162,6 +171,12 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @BindView(R.id.search_bear)
     CircleImageView searchBear;
+
+    @OnClick(R.id.search_bear)
+    void onclick_bill() {
+        replaceFragmentAddToBackStack(BillQueryFragment.newInstance(null, null), new BillImpl());
+    }
+
     @BindView(R.id.setting)
     CircleImageView setting;
 
@@ -291,13 +306,43 @@ public class HomeFragment extends BaseFragment implements HomeView {
         }
     }
 
+    private void getPrintList() {
+        AppRequest.getAPI().getPrintList(new RequestPrintList().setUid(AppMode.getInstance().getUid()).setUid(AppMode.getInstance().getUid())).
+                subscribeOn(Schedulers.io()).
+                observeOn(Schedulers.io()).subscribe(new MObeserver(null) {
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+            }
+
+            @Override
+            public void onNext(BaseResponse baseResponse) {
+                super.onNext(baseResponse);
+                if (baseResponse.getCode() == 1) {
+                    List<ResponsePrintList.DataBean> list = ((ResponsePrintList) baseResponse).getData();
+                    for (int i = 0; i < list.size(); i++) {
+                        if (list.get(i).getIs_default().equals("1")) {
+                            AppMode.getInstance().setPrint_code(list.get(i).getId());
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         unbinder = ButterKnife.bind(this, view);
-
+        getPrintList();
         circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -327,6 +372,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
                                     super.onNext(baseResponse);
                                     if (baseResponse.getCode() == 1) {
                                         showMesg("退出成功");
+                                        AppMode.getInstance().setMid("3").setUid("3");
                                         AppMode.getInstance().setLoading(false);
                                     }
                                 }
@@ -408,7 +454,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @Override
     public void showMesg(String mesg) {
-        MesgShow.showMesg("", "", kefu, new MesgShow.OnButtonListener() {
+        MesgShow.showMesg("", mesg, kefu, new MesgShow.OnButtonListener() {
             @Override
             public void onListerner() {
 
@@ -424,6 +470,12 @@ public class HomeFragment extends BaseFragment implements HomeView {
     @Override
     public void showProg(String mesg) {
 
+    }
+
+    @Override
+    public void reload() {
+        super.reload();
+        getPrintList();
     }
 
     private HomePresenter presenter;
