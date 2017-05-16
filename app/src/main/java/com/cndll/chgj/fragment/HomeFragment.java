@@ -95,6 +95,10 @@ public class HomeFragment extends BaseFragment implements HomeView {
     Button resetpassword;
     @BindView(R.id.mode_image)
     ImageView modeImage;
+    @BindView(R.id.unloding_top)
+    TextView unlodingTop;
+    @BindView(R.id.loding_top)
+    LinearLayout lodingTop;
 
     @OnClick(R.id.resetpassword)
     void onclick_resetpassword() {
@@ -343,6 +347,13 @@ public class HomeFragment extends BaseFragment implements HomeView {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         unbinder = ButterKnife.bind(this, view);
         getPrintList();
+        if (AppMode.getInstance().isLoading()) {
+            lodingTop.setVisibility(View.VISIBLE);
+            unlodingTop.setVisibility(View.GONE);
+        }else {
+            lodingTop.setVisibility(View.GONE);
+            unlodingTop.setVisibility(View.VISIBLE);
+        }
         circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

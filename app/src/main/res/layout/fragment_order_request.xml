@@ -21,80 +21,103 @@
         android:layout_height="0dp"
         android:layout_weight="0.7" />
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="2dp"
-        android:layout_marginTop="2dp"
-        android:layout_weight="1">
+        android:layout_weight="2">
 
         <Button
-            android:id="@+id/other"
-            android:layout_width="0dp"
+            android:id="@+id/pay_nodesk"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_weight="1"
-            android:background="@drawable/shape_dialog_fillet_solid"
-            android:text="其他功能"
-            android:textColor="#FA05DA" />
-
-        <Button
-            android:id="@+id/send"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="2dp"
-            android:layout_weight="1"
-            android:background="@drawable/shape_dialog_fillet_solid"
-            android:text="送单"
-            android:textColor="#F70000" />
-
-        <Button
-            android:id="@+id/pay"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="2dp"
-            android:layout_weight="1"
+            android:layout_margin="24dp"
             android:background="@drawable/shape_dialog_fillet_solid"
             android:text="买单"
-            android:textColor="#F70000" />
+            android:textColor="@color/buttonStork"
+            android:visibility="gone" />
 
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="2dp"
-        android:layout_marginTop="2dp"
-        android:layout_weight="1"
-        android:weightSum="3">
-
-
-        <Button
-            android:id="@+id/dazhe"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/layout_mode_have_tesk"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_weight="1"
-            android:background="@drawable/shape_dialog_fillet_solid"
-            android:text="打折"
-            android:textColor="#050BFA" />
+            android:orientation="vertical">
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_weight="1" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_weight="1">
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_weight="1" />
+                <Button
+                    android:id="@+id/other"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_fillet_solid"
+                    android:text="其他功能"
+                    android:textColor="#FA05DA" />
 
-    </LinearLayout>
+                <Button
+                    android:id="@+id/send"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_fillet_solid"
+                    android:text="送单"
+                    android:textColor="#F70000" />
+
+                <Button
+                    android:id="@+id/pay"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_fillet_solid"
+                    android:text="买单"
+                    android:textColor="#F70000" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_weight="1"
+                android:weightSum="3">
+
+
+                <Button
+                    android:id="@+id/dazhe"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_fillet_solid"
+                    android:text="打折"
+                    android:textColor="#050BFA" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
 </LinearLayout>

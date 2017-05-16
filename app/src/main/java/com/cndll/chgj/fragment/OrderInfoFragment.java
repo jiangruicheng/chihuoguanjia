@@ -27,6 +27,7 @@ import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetDeskList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestOrder;
 import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseAddOrd;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetDeskList;
@@ -94,6 +95,67 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
     LinearLayout orderinfolayout;
     @BindView(R.id.other)
     Button other;
+    @BindView(R.id.txt_discount)
+    TextView txtDiscount;
+    @BindView(R.id.layout_mode_have_tesk)
+    LinearLayout layoutModeHaveTesk;
+    @BindView(R.id.pay_nodesk)
+    Button payNodesk;
+
+    @OnClick(R.id.pay_nodesk)
+    void onclick_paynodesk() {
+
+        popUpkey(KeyWeight.Mode_OnlyNumb, "取消", "确认", new KeyWeight.OnKeyClick() {
+            @Override
+            public void onKeyCancel(String s) {
+
+            }
+
+            @Override
+            public void onKeySure(String s) {
+                AppRequest.getAPI().sendOrd(new RequestOrder().
+                        setItems(order.getItems()).
+                        setMid(AppMode.getInstance().getMid()).
+                        setUid(AppMode.getInstance().getUid()).
+                        setPernum("1").
+                        setSmoney(orderInfo.getGivePrice() + "").
+                        setSsmoney(orderInfo.getLastPrice() + "").
+                        setZk(order.getDisconut() + "").
+                        setZkmoney(orderInfo.getDiscountPrice() + "").
+                        setTmoney(orderInfo.getAllPrice() + "").
+                        setTabname(s).
+                        setTab_id(0 + "").setPayee("1234").
+                        setYsmoney(orderInfo.getLastPrice() + "")).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(OrderInfoFragment.this) {
+                    @Override
+                    public void onCompleted() {
+                        super.onCompleted();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        super.onNext(baseResponse);
+                        if (baseResponse.getCode() == 1) {
+                            if (((ResponseAddOrd) baseResponse).getData().getOid() != 0) {
+                                replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(((ResponseAddOrd) baseResponse).getData().getOid()).setOrders(order), null);
+                            }
+
+                        }
+                    }
+                });
+
+            }
+
+            @Override
+            public void onKeyNub(String s) {
+
+            }
+        });
+    }
 
     @OnClick(R.id.other)
     void onclick_other() {
@@ -248,7 +310,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
     @OnClick(R.id.dazhe)
     void onclick_discount() {
         if (!OrderDishFragment.Orders.isChange && orderId != 0) {
-            popUpkey(2, "取消打折","确定", new KeyWeight.OnKeyClick() {
+            popUpkey(2, "取消打折", "确定", new KeyWeight.OnKeyClick() {
                 @Override
                 public void onKeyCancel(String s) {
                     order.setDisconut(1);
@@ -290,7 +352,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         return order;
     }
 
-    private void popUpkey(int mode, String hint,String sureHint, KeyWeight.OnKeyClick onKeyClick) {
+    private void popUpkey(int mode, String hint, String sureHint, KeyWeight.OnKeyClick onKeyClick) {
         KeyWeight keyWeight = new KeyWeight();
         keyWeight.setCancelText(hint);
         keyWeight.setSureText(sureHint);
@@ -361,6 +423,15 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_order_request, container, false);
         unbinder = ButterKnife.bind(this, view);
+        if (!AppMode.getInstance().isDeskMode()) {
+            txtDiscount.setVisibility(View.INVISIBLE);
+            zhekou.setVisibility(View.INVISIBLE);
+            layoutModeHaveTesk.setVisibility(View.GONE);
+            payNodesk.setVisibility(View.VISIBLE);
+        } else {
+            layoutModeHaveTesk.setVisibility(View.VISIBLE);
+            payNodesk.setVisibility(View.GONE);
+        }
         titleLeft.setText(mParam1);
         titleRight.setText(mParam2);
         adapter = new OrderListAdapter();
@@ -394,7 +465,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                     order.setCurrPosition(order.writeDish.keyAt(position));
                     isOrderWrite = true;
                 }
-                popUpkey(0, "取消","确定", new KeyWeight.OnKeyClick() {
+                popUpkey(0, "取消", "确定", new KeyWeight.OnKeyClick() {
                     @Override
                     public void onKeyCancel(String s) {
 

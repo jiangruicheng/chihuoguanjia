@@ -32,6 +32,7 @@ import com.cndll.chgj.mvp.mode.bean.request.RequestGetOrder;
 import com.cndll.chgj.mvp.mode.bean.request.RequestOrder;
 import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
 import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseAddOrd;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetDeskList;
@@ -110,10 +111,85 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     LinearLayout modeHaveTesk;
     @BindView(R.id.query_nodesk)
     Button queryNodesk;
+
+    @OnClick(R.id.query_nodesk)
+    void onclick_querynodesk() {
+        queryDesh();
+    }
+
     @BindView(R.id.pay_nodesk)
     Button payNodesk;
+
+    @OnClick(R.id.pay_nodesk)
+    void onclick_paynodesk() {
+        popUpkey(KeyWeight.Mode_OnlyNumb, "取消", "确认", new KeyWeight.OnKeyClick() {
+            @Override
+            public void onKeyCancel(String s) {
+
+            }
+
+            @Override
+            public void onKeySure(String s) {
+                AppRequest.getAPI().sendOrd(new RequestOrder().
+                        setItems(orders.getItems()).
+                        setMid(AppMode.getInstance().getMid()).
+                        setUid(AppMode.getInstance().getUid()).
+                        setPernum("1").
+                        setSmoney(orderInfolayout.getGivePrice() + "").
+                        setSsmoney(orderInfolayout.getLastPrice() + "").
+                        setZk(orders.getDisconut() + "").
+                        setZkmoney(orderInfolayout.getDiscountPrice() + "").
+                        setTmoney(orderInfolayout.getAllPrice() + "").
+                        setTabname(s).
+                        setTab_id(0 + "").setPayee("1234").
+                        setYsmoney(orderInfolayout.getLastPrice() + "")).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(OrderDishFragment.this) {
+                    @Override
+                    public void onCompleted() {
+                        super.onCompleted();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        super.onNext(baseResponse);
+                        if (baseResponse.getCode() == 1) {
+                            if (((ResponseAddOrd) baseResponse).getData().getOid() != 0) {
+                                replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(((ResponseAddOrd) baseResponse).getData().getOid()).setOrders(orders), null);
+
+                            }
+                            ;
+                        }
+                    }
+                });
+
+            }
+
+            @Override
+            public void onKeyNub(String s) {
+
+            }
+        });
+      /*  } else {
+            MesgShow.showMesg("", "有菜品未送单,请先送单", dazhe, null, null, false);
+        }*/
+    }
+
     @BindView(R.id.info_nodesk)
     Button infoNodesk;
+
+    @OnClick(R.id.info_nodesk)
+    void onclick_infonodesk() {
+        if (orders != null && orders.getAll() != null) {
+            replaceFragmentAddToBackStack(OrderInfoFragment.newInstance(titleLeft.getText().toString(), titleRight.getText().toString()).setOrderList(orders).setOrderId(orderId), new OrderImpl());
+        } else {
+            replaceFragmentAddToBackStack(OrderInfoFragment.newInstance(null, null), new OrderImpl());
+        }
+    }
+
     @BindView(R.id.mode_no_desk)
     LinearLayout modeNoDesk;
 
@@ -259,6 +335,10 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
     @OnClick(R.id.query)
     void onclick_query() {
+        queryDesh();
+    }
+
+    private void queryDesh() {
         PopUpViewUtil popUpQuery = PopUpViewUtil.getInstance();
         View view = LayoutInflater.from(getContext()).inflate(R.layout.popview_orderdesh_query, null, false);
         View key = view.findViewById(R.id.key);
@@ -443,17 +523,25 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 });
             }
         });
+        popviewOther.cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popviewOther.dismiss();
+            }
+        });
         popviewOther.removeDesk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (orderId != 0) {
                     presenter.removeOrder(orderId + "", 2 + "");
+                    popviewOther.dismiss();
                 }
             }
         });
         popviewOther.writeDesh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                popviewOther.dismiss();
                 View view = LayoutInflater.from(getContext()).inflate(R.layout.popview_order_write, null, false);
                 final EditText name, number, price;
                 Button cancel, delete, save;
@@ -675,7 +763,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     public MainActivity.BackPressEvent backPressEvent = new MainActivity.BackPressEvent() {
         @Override
         public void onBackPress() {
-            if (Orders.isChange) {
+            if (Orders.isChange && AppMode.getInstance().isDeskMode()) {
                 MesgShow.showMesg("", "有菜品未送单，确定退出？", info, new MesgShow.OnButtonListener() {
                     @Override
                     public void onListerner() {
@@ -1389,6 +1477,10 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             popUpViewUtil = PopUpViewUtil.getInstance();
             view = LayoutInflater.from(getContext()).inflate(R.layout.popview_oderdesh_other, null, false);
             unbinder = ButterKnife.bind(this, view);
+        }
+
+        public void dismiss() {
+            popUpViewUtil.dismiss();
         }
     }
 }
