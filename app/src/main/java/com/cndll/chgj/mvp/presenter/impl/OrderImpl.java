@@ -157,10 +157,17 @@ public class OrderImpl implements OrderPresenter {
                     }
 
                     @Override
-                    public void onNext(BaseResponse baseResponse) {
+                    public void onNext(final BaseResponse baseResponse) {
                         super.onNext(baseResponse);
                         if (baseResponse.getCode() == 1) {
                             view.setOrder((ResponseGetOrder) baseResponse);
+                            new Thread() {
+                                @Override
+                                public void run() {
+                                    super.run();
+
+                                }
+                            }.start();
                             // view.setDeshList(((ResponseGetCaipinList) baseResponse).getData());
                         }
                     }
@@ -170,7 +177,7 @@ public class OrderImpl implements OrderPresenter {
     @Override
     public void removeOrder(final String id, String type) {
         AppRequest.getAPI().
-                removerOrder(id,type).
+                removerOrder(id, type).
                 subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
                 subscribe(new MObeserver(view) {
                     @Override
@@ -199,7 +206,7 @@ public class OrderImpl implements OrderPresenter {
     @Override
     public void turnOrder(final String id, String tabname, String tab_id) {
         AppRequest.getAPI().
-               turnOrder(id,tabname,tab_id).
+                turnOrder(id, tabname, tab_id).
                 subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
                 subscribe(new MObeserver(view) {
                     @Override

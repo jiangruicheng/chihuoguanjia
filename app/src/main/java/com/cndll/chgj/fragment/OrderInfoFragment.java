@@ -254,7 +254,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                         if (order == null) {
                             order = new OrderDishFragment.Orders();
                         }
-                        order.addWriteDish(name.getText().toString(), new OrderDishFragment.Orders.Write().setItemsBean(writeDishBean.
+                        order.addWriteDish(name.getText().toString(), new OrderDishFragment.Orders.Write().setOrders(order).setItemsBean(writeDishBean.
                                 setIsWrite("1").
                                 setCount(number.getText().toString()).
                                 setGiveCount("0").
@@ -295,7 +295,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
     @OnClick(R.id.pay)
     void onclick_pay() {
         // replaceFragmentAddToBackStack(ApplyPayFragment.newInstance(null, null), null);
-        if (!OrderDishFragment.Orders.isChange) {
+        if (!order.isChange) {
             if (orderId != 0) {
                 replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(orderId).setOrders(order), null);
             }
@@ -309,7 +309,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
 
     @OnClick(R.id.dazhe)
     void onclick_discount() {
-        if (!OrderDishFragment.Orders.isChange && orderId != 0) {
+        if (!order.isChange && orderId != 0) {
             popUpkey(2, "取消打折", "确定", new KeyWeight.OnKeyClick() {
                 @Override
                 public void onKeyCancel(String s) {
@@ -432,6 +432,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
             layoutModeHaveTesk.setVisibility(View.VISIBLE);
             payNodesk.setVisibility(View.GONE);
         }
+        title.setText("");
         titleLeft.setText(mParam1);
         titleRight.setText(mParam2);
         adapter = new OrderListAdapter();

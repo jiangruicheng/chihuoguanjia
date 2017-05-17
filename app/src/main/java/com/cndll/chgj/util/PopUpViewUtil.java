@@ -24,6 +24,10 @@ public class PopUpViewUtil {
     private PopupWindow popupWindow;
     private AlertDialog alertDialog;
 
+    public void setPopupWindowHeight(int height) {
+        popupWindow.setHeight(height);
+    }
+
     public void setOnDismissAction(OnDismissAction onDismissAction) {
         this.onDismissAction = onDismissAction;
     }
@@ -49,6 +53,7 @@ public class PopUpViewUtil {
         }
         popupWindow = new PopupWindow(view, width, height);
         popupWindow.setFocusable(true);
+
         popupWindow.setOutsideTouchable(true);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {

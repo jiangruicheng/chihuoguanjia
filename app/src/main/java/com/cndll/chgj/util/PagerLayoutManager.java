@@ -29,7 +29,7 @@ public class PagerLayoutManager extends RecyclerView.LayoutManager {
         return null;
     }
 
-    private int margin = 12;
+    private int margin = 2;
     protected int allHeight;
     protected int width;
     protected int height;
@@ -42,7 +42,6 @@ public class PagerLayoutManager extends RecyclerView.LayoutManager {
             return;
         }
         if (state.isPreLayout()) {
-
             return;
         }
         detachAndScrapAttachedViews(recycler);

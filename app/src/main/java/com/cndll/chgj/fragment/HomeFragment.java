@@ -99,6 +99,8 @@ public class HomeFragment extends BaseFragment implements HomeView {
     TextView unlodingTop;
     @BindView(R.id.loding_top)
     LinearLayout lodingTop;
+    @BindView(R.id.username)
+    TextView username;
 
     @OnClick(R.id.resetpassword)
     void onclick_resetpassword() {
@@ -346,14 +348,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         unbinder = ButterKnife.bind(this, view);
-        getPrintList();
-        if (AppMode.getInstance().isLoading()) {
-            lodingTop.setVisibility(View.VISIBLE);
-            unlodingTop.setVisibility(View.GONE);
-        }else {
-            lodingTop.setVisibility(View.GONE);
-            unlodingTop.setVisibility(View.VISIBLE);
-        }
+        init();
         circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -483,10 +478,25 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     }
 
+    private void init() {
+        getPrintList();
+        presenter.getHomeInfo();
+        if (AppMode.getInstance().isLoading()) {
+            lodingTop.setVisibility(View.VISIBLE);
+            unlodingTop.setVisibility(View.GONE);
+            username.setText(AppMode.getInstance().getUsername());
+            logoff.setText("退出登录");
+        } else {
+            lodingTop.setVisibility(View.GONE);
+            unlodingTop.setVisibility(View.VISIBLE);
+            logoff.setText("登录");
+        }
+    }
+
     @Override
     public void reload() {
         super.reload();
-        getPrintList();
+        init();
     }
 
     private HomePresenter presenter;

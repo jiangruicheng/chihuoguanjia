@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
@@ -61,6 +62,8 @@ public class PopOrderRequest {
     View location;
     Context context;
     View view;
+    private int height;
+
     public void init(Context context, View location) {
         this.context = context;
         this.location = location;
@@ -102,10 +105,19 @@ public class PopOrderRequest {
         location.getLocationOnScreen(locations);
         locations[0] = locations[0] - popUpViewUtil.getWindowManager(context).getDefaultDisplay().getWidth() / 3;
         locations[1] = locations[1] - popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 4 + location.getHeight();
+        if (height == 0) {
+            height = popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 4;
+        }
         popUpViewUtil.popListWindow(location, view,
                 popUpViewUtil.getWindowManager(context).getDefaultDisplay().getWidth() / 3,
-                popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 4,
+                height,
                 Gravity.NO_GRAVITY, locations);
+    }
+
+    public void setViewHeight(int i) {
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
+        params.height = popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 4 / 3 * i;
+        view.setLayoutParams(params);
     }
 
     public void dismiss() {

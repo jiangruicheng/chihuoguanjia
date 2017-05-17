@@ -47,6 +47,16 @@ public class AppMode {
 
     private String print_code;
 
+    public String getUsername() {
+        return username;
+    }
+
+    public AppMode setUsername(String username) {
+        this.username = username;
+        return this;
+    }
+
+    private String username;
     public synchronized boolean isLoading() {
         return isLoading;
     }

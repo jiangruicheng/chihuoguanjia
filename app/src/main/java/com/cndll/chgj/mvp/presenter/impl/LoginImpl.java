@@ -55,7 +55,7 @@ public class LoginImpl implements LoginPresenter {
                                 setMid(((ResponseLogin) baseResponse).getData().getMid()).
                                 setToken(((ResponseLogin) baseResponse).getData().getToken()).
                                 setUid(((ResponseLogin) baseResponse).getData().getUid()).
-                                setTel(login.getTel());
+                                setTel(login.getTel()).setUsername(((ResponseLogin) baseResponse).getData().getUsername());
                     }
                 }
             }

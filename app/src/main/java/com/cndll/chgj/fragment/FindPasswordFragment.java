@@ -3,6 +3,8 @@ package com.cndll.chgj.fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +13,27 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.mvp.MObeserver;
+import com.cndll.chgj.mvp.mode.AppRequest;
+import com.cndll.chgj.mvp.mode.bean.info.AppMode;
+import com.cndll.chgj.mvp.mode.bean.request.RequestVerify;
+import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseVerify;
+import com.cndll.chgj.mvp.presenter.BasePresenter;
+import com.cndll.chgj.mvp.view.BaseView;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,18 +66,122 @@ public class FindPasswordFragment extends BaseFragment {
     EditText verify;
     @BindView(R.id.get_verify)
     Button getVerify;
+
+    @OnClick(R.id.get_verify)
+    void onclick_getverify() {
+        getVerify.setEnabled(false);
+        timer = new Timer();
+        task = new TimerTask() {
+            @Override
+            public void run() {
+                handler.sendMessage(handler.obtainMessage());
+            }
+        };
+        timer.schedule(task, 0, 1000);
+        AppRequest.getAPI().getVerify(new RequestVerify().setTel(AppMode.getInstance().getTel())).
+                subscribeOn(Schedulers.io()).
+                observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(baseView) {
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Toast.makeText(getContext(), "获取失败", Toast.LENGTH_SHORT).show();
+                super.onError(e);
+                if (timer != null) {
+                    timer.cancel();
+                    getVerify.setText("获取");
+                    getVerify.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void onNext(BaseResponse baseResponse) {
+                super.onNext(baseResponse);
+                if (baseResponse instanceof ResponseVerify) {
+                    if (baseResponse.getCode() == 1) {
+                        sverify = String.valueOf(((ResponseVerify) baseResponse).getData());
+                    }
+
+                }
+            }
+        });
+    }
+
     @BindView(R.id.sure)
     Button sure;
-    Unbinder unbinder;
 
+    @OnClick(R.id.sure)
+    void onclick_sure() {
+        if (sverify != null && sverify.equals(verify.getText().toString()))
+            AppRequest.getAPI().updatePassword(AppMode.getInstance().getUid(), AppMode.getInstance().getTel(), password.getText().toString()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(baseView) {
+                @Override
+                public void onCompleted() {
+                    super.onCompleted();
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    super.onError(e);
+                }
+
+                @Override
+                public void onNext(BaseResponse baseResponse) {
+                    super.onNext(baseResponse);
+                }
+            });
+    }
+
+    Unbinder unbinder;
+    String sverify;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    Timer timer;
+    TimerTask task;
+    int time = 60;
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (time != 0) {
+                getVerify.setText(time + "");
+                time--;
+            } else {
+                getVerify.setEnabled(true);
+                getVerify.setText("获取");
+            }
+        }
+    };
+    BaseView baseView = new BaseView() {
+        @Override
+        public void showMesg(String mesg) {
 
+        }
+
+        @Override
+        public void showProg(String mesg) {
+
+        }
+
+        @Override
+        public void setPresenter(BasePresenter presenter) {
+
+        }
+    };
     private OnFragmentInteractionListener mListener;
 
     public FindPasswordFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (timer != null)
+            timer.cancel();
     }
 
     /**

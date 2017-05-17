@@ -107,12 +107,6 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
             title.setText("菜品编辑");
             rightText.setVisibility(View.VISIBLE);
             rightText.setText("菜类");
-            rightText.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    popupCaileiList();
-                }
-            });
 
         } else {
             popview = new AddCaiPin();
@@ -182,6 +176,9 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
         @Override
         public void trunCaipin(String dcid) {
             switchFragment(CAIPIN);
+            title.setText("菜品编辑");
+            rightText.setVisibility(View.VISIBLE);
+            rightText.setText("菜类");
             ((CaipinFragment) fragments.get(CAIPIN)).setDcId(dcid);
             presenter.getCaipinList(new RequestGetCaipinList().setDc_id(dcid).setUid(AppMode.getInstance().getUid()).setMid(AppMode.getInstance().getMid()));
         }
@@ -320,6 +317,13 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
                 popBackFragment();
             }
         });
+        rightText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupCaileiList();
+            }
+        });
+        rightText.setVisibility(View.GONE);
         fragments.put(CAILEI, CaileiFragment.newInstance(null, null));
         fragments.put(CAIPIN, CaipinFragment.newInstance(null, null));
         fragmentManager = getActivity().getSupportFragmentManager();

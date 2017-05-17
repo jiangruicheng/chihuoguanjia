@@ -123,6 +123,7 @@ public class RegisterImpl implements RegisterPresenter {
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
+                view.showMesg("获取失败");
             }
 
             @Override

@@ -80,6 +80,13 @@ public interface Api {
     Observable<ResponseUploadImage> uploadImage(@PartMap Map<String, RequestBody> pa);
 
     @FormUrlEncoded
+    @POST("User/modifypass")
+    Observable<ResponseCailei> updatePassword(@Field("uid") String uid,
+                                              @Field("tel") String tel,
+                                              @Field("newpass") String newpass
+    );
+
+    @FormUrlEncoded
     @POST("Print/printdish")
     Observable<ResponseCailei> printOrder(@Field("id") String id,
                                           @Field("title") String title,
@@ -92,13 +99,15 @@ public interface Api {
     Observable<ResponseCailei> printBill(@Field("id") String id,
                                          @Field("printer") String name,
                                          @Field("print_id") String print_id);
+
     @FormUrlEncoded
     @POST("Print/day_sale_print")
     Observable<ResponseCailei> printDayReport(@Field("uid") String uid,
                                               @Field("mid") String mid,
-                                         @Field("stm") String stm,
+                                              @Field("stm") String stm,
                                               @Field("etm") String etm,
-                                         @Field("print_id") String print_id);
+                                              @Field("print_id") String print_id);
+
     @FormUrlEncoded
     @POST("Print/dish_sale_print")
     Observable<ResponseCailei> printAllReport(@Field("uid") String uid,
@@ -106,6 +115,7 @@ public interface Api {
                                               @Field("stm") String stm,
                                               @Field("etm") String etm,
                                               @Field("print_id") String print_id);
+
     @POST("System/payapply")
     Observable<ResponseCailei> uploadPayInfo(@Body RequestUpLoadPayInfo info);
 

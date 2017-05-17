@@ -197,6 +197,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     void onclick_yaoqiu() {
         if (orders != null) {
             boolean iss;
+
             if (isOrderWrite) {
                 iss = orders.writeDish.get(orders.getCurrPosition()).isSend();
             } else {
@@ -205,11 +206,14 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             if (iss) {
                 final PopOrderRequest popOrderRequest = new PopOrderRequest();
                 popOrderRequest.init(getContext(), yaoqiu);
+                popOrderRequest.show();
                 popOrderRequest.setFirstText("赠送");
                 popOrderRequest.setSecondText("退菜");
                 if (orders.getOrder(orders.getCurrPosition()).getGiveCount() == 0) {
+                    popOrderRequest.setViewHeight(2);
                     popOrderRequest.setThirdVisble(View.GONE);
                 } else {
+                    popOrderRequest.setViewHeight(3);
                     popOrderRequest.setThirdText("取消赠送");
                 }
                 popOrderRequest.setOnItemClick(new PopOrderRequest.onItemClick() {
@@ -222,9 +226,10 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                         }
                         if (orders.getOrder(orders.getCurrPosition()).getGiveCount() == 0) {
                             popOrderRequest.setThirdVisble(View.GONE);
+                            popOrderRequest.setViewHeight(2);
                         } else {
                             popOrderRequest.setThirdVisble(View.VISIBLE);
-                            popOrderRequest.setThirdText("取消赠送");
+                            popOrderRequest.setViewHeight(3);
                         }
                         setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
                     }
@@ -254,9 +259,11 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
                     }
                 });
-                popOrderRequest.show();
+
             } else {
                 final PopOrderRequest popOrderRequest = new PopOrderRequest();
+                popOrderRequest.init(getContext(), yaoqiu);
+                popOrderRequest.show();
                 popOrderRequest.setOnItemClick(new PopOrderRequest.onItemClick() {
                     @Override
                     public void onFirst(View v) {
@@ -307,8 +314,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                         }
                     }
                 });
-                popOrderRequest.init(getContext(), yaoqiu);
-                popOrderRequest.show();
+
             }
         }
     }
@@ -566,7 +572,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                         if (orders == null) {
                             orders = new Orders();
                         }
-                        orders.addWriteDish(name.getText().toString(), new Orders.Write().setItemsBean(writeDishBean.
+                        orders.addWriteDish(name.getText().toString(), new Orders.Write().setOrders(orders).setItemsBean(writeDishBean.
                                 setIsWrite("1").
                                 setCount(number.getText().toString()).
                                 setGiveCount("0").
@@ -597,7 +603,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
     @OnClick(R.id.dazhe)
     void onclick_discount() {
-        if (!Orders.isChange && orderId != 0) {
+        if (!orders.isChange && orderId != 0) {
             popUpkey(2, "取消打折", "确定", new KeyWeight.OnKeyClick() {
                 @Override
                 public void onKeyCancel(String s) {
@@ -634,7 +640,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     @OnClick(R.id.pay)
     void onclick_pay() {
         // replaceFragmentAddToBackStack(ApplyPayFragment.newInstance(null, null), null);
-        if (!Orders.isChange) {
+        if (!orders.isChange) {
             if (orderId != 0) {
                 replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(orderId).setOrders(orders), null);
 
@@ -763,7 +769,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     public MainActivity.BackPressEvent backPressEvent = new MainActivity.BackPressEvent() {
         @Override
         public void onBackPress() {
-            if (Orders.isChange && AppMode.getInstance().isDeskMode()) {
+            if (orders.isChange && AppMode.getInstance().isDeskMode()) {
                 MesgShow.showMesg("", "有菜品未送单，确定退出？", info, new MesgShow.OnButtonListener() {
                     @Override
                     public void onListerner() {
@@ -891,7 +897,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 if (orders.Iscontan(deshListAdapter.getMitems().get(position).getId())) {
 
                 } else {
-                    Orders.Order order = new Orders.Order();
+                    Orders.Order order = new Orders.Order().setOrders(orders);
                     order.setItemsBean(deshListAdapter.getMitems().get(position).
                             setCount(1 + ""));
                     orders.setOrders(deshListAdapter.getMitems().get(position).getId(), order);
@@ -905,10 +911,10 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 isSend = false;
             }
         });
-        if (presenter == null) {
+       /* if (presenter == null) {
             presenter = new OrderImpl();
             presenter.setView(this);
-        }
+        }*/
         if (orderId != 0) {
             presenter.getOrder(new RequestGetOrder().setId(orderId));
         }
@@ -1069,23 +1075,24 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         if (getOrder.getData().getWritedishs() != null) {
             writedishs = getOrder.getData().getWritedishs();
             for (int i = 0; i < writedishs.size(); i++) {
-                orders.addWriteDish(writedishs.get(i).getName(), new Orders.Write().setItemsBean(writedishs.get(i)).setSend(isSend).setCount(Float.valueOf(writedishs.get(i).getCount())).setGiveCount(Float.valueOf(writedishs.get(i).getGiveCount())));
+                orders.addWriteDish(writedishs.get(i).getName(), new Orders.Write().setOrders(orders).setItemsBean(writedishs.get(i)).setSend(isSend).setCount(Float.valueOf(writedishs.get(i).getCount())).setGiveCount(Float.valueOf(writedishs.get(i).getGiveCount())));
             }
         }
         List<ResponseGetCaipinList.DataBean> itemsBeen = getOrder.getData().getItems();
         orders.setDisconut(Float.valueOf(getOrder.getData().getZk()));
         for (int i = 0; i < itemsBeen.size(); i++) {
-            if (orders.getOrders().containsKey(itemsBeen.get(i).getId() + "" + itemsBeen.get(i).getDc_id())) {
+            /*if (orders.getOrders().containsKey(itemsBeen.get(i).getId() + "" + itemsBeen.get(i).getDc_id())) {
                 orders.getOrder(itemsBeen.get(i).getId() + "" + itemsBeen.get(i).getDc_id()).setSend(true).
                         setCount(Float.valueOf(Float.valueOf(orders.getOrder(itemsBeen.get(i).getId() + "" + itemsBeen.get(i).getDc_id()).getCount()) + Float.valueOf(itemsBeen.get(i).getCount()))).
                         setGiveCount(orders.getOrder(itemsBeen.get(i).getId() + "" + itemsBeen.get(i).getDc_id()).getGiveCount() + itemsBeen.get(i).
                                 getGiveCount());
-            } else {
-                orders.setOrders(itemsBeen.get(i).getId() + "" + itemsBeen.get(i).getDc_id(),
-                        new Orders.Order().setItemsBean(itemsBeen.get(i)).setSend(true).setCount(Float.valueOf(itemsBeen.get(i).getCount())).
-                                setGiveCount(itemsBeen.get(i).
-                                        getGiveCount()));
-            }
+            } else*/
+            //{
+            orders.setOrders(itemsBeen.get(i).getId() + "" + itemsBeen.get(i).getDc_id(),
+                    new Orders.Order().setOrders(orders).setItemsBean(itemsBeen.get(i)).setSend(true).setCount(Float.valueOf(itemsBeen.get(i).getCount())).
+                            setGiveCount(itemsBeen.get(i).
+                                    getGiveCount()));
+            //}
         }
         if (itemsBeen.size() != 0) {
             isOrderWrite = false;
@@ -1100,7 +1107,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
         setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
         isSend = true;
-        Orders.isChange = false;
+        orders.isChange = false;
     }
 
     /**
@@ -1119,7 +1126,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     }
 
     public static class Orders {
-        public static boolean isChange = false;
+        public boolean isChange = false;
 
         public ArrayMap<String, Order> getOrders() {
             return orders;
@@ -1146,6 +1153,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 writeDish = new ArrayMap<>();
             }
             writeDish.put(id, writeDishBean);
+            writeDishBean.orders = this;
             isChange = true;
         }
 
@@ -1193,6 +1201,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
         public void setOrders(String id, Order order) {
             orders.put(id, order);
+            order.orders = this;
             isChange = true;
         }
 
@@ -1216,17 +1225,41 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         public List<ResponseGetCaipinList.DataBean> getItems() {
             List<ResponseGetCaipinList.DataBean> itemsBeen = new ArrayList<>();
             List<Order> orderList = new ArrayList<>(orders.values());
+            boolean isADD = false;
             for (int i = 0; i < orderList.size(); i++) {
+                isADD = false;
+                for (int j = 0; j < itemsBeen.size(); j++) {
+                    if (itemsBeen.get(j).getId().equals(orderList.get(i).getItemsBean().getId())) {
+                        itemsBeen.get(j).setCount(Float.valueOf(orderList.get(i).getItemsBean().getCount()) + Float.valueOf(itemsBeen.get(j).getCount()) + "").setGiveCount(orderList.get(i).getItemsBean().getGiveCount() + itemsBeen.get(j).getGiveCount());
+                        isADD = true;
+                    }
+                }
+                if (isADD) {
+                    continue;
+                }
                 itemsBeen.add(orderList.get(i).getItemsBean());
+
             }
             return itemsBeen;
         }
 
         public static class Write {
+            public Orders getOrders() {
+                return orders;
+            }
+
+            public Write setOrders(Orders orders) {
+                this.orders = orders;
+                return this;
+            }
+
+            Orders orders;
+
             public Write setCount(float count) {
                 this.count = count;
                 itemsBean.setCount((this.count) + "");
-                isChange = true;
+                orders.isChange = true;
+
                 return this;
             }
 
@@ -1267,7 +1300,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             public Write setGiveCount(float count) {
                 this.giveCount = count;
                 itemsBean.setGiveCount((int) giveCount + "");
-                isChange = true;
+                orders.isChange = true;
                 return this;
             }
 
@@ -1279,7 +1312,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 }
                 itemsBean.setGiveCount((int) giveCount + "");
                 itemsBean.setCount((int) count + "");
-                isChange = true;
+                orders.isChange = true;
             }
 
             public Write cancelGive() {
@@ -1287,7 +1320,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 giveCount = 0;
                 itemsBean.setGiveCount((int) giveCount + "");
                 itemsBean.setCount((int) count + "");
-                isChange = true;
+                orders.isChange = true;
                 return this;
             }
 
@@ -1298,7 +1331,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 }
                 itemsBean.setCount(count + "");
                 itemsBean.setGiveCount((int) (this.giveCount) + "");
-                isChange = true;
+                orders.isChange = true;
                 return this;
             }
 
@@ -1341,10 +1374,25 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         }
 
         public static class Order {
+            private Order() {
+
+            }
+
+            public Orders getOrders() {
+                return orders;
+            }
+
+            public Order setOrders(Orders orders) {
+                this.orders = orders;
+                return this;
+            }
+
+            Orders orders;
+
             public Order setCount(float count) {
                 this.count = count;
                 itemsBean.setCount((this.count) + "");
-                isChange = true;
+                orders.isChange = true;
                 return this;
             }
 
@@ -1356,7 +1404,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 }
                 itemsBean.setGiveCount((int) giveCount);
                 itemsBean.setCount((int) count + "");
-                isChange = true;
+                orders.isChange = true;
             }
 
             public float getCount() {
@@ -1395,7 +1443,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             public Order setGiveCount(float count) {
                 this.giveCount = count;
                 itemsBean.setGiveCount((int) giveCount);
-                isChange = true;
+                orders.isChange = true;
                 return this;
             }
 
@@ -1404,7 +1452,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 giveCount = 0;
                 itemsBean.setGiveCount((int) giveCount);
                 itemsBean.setCount((int) count + "");
-                isChange = true;
+                orders.isChange = true;
                 return this;
             }
 
@@ -1415,7 +1463,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 }
                 itemsBean.setCount(count + "");
                 itemsBean.setGiveCount((int) (this.giveCount));
-                isChange = true;
+                orders.isChange = true;
                 return this;
             }
 

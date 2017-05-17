@@ -127,7 +127,7 @@ public class LoginFragment extends BaseFragment implements LoginView {
             }
         });
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("CHGJ", MODE_PRIVATE);
-        info.setText(sharedPreferences.getString("mdname", ""));
+        info.setText("当前门店号：" + sharedPreferences.getString("mdcode", "") + "\n" + sharedPreferences.getString("mdname", ""));
         number.setText(sharedPreferences.getString("mdcode", ""));
         tel.setText(sharedPreferences.getString("tel", ""));
         return view;
