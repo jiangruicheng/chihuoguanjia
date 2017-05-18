@@ -82,6 +82,16 @@ public class ResponseGetCaipinList extends BaseResponse {
         private String name;
         private String dc_id;
 
+        public String getBackCount() {
+            return backCount;
+        }
+
+        public void setBackCount(String backCount) {
+            this.backCount = backCount;
+        }
+
+        private String backCount;
+
         public String getId() {
             return id;
         }

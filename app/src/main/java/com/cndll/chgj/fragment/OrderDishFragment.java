@@ -1277,6 +1277,17 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 return this;
             }
 
+            public float getBackCount() {
+                return backCount;
+            }
+
+            public void setBackCount() {
+                backCount = Float.valueOf(backCount) + 1;
+                itemsBean.setBackCount(backCount + "");
+
+            }
+
+            float backCount;
             boolean isSend = false;
             float count = 1;
 
@@ -1310,6 +1321,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 } else if (giveCount > 0) {
                     giveCount = giveCount - 1;
                 }
+                setBackCount();
                 itemsBean.setGiveCount((int) giveCount + "");
                 itemsBean.setCount((int) count + "");
                 orders.isChange = true;
@@ -1378,6 +1390,17 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
             }
 
+            public float getBackCount() {
+                return backCount;
+            }
+
+            public void setBackCount() {
+                backCount = Float.valueOf(backCount) + 1;
+                itemsBean.setBackCount(backCount + "");
+            }
+
+            float backCount;
+
             public Orders getOrders() {
                 return orders;
             }
@@ -1402,6 +1425,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 } else if (giveCount > 0) {
                     giveCount = giveCount - 1;
                 }
+                setBackCount();
                 itemsBean.setGiveCount((int) giveCount);
                 itemsBean.setCount((int) count + "");
                 orders.isChange = true;

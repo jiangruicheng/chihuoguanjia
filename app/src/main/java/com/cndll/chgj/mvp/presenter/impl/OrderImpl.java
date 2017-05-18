@@ -161,13 +161,6 @@ public class OrderImpl implements OrderPresenter {
                         super.onNext(baseResponse);
                         if (baseResponse.getCode() == 1) {
                             view.setOrder((ResponseGetOrder) baseResponse);
-                            new Thread() {
-                                @Override
-                                public void run() {
-                                    super.run();
-
-                                }
-                            }.start();
                             // view.setDeshList(((ResponseGetCaipinList) baseResponse).getData());
                         }
                     }

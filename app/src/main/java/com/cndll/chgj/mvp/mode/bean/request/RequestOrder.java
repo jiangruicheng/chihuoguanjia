@@ -358,6 +358,15 @@ public class RequestOrder {
         private String dc_id;
         private ResponseGetCaipinList.DataBean.RemarkBean remark;
 
+        public String getBackCount() {
+            return backCount;
+        }
+
+        public void setBackCount(String backCount) {
+            this.backCount = backCount;
+        }
+
+        private String backCount;
         public String getId() {
             return id;
         }
@@ -669,6 +678,15 @@ public class RequestOrder {
         private String price;
         private String name;
 
+        public String getBackCount() {
+            return backCount;
+        }
+
+        public void setBackCount(String backCount) {
+            this.backCount = backCount;
+        }
+
+        private String backCount;
 
     }
 
