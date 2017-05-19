@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -114,6 +115,7 @@ public class CaipinFragment extends BaseFragment<CaiPinListAdapter> {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_caipin, container, false);
         unbinder = ButterKnife.bind(this, view);
+
         searchCaipin.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -151,6 +153,10 @@ public class CaipinFragment extends BaseFragment<CaiPinListAdapter> {
             }
         });
         setListViewAdapter(list);
+        list.addItemDecoration(new DividerItemDecoration(
+                getActivity(), DividerItemDecoration.VERTICAL));
+//添加分割线
+
         /*CaiPinListAdapter adapter = new CaiPinListAdapter(getActivity(), new OnStartDragListener() {
             @Override
             public void onStartDrag(RecyclerView.ViewHolder viewHolder) {

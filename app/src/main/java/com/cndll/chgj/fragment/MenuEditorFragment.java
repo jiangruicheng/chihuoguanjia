@@ -233,6 +233,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
             public void onClick(View v) {
                 if (position > -1) {
                     presenter.deleteCailei(new RequestDeleteCailei().setId(((CaileiFragment) fragments.get(CAILEI)).getAdapter().getMitems().get(position).getIDList()));
+                    popUpViewUtil.dismiss();
                 }
             }
         });
@@ -463,7 +464,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
             name.setText(data.getName());
             unit.setText(data.getUnit());
             price.setText(data.getPrice());
-            printer.setText(data.getMachine());
+            printer.setText(data.getMachine_name());
             queryid.setText(data.getCode());
             if (data.getIs_discount().equals("1")) {
                 dazhe.setLeft(true);
@@ -481,6 +482,8 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
                 print.setLeft(false);
             }
         }
+
+        String printId;
 
         public void init() {
 
@@ -521,7 +524,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
                                 setIs_discount(dazhe.isLeftInt()).
                                 setPrice(price.getText().toString()).
                                 setIs_over(over.isLeftInt()).
-                                setMachine(printer.getText().toString()).
+                                setMachine(printId).setMachine_name(printer.getText().toString()).
                                 setIs_print(print.isLeftInt()).
                                 setCode(queryid.getText().toString()).
                                 setDc_id(((CaipinFragment) fragments.get(CAIPIN)).getDcId()));
@@ -535,7 +538,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
                                 setIs_discount(dazhe.isLeftInt()).
                                 setPrice(price.getText().toString()).
                                 setIs_over(over.isLeftInt()).
-                                setMachine(printer.getText().toString()).
+                                setMachine(printId).setMachine_name(printer.getText().toString()).
                                 setIs_print(print.isLeftInt()).
                                 setCode(queryid.getText().toString()).
                                 setDc_id(((CaipinFragment) fragments.get(CAIPIN)).getDcId()).
@@ -556,6 +559,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             printer.setText(dataString.get(position));
+                            printId = dataBeen.get(position).getId();
                             popupSpinner.dismiss();
                         }
                     });
@@ -570,8 +574,10 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
             });
         }
 
-        public void showPrint(List<ResponsePrintList.DataBean> dataBeen) {
+        private List<ResponsePrintList.DataBean> dataBeen;
 
+        public void showPrint(List<ResponsePrintList.DataBean> dataBeen) {
+            this.dataBeen = dataBeen;
             if (dataBeen != null) {
                 if (dataString == null) {
                     dataString = new ArrayList<>();
@@ -605,7 +611,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
                     popUpViewUtil.getWindowManager(
                             getActivity()).
                             getDefaultDisplay().
-                            getHeight() / 10 * 4, Gravity.TOP, null);
+                            getHeight() / 10 * 4, Gravity.CENTER, null);
 
         }
     }

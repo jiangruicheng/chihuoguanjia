@@ -22,7 +22,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal"
-        android:layout_margin="12dp"
+        android:layout_margin="2dp"
        >
 
         <Button
@@ -32,7 +32,7 @@
 
             android:layout_marginRight="4dp"
             android:layout_weight="1"
-            android:background="#6CAEA0"
+            android:background="@mipmap/greenback"
             android:text="添加菜类"
             android:textColor="@color/black" />
 
@@ -42,7 +42,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="4dp"
             android:layout_weight="1"
-            android:background="#DF725A"
+            android:background="@mipmap/addcaipin"
             android:text="添加菜品"
             android:textColor="@color/black" />
     </LinearLayout>

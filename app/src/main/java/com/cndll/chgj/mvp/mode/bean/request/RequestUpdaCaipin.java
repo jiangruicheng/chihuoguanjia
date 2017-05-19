@@ -17,6 +17,16 @@ public class RequestUpdaCaipin {
     private String code;
     private String dc_id;
 
+    public String getMachine_name() {
+        return machine_name;
+    }
+
+    public RequestUpdaCaipin setMachine_name(String machine_name) {
+        this.machine_name = machine_name;
+        return this;
+    }
+
+    private String machine_name;
     public String getId() {
         return id;
     }

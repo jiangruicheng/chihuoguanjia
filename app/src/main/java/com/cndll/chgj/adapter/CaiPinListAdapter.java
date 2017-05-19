@@ -70,7 +70,7 @@ public class CaiPinListAdapter extends ListAdapter<ResponseGetCaipinList.DataBea
         ((ListItemViewHolder) holder).price.setVisibility(View.VISIBLE);
         ((ListItemViewHolder) holder).name.setText(mitems.get(position).getName());
         ((ListItemViewHolder) holder).price.setText("￥ " + mitems.get(position).getPrice());
-        ((ListItemViewHolder) holder).info.setText(isDiscount + "编号: " + mitems.get(position).getCode() + " " + mitems.get(position).getMachine());
+        ((ListItemViewHolder) holder).info.setText(isDiscount + "编号: " + mitems.get(position).getCode() + " " + mitems.get(position).getMachine_name());
         ((ListItemViewHolder) holder).name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

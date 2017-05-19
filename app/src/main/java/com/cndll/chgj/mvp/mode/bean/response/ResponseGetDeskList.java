@@ -74,6 +74,9 @@ public class ResponseGetDeskList extends BaseResponse {
 
         @Override
         public int getOrderList() {
+            if (ord == null) {
+                return -1;
+            }
             return Integer.valueOf(this.ord);
         }
 

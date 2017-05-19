@@ -29,7 +29,7 @@ public class PagerLayoutManager extends RecyclerView.LayoutManager {
         return null;
     }
 
-    private int margin = 2;
+    private int margin = 5;
     protected int allHeight;
     protected int width;
     protected int height;

@@ -4,6 +4,7 @@ package com.cndll.chgj.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -46,7 +47,8 @@ public class BaseFragment<T extends ListAdapter> extends Fragment {
         view.setHasFixedSize(true);
         view.setAdapter(adapter);
         view.setLayoutManager(new LinearLayoutManager(getActivity()));
-
+        view.addItemDecoration(new DividerItemDecoration(
+                getActivity(), DividerItemDecoration.VERTICAL));
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(view);

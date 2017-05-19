@@ -16,7 +16,7 @@ public interface OrderView extends BaseView<OrderPresenter> {
 
     void setDeshList(List<ResponseGetCaipinList.DataBean> deshList);
 
-    void sendSucc();
+    void sendSucc(int ord);
 
     void setOrder(ResponseGetOrder getOrder);
 }

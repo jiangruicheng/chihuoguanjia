@@ -13,19 +13,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.mvp.MObeserver;
+import com.cndll.chgj.mvp.mode.AppRequest;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.mode.bean.request.RequestOrder;
+import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetOrder;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetSeting;
 import com.cndll.chgj.mvp.presenter.OrderPresenter;
 import com.cndll.chgj.mvp.view.OrderView;
 
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -148,6 +155,9 @@ public class SendFragment extends BaseFragment implements OrderView {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (orderDishFragment.orders == null) {
+                    return;
+                }
                 orderDishFragment.orderInfolayout.setMesg(orderDishFragment.orders);
                 if (orderDishFragment.orderId == 0) {
                     orderPresenter.sendOrder(new RequestOrder().
@@ -157,7 +167,7 @@ public class SendFragment extends BaseFragment implements OrderView {
                             setPernum(personCount.getText().toString()).
                             setSmoney(orderDishFragment.orderInfolayout.getGivePrice() + "").
                             setSsmoney(orderDishFragment.orderInfolayout.getLastPrice() + "").
-                            setZk(orderDishFragment.orders.getDisconut() + "").
+                            setZk(orderDishFragment.orders.getDisconut() * 10 + "").
                             setZkmoney(orderDishFragment.orderInfolayout.getDiscountPrice() + "").
                             setTmoney(orderDishFragment.orderInfolayout.getAllPrice() + "").
                             setTabname(orderDishFragment.tabname).
@@ -171,7 +181,7 @@ public class SendFragment extends BaseFragment implements OrderView {
                             setPernum(personCount.getText().toString()).
                             setSmoney(orderDishFragment.orderInfolayout.getGivePrice() + "").
                             setSsmoney(orderDishFragment.orderInfolayout.getLastPrice() + "").
-                            setZk(orderDishFragment.orders.getDisconut() + "").
+                            setZk(orderDishFragment.orders.getDisconut() * 10 + "").
                             setZkmoney(orderDishFragment.orderInfolayout.getDiscountPrice() + "").
                             setTmoney(orderDishFragment.orderInfolayout.getAllPrice() + "").
                             setTabname(orderDishFragment.tabname).
@@ -194,7 +204,63 @@ public class SendFragment extends BaseFragment implements OrderView {
         return view;
     }
 
+    private void printSetting(final int ord) {
+        AppRequest.getAPI().getSetting(AppMode.getInstance().getUid(),
+                AppMode.getInstance().getMid()).
+                subscribeOn(Schedulers.io()).
+                observeOn(AndroidSchedulers.mainThread()).
+                subscribe(new MObeserver(null) {
+                    @Override
+                    public void onCompleted() {
+                        super.onCompleted();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        super.onNext(baseResponse);
+                        int type;
+                        if (baseResponse.getCode() == 1) {
+                            ResponseGetSeting responseGetSeting = ((ResponseGetSeting) baseResponse);
+                            if (responseGetSeting.getData().getCd_method().equals("1")) {
+                                type = 2;
+                            } else {
+                                type = 1;
+                            }
+                            printOrders(ord, type);
+                        }
+                    }
+                });
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
+    private void printOrders(int ord, int type) {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        AppRequest.getAPI().printOrder(ord + "", type + "", year + "-" + month + "-" + day, AppMode.getInstance().getUsername())
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(SendFragment.this) {
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+            }
+
+            @Override
+            public void onNext(BaseResponse baseResponse) {
+                super.onNext(baseResponse);
+            }
+        });
+    }
 
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -254,7 +320,7 @@ public class SendFragment extends BaseFragment implements OrderView {
     }
 
     @Override
-    public void sendSucc() {
+    public void sendSucc(int ord) {
         if (fragmentList.get(fragmentList.size() - 2) instanceof OrderDishFragment) {
             popBackFragment();
             popBackFragment();
@@ -263,6 +329,7 @@ public class SendFragment extends BaseFragment implements OrderView {
             popBackFragment();
             popBackFragment();
         }
+        printSetting(ord);
     }
 
     @Override

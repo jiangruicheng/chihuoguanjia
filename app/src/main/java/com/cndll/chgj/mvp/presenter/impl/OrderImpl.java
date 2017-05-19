@@ -103,7 +103,7 @@ public class OrderImpl implements OrderPresenter {
                     public void onNext(BaseResponse baseResponse) {
                         super.onNext(baseResponse);
                         if (baseResponse.getCode() == 1) {
-                            view.sendSucc();
+                            view.sendSucc(((ResponseAddOrd) baseResponse).getData().getOid());
                             getOrder(new RequestGetOrder().setId(((ResponseAddOrd) baseResponse).getData().getOid()));
                             // view.setDeshList(((ResponseGetCaipinList) baseResponse).getData());
                         }
@@ -131,7 +131,7 @@ public class OrderImpl implements OrderPresenter {
                     public void onNext(BaseResponse baseResponse) {
                         super.onNext(baseResponse);
                         if (baseResponse.getCode() == 1) {
-                            view.sendSucc();
+                            view.sendSucc(Integer.valueOf(order.getId()));
                             view.showMesg("更新成功");
                             getOrder(new RequestGetOrder().setId(Integer.valueOf(order.getId())));
                             // view.setDeshList(((ResponseGetCaipinList) baseResponse).getData());
@@ -187,7 +187,7 @@ public class OrderImpl implements OrderPresenter {
                     public void onNext(BaseResponse baseResponse) {
                         super.onNext(baseResponse);
                         if (baseResponse.getCode() == 1) {
-                            view.sendSucc();
+                            view.sendSucc(0);
                             view.showMesg("更新成功");
                             getOrder(new RequestGetOrder().setId(Integer.valueOf(id)));
                             // view.setDeshList(((ResponseGetCaipinList) baseResponse).getData());
@@ -216,7 +216,7 @@ public class OrderImpl implements OrderPresenter {
                     public void onNext(BaseResponse baseResponse) {
                         super.onNext(baseResponse);
                         if (baseResponse.getCode() == 1) {
-                            view.sendSucc();
+                            view.sendSucc(((ResponseAddOrd) baseResponse).getData().getOid());
                             view.showMesg("更新成功");
                             getOrder(new RequestGetOrder().setId(Integer.valueOf(id)));
                             // view.setDeshList(((ResponseGetCaipinList) baseResponse).getData());

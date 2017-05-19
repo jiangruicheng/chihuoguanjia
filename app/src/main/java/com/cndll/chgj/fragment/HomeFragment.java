@@ -125,6 +125,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AppMode.getInstance().setMid(mendianListAdpater.getList().get(position).getId());
+                init();
             }
         });
 

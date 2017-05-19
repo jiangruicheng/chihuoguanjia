@@ -18,6 +18,9 @@ import com.cndll.chgj.mvp.MObeserver;
 import com.cndll.chgj.mvp.mode.AppRequest;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetSeting;
+import com.cndll.chgj.mvp.presenter.BasePresenter;
+import com.cndll.chgj.mvp.view.BaseView;
 import com.cndll.chgj.weight.ButtonSwitch;
 
 import butterknife.BindView;
@@ -71,7 +74,7 @@ public class SetingFragment extends BaseFragment {
         AppRequest.getAPI().setting(AppMode.getInstance().getUid(),
                 AppMode.getInstance().getMid(),
                 backSet.isLeftInt() + "", printSet.isLeftInt() + "",
-                discountSet.isLeftInt() + "").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(null) {
+                discountSet.isLeftInt() + "").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(baseView) {
             @Override
             public void onCompleted() {
                 super.onCompleted();
@@ -92,6 +95,22 @@ public class SetingFragment extends BaseFragment {
         });
     }
 
+    private BaseView baseView = new BaseView() {
+        @Override
+        public void showMesg(String mesg) {
+
+        }
+
+        @Override
+        public void showProg(String mesg) {
+
+        }
+
+        @Override
+        public void setPresenter(BasePresenter presenter) {
+
+        }
+    };
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -137,6 +156,7 @@ public class SetingFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_seting, container, false);
         unbinder = ButterKnife.bind(this, view);
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,6 +188,40 @@ public class SetingFragment extends BaseFragment {
         printSet.setLeft(true);
         discountSet.setLeft(true);
         title.setText("高级设置");
+        AppRequest.getAPI().getSetting(AppMode.getInstance().getUid(), AppMode.getInstance().getMid()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(baseView) {
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+            }
+
+            @Override
+            public void onNext(BaseResponse baseResponse) {
+                super.onNext(baseResponse);
+                if (baseResponse.getCode() == 1) {
+                    ResponseGetSeting responseGetSeting = ((ResponseGetSeting) baseResponse);
+                    if (IsTrue(responseGetSeting.getData().getTcis_print())) {
+                        backSet.setLeft(true);
+                    } else {
+                        backSet.setLeft(false);
+                    }
+                    if (IsTrue(responseGetSeting.getData().getDis_zk())) {
+                        discountSet.setLeft(true);
+                    } else {
+                        discountSet.setLeft(false);
+                    }
+                    if (IsTrue(responseGetSeting.getData().getCd_method())) {
+                        printSet.setLeft(true);
+                    } else {
+                        printSet.setLeft(false);
+                    }
+                }
+            }
+        });
         return view;
     }
 
@@ -175,6 +229,14 @@ public class SetingFragment extends BaseFragment {
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    private boolean IsTrue(String s) {
+        if (s.equals("1")) {
+            return true;
+        } else {
+            return false;
         }
     }
 

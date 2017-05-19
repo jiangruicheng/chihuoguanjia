@@ -219,6 +219,22 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                         });
             }
         });
+        popviewOther.printOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (order.isChange) {
+                    showMesg("有菜品未送单，不能打印");
+                } else {
+                    printOrders();
+                }
+            }
+        });
+        popviewOther.cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popviewOther.dismiss();
+            }
+        });
         popviewOther.removeDesk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -352,6 +368,25 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         return order;
     }
 
+    private void printOrders() {
+        AppRequest.getAPI().printBill(orderId + "", AppMode.getInstance().getPrint_code(), AppMode.getInstance().getUsername()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(OrderInfoFragment.this) {
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+            }
+
+            @Override
+            public void onNext(BaseResponse baseResponse) {
+                super.onNext(baseResponse);
+            }
+        });
+    }
+
     private void popUpkey(int mode, String hint, String sureHint, KeyWeight.OnKeyClick onKeyClick) {
         KeyWeight keyWeight = new KeyWeight();
         keyWeight.setCancelText(hint);
@@ -482,7 +517,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                             order.writeDish.get(order.getCurrPosition()).setCount(Float.valueOf(s));
                         }
                         setOrderInfolayout(order.getCurrPosition(), isOrderWrite);
-
+                        sendOrds();
                     }
 
                     @Override
@@ -521,17 +556,22 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                     popOrderRequest.init(getContext(), view);
                     popOrderRequest.setFirstText("赠送");
                     popOrderRequest.setSecondText("退菜");
+                    popOrderRequest.show();
                     if (isOrderWrite) {
                         if (order.writeDish.get(order.getCurrPosition()).getGiveCount() == 0) {
                             popOrderRequest.setThirdVisble(View.GONE);
+                            popOrderRequest.setViewHeight(2);
                         } else {
                             popOrderRequest.setThirdText("取消赠送");
+                            popOrderRequest.setViewHeight(3);
                         }
                     } else {
                         if (order.getOrder(order.getCurrPosition()).getGiveCount() == 0) {
                             popOrderRequest.setThirdVisble(View.GONE);
+                            popOrderRequest.setViewHeight(2);
                         } else {
                             popOrderRequest.setThirdText("取消赠送");
+                            popOrderRequest.setViewHeight(3);
                         }
                     }
                     popOrderRequest.setOnItemClick(new PopOrderRequest.onItemClick() {
@@ -561,9 +601,11 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                             if (!isOrderWrite) {
                                 if (order.getOrder(order.getCurrPosition()).getGiveCount() == 0) {
                                     popOrderRequest.setThirdVisble(View.GONE);
+                                    popOrderRequest.setViewHeight(2);
                                 } else {
                                     popOrderRequest.setThirdVisble(View.VISIBLE);
                                     popOrderRequest.setThirdText("取消赠送");
+                                    popOrderRequest.setViewHeight(3);
                                 }
                             } else {
                                 if (order.writeDish.get(order.getCurrPosition()).getGiveCount() == 0) {
@@ -574,6 +616,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                                 }
                             }
                             setOrderInfolayout(order.getCurrPosition(), isOrderWrite);
+                            sendOrds();
                         }
 
                         @Override
@@ -602,6 +645,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                                 order.setCurrPosition(order.getOrders().keyAt(0));
                             }*/
                             setOrderInfolayout(order.getCurrPosition(), isOrderWrite);
+                            sendOrds();
                         }
 
                         @Override
@@ -626,10 +670,10 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                                 order.writeDish.get(order.getCurrPosition()).cancelGive();
                             }
                             setOrderInfolayout(order.getCurrPosition(), isOrderWrite);
-
+                            sendOrds();
                         }
                     });
-                    popOrderRequest.show();
+
                 } else {
                     final PopOrderRequest popOrderRequest = new PopOrderRequest();
                     popOrderRequest.setOnItemClick(new PopOrderRequest.onItemClick() {
@@ -724,6 +768,81 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
             setOrderInfolayout(id);
         }
         adapter.notifyDataSetChanged();
+    }
+
+    public ResponseGetOrder getResponseOrd() {
+        return responseOrd;
+    }
+
+    public OrderInfoFragment setResponseOrd(ResponseGetOrder responseOrd) {
+        this.responseOrd = responseOrd;
+        return this;
+    }
+
+    private ResponseGetOrder responseOrd;
+
+    public String getTabname() {
+        return tabname;
+    }
+
+    public OrderInfoFragment setTabname(String tabname) {
+        this.tabname = tabname;
+        return this;
+    }
+
+    public String getTabID() {
+        return tabID;
+    }
+
+    public OrderInfoFragment setTabID(String tabID) {
+        this.tabID = tabID;
+        return this;
+    }
+
+    private String tabname;
+    private String tabID;
+
+    private void sendOrds() {
+        if (orderId == 0) {
+         /*   orderPresenter.sendOrder(new RequestOrder().
+                    setItems(orderDishFragment.orders.getItems()).
+                    setMid(AppMode.getInstance().getMid()).
+                    setUid(AppMode.getInstance().getUid()).
+                    setPernum(personCount.getText().toString()).
+                    setSmoney(orderDishFragment.orderInfolayout.getGivePrice() + "").
+                    setSsmoney(orderDishFragment.orderInfolayout.getLastPrice() + "").
+                    setZk(orderDishFragment.orders.getDisconut() * 10 + "").
+                    setZkmoney(orderDishFragment.orderInfolayout.getDiscountPrice() + "").
+                    setTmoney(orderDishFragment.orderInfolayout.getAllPrice() + "").
+                    setTabname(orderDishFragment.tabname).
+                    setTab_id(orderDishFragment.tableId).setPayee("1234").
+                    setYsmoney(orderDishFragment.orderInfolayout.getLastPrice() + ""));*/
+        } else {
+            presenter.updateOreder(new RequestOrder().setId(orderId + "").
+                    setItems(order.getItems()).
+                    setMid(AppMode.getInstance().getMid()).
+                    setUid(AppMode.getInstance().getUid()).
+                    setPernum(responseOrd.getData().getPernum()).
+                    setSmoney(orderInfo.getGivePrice() + "").
+                    setSsmoney(orderInfo.getLastPrice() + "").
+                    setZk(order.getDisconut() * 10 + "").
+                    setZkmoney(orderInfo.getDiscountPrice() + "").
+                    setTmoney(orderInfo.getAllPrice() + "").
+                    setTabname(tabname).
+                    setTab_id(tabID).setPayee(AppMode.getInstance().getUsername()).
+                    setYsmoney(orderInfo.getLastPrice() + "").
+                    setType("0").
+                    setCre_tm(responseOrd.getData().getCre_tm()).
+                    setE_tm(responseOrd.getData().getE_tm()).
+                    setOrdernum(responseOrd.getData().getOrdernum()).
+                    setOrdnum(responseOrd.getData().getOrdnum()).
+                    setYm(responseOrd.getData().getYm()).
+                    setWritedishs(order.getWriteDish()).
+                    setAllremarks(order.getAllMethod())
+                    .setStorename(responseOrd.getData().getStorename())
+                    .setType_txt(responseOrd.getData().getType_txt())
+            );
+        }
     }
 
     private void setOrderInfolayoutWrite(String id) {
@@ -823,7 +942,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
     }
 
     @Override
-    public void sendSucc() {
+    public void sendSucc(int ord) {
 
     }
 
@@ -1015,6 +1134,10 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
             popUpViewUtil = PopUpViewUtil.getInstance();
             view = LayoutInflater.from(getContext()).inflate(R.layout.popview_oderdesh_other, null, false);
             unbinder = ButterKnife.bind(this, view);
+        }
+
+        private void dismiss() {
+            popUpViewUtil.dismiss();
         }
     }
 }

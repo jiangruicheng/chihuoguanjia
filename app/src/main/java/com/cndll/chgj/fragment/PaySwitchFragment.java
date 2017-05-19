@@ -22,8 +22,11 @@ import com.cndll.chgj.mvp.presenter.BasePresenter;
 import com.cndll.chgj.mvp.view.BaseView;
 import com.cndll.chgj.weight.OrderInfo;
 
+import java.util.Calendar;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -67,12 +70,85 @@ public class PaySwitchFragment extends BaseFragment {
     LinearLayout orderInfo;
     @BindView(R.id.xianjin)
     TextView xianjin;
+
+    @OnClick(R.id.xianjin)
+    void onclick_xianjin() {
+        AppRequest.getAPI().payMoney(orderID + "", orderInfolayout.getLastPrice() + "").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(null) {
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+            }
+
+            @Override
+            public void onNext(BaseResponse baseResponse) {
+                super.onNext(baseResponse);
+                if (baseResponse.getCode() == 1) {
+                   // printOrders();
+                }
+            }
+        });
+    }
+
     @BindView(R.id.weixin)
     TextView weixin;
     @BindView(R.id.zhifubao)
     TextView zhifubao;
     @BindView(R.id.card)
     TextView card;
+
+    @OnClick(R.id.card)
+    void onclick_card() {
+        AppRequest.getAPI().payMoney(orderID + "", orderInfolayout.getLastPrice() + "").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(null) {
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+            }
+
+            @Override
+            public void onNext(BaseResponse baseResponse) {
+                super.onNext(baseResponse);
+                if (baseResponse.getCode() == 1) {
+                    popBackFragment();
+                    popBackFragment();
+                    // printOrders();
+                }
+            }
+        });
+    }
+
+    private void printOrders() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+       /* AppRequest.getAPI().printOrder(orderID + "", "总出品单", year + "-" + month + "-" + day, AppMode.getInstance().getUsername(), AppMode.getInstance().getPrint_code()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(null) {
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+            }
+
+            @Override
+            public void onNext(BaseResponse baseResponse) {
+                super.onNext(baseResponse);
+            }
+        });*/
+    }
+
     Unbinder unbinder;
 
     // TODO: Rename and change types of parameters
@@ -134,7 +210,8 @@ public class PaySwitchFragment extends BaseFragment {
             public void onClick(View v) {
                 type = 2;
                 if (orderID != 0)
-                    isHavePayCount();
+                    gotoWebView();
+                //isHavePayCount();
                 titlename = "微信收款";
             }
         });
@@ -143,7 +220,9 @@ public class PaySwitchFragment extends BaseFragment {
             public void onClick(View v) {
                 type = 1;
                 if (orderID != 0)
-                    isHavePayCount();
+                    gotoWebView();
+
+                // isHavePayCount();
                 titlename = "支付宝收款";
             }
         });

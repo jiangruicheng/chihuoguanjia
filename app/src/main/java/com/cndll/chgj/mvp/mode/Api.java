@@ -21,6 +21,7 @@ import com.cndll.chgj.mvp.mode.bean.request.RequestHomeInfo;
 import com.cndll.chgj.mvp.mode.bean.request.RequestLogin;
 import com.cndll.chgj.mvp.mode.bean.request.RequestMendianOrd;
 import com.cndll.chgj.mvp.mode.bean.request.RequestOrder;
+import com.cndll.chgj.mvp.mode.bean.request.RequestPrintBackDesh;
 import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestRegister;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpLoadPayInfo;
@@ -43,6 +44,7 @@ import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetDeskList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetOrder;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetSeting;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetStaffList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetStoreList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseHome;
@@ -80,6 +82,18 @@ public interface Api {
     Observable<ResponseUploadImage> uploadImage(@PartMap Map<String, RequestBody> pa);
 
     @FormUrlEncoded
+    @POST("Order/cashpay")
+    Observable<ResponseCailei> payMoney(@Field("id") String id,
+                                        @Field("ssmoney") String ssmoney
+    );
+
+    @FormUrlEncoded
+    @POST("System/advsetinfo")
+    Observable<ResponseGetSeting> getSetting(@Field("uid") String uid,
+                                             @Field("mid") String mid
+    );
+
+    @FormUrlEncoded
     @POST("User/modifypass")
     Observable<ResponseCailei> updatePassword(@Field("uid") String uid,
                                               @Field("tel") String tel,
@@ -89,10 +103,12 @@ public interface Api {
     @FormUrlEncoded
     @POST("Print/printdish")
     Observable<ResponseCailei> printOrder(@Field("id") String id,
-                                          @Field("title") String title,
+                                          @Field("type") String type,
                                           @Field("date") String data,
-                                          @Field("sname") String name,
-                                          @Field("print_id") String print_id);
+                                          @Field("sname") String name);
+
+    @POST("Print/printdish")
+    Observable<ResponseCailei> printOrder(@Body RequestPrintBackDesh requestPrintBackDesh);
 
     @FormUrlEncoded
     @POST("Print/printorder")

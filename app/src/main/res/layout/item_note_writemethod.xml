@@ -24,6 +24,7 @@
         android:textColor="@color/buttonStork" />
 
     <Button
+        android:text="删除"
         android:layout_margin="4dp"
         android:id="@+id/delete"
         android:layout_width="0dp"

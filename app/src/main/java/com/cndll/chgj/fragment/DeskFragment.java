@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
@@ -106,6 +107,16 @@ public class DeskFragment extends BaseFragment implements AddDeskView {
         View view = inflater.inflate(R.layout.fragment_desk, container, false);
         unbinder = ButterKnife.bind(this, view);
         title.setText("管咸事");
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) rightText.getLayoutParams();
+        params.width = 46;
+        params.height = 46;
+        rightText.setLayoutParams(params);
+        rightText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.getDeskList(new RequestGetDeskList().setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()));
+            }
+        });
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,6 +124,7 @@ public class DeskFragment extends BaseFragment implements AddDeskView {
             }
         });
         adapter = new OrderDeskListAdapter();
+        rightText.setBackgroundResource(R.mipmap.refresh);
         adapter.setOnItemClickLister(new OnItemClickLister() {
             @Override
             public void OnItemClick(View view, int position) {
@@ -178,6 +190,12 @@ public class DeskFragment extends BaseFragment implements AddDeskView {
     @Override
     public void showDeskList(List<ResponseGetDeskList.DataBean> dataBeen) {
         adapter.setItems(dataBeen);
+    }
+
+    @Override
+    public void reload() {
+        super.reload();
+        presenter.getDeskList(new RequestGetDeskList().setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()));
     }
 
     /**

@@ -18,7 +18,6 @@ import com.cndll.chgj.adapter.ListAdapter;
 import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
 import com.cndll.chgj.util.LinearPagerLayoutManager;
-import com.cndll.chgj.util.PagingScrollHelper;
 
 import java.util.List;
 
@@ -110,8 +109,8 @@ public class CaileiFragment extends BaseFragment<CaiLeiListAdapter> {
         unbinder = ButterKnife.bind(this, view);
         LinearPagerLayoutManager linearPagerLayoutManager = new LinearPagerLayoutManager(getContext(), 5, 1);
         menuList.setLayoutManager(linearPagerLayoutManager);
-        PagingScrollHelper scrollHelper = new PagingScrollHelper();
-        scrollHelper.setUpRecycleView(menuList);
+      /*  PagingScrollHelper scrollHelper = new PagingScrollHelper();
+        scrollHelper.setUpRecycleView(menuList);*/
         adapter = new CaiLeiListAdapter(getContext(), new OnStartDragListener() {
             @Override
             public void onStartDrag(RecyclerView.ViewHolder viewHolder) {

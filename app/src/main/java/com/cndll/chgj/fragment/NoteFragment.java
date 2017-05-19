@@ -155,7 +155,6 @@ public class NoteFragment extends BaseFragment implements NoteView {
     @Override
     public void onStop() {
         super.onStop();
-
     }
 
     private void setNote() {
