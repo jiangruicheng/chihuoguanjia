@@ -31,6 +31,7 @@ import com.cndll.chgj.mvp.mode.bean.request.RequestUpdaDesk;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdateMethod;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdatePrint;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdateStaff;
+import com.cndll.chgj.mvp.mode.bean.request.RequestUpdateStoery;
 import com.cndll.chgj.mvp.mode.bean.request.RequestVerify;
 import com.cndll.chgj.mvp.mode.bean.request.RequsetHomeMendianList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseAddOrd;
@@ -77,6 +78,9 @@ import rx.Observable;
  * Created by jiang_ruicheng on 16/10/27.
  */
 public interface Api {
+    @POST("/Store/upstoreinfo")
+    Observable<ResponseCailei> updateStore(@Body RequestUpdateStoery requestUpdateStoery);
+
     @Multipart
     @POST("File/uploadPicture")
     Observable<ResponseUploadImage> uploadImage(@PartMap Map<String, RequestBody> pa);

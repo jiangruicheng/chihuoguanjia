@@ -65,6 +65,23 @@ public class KeyWeight {
         if (key == null) {
             key = LayoutInflater.from(context).inflate(R.layout.popview_key, null, false);
         }
+        if (!isChilder) {
+            if (location != null) {
+                int[] locations = new int[2];
+                location.getLocationOnScreen(locations);
+                locations[1] = locations[1] - popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 2;
+                popUpViewUtil.popListWindow(location, key,
+                        popUpViewUtil.getWindowManager(context).getDefaultDisplay().getWidth(),
+                        popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 2,
+                        Gravity.NO_GRAVITY, locations);
+
+            } else {
+                popUpViewUtil.popListWindow(location, key,
+                        popUpViewUtil.getWindowManager(context).getDefaultDisplay().getWidth(),
+                        popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 2,
+                        Gravity.NO_GRAVITY, null);
+            }
+        }
         setOnclick(key);
         Button cancel, sure;
         cancel = (Button) key.findViewById(R.id.cancel);
@@ -86,23 +103,7 @@ public class KeyWeight {
             keyabc.setVisibility(View.GONE);
             keynum.setVisibility(View.VISIBLE);
         }
-        if (!isChilder) {
-            if (location != null) {
-                int[] locations = new int[2];
-                location.getLocationOnScreen(locations);
-                locations[1] = locations[1] - popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 2;
-                popUpViewUtil.popListWindow(location, key,
-                        popUpViewUtil.getWindowManager(context).getDefaultDisplay().getWidth(),
-                        popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 2,
-                        Gravity.NO_GRAVITY, locations);
 
-            } else {
-                popUpViewUtil.popListWindow(location, key,
-                        popUpViewUtil.getWindowManager(context).getDefaultDisplay().getWidth(),
-                        popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 2,
-                        Gravity.NO_GRAVITY, null);
-            }
-        }
         popUpViewUtil.setOnDismissAction(new PopUpViewUtil.OnDismissAction() {
             @Override
             public void onDismiss() {
@@ -145,7 +146,7 @@ public class KeyWeight {
     private View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (v instanceof TextView) {
+            if (v instanceof View) {
                 if (v.getId() == R.id.cancel) {
                     if (onKeyClick != null) {
                         onKeyClick.onKeyCancel(showbuffer.toString());
@@ -170,6 +171,9 @@ public class KeyWeight {
                     return;
                 }
                 if (v.getId() == R.id.key_exit) {
+                    if (onKeyClick != null) {
+                        onKeyClick.onKeyCancel(showbuffer.toString());
+                    }
                     if (popUpViewUtil != null) {
                         popUpViewUtil.dismiss();
                     }

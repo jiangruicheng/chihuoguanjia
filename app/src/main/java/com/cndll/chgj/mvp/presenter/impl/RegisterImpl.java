@@ -10,6 +10,7 @@ import com.cndll.chgj.mvp.mode.bean.request.RequestVerify;
 import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseArea;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetStoreList;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseRegister;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseStoreTye;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseVerify;
 import com.cndll.chgj.mvp.presenter.RegisterPresenter;
@@ -55,7 +56,7 @@ public class RegisterImpl implements RegisterPresenter {
             public void onNext(BaseResponse baseResponse) {
                 super.onNext(baseResponse);
                 if (baseResponse.getCode() == 1) {
-                    view.showMesg("注册成功");
+                    view.showRegisterInfo((ResponseRegister) baseResponse);
                     getStoreList(AppMode.getInstance().getUid());
                 }
             }

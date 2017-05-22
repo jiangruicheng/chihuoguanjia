@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/yinse"
-    android:orientation="vertical">
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@color/yinse"
+             android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/abc_key"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,7 +25,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="q" />
+                android:text="q"/>
 
             <Button
                 android:layout_width="0dp"
@@ -33,7 +34,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="w" />
+                android:text="w"/>
 
             <Button
                 android:layout_width="0dp"
@@ -42,7 +43,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="e" />
+                android:text="e"/>
 
             <Button
                 android:layout_width="0dp"
@@ -51,7 +52,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="r" />
+                android:text="r"/>
 
             <Button
                 android:layout_width="0dp"
@@ -60,7 +61,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="t" />
+                android:text="t"/>
 
             <Button
                 android:layout_width="0dp"
@@ -69,7 +70,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="y" />
+                android:text="y"/>
 
             <Button
                 android:layout_width="0dp"
@@ -78,7 +79,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="u" />
+                android:text="u"/>
 
             <Button
                 android:layout_width="0dp"
@@ -87,7 +88,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="i" />
+                android:text="i"/>
 
             <Button
                 android:layout_width="0dp"
@@ -96,7 +97,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="o" />
+                android:text="o"/>
 
             <Button
                 android:layout_width="0dp"
@@ -105,7 +106,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="p" />
+                android:text="p"/>
 
         </LinearLayout>
 
@@ -118,7 +119,7 @@
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.5" />
+                android:layout_weight="0.5"/>
 
             <Button
                 android:layout_width="0dp"
@@ -127,7 +128,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="a" />
+                android:text="a"/>
 
             <Button
                 android:layout_width="0dp"
@@ -136,7 +137,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="s" />
+                android:text="s"/>
 
             <Button
                 android:layout_width="0dp"
@@ -145,7 +146,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="d" />
+                android:text="d"/>
 
             <Button
                 android:layout_width="0dp"
@@ -154,7 +155,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="f" />
+                android:text="f"/>
 
             <Button
                 android:layout_width="0dp"
@@ -163,7 +164,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="g" />
+                android:text="g"/>
 
             <Button
                 android:layout_width="0dp"
@@ -172,7 +173,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="h" />
+                android:text="h"/>
 
             <Button
                 android:layout_width="0dp"
@@ -181,7 +182,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="j" />
+                android:text="j"/>
 
             <Button
                 android:layout_width="0dp"
@@ -190,7 +191,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="k" />
+                android:text="k"/>
 
             <Button
                 android:layout_width="0dp"
@@ -199,12 +200,12 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="l" />
+                android:text="l"/>
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.5" />
+                android:layout_weight="0.5"/>
 
         </LinearLayout>
 
@@ -214,7 +215,7 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <Button
+            <ImageView
                 android:id="@+id/acp"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -222,7 +223,8 @@
                 android:layout_weight="1.5"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="[]" />
+                android:src="@mipmap/shift"
+                />
 
             <Button
                 android:layout_width="0dp"
@@ -231,7 +233,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="z" />
+                android:text="z"/>
 
             <Button
                 android:layout_width="0dp"
@@ -240,7 +242,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="x" />
+                android:text="x"/>
 
             <Button
                 android:layout_width="0dp"
@@ -249,7 +251,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="c" />
+                android:text="c"/>
 
             <Button
                 android:layout_width="0dp"
@@ -258,7 +260,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="v" />
+                android:text="v"/>
 
             <Button
                 android:layout_width="0dp"
@@ -267,7 +269,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="b" />
+                android:text="b"/>
 
             <Button
                 android:layout_width="0dp"
@@ -276,7 +278,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="n" />
+                android:text="n"/>
 
             <Button
                 android:layout_width="0dp"
@@ -285,10 +287,10 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="m" />
+                android:text="m"/>
 
 
-            <Button
+            <ImageView
                 android:id="@+id/delete_abc"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -296,7 +298,8 @@
                 android:layout_weight="1.5"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="X" />
+                android:src="@mipmap/back"
+                />
 
         </LinearLayout>
 
@@ -313,7 +316,7 @@
                 android:layout_margin="4dp"
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="123" />
+                android:text="123"/>
 
 
             <Button
@@ -323,126 +326,162 @@
                 android:layout_margin="4dp"
                 android:layout_weight="3"
                 android:background="@drawable/shape_dialog_fillet_solid"
-                android:text=" " />
+                android:text=" "/>
 
             <Button
+
                 android:id="@+id/key_exit"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
-                android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="退出" />
+                android:background="@drawable/shape_button_key_reurn"
+                android:text="退出"/>
 
         </LinearLayout>
     </LinearLayout>
 
-    <TableLayout
+    <LinearLayout
         android:id="@+id/number_key"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
+        android:orientation="vertical"
+        >
 
-        <TableRow android:layout_weight="1">
-
-            <Button
-                android:layout_height="match_parent"
-                android:layout_margin="4dp"
-                android:layout_weight="1"
-                android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="7" />
-
-            <Button
-                android:layout_height="match_parent"
-                android:layout_margin="4dp"
-                android:layout_weight="1"
-                android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="8" />
-
-            <Button
-                android:layout_height="match_parent"
-                android:layout_margin="4dp"
-                android:layout_weight="1"
-                android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="9" />
-        </TableRow>
-
-        <TableRow
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
+                android:text="7"/>
+
+            <Button
+                android:layout_width="0dp"
+
+                android:layout_height="match_parent"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
+                android:text="8"/>
+
+            <Button
+                android:layout_width="0dp"
+
+                android:layout_height="match_parent"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
+                android:text="9"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1">
 
             <Button
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+
                 android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="4" />
+                android:text="4"/>
 
             <Button
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
+
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="5" />
+                android:text="5"/>
 
             <Button
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
-                android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="6" />
-        </TableRow>
 
-        <TableRow android:layout_weight="1">
+                android:background="@drawable/shape_dialog_fillet_solid"
+                android:text="6"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
             <Button
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
+
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="1" />
+                android:text="1"/>
 
             <Button
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+
                 android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="2" />
+                android:text="2"/>
 
             <Button
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
+
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="3" />
-        </TableRow>
+                android:text="3"/>
+        </LinearLayout>
 
-        <TableRow android:layout_weight="1">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
             <Button
                 android:id="@+id/tran"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
+
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="ABC" />
+                android:text="ABC"/>
 
             <Button
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
+
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="0" />
+                android:text="0"/>
 
-            <Button
+            <ImageView
                 android:id="@+id/delete_number"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
+
                 android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="x" />
-        </TableRow>
-    </TableLayout>
+                android:src="@mipmap/back"
+                />
+        </LinearLayout>
+    </LinearLayout>
 </FrameLayout>
 

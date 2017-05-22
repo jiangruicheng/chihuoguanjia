@@ -18,6 +18,7 @@ public class MesgShow {
         void onListerner();
     }
 
+
     public static void showMesg(String title, String mesg, View location, final OnButtonListener sure, final OnButtonListener cancel, boolean isCancelShow) {
         final PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
         View view = LayoutInflater.from(location.getContext()).inflate(R.layout.popview_showmesg, null, false);
@@ -55,6 +56,26 @@ public class MesgShow {
         int screenHeight = popUpViewUtil.getWindowManager(location.getContext()).getDefaultDisplay().getHeight();
         int width = screenWidth / 7 * 6;
         int height = screenHeight / 5 * 2;
+        popUpViewUtil.showDialog((Activity) location.getContext(), view, 0, 0, width, height, R.style.Translucent_Dialog);
+    }
+
+    public static void showRigsterMesg(String mesg, View location) {
+        final PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
+        View view = LayoutInflater.from(location.getContext()).inflate(R.layout.mesg_register, null, false);
+        Button btn_sure = (Button) view.findViewById(R.id.sure);
+        TextView txt_title = (TextView) view.findViewById(R.id.mesg_title);
+        TextView txt_mesg = (TextView) view.findViewById(R.id.mesg_info);
+        txt_mesg.setText(mesg);
+        btn_sure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popUpViewUtil.dismiss();
+            }
+        });
+        int screenWidth = popUpViewUtil.getWindowManager(location.getContext()).getDefaultDisplay().getWidth();
+        int screenHeight = popUpViewUtil.getWindowManager(location.getContext()).getDefaultDisplay().getHeight();
+        int width = screenWidth / 7 * 6;
+        int height = screenHeight / 9 * 8;
         popUpViewUtil.showDialog((Activity) location.getContext(), view, 0, 0, width, height, R.style.Translucent_Dialog);
     }
 }

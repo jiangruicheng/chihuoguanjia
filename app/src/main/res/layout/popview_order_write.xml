@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
             android:layout_weight="2"
             android:background="@color/white"
             android:gravity="center"
-            android:text="菜品名称" />
+            android:text="菜品名称"/>
 
         <EditText
             android:id="@+id/name"
@@ -27,7 +27,7 @@
             android:layout_margin="2dp"
             android:layout_weight="8"
             android:background="@color/white"
-            android:gravity="center_vertical|left" />
+            android:gravity="center_vertical|left"/>
     </LinearLayout>
 
     <LinearLayout
@@ -43,7 +43,7 @@
             android:layout_weight="2"
             android:background="@color/white"
             android:gravity="center"
-            android:text="价格" />
+            android:text="价格"/>
 
         <EditText
             android:id="@+id/price"
@@ -52,7 +52,8 @@
             android:layout_margin="2dp"
             android:layout_weight="8"
             android:background="@color/white"
-            android:gravity="center_vertical|left" />
+            android:gravity="center_vertical|left"
+            android:inputType="number"/>
     </LinearLayout>
 
     <LinearLayout
@@ -68,7 +69,7 @@
             android:layout_weight="2"
             android:background="@color/white"
             android:gravity="center"
-            android:text="数量" />
+            android:text="数量"/>
 
         <EditText
             android:id="@+id/number"
@@ -77,13 +78,14 @@
             android:layout_margin="2dp"
             android:layout_weight="8"
             android:background="@color/white"
-            android:gravity="center_vertical|left" />
+            android:gravity="center_vertical|left"
+            android:inputType="number"/>
     </LinearLayout>
 
     <include
         layout="@layout/popview_button"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"/>
 
 </LinearLayout>

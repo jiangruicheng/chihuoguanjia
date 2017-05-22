@@ -24,9 +24,14 @@ import com.cndll.chgj.adapter.ListAdapter;
 import com.cndll.chgj.adapter.RegisterListAdpater;
 import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
 import com.cndll.chgj.itemtouchhelperdemo.helper.SimpleItemTouchHelperCallback;
+import com.cndll.chgj.mvp.MObeserver;
+import com.cndll.chgj.mvp.mode.AppRequest;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
+import com.cndll.chgj.mvp.mode.bean.request.RequestUpdateStoery;
+import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseArea;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetStoreList;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseRegister;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseStoreTye;
 import com.cndll.chgj.mvp.presenter.RegisterPresenter;
 import com.cndll.chgj.mvp.view.RegisterView;
@@ -42,6 +47,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -257,6 +264,12 @@ public class RegisterFragment extends BaseFragment<RegisterListAdpater> implemen
         }
     }
 
+    @Override
+    public void showRegisterInfo(ResponseRegister s) {
+        String s1 = "门店号" + s.getData().getCode() + "\n" + "老板登录账号为:" + s.getData().getTel() + "\n" + "登录密码为" + s.getData().getPassword();
+        MesgShow.showRigsterMesg(s1, register);
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -315,7 +328,7 @@ public class RegisterFragment extends BaseFragment<RegisterListAdpater> implemen
         int selectDataBean = -1;
         private boolean isShowAreList;
 
-        private void init(String pname, final String typename, String ptel, int pshengPostion, int pshiPostion, String storyId) {
+        private void init(String pname, final String typename, String ptel, int pshengPostion, int pshiPostion, final String storyId) {
             presenter.getArea();
             shiPostion = pshiPostion;
             shengPostion = pshengPostion;
@@ -333,10 +346,10 @@ public class RegisterFragment extends BaseFragment<RegisterListAdpater> implemen
             edi_verify = (EditText) view.findViewById(R.id.edit_verify);
             verifyLayout = (LinearLayout) view.findViewById(R.id.verify_layout);
             storyIdLayout = (LinearLayout) view.findViewById(R.id.story_id_layout);
-            name.setHint(pname);
+            name.setText(pname);
             spinner.setText(typename);
             if (ptel != null) {
-                tel.setHint(ptel);
+                tel.setText(ptel);
                 tel.setEnabled(false);
                 verifyLayout.setVisibility(View.GONE);
                 storyIdLayout.setVisibility(View.VISIBLE);
@@ -344,7 +357,26 @@ public class RegisterFragment extends BaseFragment<RegisterListAdpater> implemen
                 save.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        AppRequest.getAPI().updateStore(new RequestUpdateStoery().setCity(shiPostion).setProvince(shengPostion).setId(storyId).setName(name.getText().toString()).setType(spinner.getText().toString())).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
+                                subscribe(new MObeserver(RegisterFragment.this) {
+                                    @Override
+                                    public void onCompleted() {
+                                        super.onCompleted();
+                                    }
 
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        super.onError(e);
+                                    }
+
+                                    @Override
+                                    public void onNext(BaseResponse baseResponse) {
+                                        super.onNext(baseResponse);
+                                        if (baseResponse.getCode() == 1) {
+                                            showMesg("修改成功");
+                                        }
+                                    }
+                                });
                     }
                 });
             } else {

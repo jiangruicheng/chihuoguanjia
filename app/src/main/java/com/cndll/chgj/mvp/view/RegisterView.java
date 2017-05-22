@@ -2,6 +2,7 @@ package com.cndll.chgj.mvp.view;
 
 import com.cndll.chgj.mvp.mode.bean.response.ResponseArea;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetStoreList;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseRegister;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseStoreTye;
 import com.cndll.chgj.mvp.presenter.RegisterPresenter;
 
@@ -19,4 +20,5 @@ public interface RegisterView extends BaseView<RegisterPresenter> {
     void showStoreType(List<ResponseStoreTye.DataBean> dataBean);
 
     void setVerify(String verify);
+    void showRegisterInfo(ResponseRegister s);
 }

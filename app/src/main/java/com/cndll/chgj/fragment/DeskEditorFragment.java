@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +52,7 @@ public class DeskEditorFragment extends BaseFragment<DeskListAdapter> implements
     private static final String ARG_PARAM2 = "param2";
     @BindView(R.id.search_caipin)
     EditText searchCaipin;
+
     @BindView(R.id.list)
     RecyclerView list;
     Unbinder unbinder;
@@ -121,6 +124,22 @@ public class DeskEditorFragment extends BaseFragment<DeskListAdapter> implements
         View view = inflater.inflate(R.layout.fragment_desk_editor, container, false);
         unbinder = ButterKnife.bind(this, view);
         title.setText("桌台情况");
+        searchCaipin.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                presenter.getDeskList(new RequestGetDeskList().setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()).setName(s.toString()));
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         adapter = new DeskListAdapter(getActivity(), new OnStartDragListener() {
             @Override
             public void onStartDrag(RecyclerView.ViewHolder viewHolder) {

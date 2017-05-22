@@ -88,7 +88,7 @@ public class PaySwitchFragment extends BaseFragment {
             public void onNext(BaseResponse baseResponse) {
                 super.onNext(baseResponse);
                 if (baseResponse.getCode() == 1) {
-                   // printOrders();
+                    // printOrders();
                 }
             }
         });
@@ -210,8 +210,7 @@ public class PaySwitchFragment extends BaseFragment {
             public void onClick(View v) {
                 type = 2;
                 if (orderID != 0)
-                    gotoWebView();
-                //isHavePayCount();
+                    isHavePayCount();
                 titlename = "微信收款";
             }
         });
@@ -220,9 +219,9 @@ public class PaySwitchFragment extends BaseFragment {
             public void onClick(View v) {
                 type = 1;
                 if (orderID != 0)
-                    gotoWebView();
+                    //gotoWebView();
 
-                // isHavePayCount();
+                    isHavePayCount();
                 titlename = "支付宝收款";
             }
         });
