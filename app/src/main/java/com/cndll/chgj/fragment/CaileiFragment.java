@@ -8,16 +8,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.cndll.chgj.R;
 import com.cndll.chgj.adapter.CaiLeiListAdapter;
 import com.cndll.chgj.adapter.ListAdapter;
 import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
-import com.cndll.chgj.util.LinearPagerLayoutManager;
 
 import java.util.List;
 
@@ -41,12 +37,6 @@ public class CaileiFragment extends BaseFragment<CaiLeiListAdapter> {
     @BindView(R.id.menu_list)
     RecyclerView menuList;
     Unbinder unbinder;
-    @BindView(R.id.menu_name)
-    TextView menuName;
-    @BindView(R.id.revise)
-    Button revise;
-    @BindView(R.id.edit)
-    LinearLayout edit;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -107,10 +97,7 @@ public class CaileiFragment extends BaseFragment<CaiLeiListAdapter> {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cailei, container, false);
         unbinder = ButterKnife.bind(this, view);
-        LinearPagerLayoutManager linearPagerLayoutManager = new LinearPagerLayoutManager(getContext(), 5, 1);
-        menuList.setLayoutManager(linearPagerLayoutManager);
-      /*  PagingScrollHelper scrollHelper = new PagingScrollHelper();
-        scrollHelper.setUpRecycleView(menuList);*/
+
         adapter = new CaiLeiListAdapter(getContext(), new OnStartDragListener() {
             @Override
             public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
@@ -120,7 +107,7 @@ public class CaileiFragment extends BaseFragment<CaiLeiListAdapter> {
         adapter.setOnItemClick(new ListAdapter.OnItemsClick() {
             @Override
             public void onReEidetClick(View view, int position) {
-        menuEvent.updataCailei(position);
+                menuEvent.updataCailei(position);
             }
 
             @Override

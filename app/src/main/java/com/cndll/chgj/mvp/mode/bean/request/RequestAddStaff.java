@@ -4,7 +4,7 @@ package com.cndll.chgj.mvp.mode.bean.request;
  * Created by kongqing on 2017/5/8.
  */
 
-public class RequestAddStaff {
+public class RequestAddStaff extends BaseRequest {
 
     /**
      * tel : 15220163618

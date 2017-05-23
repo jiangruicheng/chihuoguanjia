@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
@@ -41,6 +42,21 @@ public class LoginFragment extends BaseFragment implements LoginView {
     private static final String ARG_PARAM2 = "param2";
     @BindView(R.id.back)
     Button back;
+    @BindView(R.id.title_left)
+    TextView titleLeft;
+    @BindView(R.id.title_right)
+    TextView titleRight;
+    @BindView(R.id.title_tow)
+    LinearLayout titleTow;
+    @BindView(R.id.right_text)
+    TextView rightText;
+    @BindView(R.id.findpassword)
+    TextView findpassword;
+
+    @OnClick(R.id.findpassword)
+    void onclicm_findpassword() {
+        replaceFragmentAddToBackStack(FindPasswordFragment.newInstance(null, null), null);
+    }
 
     @OnClick(R.id.back)
     void onclick_back() {

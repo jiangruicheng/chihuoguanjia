@@ -6,6 +6,8 @@
     android:weightSum="10"
     tools:context="com.cndll.chgj.fragment.ReportFragment">
 
+    <include layout="@layout/title_bar" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"

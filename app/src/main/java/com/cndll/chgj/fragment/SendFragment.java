@@ -171,7 +171,7 @@ public class SendFragment extends BaseFragment implements OrderView {
                             setZkmoney(orderDishFragment.orderInfolayout.getDiscountPrice() + "").
                             setTmoney(orderDishFragment.orderInfolayout.getAllPrice() + "").
                             setTabname(orderDishFragment.tabname).
-                            setTab_id(orderDishFragment.tableId).setPayee("1234").
+                            setTab_id(orderDishFragment.tableId).setPayee(AppMode.getInstance().getUsername()).
                             setYsmoney(orderDishFragment.orderInfolayout.getLastPrice() + ""));
                 } else {
                     orderPresenter.updateOreder(new RequestOrder().setId(orderDishFragment.orderId + "").
@@ -185,7 +185,7 @@ public class SendFragment extends BaseFragment implements OrderView {
                             setZkmoney(orderDishFragment.orderInfolayout.getDiscountPrice() + "").
                             setTmoney(orderDishFragment.orderInfolayout.getAllPrice() + "").
                             setTabname(orderDishFragment.tabname).
-                            setTab_id(orderDishFragment.tableId).setPayee("1234").
+                            setTab_id(orderDishFragment.tableId).setPayee(AppMode.getInstance().getUsername()).
                             setYsmoney(orderDishFragment.orderInfolayout.getLastPrice() + "").
                             setType("0").
                             setCre_tm(orderDishFragment.responseOrd.getData().getCre_tm()).
@@ -229,7 +229,7 @@ public class SendFragment extends BaseFragment implements OrderView {
                             if (responseGetSeting.getData().getCd_method().equals("1")) {
                                 type = 2;
                             } else {
-                                type = 1;
+                                type = 2;
                             }
                             printOrders(ord, type);
                         }

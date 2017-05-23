@@ -18,7 +18,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="0.4"
             android:gravity="center"
             android:text="欢迎来到管咸事缴费大厅"
             android:textColor="#ffd100"
@@ -27,22 +27,36 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="0.4"
             android:gravity="center"
             android:text="请选择您需要购买的时长"
             android:textColor="#ffd100"
             android:textSize="18sp" />
 
         <TextView
+            android:id="@+id/store_name"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="0.3"
             android:gravity="center"
             android:text=""
             android:textColor="@color/white"
-            android:textSize="21sp" />
-    </LinearLayout>
+            android:textSize="16sp" />
 
+        <TextView
+            android:id="@+id/overtime"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+    </LinearLayout>
+<View
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="0.2"/>
     <LinearLayout
         android:id="@+id/bottons"
         android:layout_width="match_parent"
@@ -59,7 +73,7 @@
             android:layout_marginRight="32dp"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
-            android:background="@drawable/shape_button_yellow"
+            android:background="@drawable/shape_fillet_button_yellow"
             android:gravity="center"
             android:text="一个月"
             android:textColor="@color/white" />
@@ -73,7 +87,7 @@
             android:layout_marginRight="32dp"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
-            android:background="@drawable/shape_button_yellow"
+            android:background="@drawable/shape_fillet_button_yellow"
             android:gravity="center"
             android:text="三个月"
             android:textColor="@color/white" />
@@ -87,7 +101,7 @@
             android:layout_marginRight="32dp"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
-            android:background="@drawable/shape_button_yellow"
+            android:background="@drawable/shape_fillet_button_yellow"
             android:gravity="center"
             android:text="六个月"
             android:textColor="@color/white" />
@@ -101,7 +115,7 @@
             android:layout_marginRight="32dp"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
-            android:background="@drawable/shape_button_yellow"
+            android:background="@drawable/shape_fillet_button_yellow"
             android:gravity="center"
             android:text="一年"
             android:textColor="@color/white" />
@@ -115,7 +129,7 @@
             android:layout_marginRight="32dp"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
-            android:background="@drawable/shape_button_yellow"
+            android:background="@drawable/shape_fillet_button_yellow"
             android:gravity="center"
             android:text="70年产权"
             android:textColor="@color/white" />

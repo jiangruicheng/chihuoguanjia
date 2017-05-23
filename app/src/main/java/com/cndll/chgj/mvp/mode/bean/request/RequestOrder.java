@@ -9,7 +9,7 @@ import java.util.List;
  * Created by kongqing on 2017/5/4.
  */
 
-public class RequestOrder {
+public class RequestOrder extends BaseRequest{
 
     /**
      * code : 1

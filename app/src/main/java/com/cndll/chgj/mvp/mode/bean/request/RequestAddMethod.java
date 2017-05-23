@@ -4,7 +4,7 @@ package com.cndll.chgj.mvp.mode.bean.request;
  * Created by kongqing on 2017/5/4.
  */
 
-public class RequestAddMethod {
+public class RequestAddMethod extends BaseRequest {
     private String uid;
 
     public String getMid() {

@@ -2,7 +2,6 @@ package com.cndll.chgj.mvp.mode;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by jiang_ruicheng on 16/10/29.
@@ -25,7 +24,7 @@ public class AppRequest {
         return new Retrofit.Builder().
                 baseUrl(ACCOUNTURL).
                 addCallAdapterFactory(RxJavaCallAdapterFactory.create()).
-                addConverterFactory(GsonConverterFactory.create()).
+                addConverterFactory(MyGsonConverterFactory.create()).
                 build().
                 create(Api.class);
     }

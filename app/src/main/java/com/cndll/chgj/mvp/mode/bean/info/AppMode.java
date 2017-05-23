@@ -57,6 +57,7 @@ public class AppMode {
     }
 
     private String username;
+
     public synchronized boolean isLoading() {
         return isLoading;
     }
@@ -97,6 +98,52 @@ public class AppMode {
     }
 
     private boolean isDeskMode = true;
+    private boolean isDiscount;
+    private boolean isOrder;
+    private boolean isExcel;
+
+    public synchronized boolean isDiscount() {
+        return isDiscount;
+    }
+
+    public synchronized void setDiscount(boolean discount) {
+        isDiscount = discount;
+    }
+
+    public synchronized boolean isOrder() {
+        return isOrder;
+    }
+
+    public synchronized void setOrder(boolean order) {
+        isOrder = order;
+    }
+
+    public synchronized boolean isExcel() {
+        return isExcel;
+    }
+
+    public synchronized void setExcel(boolean excel) {
+        isExcel = excel;
+    }
+
+    public synchronized boolean isReturn() {
+        return isReturn;
+    }
+
+    public synchronized void setReturn(boolean aReturn) {
+        isReturn = aReturn;
+    }
+
+    public synchronized boolean isGive() {
+        return isGive;
+    }
+
+    public synchronized void setGive(boolean give) {
+        isGive = give;
+    }
+
+    private boolean isReturn;
+    private boolean isGive;
 
     private AppMode() {
 

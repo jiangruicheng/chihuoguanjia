@@ -4,7 +4,7 @@ package com.cndll.chgj.mvp.mode.bean.request;
  * Created by kongqing on 2017/5/3.
  */
 
-public class RequestUpdaCaipin {
+public class RequestUpdaCaipin extends BaseRequest{
     private String mid;
     private String uid;
     private String name;

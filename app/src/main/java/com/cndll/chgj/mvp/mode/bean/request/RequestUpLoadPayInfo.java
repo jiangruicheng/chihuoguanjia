@@ -4,7 +4,7 @@ package com.cndll.chgj.mvp.mode.bean.request;
  * Created by kongqing on 2017/5/16.
  */
 
-public class RequestUpLoadPayInfo {
+public class RequestUpLoadPayInfo extends BaseRequest{
     String code;
     String province_id;
     String city_id;

@@ -4,7 +4,7 @@ package com.cndll.chgj.mvp.mode.bean.request;
  * Created by kongqing on 2017/5/2.
  */
 
-public class RequestAddCaipin {
+public class RequestAddCaipin extends BaseRequest{
 
     /**
      * mid : 3

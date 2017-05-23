@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="预览模式"
+            android:text="演示模式"
             android:textColor="@color/white" />
 
         <LinearLayout

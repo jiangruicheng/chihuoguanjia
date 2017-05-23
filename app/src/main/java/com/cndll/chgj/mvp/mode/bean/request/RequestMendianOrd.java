@@ -4,7 +4,7 @@ package com.cndll.chgj.mvp.mode.bean.request;
  * Created by kongqing on 2017/5/3.
  */
 
-public class RequestMendianOrd {
+public class RequestMendianOrd extends BaseRequest{
 
     /**
      * id : 3

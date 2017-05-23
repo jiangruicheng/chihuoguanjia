@@ -4,7 +4,7 @@ package com.cndll.chgj.mvp.mode.bean.request;
  * Created by kongqing on 2017/4/26.
  */
 
-public class RequestVerify {
+public class RequestVerify extends BaseRequest{
     /**
      * tel : 15001372759
      */

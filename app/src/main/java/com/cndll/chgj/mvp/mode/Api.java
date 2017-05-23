@@ -55,6 +55,7 @@ import com.cndll.chgj.mvp.mode.bean.response.ResponseMethod;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseOrd;
 import com.cndll.chgj.mvp.mode.bean.response.ResponsePayStqtue;
 import com.cndll.chgj.mvp.mode.bean.response.ResponsePrintList;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseRecord;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseRegister;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseStoreTye;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseUpdatePrint;
@@ -86,9 +87,13 @@ public interface Api {
     Observable<ResponseUploadImage> uploadImage(@PartMap Map<String, RequestBody> pa);
 
     @FormUrlEncoded
+    @POST("System/storecharge")
+    Observable<ResponseRecord> record(@Field("mid") String id);
+
+    @FormUrlEncoded
     @POST("Order/cashpay")
-    Observable<ResponseCailei> payMoney(@Field("id") String id,
-                                        @Field("ssmoney") String ssmoney
+    Observable<ResponseOrd> payMoney(@Field("id") String id,
+                                     @Field("ssmoney") String ssmoney
     );
 
     @FormUrlEncoded
@@ -99,9 +104,15 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("User/modifypass")
-    Observable<ResponseCailei> updatePassword(@Field("uid") String uid,
-                                              @Field("tel") String tel,
-                                              @Field("newpass") String newpass
+    Observable<ResponseOrd> updatePassword(@Field("uid") String uid,
+                                           @Field("tel") String tel,
+                                           @Field("newpass") String newpass
+    );
+
+    @FormUrlEncoded
+    @POST("User/modifypass")
+    Observable<ResponseOrd> updatePassword(@Field("tel") String tel,
+                                           @Field("newpass") String newpass
     );
 
     @FormUrlEncoded

@@ -4,7 +4,7 @@ package com.cndll.chgj.mvp.mode.bean.request;
  * Created by kongqing on 2017/5/3.
  */
 
-public class RequestUpdaDesk {
+public class RequestUpdaDesk extends BaseRequest{
     public String getName() {
         return name;
     }

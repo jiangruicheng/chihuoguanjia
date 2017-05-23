@@ -166,6 +166,7 @@ public class DeskEditorFragment extends BaseFragment<DeskListAdapter> implements
             }
         });
         setListViewAdapter(list);
+
         presenter.getDeskList(new RequestGetDeskList().setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()));
         return view;
     }

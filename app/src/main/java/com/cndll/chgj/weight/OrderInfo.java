@@ -37,7 +37,7 @@ public class OrderInfo {
         return lastPrice;
     }
 
-    float count = 0, allPrice = 0, discountPrice = 0, givePrice = 0, lastPrice = 0;
+    float count = 0, allPrice = 0, discountPrice = 0, givePrice = 0, lastPrice = 0, allDiscountPrice = 0;
 
     public void setMesg(OrderDishFragment.Orders order) {
         count = 0;
@@ -45,6 +45,7 @@ public class OrderInfo {
         discountPrice = 0;
         givePrice = 0;
         lastPrice = 0;
+        allDiscountPrice = 0;
         if (order == null) {
             return;
         }
@@ -55,6 +56,13 @@ public class OrderInfo {
         for (int i = 0; i < orders.size(); i++) {
             count = count + orders.get(i).getCount() + orders.get(i).getGiveCount();
             allPrice = allPrice + orders.get(i).getAllPrice();
+            if (orders.get(i).getItemsBean().getIs_discount().equals("0")) {
+                orders.get(i).getItemsBean().setZkmoney("0");
+            } else {
+                allDiscountPrice = allDiscountPrice + orders.get(i).getAllPrice();
+                orders.get(i).getItemsBean().setZkmoney(Float.valueOf(orders.get(i).getItemsBean().getPrice()) * order.getDisconut() + "");
+            }
+            orders.get(i).getItemsBean().setSmoney(orders.get(i).getGivePrice() + "");
             givePrice = givePrice + orders.get(i).getGivePrice();
         }
         if (order.writeDish != null) {
@@ -67,8 +75,9 @@ public class OrderInfo {
                 }
             }
         }
-        discountPrice = allPrice - allPrice * order.getDisconut();
-        lastPrice = allPrice * order.getDisconut();
+        discountPrice = allDiscountPrice - allDiscountPrice * order.getDisconut();
+        /*lastPrice = allPrice * order.getDisconut();*/
+        lastPrice = allPrice - discountPrice;
         setCount(count + "").setAllMoney(allPrice + "").setDiscount(discountPrice + "").setLastMoney(lastPrice + "").setGive(givePrice + "");
 
     }

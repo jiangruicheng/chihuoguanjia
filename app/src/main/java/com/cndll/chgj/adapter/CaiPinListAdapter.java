@@ -61,6 +61,16 @@ public class CaiPinListAdapter extends ListAdapter<ResponseGetCaipinList.DataBea
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, final int position) {
         String isDiscount = "";
+        if (mitems.get(position).getIs_over().equals("1")) {
+            ((ListItemViewHolder) holder).parent.setBackgroundResource(R.drawable.shape_order_over);
+            ((ListItemViewHolder) holder).handleView.setText("");
+
+            ((ListItemViewHolder) holder).handleView.setBackgroundResource(R.mipmap.orderover);
+        }else {
+            ((ListItemViewHolder) holder).parent.setBackgroundResource(R.drawable.shape_verify_button);
+            ((ListItemViewHolder) holder).handleView.setText("排序");
+            ((ListItemViewHolder) holder).handleView.setBackgroundResource(R.drawable.shape_order_capinlist_button);
+        }
         if (mitems.get(position).getIs_discount().equals("1")) {
             isDiscount = "折扣:可 ";
         } else {
@@ -124,6 +134,7 @@ public class CaiPinListAdapter extends ListAdapter<ResponseGetCaipinList.DataBea
         public final Button revise;
         public final TextView price;
         public final TextView info;
+        public final View parent;
 
         public ListItemViewHolder(View itemView) {
             super(itemView);
@@ -132,6 +143,7 @@ public class CaiPinListAdapter extends ListAdapter<ResponseGetCaipinList.DataBea
             info = (TextView) itemView.findViewById(R.id.info);
             handleView = (TextView) itemView.findViewById(R.id.move);
             revise = (Button) itemView.findViewById(R.id.revise);
+            parent = itemView.findViewById(R.id.parent);
         }
 
         @Override

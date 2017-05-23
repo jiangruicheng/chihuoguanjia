@@ -4,7 +4,7 @@ package com.cndll.chgj.mvp.mode.bean.request;
  * Created by kongqing on 2017/5/15.
  */
 
-public class RequestGetBillList {
+public class RequestGetBillList extends BaseRequest{
 
     /**
      * uid : 3

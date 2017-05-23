@@ -71,9 +71,15 @@ public class SetingFragment extends BaseFragment {
 
     @OnClick(R.id.save)
     void onclick_save() {
+        String printset;
+        if (printSet.isLeft()) {
+            printset = "1";
+        } else {
+            printset = "2";
+        }
         AppRequest.getAPI().setting(AppMode.getInstance().getUid(),
                 AppMode.getInstance().getMid(),
-                backSet.isLeftInt() + "", printSet.isLeftInt() + "",
+                backSet.isLeftInt() + "", printset,
                 discountSet.isLeftInt() + "").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(baseView) {
             @Override
             public void onCompleted() {

@@ -8,7 +8,7 @@ import java.util.List;
  * Created by kongqing on 2017/5/19.
  */
 
-public class RequestPrintBackDesh {
+public class RequestPrintBackDesh extends BaseRequest{
 
 
     public String getMid() {

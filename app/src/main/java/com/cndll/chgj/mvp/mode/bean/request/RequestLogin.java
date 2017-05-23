@@ -4,7 +4,7 @@ package com.cndll.chgj.mvp.mode.bean.request;
  * Created by kongqing on 2017/4/26.
  */
 
-public class RequestLogin {
+public class RequestLogin extends BaseRequest{
 
     /**
      * code : 129440

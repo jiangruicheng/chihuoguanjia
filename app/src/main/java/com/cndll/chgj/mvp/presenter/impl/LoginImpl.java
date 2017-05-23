@@ -51,6 +51,37 @@ public class LoginImpl implements LoginPresenter {
                         editor.putString("mdcode", ((ResponseLogin) baseResponse).getData().getCode());
                         editor.putString("tel", login.getTel());
                         editor.commit();
+                        String qx = ((ResponseLogin) baseResponse).getData().getQx();
+                        if (qx.contains("1")) {
+                            AppMode.getInstance().setDiscount(true);
+                        } else {
+                            AppMode.getInstance().setDiscount(false);
+                        }
+                        if (qx.contains("2")) {
+                            AppMode.getInstance().setGive(true);
+                        } else {
+                            AppMode.getInstance().setGive(false);
+                        }
+                        if (qx.contains("3")) {
+                            AppMode.getInstance().setReturn(true);
+                        } else {
+                            AppMode.getInstance().setReturn(false);
+                        }
+                        if (qx.contains("4")) {
+                            AppMode.getInstance().setOrder(true);
+                        } else {
+                            AppMode.getInstance().setOrder(false);
+                        }
+                        if (qx.contains("5")) {
+                            AppMode.getInstance().setExcel(true);
+                        } else {
+                            AppMode.getInstance().setExcel(false);
+                        }
+                        if (((ResponseLogin) baseResponse).getData().getIsboss() == 1) {
+                            AppMode.getInstance().setBoss(true);
+                        } else {
+                            AppMode.getInstance().setBoss(false);
+                        }
                         AppMode.getInstance().setLoading(true).
                                 setMid(((ResponseLogin) baseResponse).getData().getMid()).
                                 setToken(((ResponseLogin) baseResponse).getData().getToken()).

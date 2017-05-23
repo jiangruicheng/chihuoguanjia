@@ -8,7 +8,7 @@ import java.util.List;
  * Created by kongqing on 2017/5/9.
  */
 
-public class RequestUpdataDeshItems {
+public class RequestUpdataDeshItems extends BaseRequest{
     String id;
 
     public String getId() {

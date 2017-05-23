@@ -1,6 +1,7 @@
 package com.cndll.chgj.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -104,7 +105,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @OnClick(R.id.resetpassword)
     void onclick_resetpassword() {
-        replaceFragmentAddToBackStack(FindPasswordFragment.newInstance(null, null), null);
+        replaceFragmentAddToBackStack(ResetPasswordFragment.newInstance(null, null), null);
     }
 
     @BindView(R.id.switch_mendian)
@@ -157,6 +158,10 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @OnClick(R.id.search_baobiao)
     void onclick_baobiao() {
+        if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isExcel()) {
+            showMesg("无查询报表权限");
+            return;
+        }
         replaceFragmentAddToBackStack(ReportFragment.newInstance(null, null), null);
     }
 
@@ -197,7 +202,18 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @OnClick(R.id.kefu)
     void onclick_kefu() {
+        MesgShow.showMesg("", "4008 781 028", kefu, new MesgShow.OnButtonListener() {
+            @Override
+            public void onListerner() {
+                Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "4008781028"));//跳转到拨号界面，同时传递电话号码
+                startActivity(dialIntent);
+            }
+        }, new MesgShow.OnButtonListener() {
+            @Override
+            public void onListerner() {
 
+            }
+        }, true);
     }
 
     @BindView(R.id.mode_switch)
@@ -380,6 +396,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
                                     if (baseResponse.getCode() == 1) {
                                         showMesg("退出成功");
                                         AppMode.getInstance().setMid("3").setUid("3");
+                                        AppMode.getInstance().setToken(null);
                                         AppMode.getInstance().setLoading(false);
                                     }
                                 }
@@ -414,7 +431,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
     public void onResume() {
         super.onResume();
         presenter.getHomeInfo();
-        banner.startTurning(2000);
+        banner.startTurning(3000);
     }
 
     @Override
@@ -482,6 +499,11 @@ public class HomeFragment extends BaseFragment implements HomeView {
     private void init() {
         getPrintList();
         presenter.getHomeInfo();
+        if (AppMode.getInstance().isBoss()) {
+            switchMendian.setVisibility(View.VISIBLE);
+        } else {
+            switchMendian.setVisibility(View.INVISIBLE);
+        }
         if (AppMode.getInstance().isLoading()) {
             lodingTop.setVisibility(View.VISIBLE);
             unlodingTop.setVisibility(View.GONE);

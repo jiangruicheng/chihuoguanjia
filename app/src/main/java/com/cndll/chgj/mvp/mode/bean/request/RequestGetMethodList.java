@@ -4,7 +4,7 @@ package com.cndll.chgj.mvp.mode.bean.request;
  * Created by kongqing on 2017/4/26.
  */
 
-public class RequestGetMethodList {
+public class RequestGetMethodList extends BaseRequest{
 
     /**
      * mid : 3

@@ -4,7 +4,7 @@ package com.cndll.chgj.mvp.mode.bean.request;
  * Created by jiang_ruicheng on 17/5/20.
  */
 
-public class RequestUpdateStoery {
+public class RequestUpdateStoery extends BaseRequest{
 
     /**
      * id : 3

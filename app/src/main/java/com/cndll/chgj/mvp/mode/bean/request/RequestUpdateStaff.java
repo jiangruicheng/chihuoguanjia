@@ -4,7 +4,7 @@ package com.cndll.chgj.mvp.mode.bean.request;
  * Created by kongqing on 2017/5/8.
  */
 
-public class RequestUpdateStaff {
+public class RequestUpdateStaff extends BaseRequest{
     public String getId() {
         return id;
     }

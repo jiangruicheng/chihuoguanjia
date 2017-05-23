@@ -14,12 +14,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.mvp.MObeserver;
+import com.cndll.chgj.mvp.mode.AppRequest;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
+import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseRecord;
+import com.cndll.chgj.mvp.presenter.BasePresenter;
+import com.cndll.chgj.mvp.view.BaseView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,6 +66,10 @@ public class PayAppFragment extends BaseFragment {
     TextView all;
     @BindView(R.id.pay)
     TextView pay;
+    @BindView(R.id.store_name)
+    TextView storeName;
+    @BindView(R.id.overtime)
+    TextView overtime;
 
     @OnClick(R.id.pay)
     void onclick_pay() {
@@ -160,6 +172,23 @@ public class PayAppFragment extends BaseFragment {
         }
     }
 
+    BaseView baseView = new BaseView() {
+        @Override
+        public void showMesg(String mesg) {
+
+        }
+
+        @Override
+        public void showProg(String mesg) {
+
+        }
+
+        @Override
+        public void setPresenter(BasePresenter presenter) {
+
+        }
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -173,9 +202,38 @@ public class PayAppFragment extends BaseFragment {
                 popBackFragment();
             }
         });
-       /* rightText.setVisibility(View.VISIBLE);
-        rightText.setText("记录");*/
+        rightText.setVisibility(View.VISIBLE);
+        rightText.setText("记录");
+        rightText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                replaceFragmentAddToBackStack(RecordFragment.newInstance(null, null), null);
+            }
+        });
         title.setText("软件缴费");
+        AppRequest.getAPI().record(AppMode.getInstance().getMid()).
+                subscribeOn(Schedulers.io()).
+                observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(baseView) {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+            }
+
+            @Override
+            public void onNext(BaseResponse baseResponse) {
+                super.onNext(baseResponse);
+                if (baseResponse.getCode() == 1) {
+                    ResponseRecord responseRecord = (ResponseRecord) baseResponse;
+                    storeName.setText(responseRecord.getData().getStoreinfo().getName());
+                    overtime.setText(responseRecord.getData().getStoreinfo().getCode() + "\n" + responseRecord.getData().getStoreinfo().getOvertm_tx());
+                }
+            }
+        });
         return view;
     }
 

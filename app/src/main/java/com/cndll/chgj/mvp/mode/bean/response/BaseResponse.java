@@ -14,7 +14,7 @@ public class BaseResponse {
     }
 
     public int code;
-
+    
     public String getExtra() {
         return extra;
     }

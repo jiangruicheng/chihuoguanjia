@@ -4,7 +4,7 @@ package com.cndll.chgj.mvp.mode.bean.request;
  * Created by kongqing on 2017/5/5.
  */
 
-public class RequestGetDeskList {
+public class RequestGetDeskList extends BaseRequest{
 
     /**
      * uid : 3

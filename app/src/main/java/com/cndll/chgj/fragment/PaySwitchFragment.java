@@ -89,6 +89,7 @@ public class PaySwitchFragment extends BaseFragment {
                 super.onNext(baseResponse);
                 if (baseResponse.getCode() == 1) {
                     // printOrders();
+                    replaceFragmentAddToBackStack(SuccessFragment.newInstance("现金收款", orderInfolayout.getLastPrice() + ""), null);
                 }
             }
         });
@@ -118,8 +119,7 @@ public class PaySwitchFragment extends BaseFragment {
             public void onNext(BaseResponse baseResponse) {
                 super.onNext(baseResponse);
                 if (baseResponse.getCode() == 1) {
-                    popBackFragment();
-                    popBackFragment();
+                    replaceFragmentAddToBackStack(SuccessFragment.newInstance("刷卡收款", orderInfolayout.getLastPrice() + ""), null);
                     // printOrders();
                 }
             }
@@ -197,6 +197,7 @@ public class PaySwitchFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_pay_switch, container, false);
         unbinder = ButterKnife.bind(this, view);
         orderInfolayout = new OrderInfo();
+
         title.setText("收款");
         back.setOnClickListener(new View.OnClickListener() {
             @Override

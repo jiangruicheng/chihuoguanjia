@@ -316,6 +316,14 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
     @OnClick(R.id.pay)
     void onclick_pay() {
         // replaceFragmentAddToBackStack(ApplyPayFragment.newInstance(null, null), null);
+        if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isOrder()) {
+            showMesg("无买单权限");
+            return;
+        }
+        if (order == null) {
+            showMesg("菜品未送单，请先送单");
+            return;
+        }
         if (!order.isChange) {
             if (orderId != 0) {
                 replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(orderId).setOrders(order), null);
@@ -330,6 +338,10 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
 
     @OnClick(R.id.dazhe)
     void onclick_discount() {
+        if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isDiscount()) {
+            showMesg("无打折权限");
+            return;
+        }
         if (!order.isChange && orderId != 0) {
             popUpkey(2, "取消打折", "确定", new KeyWeight.OnKeyClick() {
                 @Override
@@ -512,25 +524,37 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                 popUpkey(KeyWeight.Mode_OnlyNumb, "删除", "确定", new KeyWeight.OnKeyClick() {
                     @Override
                     public void onKeyCancel(String s) {
+                        boolean iss;
                         if (!isOrderWrite) {
                             order.removeOrders(order.getCurrPosition());
+                            iss = order.getOrder(order.getCurrPosition()).isSend();
                         } else {
                             order.writeDish.remove(order.getCurrPosition());
+                            iss = order.writeDish.get(order.getCurrPosition()).isSend();
                         }
                         adapter.notifyDataSetChanged();
+                        if (iss) {
+                            sendOrds();
+                        }
                     }
 
                     @Override
                     public void onKeySure(String s) {
                         orderItemMesg = new OrderItemMesg();
                         orderItemMesg.init(container);
+                        boolean iss;
                         if (!isOrderWrite) {
                             order.getOrder(order.getCurrPosition()).setCount(Float.valueOf(s));
+                            iss = order.getOrder(order.getCurrPosition()).isSend();
                         } else {
                             order.writeDish.get(order.getCurrPosition()).setCount(Float.valueOf(s));
+                            iss = order.writeDish.get(order.getCurrPosition()).isSend();
                         }
                         setOrderInfolayout(order.getCurrPosition(), isOrderWrite);
                         /*sendOrds();*/
+                        if (iss) {
+                            sendOrds();
+                        }
                     }
 
                     @Override
@@ -592,6 +616,10 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                         public void onFirst(View view) {
                             boolean isOrderWrite;
                             int i;
+                            if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isGive()) {
+                                showMesg("无赠送权限");
+                                return;
+                            }
                             if (order.writeDish == null || position > order.writeDish.size() - 1) {
                                 isOrderWrite = false;
                                 if (order.writeDish == null) {
@@ -634,6 +662,10 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
 
                         @Override
                         public void onSecond(View view) {
+                            if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isReturn()) {
+                                showMesg("无退菜权限");
+                                return;
+                            }
                             boolean isOrderWrite;
                             int i;
                             if (order.writeDish == null || position > order.writeDish.size() - 1) {
@@ -1013,6 +1045,11 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
     public void setOrder(ResponseGetOrder getOrder) {
         if (order == null) {
             order = new OrderDishFragment.Orders();
+        } else {
+            if (order.writeDish != null) {
+                order.writeDish.clear();
+            }
+            order.getOrders().clear();
         }
         this.responseOrd = getOrder;
         List<RequestOrder.WriteDishBean> writedishs = null;
@@ -1153,7 +1190,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                 viewHolder.numberEdit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (onItemClick != null && !order.writeDish.get(order.getCurrPosition()).isSend) {
+                        if (onItemClick != null /*&& !order.writeDish.get(order.getCurrPosition()).isSend*/) {
                             onItemClick.onNumbClick(order, orderList, position, finalConvertView);
                         }
                     }
@@ -1174,7 +1211,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                 viewHolder.numberEdit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (onItemClick != null && !order.getOrders().get(order.getCurrPosition()).isSend) {
+                        if (onItemClick != null /*&& !order.getOrders().get(order.getCurrPosition()).isSend*/) {
                             onItemClick.onNumbClick(order, orderList, position, finalConvertView);
                         }
                     }

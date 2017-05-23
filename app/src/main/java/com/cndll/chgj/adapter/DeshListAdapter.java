@@ -44,26 +44,30 @@ public class DeshListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
     @Override
     public void onBindViewHolder(ItemViewHolder holder, final int position) {
-        if ((position / 3) % 5 == 0) {
-            holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid);
-        }
-        if ((position / 3) % 5 == 1) {
-            holder.parent.setBackgroundResource(R.drawable.shape_verify_button);
-        }
-        if ((position / 3) % 5 == 2) {
-            holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid_green);
-        }
-        if ((position / 3) % 5 == 3) {
-            holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid_red);
-        }
-        if ((position / 3) % 5 == 4) {
-            holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid_blue);
+        if (mitems.get(position).getIs_over().equals("1")) {
+            holder.parent.setBackgroundResource(R.mipmap.orderovergray);
+        } else {
+            if ((position / 3) % 5 == 0) {
+                holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid);
+            }
+            if ((position / 3) % 5 == 1) {
+                holder.parent.setBackgroundResource(R.drawable.shape_verify_button);
+            }
+            if ((position / 3) % 5 == 2) {
+                holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid_green);
+            }
+            if ((position / 3) % 5 == 3) {
+                holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid_red);
+            }
+            if ((position / 3) % 5 == 4) {
+                holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid_blue);
+            }
         }
         // holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid);
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (onItemClickLister != null) {
+                if (onItemClickLister != null && mitems.get(position).getIs_over().equals("0")) {
                     onItemClickLister.OnItemClick(v, position);
                 }
             }

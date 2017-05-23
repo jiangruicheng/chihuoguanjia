@@ -52,6 +52,22 @@ public class ResponseGetCaipinList extends BaseResponse {
             this.machine_name = machine_name;
         }
 
+        public String getSmoney() {
+            return smoney;
+        }
+
+        public void setSmoney(String smoney) {
+            this.smoney = smoney;
+        }
+
+        public String getZkmoney() {
+            return zkmoney;
+        }
+
+        public void setZkmoney(String zkmoney) {
+            this.zkmoney = zkmoney;
+        }
+
         /**
          * id : 81
          * unit : 份
@@ -71,7 +87,9 @@ public class ResponseGetCaipinList extends BaseResponse {
          * name : 小炒肉
          * dc_id : 39
          */
-       private String machine_name;
+        private String smoney;
+        private String zkmoney;
+        private String machine_name;
         private String id;
         private String unit;
         private String mid;
