@@ -1,6 +1,7 @@
 package com.cndll.chgj.fragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -89,7 +90,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
     void onclick_cailei() {
         if (!fragments.get(CAILEI).isVisible()) {
             switchFragment(CAILEI);
-            title.setText("菜类编辑");
+            title.setText("菜类情况");
             rightText.setVisibility(View.GONE);
         } else {
             popAddCailei(-1);
@@ -99,12 +100,13 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
     @BindView(R.id.add_caipin)
     Button addCaipin;
     private AddCaiPin popview;
+    String caileiname;
 
     @OnClick(R.id.add_caipin)
     void onclick_caipin() {
         if (!fragments.get(CAIPIN).isVisible()) {
             switchFragment(CAIPIN);
-            title.setText("菜品编辑");
+            title.setText("菜品" + "(" + caileiname + ")");
             rightText.setVisibility(View.VISIBLE);
             rightText.setText("菜类");
 
@@ -139,6 +141,9 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
                                 get(position).getId()));
                 ((CaipinFragment) fragments.get(CAIPIN)).setDcId(popCaileiListAdpater.getList().
                         get(position).getId());
+                caileiname = popCaileiListAdpater.getList().
+                        get(position).getName();
+                title.setText("菜品" + "(" + caileiname + ")");
             }
         });
         PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
@@ -159,7 +164,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
     public interface MenuEvent {
         void queryCaipin(String name);
 
-        void trunCaipin(String dcid);
+        void trunCaipin(String dcid, String name);
 
         void updateCaipin(int position);
 
@@ -174,9 +179,10 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
         }
 
         @Override
-        public void trunCaipin(String dcid) {
+        public void trunCaipin(String dcid, String name) {
             switchFragment(CAIPIN);
-            title.setText("菜品编辑");
+            caileiname = name;
+            title.setText("菜品" + "(" + caileiname + ")");
             rightText.setVisibility(View.VISIBLE);
             rightText.setText("菜类");
             ((CaipinFragment) fragments.get(CAIPIN)).setDcId(dcid);
@@ -311,7 +317,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
         View view = inflater.inflate(R.layout.fragment_menu_editor, container, false);
         unbinder = ButterKnife.bind(this, view);
         fragments = new HashMap<>();
-        title.setText("菜类编辑");
+        title.setText("菜类情况");
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -400,7 +406,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
             ((CaipinFragment) fragments.get(CAIPIN)).setDcId(dataBeen.get(0).getId());
         }
         presenter.getCaipinList(new RequestGetCaipinList().setDc_id(((CaipinFragment) fragments.get(CAIPIN)).getDcId()).setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()));
-
+        caileiname = dataBeen.get(0).getName();
     }
 
     @Override
@@ -455,7 +461,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
                 printer.setText("");
                 queryid.setText("");
                 dazhe.setLeft(true);
-                over.setLeft(true);
+                over.setLeft(false);
                 print.setLeft(true);
                 return;
             }
@@ -496,8 +502,9 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
             save = (Button) view.findViewById(R.id.save);
             delete = (Button) view.findViewById(R.id.delete);
             dazhe = initSiwtch(buttonSwitch, "可", "否");
-            print = initSiwtch(buttonSwitch2, "可", "否");
-            over = initSiwtch(buttonSwitch1, "可", "否");
+            print = initSiwtch(buttonSwitch2, "是", "否");
+            over = initSiwtch(buttonSwitch1, "是", "否");
+            over.setLeft(false);
             cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -596,7 +603,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
             aSwitch.setLeftBackground(R.drawable.shape_button_yellow);
             aSwitch.setRightBackground(R.drawable.shape_dialog_fillet_solid);
             aSwitch.setText(left, right);
-            aSwitch.setTextColor(0xffDC5301, 0xff000000);
+            aSwitch.setTextColor(Color.rgb(0xdc,0x53,0x01), Color.rgb(0x00,0x00,0x00));
             aSwitch.init(view);
             return aSwitch;
         }

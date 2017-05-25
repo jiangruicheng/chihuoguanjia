@@ -113,7 +113,7 @@ public class CaileiFragment extends BaseFragment<CaiLeiListAdapter> {
             @Override
             public void onItemClick(View view, int position) {
                 if (menuEvent != null) {
-                    menuEvent.trunCaipin(((List<ResponseGetCaileiList.DataBean>) adapter.getMitems()).get(position).getId());
+                    menuEvent.trunCaipin(((List<ResponseGetCaileiList.DataBean>) adapter.getMitems()).get(position).getId(), ((List<ResponseGetCaileiList.DataBean>) adapter.getMitems()).get(position).getName());
                 }
             }
         });

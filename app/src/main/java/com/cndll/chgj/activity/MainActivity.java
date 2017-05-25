@@ -1,6 +1,8 @@
 package com.cndll.chgj.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +13,7 @@ import android.widget.FrameLayout;
 import com.cndll.chgj.R;
 import com.cndll.chgj.fragment.BaseFragment;
 import com.cndll.chgj.fragment.HomeFragment;
+import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.presenter.impl.HomeImpl;
 
 import java.util.Map;
@@ -58,6 +61,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        SharedPreferences sharedPreferences = getSharedPreferences("CHGJ", Context.MODE_PRIVATE);
+        AppMode.getInstance().setMid(sharedPreferences.getString("mid", "3"));
+        AppMode.getInstance().setUid(sharedPreferences.getString("uid", "3"));
+        AppMode.getInstance().setToken(sharedPreferences.getString("token", null));
+        AppMode.getInstance().setLoading(sharedPreferences.getBoolean("isloding", false));
+        AppMode.getInstance().setUsername(sharedPreferences.getString("username", ""));
+        AppMode.getInstance().setBoss(sharedPreferences.getBoolean("isboss", false));
+        AppMode.getInstance().setMcode(sharedPreferences.getString("mdcode", null));
         fragmentManager = getSupportFragmentManager();
         HomeFragment fragment = HomeFragment.newInstance("", "");
         HomeImpl h = new HomeImpl();
@@ -69,6 +80,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        SharedPreferences.Editor editor = getSharedPreferences("CHGJ", Context.MODE_PRIVATE).edit();
+
+        editor.commit();
     }
 
     public interface BackPressEvent {

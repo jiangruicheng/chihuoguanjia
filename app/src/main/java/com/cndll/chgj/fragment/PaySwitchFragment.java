@@ -1,7 +1,6 @@
 package com.cndll.chgj.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
-import com.cndll.chgj.activity.ApplyPayActivity;
 import com.cndll.chgj.mvp.MObeserver;
 import com.cndll.chgj.mvp.mode.AppRequest;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
@@ -211,7 +209,7 @@ public class PaySwitchFragment extends BaseFragment {
             public void onClick(View v) {
                 type = 2;
                 if (orderID != 0)
-                    isHavePayCount();
+                    isHavePayCount("微信");
                 titlename = "微信收款";
             }
         });
@@ -222,7 +220,7 @@ public class PaySwitchFragment extends BaseFragment {
                 if (orderID != 0)
                     //gotoWebView();
 
-                    isHavePayCount();
+                    isHavePayCount("支付宝");
                 titlename = "支付宝收款";
             }
         });
@@ -307,7 +305,7 @@ public class PaySwitchFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    private boolean isHavePayCount() {
+    private boolean isHavePayCount(final String s) {
         AppRequest.getAPI().
                 payStatue(AppMode.getInstance().getUid(), AppMode.getInstance().getMid()).
                 subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
@@ -345,7 +343,7 @@ public class PaySwitchFragment extends BaseFragment {
                         if (baseResponse.getCode() == 1) {
                             gotoWebView();
                         } else {
-                            startActivity(new Intent(getActivity(), ApplyPayActivity.class));
+                            replaceFragmentAddToBackStack(TurnToApplyPayFragment.newInstance(s, null), null);
                         }
                     }
                 });

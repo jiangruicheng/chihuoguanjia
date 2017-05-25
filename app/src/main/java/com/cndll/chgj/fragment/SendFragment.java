@@ -137,7 +137,6 @@ public class SendFragment extends BaseFragment implements OrderView {
             titleRight.setText("人数：2");
         }
         titleLeft.setText(" 桌台: " + orderDishFragment.tabname);
-
         if (orderDishFragment.responseOrd != null) {
             personCount.setText(orderDishFragment.responseOrd.getData().getPernum());
         }
@@ -152,6 +151,7 @@ public class SendFragment extends BaseFragment implements OrderView {
                 popBackFragment();
             }
         });
+        save.setText("送单");
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

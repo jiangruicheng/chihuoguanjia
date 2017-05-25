@@ -2,6 +2,7 @@ package com.cndll.chgj.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -398,6 +399,19 @@ public class HomeFragment extends BaseFragment implements HomeView {
                                         AppMode.getInstance().setMid("3").setUid("3");
                                         AppMode.getInstance().setToken(null);
                                         AppMode.getInstance().setLoading(false);
+                                        AppMode.getInstance().setUsername("");
+                                        SharedPreferences.Editor editor = getActivity().getSharedPreferences("CHGJ", Context.MODE_PRIVATE).edit();
+                                        editor.putString("mid", AppMode.getInstance().getMid());
+                                        editor.putString("uid", AppMode.getInstance().getUid());
+                                        editor.putString("token", AppMode.getInstance().getToken());
+                                        editor.putBoolean("isloding", false);
+                                        editor.putBoolean("isboss", false);
+                                        editor.putString("username", AppMode.getInstance().getUsername());
+                                        editor.commit();
+                                        init();
+                                       /* AppMode.getInstance().setMid("3").setUid("3");
+                                        AppMode.getInstance().setToken(null);
+                                        AppMode.getInstance().setLoading(false);*/
                                     }
                                 }
                             });

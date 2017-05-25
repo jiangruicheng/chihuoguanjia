@@ -147,6 +147,7 @@ public class PayAppFragment extends BaseFragment {
                     name = "70年";
                     break;
             }
+            pay.setText("去支付（" + month * money + ")");
         }
     };
 

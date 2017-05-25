@@ -26,6 +26,10 @@ public class OrderItemMesg {
         return this;
     }
 
+    public TextView getMethod() {
+        return method;
+    }
+
     public OrderItemMesg setMethod(String name) {
         this.method.setText(name);
         return this;

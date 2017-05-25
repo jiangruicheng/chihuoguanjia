@@ -173,6 +173,10 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         popviewOther.trunDesk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (order == null) {
+                    showMesg("此台不存在消费，无需转台");
+                    return;
+                }
                 final PopUpViewUtil popviewDesk = PopUpViewUtil.getInstance();
                 View view = LayoutInflater.from(getContext()).inflate(R.layout.popview_turndesk, null, false);
                 RecyclerView deskList = (RecyclerView) view.findViewById(R.id.desk_list);
@@ -225,6 +229,10 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         popviewOther.printOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (order == null) {
+                    showMesg("此台不存在消费，无需打印");
+                    return;
+                }
                 if (order.isChange) {
                     showMesg("有菜品未送单，不能打印");
                 } else {
@@ -241,6 +249,10 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         popviewOther.removeDesk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (order == null) {
+                    showMesg("此台不存在消费，无需撤台");
+                    return;
+                }
                 if (orderId != 0) {
                     presenter.removeOrder(orderId + "", 2 + "");
                 }
@@ -303,6 +315,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
     @OnClick(R.id.send)
     void onclick_send() {
         if (order == null) {
+            showMesg("不存在未送单菜品，无需送单");
             return;
         }
         if (order.getOrders().size() != 0 || order.writeDish.size() != 0) {
@@ -321,7 +334,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
             return;
         }
         if (order == null) {
-            showMesg("菜品未送单，请先送单");
+            showMesg("此台不存在消费，无需买单");
             return;
         }
         if (!order.isChange) {
@@ -329,7 +342,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                 replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(orderId).setOrders(order), null);
             }
         } else {
-            MesgShow.showMesg("", "有菜品未送单,请先送单", dazhe, null, null, false);
+            MesgShow.showMesg("", "有菜品未送单,不能买单", dazhe, null, null, false);
         }
     }
 
@@ -338,6 +351,9 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
 
     @OnClick(R.id.dazhe)
     void onclick_discount() {
+        if (order == null) {
+            showMesg("此台不存在消费，无需打折");
+        }
         if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isDiscount()) {
             showMesg("无打折权限");
             return;
@@ -371,7 +387,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                 }
             });
         } else {
-            MesgShow.showMesg("", "有菜品未送单,请先送单", dazhe, null, null, false);
+            MesgShow.showMesg("", "有菜品未送单,不能打折", dazhe, null, null, false);
         }
     }
 
@@ -504,7 +520,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         orderInfo = new OrderInfo();
         orderInfo.init(orderinfolayout);
         orderInfo.setMesg(order);
-        adapter.setOnItemClick(new OrderListAdapter.OnItemClick() {
+        adapter.setOnItemClick(new OnItemClick() {
             @Override
             public void onNumbClick(final OrderDishFragment.Orders order, final List<OrderDishFragment.Orders.Order> orders, final int position, View Item) {
                 final boolean isOrderWrite;
@@ -532,14 +548,19 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                             order.writeDish.remove(order.getCurrPosition());
                             iss = order.writeDish.get(order.getCurrPosition()).isSend();
                         }
-                        adapter.notifyDataSetChanged();
                         if (iss) {
+                            if (order.isAdd) {
+                                showMesg("有菜品未送单，请先送单");
+                                return;
+                            }
                             sendOrds();
+                            // adapter.notifyDataSetChanged();
                         }
                     }
 
                     @Override
                     public void onKeySure(String s) {
+
                         orderItemMesg = new OrderItemMesg();
                         orderItemMesg.init(container);
                         boolean iss;
@@ -550,11 +571,17 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                             order.writeDish.get(order.getCurrPosition()).setCount(Float.valueOf(s));
                             iss = order.writeDish.get(order.getCurrPosition()).isSend();
                         }
-                        setOrderInfolayout(order.getCurrPosition(), isOrderWrite);
                         /*sendOrds();*/
                         if (iss) {
+                            if (order.isAdd) {
+                                showMesg("有菜品未送单，请先送单");
+                                return;
+                            }
                             sendOrds();
+                            //setOrderInfolayout(order.getCurrPosition(), isOrderWrite);
+                            // adapter.notifyDataSetChanged();
                         }
+
                     }
 
                     @Override
@@ -591,6 +618,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                 if (iss) {
                     final PopOrderRequest popOrderRequest = new PopOrderRequest();
                     popOrderRequest.init(getContext(), view);
+                    popOrderRequest.four.setVisibility(View.GONE);
                     popOrderRequest.setFirstText("赠送");
                     popOrderRequest.setSecondText("退菜");
                     popOrderRequest.show();
@@ -616,6 +644,10 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                         public void onFirst(View view) {
                             boolean isOrderWrite;
                             int i;
+                            if (order.isAdd) {
+                                showMesg("有菜品未送单，请先送单");
+                                return;
+                            }
                             if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isGive()) {
                                 showMesg("无赠送权限");
                                 return;
@@ -657,11 +689,17 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                                 }
                             }
                             setOrderInfolayout(order.getCurrPosition(), isOrderWrite);
+
                             sendOrds();
+
                         }
 
                         @Override
                         public void onSecond(View view) {
+                            if (order.isAdd) {
+                                showMesg("有菜品未送单，请先送单");
+                                return;
+                            }
                             if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isReturn()) {
                                 showMesg("无退菜权限");
                                 return;
@@ -702,7 +740,9 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                                 order.setCurrPosition(order.getOrders().keyAt(0));
                             }*/
                             setOrderInfolayout(order.getCurrPosition(), isOrderWrite);
+
                             sendOrds();
+
                             isBackDesh = true;
                         }
 
@@ -710,6 +750,10 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                         public void onThird(View view) {
                             boolean isOrderWrite;
                             int i;
+                            if (order.isAdd) {
+                                showMesg("有菜品未送单，请先送单");
+                                return;
+                            }
                             if (order.writeDish == null || position > order.writeDish.size() - 1) {
                                 isOrderWrite = false;
                                 if (order.writeDish == null) {
@@ -728,12 +772,49 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                                 order.writeDish.get(order.getCurrPosition()).cancelGive();
                             }
                             setOrderInfolayout(order.getCurrPosition(), isOrderWrite);
+
                             sendOrds();
+
                         }
                     });
 
                 } else {
                     final PopOrderRequest popOrderRequest = new PopOrderRequest();
+                    popOrderRequest.init(getContext(), view);
+                    popOrderRequest.show();
+                    boolean isGive = false;
+                    if (isOrderWrite) {
+                        if (order.writeDish.get(order.getCurrPosition()).giveCount != 0) {
+                            isGive = true;
+                        }
+                    } else {
+                        if (order.getOrder(order.getCurrPosition()).giveCount != 0) {
+                            isGive = true;
+                        }
+                    }
+
+                    if (isGive) {
+                        popOrderRequest.setViewHeight(4);
+                        popOrderRequest.four.setVisibility(View.VISIBLE);
+                        popOrderRequest.four.setText("取消赠送");
+                        popOrderRequest.four.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (!isOrderWrite) {
+                                    order.getOrder(order.getCurrPosition()).cancelGive();
+                                } else {
+                                    order.writeDish.get(order.getCurrPosition()).cancelGive();
+                                }
+                                popOrderRequest.setViewHeight(3);
+                                popOrderRequest.four.setVisibility(View.GONE);
+                                setOrderInfolayout(order.getCurrPosition(), isOrderWrite);
+                            }
+                        });
+                    } else {
+                        popOrderRequest.four.setVisibility(View.GONE);
+                        popOrderRequest.setViewHeight(3);
+                    }
+
                     popOrderRequest.setOnItemClick(new PopOrderRequest.onItemClick() {
                         @Override
                         public void onFirst(View v) {
@@ -746,9 +827,10 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                         }
 
                         @Override
-                        public void onSecond(View view) {
-                            boolean isOrderWrite;
+                        public void onSecond(final View view) {
+                            final boolean isOrderWrite;
                             int i;
+                            final String currID;
                             if (order.writeDish == null || position > order.writeDish.size() - 1) {
                                 isOrderWrite = false;
                                 if (order.writeDish == null) {
@@ -756,8 +838,10 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                                 } else {
                                     i = order.writeDish.size();
                                 }
+                                currID = order.getOrders().keyAt(position - i);
                                 order.setCurrPosition(order.getOrders().keyAt(position - i));
                             } else {
+                                currID = order.writeDish.keyAt(position);
                                 order.setCurrPosition(order.writeDish.keyAt(position));
                                 isOrderWrite = true;
                             }
@@ -777,6 +861,23 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                                         view.setBackgroundColor(Color.GRAY);
                                     }
                                 }
+                                popOrderRequest.four.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        if (!isOrderWrite) {
+                                            order.getOrder(currID).cancelGive();
+                                        } else {
+                                            order.writeDish.get(currID).cancelGive();
+                                        }
+                                        setOrderInfolayout(currID, isOrderWrite);
+                                        view.setBackgroundResource(R.color.cube_holo_blue_dark);
+                                        popOrderRequest.setViewHeight(3);
+                                        popOrderRequest.four.setVisibility(View.GONE);
+                                    }
+                                });
+                                popOrderRequest.setViewHeight(4);
+                                popOrderRequest.four.setVisibility(View.VISIBLE);
+                                popOrderRequest.four.setText("取消赠送");
                             }
                         }
 
@@ -804,8 +905,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                             adapter.notifyDataSetChanged();
                         }
                     });
-                    popOrderRequest.init(getContext(), view);
-                    popOrderRequest.show();
+
                 }
             }
         });
@@ -911,10 +1011,17 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
             Log.d("at", "setOrderInfolayoutWrite: " + order.writeDish.get(id));
         OrderDishFragment.Orders.Write write = order.writeDish.get(id);
         orderItemMesg.setPrice(order.writeDish.get(id).getAllPrice() + "").
-                setName(order.writeDish.get(id).getDeshName() + order.writeDish.get(id).getDeshPrice()).setCount(order.writeDish.get(id).getCount() + "");
+                setName(order.writeDish.get(id).getDeshName() + order.writeDish.get(id).getOnePrice()).setCount(order.writeDish.get(id).getCount() + "");
         if (order.writeDish.get(id).getItemsBean().getRemarks() != null) {
             orderItemMesg.setMethod(order.writeDish.get(id).getItemsBean().getRemarks().getRemarks().get(0).getName() + order.writeDish.get(id).getItemsBean().getRemarks().getRemarks().get(0).getPrice());
-        } else {
+        }
+        if (order.writeDish.get(id).getGiveCount() != 0) {
+            orderItemMesg.setMethod(orderItemMesg.getMethod().getText().toString() + "赠送：" + order.writeDish.get(id).getGiveCount());
+        }
+        if (order.writeDish.get(id).getBackCount() != 0) {
+            orderItemMesg.setMethod(orderItemMesg.getMethod().getText().toString() + "退菜：" + order.writeDish.get(id).getBackCount());
+        }
+        if (order.writeDish.get(id).getItemsBean().getRemarks() == null) {
             orderItemMesg.setMethod(" ");
         }
         if (orderInfo != null) {
@@ -926,11 +1033,17 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         if (id == null) {
             orderItemMesg.setMethod("").setCount("1").setName("").setPrice("");
         } else {
-            if (orderItemMesg != null)
+            if (orderItemMesg != null) {
                 orderItemMesg.
                         setPrice(order.getOrder(id).getAllPrice() + "").
-                        setName(order.getOrder(id).getDeshName() + order.getOrder(id).getDeshPrice()).setMethod(order.getOrder(id).getMethodName() + order.getOrder(id).getMethodPrice()).setCount(order.getOrder(id).getCount() + order.getOrder(id).getGiveCount() + "");
-
+                        setName(order.getOrder(id).getDeshName() + order.getOrder(id).getOnePrice()).setMethod(order.getOrder(id).getMethodName() + order.getOrder(id).getMethodPrice()).setCount(order.getOrder(id).getCount() + order.getOrder(id).getGiveCount() + "");
+                if (order.getOrder(id).getGiveCount() != 0) {
+                    orderItemMesg.setMethod(orderItemMesg.getMethod().getText().toString() + "赠送：" + order.getOrder(id).getGiveCount());
+                }
+                if (order.getOrder(id).getBackCount() != 0) {
+                    orderItemMesg.setMethod(orderItemMesg.getMethod().getText().toString() + "退菜：" + order.getOrder(id).getBackCount());
+                }
+            }
         }
         if (orderInfo != null) {
             orderInfo.setMesg(order);
@@ -1096,6 +1209,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         // setOrderInfolayout(order.getCurrPosition(), isOrderWrite);
         //isSend = true;
         order.isChange = false;
+        order.isAdd = false;
     }
 
     /**
@@ -1113,12 +1227,14 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         void onFragmentInteraction(Uri uri);
     }
 
-    public static class OrderListAdapter extends BaseAdapter {
-        public interface OnItemClick {
-            void onNumbClick(OrderDishFragment.Orders order, List<OrderDishFragment.Orders.Order> orders, int position, View Item);
+    public interface OnItemClick {
+        void onNumbClick(OrderDishFragment.Orders order, List<OrderDishFragment.Orders.Order> orders, int position, View Item);
 
-            void onRequest(int position, View view);
-        }
+        void onRequest(int position, View view);
+    }
+
+    public class OrderListAdapter extends BaseAdapter {
+
 
         public OnItemClick getOnItemClick() {
             return onItemClick;
@@ -1235,10 +1351,13 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                     }
                 }
             });
+            orderItemMesg = new OrderItemMesg();
+            orderItemMesg.init(convertView);
+            setOrderInfolayout(order.getCurrPosition(), isOrderWrite);
             return convertView;
         }
 
-        public static class ViewHolder {
+        public class ViewHolder {
             @BindView(R.id.number_edit)
             public TextView numberEdit;
             @BindView(R.id.desh_name)

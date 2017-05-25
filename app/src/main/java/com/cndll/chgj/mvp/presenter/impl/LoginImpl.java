@@ -46,11 +46,7 @@ public class LoginImpl implements LoginPresenter {
                 if (baseResponse instanceof ResponseLogin) {
                     if ((baseResponse).getCode() == 1) {
                         view.loginSucces();
-                        SharedPreferences.Editor editor = context.getSharedPreferences("CHGJ", Context.MODE_PRIVATE).edit();
-                        editor.putString("mdname", ((ResponseLogin) baseResponse).getData().getMdname());
-                        editor.putString("mdcode", ((ResponseLogin) baseResponse).getData().getCode());
-                        editor.putString("tel", login.getTel());
-                        editor.commit();
+
                         String qx = ((ResponseLogin) baseResponse).getData().getQx();
                         if (qx.contains("1")) {
                             AppMode.getInstance().setDiscount(true);
@@ -86,7 +82,18 @@ public class LoginImpl implements LoginPresenter {
                                 setMid(((ResponseLogin) baseResponse).getData().getMid()).
                                 setToken(((ResponseLogin) baseResponse).getData().getToken()).
                                 setUid(((ResponseLogin) baseResponse).getData().getUid()).
-                                setTel(login.getTel()).setUsername(((ResponseLogin) baseResponse).getData().getUsername());
+                                setTel(login.getTel()).setUsername(((ResponseLogin) baseResponse).getData().getUsername()).setMcode(((ResponseLogin) baseResponse).getData().getCode());
+                        SharedPreferences.Editor editor = context.getSharedPreferences("CHGJ", Context.MODE_PRIVATE).edit();
+                        editor.putString("mdname", ((ResponseLogin) baseResponse).getData().getMdname());
+                        editor.putString("mdcode", ((ResponseLogin) baseResponse).getData().getCode());
+                        editor.putString("tel", login.getTel());
+                        editor.putString("mid", AppMode.getInstance().getMid());
+                        editor.putString("uid", AppMode.getInstance().getUid());
+                        editor.putString("token", AppMode.getInstance().getToken());
+                        editor.putString("username", AppMode.getInstance().getUsername());
+                        editor.putBoolean("isboss", AppMode.getInstance().isBoss());
+                        editor.putBoolean("isloding", true);
+                        editor.commit();
                     }
                 }
             }

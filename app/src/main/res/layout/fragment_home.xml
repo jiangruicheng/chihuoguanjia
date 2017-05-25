@@ -141,14 +141,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="今日收入" />
+                android:text="今日收入"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/today_comin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="10000" />
+                android:text="10000"
+                android:textSize="11sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -162,14 +164,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="今日单数" />
+                android:text="今日单数"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/today_numb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="369" />
+                android:text="369"
+
+                android:textSize="11sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -183,14 +188,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="本月收入" />
+                android:text="本月收入"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/month_comin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="36万" />
+                android:text="36万"
+                android:textSize="11sp" />
         </LinearLayout>
 
         <Button
@@ -232,7 +239,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
-                android:text="编辑菜品" />
+                android:gravity="center"
+                android:text="编辑菜品"
+
+                android:textSize="11sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -250,10 +260,14 @@
                 android:src="@mipmap/dish" />
 
             <TextView
+                android:id="@+id/textView11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
-                android:text="菜品做法" />
+                android:gravity="center"
+
+                android:text="菜品做法"
+                android:textSize="11sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -271,10 +285,14 @@
                 android:src="@mipmap/table" />
 
             <TextView
+                android:id="@+id/textView9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
-                android:text="编辑桌台" />
+                android:gravity="center"
+                android:text="编辑桌台"
+
+                android:textSize="11sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -295,7 +313,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
-                android:text="打印设置" />
+                android:gravity="center"
+                android:text="打印设置"
+
+                android:textSize="11sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -324,7 +345,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
-                android:text="注册门店" />
+                android:gravity="center"
+                android:text="注册门店"
+                android:textSize="11sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -342,10 +365,14 @@
                 android:src="@mipmap/employee" />
 
             <TextView
+                android:id="@+id/textView10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
-                android:text="员工账号" />
+                android:gravity="center"
+                android:text="员工账号"
+
+                android:textSize="11sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -366,7 +393,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
-                android:text="查询账单" />
+                android:gravity="center"
+                android:text="查询账单"
+
+                android:textSize="11sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -387,7 +417,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
-                android:text="高级设置" />
+                android:gravity="center"
+                android:text="高级设置"
+
+                android:textSize="11sp" />
         </LinearLayout>
     </LinearLayout>
 

@@ -165,6 +165,12 @@ public class StaffFragment extends BaseFragment implements StaffView {
         unbinder = ButterKnife.bind(this, view);
         adapter = new StaffAdapter();
         list.setAdapter(adapter);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popBackFragment();
+            }
+        });
         presenter.getStaffList(new RequestPrintList().setUid(AppMode.getInstance().getUid()).setMid(AppMode.getInstance().getMid()));
         return view;
     }

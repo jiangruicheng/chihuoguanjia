@@ -53,6 +53,8 @@
             android:layout_weight="8"
             android:background="@color/white"
             android:gravity="center_vertical|left"
+            android:inputType="number"
+            android:selectAllOnFocus="true"
             android:text="2" />
     </LinearLayout>
 

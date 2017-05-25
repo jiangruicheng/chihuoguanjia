@@ -258,10 +258,12 @@ public class BillQueryFragment extends BaseFragment implements BillView {
                 viewHolder.payStatue.setTextColor(Color.rgb(0XDC, 0X53, 0X01));
                 viewHolder.tablename.setTextColor(Color.rgb(0XDC, 0X53, 0X01));
                 viewHolder.time.setTextColor(Color.rgb(0XDC, 0X53, 0X01));
+                viewHolder.payStatue.setText(items.get(position).getType_txt());
+            } else {
+                viewHolder.payStatue.setText(items.get(position).getType_txt() + " " + items.get(position).getSsmoney());
             }
             viewHolder.time.setText(items.get(position).getOrdnum());
             viewHolder.tablename.setText(items.get(position).getTabname());
-            viewHolder.payStatue.setText(items.get(position).getType_txt());
             return convertView;
         }
 

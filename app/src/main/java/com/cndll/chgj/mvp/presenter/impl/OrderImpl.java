@@ -132,7 +132,7 @@ public class OrderImpl implements OrderPresenter {
                         super.onNext(baseResponse);
                         if (baseResponse.getCode() == 1) {
                             view.sendSucc(Integer.valueOf(order.getId()));
-                            view.showMesg("更新成功");
+                            //   view.showMesg("更新成功");
                             getOrder(new RequestGetOrder().setId(Integer.valueOf(order.getId())));
                             // view.setDeshList(((ResponseGetCaipinList) baseResponse).getData());
                         }

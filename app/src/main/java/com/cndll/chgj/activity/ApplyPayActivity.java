@@ -273,6 +273,13 @@ public class ApplyPayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apply_pay);
+        title.setText("支付申请");
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         ButterKnife.bind(this);
     }
 
@@ -333,8 +340,8 @@ public class ApplyPayActivity extends AppCompatActivity {
                                 setMid(AppMode.getInstance().getMid()).
                                 setProvince_id(sheng + "").setCity_id(shi + "").
                                 setBanknum(bankcard.getText().toString()).
-                                setBankaddress(bankName.getText().toString()).
-                                setCode(storyID.getText().toString()).
+                                setBankaddress(bankName.getText().toString() + "-" + storyID.getText().toString()).
+                                setCode(AppMode.getInstance().getMcode()).
                                 setTel(tel.getText().toString()).
                                 setName(bankcardUsername.getText().toString()).setCert_1(imageData[0]).setCert_2(imageData[1]).setCert_3(imageData[2])).
                                 subscribeOn(Schedulers.io()).

@@ -3,7 +3,7 @@ package com.cndll.chgj.weight;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.view.View;
-import android.widget.Button;
+import android.widget.TextView;
 
 import com.cndll.chgj.R;
 
@@ -13,8 +13,8 @@ import com.cndll.chgj.R;
 
 public class ButtonSwitch {
     private View view;
-    private Button left;
-    private Button right;
+    private TextView left;
+    private TextView right;
 
     public int isLeftInt() {
         if (isLeft) {
@@ -70,8 +70,8 @@ public class ButtonSwitch {
 
     public void init(View view) {
         this.view = view;
-        left = (Button) view.findViewById(R.id.left);
-        right = (Button) view.findViewById(R.id.right);
+        left = (TextView) view.findViewById(R.id.left);
+        right = (TextView) view.findViewById(R.id.right);
         left.setTextColor(leftTextColor);
         right.setTextColor(rightTextColor);
         left.setText(leftText);

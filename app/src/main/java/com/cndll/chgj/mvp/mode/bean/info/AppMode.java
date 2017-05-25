@@ -145,6 +145,16 @@ public class AppMode {
     private boolean isReturn;
     private boolean isGive;
 
+    public String getMcode() {
+        return mcode;
+    }
+
+    public AppMode setMcode(String mcode) {
+        this.mcode = mcode;
+        return this;
+    }
+
+    private String mcode;
     private AppMode() {
 
     }

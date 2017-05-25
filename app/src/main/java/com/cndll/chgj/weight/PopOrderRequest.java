@@ -16,7 +16,7 @@ import com.cndll.chgj.util.PopUpViewUtil;
 
 public class PopOrderRequest {
     PopUpViewUtil popUpViewUtil;
-    TextView first, second, third;
+    public TextView first, second, third, four;
 
     public void setFirstText(String s) {
         first.setText(s);
@@ -72,7 +72,7 @@ public class PopOrderRequest {
         first = (TextView) view.findViewById(R.id.method);
         second = (TextView) view.findViewById(R.id.give);
         third = (TextView) view.findViewById(R.id.delete);
-
+        four = (TextView) view.findViewById(R.id.four);
         first.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,7 +116,7 @@ public class PopOrderRequest {
 
     public void setViewHeight(int i) {
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
-        params.height = popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 4 / 3 * i;
+        params.height = height / 4 * i;
         view.setLayoutParams(params);
     }
 
