@@ -88,7 +88,11 @@ public class BaseFragment<T extends ListAdapter> extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (fragmentList.size() > 0) {
+        if (fragmentList.size() == 1) {
+            fragmentList.clear();
+        }
+
+        if (fragmentList.size() > 1) {
             fragmentList.remove(fragmentList.get(fragmentList.size() - 1));
             fragmentList.get(fragmentList.size() - 1).reload();
             getActivity().getSupportFragmentManager().beginTransaction().show(fragmentList.get(fragmentList.size() - 1)).commit();

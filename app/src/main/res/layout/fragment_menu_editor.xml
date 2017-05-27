@@ -2,14 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     android:weightSum="10"
-    android:background="@color/white"
     tools:context="com.cndll.chgj.fragment.MenuEditorFragment">
 
-    <include
-        layout="@layout/title_bar"
-        />
+    <include layout="@layout/title_bar" />
 
     <FrameLayout
         android:id="@+id/frame1"
@@ -20,21 +18,20 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
         android:layout_margin="2dp"
-       >
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/add_cailei"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-
             android:layout_marginRight="4dp"
             android:layout_weight="1"
             android:background="@mipmap/greenback"
             android:text="添加菜类"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="24sp" />
 
         <Button
             android:id="@+id/add_caipin"
@@ -44,6 +41,7 @@
             android:layout_weight="1"
             android:background="@mipmap/addcaipin"
             android:text="添加菜品"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="24sp" />
     </LinearLayout>
 </LinearLayout>
