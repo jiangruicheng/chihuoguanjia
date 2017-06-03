@@ -1166,7 +1166,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 orderItemMesglayout.
                         setPrice(orders.getOrder(id).getAllPrice() + "").
                         setName(orders.getOrder(id).getDeshName() + " " + orders.getOrder(id).getOnePrice()).
-                        setMethod(orders.getOrder(id).getMethodName() + orders.getOrder(id).getMethodPrice()).setCount(orders.getOrder(id).getCount() + orders.getOrder(id).getGiveCount() + "");
+                        setMethod(orders.getOrder(id).getMethodName() + orders.getOrder(id).getMethodPrice()).setCount(orders.getOrder(id).getCount() /*+ orders.getOrder(id).getGiveCount() */+ "");
                 if (orders.getOrder(id).getGiveCount() != 0) {
                     orderItemMesglayout.setMethod(orderItemMesglayout.getMethod().getText().toString() + "赠送：" + orders.getOrder(id).getGiveCount());
                 }
@@ -1626,7 +1626,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 count = count + giveCount;
                 giveCount = 0;
                 itemsBean.setGiveCount((int) giveCount + "");
-                itemsBean.setCount((int) count + "");
+                //itemsBean.setCount((int) count + "");
                 orders.isChange = true;
                 return this;
             }
@@ -1636,7 +1636,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                     giveCount = giveCount + 1;
                     count = count - 1;
                 }
-                itemsBean.setCount(count + "");
+                //itemsBean.setCount(count + "");
                 itemsBean.setGiveCount((int) (this.giveCount) + "");
                 orders.isChange = true;
                 return this;
@@ -1783,7 +1783,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 count = count + giveCount;
                 giveCount = 0;
                 itemsBean.setGiveCount((int) giveCount);
-                itemsBean.setCount((int) count + "");
+                // itemsBean.setCount((int) count + "");
                 itemsBean.setSmoney(giveCount * Float.valueOf(itemsBean.getPrice()) + "");
                 orders.isChange = true;
                 return this;
@@ -1794,7 +1794,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                     giveCount = giveCount + 1;
                     count = count - 1;
                 }
-                itemsBean.setCount(count + "");
+                // itemsBean.setCount(count + "");
                 itemsBean.setGiveCount((int) (this.giveCount));
                 orders.isChange = true;
                 return this;
@@ -1834,10 +1834,11 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 float price = 0;
                 if (itemsBean.getRemark() != null && itemsBean.getRemark().getRemarks() != null)
                     for (int i = 0; i < itemsBean.getRemark().getRemarks().size(); i++) {
-                        if (itemsBean.getRemark().getRemarks().get(i).getPrice() != null && StringHelp.isFloat(itemsBean.getRemark().getRemarks().get(i).getPrice()))
-                            price = price + Float.valueOf(itemsBean.getRemark().getRemarks().get(i).getPrice());
-                    }
-                return (price + Float.valueOf(itemsBean.getPrice())) * count;
+                    if (itemsBean.getRemark().getRemarks().get(i).getPrice() != null && StringHelp.isFloat(itemsBean.getRemark().getRemarks().get(i).getPrice()))
+                        price = price + Float.valueOf(itemsBean.getRemark().getRemarks().get(i).getPrice());
+                }
+                //return (price + Float.valueOf(itemsBean.getPrice())) * count;
+                return (price + Float.valueOf(itemsBean.getPrice())) * Float.valueOf(itemsBean.getCount());
 
             }
         }

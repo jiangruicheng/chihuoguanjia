@@ -1036,7 +1036,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
             if (orderItemMesg != null) {
                 orderItemMesg.
                         setPrice(order.getOrder(id).getAllPrice() + "").
-                        setName(order.getOrder(id).getDeshName() + order.getOrder(id).getOnePrice()).setMethod(order.getOrder(id).getMethodName() + order.getOrder(id).getMethodPrice()).setCount(order.getOrder(id).getCount() + order.getOrder(id).getGiveCount() + "");
+                        setName(order.getOrder(id).getDeshName() + order.getOrder(id).getOnePrice()).setMethod(order.getOrder(id).getMethodName() + order.getOrder(id).getMethodPrice()).setCount(order.getOrder(id).getCount() /*+ order.getOrder(id).getGiveCount() */+ "");
                 if (order.getOrder(id).getGiveCount() != 0) {
                     orderItemMesg.setMethod(orderItemMesg.getMethod().getText().toString() + "赠送：" + order.getOrder(id).getGiveCount());
                 }
@@ -1301,7 +1301,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                 isOrderWrite = true;
             }
             if (isOrderWrite) {
-                viewHolder.numberEdit.setText(order.writeDish.get(order.getCurrPosition()).getCount() + order.writeDish.get(order.getCurrPosition()).getGiveCount() + "");
+                viewHolder.numberEdit.setText(order.writeDish.get(order.getCurrPosition()).getCount() /*+ order.writeDish.get(order.getCurrPosition()).getGiveCount()*/ + "");
                 final View finalConvertView = convertView;
                 viewHolder.numberEdit.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -1322,7 +1322,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                     viewHolder.sendstatue.setTextColor(Color.RED);
                 }
             } else {
-                viewHolder.numberEdit.setText(order.getOrders().get(order.getCurrPosition()).getCount() + order.getOrders().get(order.getCurrPosition()).getGiveCount() + "");
+                viewHolder.numberEdit.setText(order.getOrders().get(order.getCurrPosition()).getCount() /*+ order.getOrders().get(order.getCurrPosition()).getGiveCount() */+ "");
                 final View finalConvertView = convertView;
                 viewHolder.numberEdit.setOnClickListener(new View.OnClickListener() {
                     @Override
