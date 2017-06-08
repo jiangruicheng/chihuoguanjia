@@ -31,7 +31,7 @@ public class RegisterListAdpater extends ListAdapter<ResponseGetStoreList.DataBe
             @Override
             public void onClick(View v) {
                 if (onItemClick != null) {
-                    onItemClick.onReEidetClick(null, position);
+                    onItemClick.onReEidetClick(null, mitems.indexOf(mitemscopy.get(position)));
                 }
             }
         });

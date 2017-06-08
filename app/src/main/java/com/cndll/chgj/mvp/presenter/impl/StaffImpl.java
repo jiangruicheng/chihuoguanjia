@@ -5,6 +5,7 @@ import com.cndll.chgj.mvp.mode.AppRequest;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.mode.bean.request.RequestAddStaff;
 import com.cndll.chgj.mvp.mode.bean.request.RequestDelete;
+import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteStaff;
 import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdateStaff;
 import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
@@ -73,7 +74,7 @@ public class StaffImpl implements StaffPresenter {
     }
 
     @Override
-    public void deleteStaff(RequestDelete requestAddCailei) {
+    public void deleteStaff(RequestDeleteStaff requestAddCailei) {
         AppRequest.getAPI().deleteStaff(requestAddCailei).
                 subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(view) {

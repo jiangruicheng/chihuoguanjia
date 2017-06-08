@@ -59,6 +59,7 @@ public class CaiLeiListAdapter extends ListAdapter<ResponseGetCaileiList.DataBea
 
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, final int position) {
+
         ((ListItemViewHolder) holder).info.setVisibility(View.GONE);
         ((ListItemViewHolder) holder).price.setVisibility(View.GONE);
         ((ListItemViewHolder) holder).name.setText(mitems.get(position).getName());
@@ -66,7 +67,7 @@ public class CaiLeiListAdapter extends ListAdapter<ResponseGetCaileiList.DataBea
             @Override
             public void onClick(View v) {
                 if (onItemClick != null) {
-                    onItemClick.onItemClick(v, position);
+                    onItemClick.onItemClick(v, mitems.indexOf(mitemscopy.get(position)));
                 }
             }
         });
@@ -74,7 +75,7 @@ public class CaiLeiListAdapter extends ListAdapter<ResponseGetCaileiList.DataBea
             @Override
             public void onClick(View v) {
                 if (onItemClick != null) {
-                    onItemClick.onReEidetClick(v, position);
+                    onItemClick.onReEidetClick(v, mitems.indexOf(mitemscopy.get(position)));
                 }
             }
         });

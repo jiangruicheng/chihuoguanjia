@@ -24,6 +24,20 @@
             android:layout_height="1dp"
             android:background="#cdcdcd" />
 
+
+
+        <TextView
+            android:id="@+id/mode_yes_desk"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="有台号模式"
+            android:textColor="#F73CB7"
+            android:textSize="24sp" />  <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#cdcdcd" />
         <TextView
             android:id="@+id/mode_not_desk"
             android:layout_width="match_parent"
@@ -34,20 +48,8 @@
             android:textColor="#F73CB7"
             android:textSize="24sp" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#cdcdcd" />
 
-        <TextView
-            android:id="@+id/mode_yes_desk"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="有台号模式"
-            android:textColor="#F73CB7"
-            android:textSize="24sp" />
+
     </LinearLayout>
 
     <View

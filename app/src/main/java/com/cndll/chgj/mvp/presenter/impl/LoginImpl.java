@@ -92,6 +92,11 @@ public class LoginImpl implements LoginPresenter {
                         editor.putString("token", AppMode.getInstance().getToken());
                         editor.putString("username", AppMode.getInstance().getUsername());
                         editor.putBoolean("isboss", AppMode.getInstance().isBoss());
+                        editor.putBoolean("isdiscount", AppMode.getInstance().isDiscount());
+                        editor.putBoolean("isexcel", AppMode.getInstance().isExcel());
+                        editor.putBoolean("isorder", AppMode.getInstance().isOrder());
+                        editor.putBoolean("isreturn", AppMode.getInstance().isReturn());
+                        editor.putBoolean("isgive", AppMode.getInstance().isGive());
                         editor.putBoolean("isloding", true);
                         editor.commit();
                     }

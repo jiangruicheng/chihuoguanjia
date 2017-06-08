@@ -20,6 +20,7 @@ import com.cndll.chgj.R;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.mode.bean.request.RequestAddStaff;
 import com.cndll.chgj.mvp.mode.bean.request.RequestDelete;
+import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteStaff;
 import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdateStaff;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetStaffList;
@@ -322,7 +323,7 @@ public class StaffFragment extends BaseFragment implements StaffView {
                     popviewStaff.delete.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            presenter.deleteStaff(new RequestDelete().setId(mitems.get(position).getId()));
+                            presenter.deleteStaff(new RequestDeleteStaff().setStaff_uid(mitems.get(position).getId()));
                         }
                     });
                     popviewStaff.cancel.setOnClickListener(new View.OnClickListener() {

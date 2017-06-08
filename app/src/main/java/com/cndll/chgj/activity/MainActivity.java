@@ -69,6 +69,16 @@ public class MainActivity extends AppCompatActivity {
         AppMode.getInstance().setUsername(sharedPreferences.getString("username", ""));
         AppMode.getInstance().setBoss(sharedPreferences.getBoolean("isboss", false));
         AppMode.getInstance().setMcode(sharedPreferences.getString("mdcode", null));
+        AppMode.getInstance().setDiscount(sharedPreferences.getBoolean("isdiscount",false));
+        AppMode.getInstance().setExcel(sharedPreferences.getBoolean("isexcel",false));
+        AppMode.getInstance().setOrder(sharedPreferences.getBoolean("isorder",false));
+        AppMode.getInstance().setReturn(sharedPreferences.getBoolean("isreturn",false));
+        AppMode.getInstance().setGive(sharedPreferences.getBoolean("isgive",false));
+       /* editor.putBoolean("isdiscount", AppMode.getInstance().isDiscount());
+        editor.putBoolean("isexcel", AppMode.getInstance().isExcel());
+        editor.putBoolean("isorder", AppMode.getInstance().isOrder());
+        editor.putBoolean("isreturn", AppMode.getInstance().isReturn());
+        editor.putBoolean("isgive", AppMode.getInstance().isGive());*/
         fragmentManager = getSupportFragmentManager();
         HomeFragment fragment = HomeFragment.newInstance("", "");
         HomeImpl h = new HomeImpl();
@@ -86,7 +96,13 @@ public class MainActivity extends AppCompatActivity {
     public void finish() {
         super.finish();
         SharedPreferences.Editor editor = getSharedPreferences("CHGJ", Context.MODE_PRIVATE).edit();
-
+        editor.putString("mid", AppMode.getInstance().getMid());
+        editor.putString("uid", AppMode.getInstance().getUid());
+        editor.putString("token", AppMode.getInstance().getToken());
+        editor.putString("username", AppMode.getInstance().getUsername());
+        editor.putBoolean("isboss", AppMode.getInstance().isBoss());
+        editor.putBoolean("isloding", AppMode.getInstance().isLoading());
+        editor.commit();
         editor.commit();
     }
 

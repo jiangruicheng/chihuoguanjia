@@ -11,6 +11,7 @@ import com.cndll.chgj.mvp.mode.bean.request.RequestDelete;
 import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteCailei;
 import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteCaipin;
 import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteMethod;
+import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteStaff;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetBillList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetCaipinList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetDeskList;
@@ -294,7 +295,7 @@ public interface Api {
     Observable<ResponseAddPrint> updateStaff(@Body RequestUpdateStaff requestAddCailei);
 
     @POST("Staff/del")
-    Observable<ResponseAddPrint> deleteStaff(@Body RequestDelete requestAddCailei);
+    Observable<ResponseAddPrint> deleteStaff(@Body RequestDeleteStaff requestAddCailei);
 
     @POST("Staff/getlist")
     Observable<ResponseGetStaffList> getStaffList(@Body RequestPrintList requestAddCailei);

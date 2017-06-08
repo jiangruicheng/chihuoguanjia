@@ -32,10 +32,12 @@ public class MObeserver implements Observer<BaseResponse> {
     public void onNext(BaseResponse baseResponse) {
         //view.showMesg(baseResponse.getExtra());
         if (baseResponse.getCode() == -211 && view != null) {
-            AppMode.getInstance().setMid("");
+            AppMode.getInstance().setMid("3");
+            AppMode.getInstance().setUid("3");
             AppMode.getInstance().setUsername("");
             view.showMesg("你的账号在其它设备上登录，已强制下线，请重新登录。");
             AppMode.getInstance().setLoading(false);
+            AppMode.getInstance().setToken(null);
             return;
         }
         if (baseResponse.getCode() != 1 && view != null) {

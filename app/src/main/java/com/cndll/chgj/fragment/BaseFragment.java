@@ -8,15 +8,18 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.cndll.chgj.R;
 import com.cndll.chgj.adapter.ListAdapter;
 import com.cndll.chgj.itemtouchhelperdemo.helper.SimpleItemTouchHelperCallback;
 import com.cndll.chgj.mvp.presenter.BasePresenter;
 import com.cndll.chgj.mvp.view.BaseView;
+import com.cndll.chgj.util.PopUpViewUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +85,29 @@ public class BaseFragment<T extends ListAdapter> extends Fragment {
     }
 
     protected void baseShowMesg(String mesg) {
+        Toast.makeText(getContext(), mesg, Toast.LENGTH_SHORT).show();
+    }
 
+    PopUpViewUtil prog;
+
+    protected void baseShowProg(View location) {
+        if (prog == null) {
+            prog = PopUpViewUtil.getInstance();
+            prog.setOnDismissAction(new PopUpViewUtil.OnDismissAction() {
+                @Override
+                public void onDismiss() {
+                    prog = null;
+                }
+            });
+        }
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.progress, null, false);
+        prog.popListWindow(location, view, prog.getWindowManager(getActivity()).getDefaultDisplay().getWidth() / 5, prog.getWindowManager(getActivity()).getDefaultDisplay().getHeight() / 8, Gravity.CENTER, null);
+    }
+
+    protected void baseDisProg() {
+        if (prog != null) {
+            prog.dismiss();
+        }
     }
 
     @Override

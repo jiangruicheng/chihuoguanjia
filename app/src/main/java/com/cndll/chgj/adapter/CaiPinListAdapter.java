@@ -85,7 +85,7 @@ public class CaiPinListAdapter extends ListAdapter<ResponseGetCaipinList.DataBea
             @Override
             public void onClick(View v) {
                 if (onItemClick != null) {
-                    onItemClick.onItemClick(v, position);
+                    onItemClick.onItemClick(v, mitems.indexOf(mitemscopy.get(position)));
                 }
             }
         });
@@ -93,7 +93,7 @@ public class CaiPinListAdapter extends ListAdapter<ResponseGetCaipinList.DataBea
             @Override
             public void onClick(View v) {
                 if (onItemClick != null) {
-                    onItemClick.onReEidetClick(v, position);
+                    onItemClick.onReEidetClick(v,  mitems.indexOf(mitemscopy.get(position)));
                 }
             }
         });

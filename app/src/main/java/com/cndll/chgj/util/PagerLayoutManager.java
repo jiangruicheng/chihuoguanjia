@@ -48,8 +48,8 @@ public class PagerLayoutManager extends RecyclerView.LayoutManager {
         width = (getWidth() - margin * count * 2) / count;
         height = (getHeight() - margin * row * 2) / row;
         page = getItemCount() / (count * row);
-        allHeight = (getHeight() / row) * getItemCount() / count + (getItemCount() % count == 0 ? 0 : 1) * (getHeight() / row) - getHeight();
-        offsetHeight = (page - 1) * getHeight() + (getItemCount() % (count * row) == 0 ? 0 : 1) * getHeight();
+        allHeight = (getHeight() / row) * (getItemCount() / count) + (getItemCount() % count == 0 ? 0 : 1) * (getHeight() / row);
+        offsetHeight = allHeight > getHeight() ? allHeight - getHeight() : 0;
         for (int i = 0; i < getItemCount(); i++) {
             View view = recycler.getViewForPosition(i);
             //measureChild(view, 0, 0);

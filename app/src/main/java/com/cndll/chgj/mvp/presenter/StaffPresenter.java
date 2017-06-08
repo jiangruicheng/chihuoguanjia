@@ -1,7 +1,7 @@
 package com.cndll.chgj.mvp.presenter;
 
 import com.cndll.chgj.mvp.mode.bean.request.RequestAddStaff;
-import com.cndll.chgj.mvp.mode.bean.request.RequestDelete;
+import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteStaff;
 import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdateStaff;
 import com.cndll.chgj.mvp.view.StaffView;
@@ -17,7 +17,7 @@ public interface StaffPresenter extends BasePresenter<StaffView> {
     void updateStaff(RequestUpdateStaff requestAddCailei);
 
 
-    void deleteStaff(RequestDelete requestAddCailei);
+    void deleteStaff(RequestDeleteStaff requestAddCailei);
 
 
     void getStaffList(RequestPrintList requestAddCailei);

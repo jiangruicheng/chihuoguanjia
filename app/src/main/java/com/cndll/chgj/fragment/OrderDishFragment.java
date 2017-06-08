@@ -45,7 +45,6 @@ import com.cndll.chgj.mvp.view.OrderView;
 import com.cndll.chgj.util.HorizontalPageLayoutManager;
 import com.cndll.chgj.util.LinearPagerLayoutManager;
 import com.cndll.chgj.util.PagerLayoutManager;
-import com.cndll.chgj.util.PagingScrollHelper;
 import com.cndll.chgj.util.PopUpViewUtil;
 import com.cndll.chgj.util.StringHelp;
 import com.cndll.chgj.weight.KeyWeight;
@@ -1079,15 +1078,15 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         deshList.setLayoutManager(horizontalPageLayoutManager);
         LinearPagerLayoutManager pagerLayoutManaer = new LinearPagerLayoutManager(getContext(), 6, 1);
         deshMenueList.setLayoutManager(pagerLayoutManaer);
-        PagingScrollHelper scrollHelper = new PagingScrollHelper();
-        scrollHelper.setUpRecycleView(deshList);
+       /* PagingScrollHelper scrollHelper = new PagingScrollHelper();
+        scrollHelper.setUpRecycleView(deshList);*/
         //设置页面滚动监听
-        scrollHelper.setOnPageChangeListener(new PagingScrollHelper.onPageChangeListener() {
+        /*scrollHelper.setOnPageChangeListener(new PagingScrollHelper.onPageChangeListener() {
             @Override
             public void onPageChange(int index) {
                 // Toast.makeText(getActivity(), "" + index, Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
         deshListAdapter.setOnItemClickLister(new OnItemClickLister() {
             @Override
             public void OnItemClick(View view, int position) {
@@ -1166,7 +1165,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 orderItemMesglayout.
                         setPrice(orders.getOrder(id).getAllPrice() + "").
                         setName(orders.getOrder(id).getDeshName() + " " + orders.getOrder(id).getOnePrice()).
-                        setMethod(orders.getOrder(id).getMethodName() + orders.getOrder(id).getMethodPrice()).setCount(orders.getOrder(id).getCount() /*+ orders.getOrder(id).getGiveCount() */+ "");
+                        setMethod(orders.getOrder(id).getMethodName() + orders.getOrder(id).getMethodPrice()).setCount(orders.getOrder(id).getCount() /*+ orders.getOrder(id).getGiveCount() */ + "");
                 if (orders.getOrder(id).getGiveCount() != 0) {
                     orderItemMesglayout.setMethod(orderItemMesglayout.getMethod().getText().toString() + "赠送：" + orders.getOrder(id).getGiveCount());
                 }
@@ -1611,10 +1610,11 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             }
 
             public void backDesh() {
-                if (count > 0) {
+                if (count - giveCount > 0) {
                     count = count - 1;
                 } else if (giveCount > 0) {
                     giveCount = giveCount - 1;
+                    count = count - 1;
                 }
                 setBackCount();
                 itemsBean.setGiveCount((int) giveCount + "");
@@ -1623,7 +1623,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             }
 
             public Write cancelGive() {
-                count = count + giveCount;
+                // count = count + giveCount;
                 giveCount = 0;
                 itemsBean.setGiveCount((int) giveCount + "");
                 //itemsBean.setCount((int) count + "");
@@ -1634,7 +1634,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             public Write addGiveCount() {
                 if (count >= 1) {
                     giveCount = giveCount + 1;
-                    count = count - 1;
+                    // count = count - 1;
                 }
                 //itemsBean.setCount(count + "");
                 itemsBean.setGiveCount((int) (this.giveCount) + "");
@@ -1727,10 +1727,11 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             }
 
             public void backDesh() {
-                if (count > 0) {
+                if (count - giveCount > 0) {
                     count = count - 1;
                 } else if (giveCount > 0) {
                     giveCount = giveCount - 1;
+                    count = count - 1;
                 }
                 setBackCount();
                 itemsBean.setGiveCount((int) giveCount);
@@ -1780,7 +1781,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             }
 
             public Order cancelGive() {
-                count = count + giveCount;
+                // count = count + giveCount;
                 giveCount = 0;
                 itemsBean.setGiveCount((int) giveCount);
                 // itemsBean.setCount((int) count + "");
@@ -1792,7 +1793,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             public Order addGiveCount() {
                 if (count >= 1) {
                     giveCount = giveCount + 1;
-                    count = count - 1;
+                    //count = count - 1;
                 }
                 // itemsBean.setCount(count + "");
                 itemsBean.setGiveCount((int) (this.giveCount));
@@ -1834,9 +1835,9 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 float price = 0;
                 if (itemsBean.getRemark() != null && itemsBean.getRemark().getRemarks() != null)
                     for (int i = 0; i < itemsBean.getRemark().getRemarks().size(); i++) {
-                    if (itemsBean.getRemark().getRemarks().get(i).getPrice() != null && StringHelp.isFloat(itemsBean.getRemark().getRemarks().get(i).getPrice()))
-                        price = price + Float.valueOf(itemsBean.getRemark().getRemarks().get(i).getPrice());
-                }
+                        if (itemsBean.getRemark().getRemarks().get(i).getPrice() != null && StringHelp.isFloat(itemsBean.getRemark().getRemarks().get(i).getPrice()))
+                            price = price + Float.valueOf(itemsBean.getRemark().getRemarks().get(i).getPrice());
+                    }
                 //return (price + Float.valueOf(itemsBean.getPrice())) * count;
                 return (price + Float.valueOf(itemsBean.getPrice())) * Float.valueOf(itemsBean.getCount());
 

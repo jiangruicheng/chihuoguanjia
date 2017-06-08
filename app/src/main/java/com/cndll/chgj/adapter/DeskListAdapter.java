@@ -42,7 +42,7 @@ public class DeskListAdapter extends ListAdapter<ResponseGetDeskList.DataBean> {
             @Override
             public void onClick(View v) {
                 if (onItemClick != null) {
-                    onItemClick.onReEidetClick(v, position);
+                    onItemClick.onReEidetClick(v, mitems.indexOf(mitemscopy.get(position)));
                 }
             }
         });

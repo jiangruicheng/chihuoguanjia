@@ -445,6 +445,8 @@ public class HomeFragment extends BaseFragment implements HomeView {
     public void onResume() {
         super.onResume();
         presenter.getHomeInfo();
+
+
         banner.startTurning(3000);
     }
 
@@ -561,17 +563,30 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @Override
     public void setTodayComin(String s) {
-        todayComin.setText(s);
+        if (!AppMode.getInstance().isExcel() && !AppMode.getInstance().isBoss()) {
+            todayComin.setText("");
+        } else {
+            todayComin.setText(s);
+        }
     }
 
     @Override
     public void setTodaynumb(String s) {
-        todayNumb.setText(s);
+        if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isExcel()) {
+
+            todayNumb.setText("");
+        } else {
+            todayNumb.setText(s);
+        }
     }
 
     @Override
     public void setMonthComin(String s) {
-        monthComin.setText(s);
+        if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isExcel()) {
+            monthComin.setText("");
+        } else {
+            monthComin.setText(s);
+        }
     }
 
     @Override

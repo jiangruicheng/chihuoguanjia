@@ -2,7 +2,6 @@ package com.cndll.chgj.util;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 /**
  * Created by kongqing on 2017/4/24.
@@ -17,7 +16,7 @@ public class LinearPagerLayoutManager extends PagerLayoutManager {
     public int scrollVerticallyBy(int dy, RecyclerView.Recycler recycler, RecyclerView.State state) {
         detachAndScrapAttachedViews(recycler);
 
-        //实际要滑动的距离
+     /*   //实际要滑动的距离
         int travel = dy;
 
         //如果滑动到最顶部
@@ -33,7 +32,7 @@ public class LinearPagerLayoutManager extends PagerLayoutManager {
         // 平移容器内的item
         offsetChildrenVertical(-travel);
         recyclerFillAndAttach(recycler, state);
-        Log.d("--->", " childView count:" + getChildCount());
-        return travel;
+        Log.d("--->", " childView count:" + getChildCount());*/
+        return super.scrollVerticallyBy(dy, recycler, state);
     }
 }

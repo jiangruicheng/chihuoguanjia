@@ -31,7 +31,8 @@ public class ListAdapter<T extends DataList> extends RecyclerView.Adapter<ListAd
 
     public void setMitems(List<T> mitems) {
         this.mitems = mitems;
-        mitemscopy = mitems;
+        mitemscopy = new ArrayList<>();
+        mitemscopy.addAll(mitems);
         notifyDataSetChanged();
     }
 
