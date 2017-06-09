@@ -69,11 +69,12 @@ public class MainActivity extends AppCompatActivity {
         AppMode.getInstance().setUsername(sharedPreferences.getString("username", ""));
         AppMode.getInstance().setBoss(sharedPreferences.getBoolean("isboss", false));
         AppMode.getInstance().setMcode(sharedPreferences.getString("mdcode", null));
-        AppMode.getInstance().setDiscount(sharedPreferences.getBoolean("isdiscount",false));
-        AppMode.getInstance().setExcel(sharedPreferences.getBoolean("isexcel",false));
-        AppMode.getInstance().setOrder(sharedPreferences.getBoolean("isorder",false));
-        AppMode.getInstance().setReturn(sharedPreferences.getBoolean("isreturn",false));
-        AppMode.getInstance().setGive(sharedPreferences.getBoolean("isgive",false));
+        AppMode.getInstance().setDiscount(sharedPreferences.getBoolean("isdiscount", false));
+        AppMode.getInstance().setExcel(sharedPreferences.getBoolean("isexcel", false));
+        AppMode.getInstance().setOrder(sharedPreferences.getBoolean("isorder", false));
+        AppMode.getInstance().setReturn(sharedPreferences.getBoolean("isreturn", false));
+        AppMode.getInstance().setGive(sharedPreferences.getBoolean("isgive", false));
+        AppMode.getInstance().setTel(sharedPreferences.getString("tel", null));
        /* editor.putBoolean("isdiscount", AppMode.getInstance().isDiscount());
         editor.putBoolean("isexcel", AppMode.getInstance().isExcel());
         editor.putBoolean("isorder", AppMode.getInstance().isOrder());

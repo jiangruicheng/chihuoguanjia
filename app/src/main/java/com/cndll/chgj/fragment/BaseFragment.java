@@ -1,6 +1,7 @@
 package com.cndll.chgj.fragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,7 +13,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.view.inputmethod.InputMethodManager;
 
 import com.cndll.chgj.R;
 import com.cndll.chgj.adapter.ListAdapter;
@@ -20,9 +21,12 @@ import com.cndll.chgj.itemtouchhelperdemo.helper.SimpleItemTouchHelperCallback;
 import com.cndll.chgj.mvp.presenter.BasePresenter;
 import com.cndll.chgj.mvp.view.BaseView;
 import com.cndll.chgj.util.PopUpViewUtil;
+import com.cndll.chgj.weight.MesgShow;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -84,11 +88,26 @@ public class BaseFragment<T extends ListAdapter> extends Fragment {
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
     }
 
-    protected void baseShowMesg(String mesg) {
-        Toast.makeText(getContext(), mesg, Toast.LENGTH_SHORT).show();
+    protected void baseShowMesg(String mesg, View view) {
+        MesgShow.showMesg("", mesg, view, null, null, false);
+    }
+
+    protected void baseShowMesg(String mesg, View view, MesgShow.OnButtonListener sure, MesgShow.OnButtonListener cancel) {
+        MesgShow.showMesg("", mesg, view, sure, cancel, false);
     }
 
     PopUpViewUtil prog;
+
+    protected void showInput(final View view) {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            public void run() {
+                InputMethodManager inputManager = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.showSoftInput(view, 0);
+            }
+
+        }, 100);
+    }
 
     protected void baseShowProg(View location) {
         if (prog == null) {

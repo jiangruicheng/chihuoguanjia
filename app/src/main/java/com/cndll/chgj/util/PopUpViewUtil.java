@@ -79,7 +79,7 @@ public class PopUpViewUtil {
     public void showDialog(@NonNull Activity context, View layout, int locationX, int locationY, int width, int heigth, @StyleRes int style) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(context, style);
         alertDialog = dialog.create();
-        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.setCanceledOnTouchOutside(true);
         alertDialog.show();
         Window window = alertDialog.getWindow();
         window.setContentView(layout);

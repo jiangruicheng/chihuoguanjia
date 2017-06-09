@@ -24,7 +24,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            android:background="@drawable/shape_dialog_fillet_solid" />
+            android:background="@drawable/shape_dialog_fillet_solid"
+            android:selectAllOnFocus="true" />
 
     </LinearLayout>
 
@@ -98,13 +99,13 @@
                 android:text="价格" />
 
             <EditText
-                android:inputType="number"
-                android:selectAllOnFocus="true"
                 android:id="@+id/price"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/shape_dialog_fillet_solid" />
+                android:background="@drawable/shape_dialog_fillet_solid"
+                android:inputType="number"
+                android:selectAllOnFocus="true" />
 
         </LinearLayout>
 
@@ -199,13 +200,13 @@
             android:text="编辑查询码" />
 
         <EditText
-            android:inputType="number"
-            android:selectAllOnFocus="true"
             android:id="@+id/query_code"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            android:background="@drawable/shape_dialog_fillet_solid" />
+            android:background="@drawable/shape_dialog_fillet_solid"
+            android:inputType="number"
+            android:selectAllOnFocus="true" />
 
     </LinearLayout>
 

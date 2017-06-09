@@ -63,7 +63,11 @@ public class SetingFragment extends BaseFragment {
 
     @OnClick(R.id.payapp)
     void onclick_payapp() {
-        replaceFragmentAddToBackStack(PayAppFragment.newInstance(null, null), null);
+        if (AppMode.getInstance().isLoading()) {
+            replaceFragmentAddToBackStack(PayAppFragment.newInstance(null, null), null);
+        } else {
+            baseShowMesg("请先登录再进行缴费操作", payapp);
+        }
     }
 
     @BindView(R.id.save)

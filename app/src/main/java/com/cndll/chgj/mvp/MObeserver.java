@@ -43,7 +43,5 @@ public class MObeserver implements Observer<BaseResponse> {
         if (baseResponse.getCode() != 1 && view != null) {
             view.showMesg(baseResponse.getExtra());
         }
-
-
     }
 }

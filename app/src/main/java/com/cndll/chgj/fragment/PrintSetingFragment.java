@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -192,7 +194,7 @@ public class PrintSetingFragment extends BaseFragment implements PrintView {
 
     @Override
     public void showMesg(String mesg) {
-
+        baseShowMesg(mesg, title);
     }
 
     @Override
@@ -259,6 +261,7 @@ public class PrintSetingFragment extends BaseFragment implements PrintView {
                     popUpViewUtil.getWindowManager(parent.getContext()).getDefaultDisplay().getWidth(),
                     popUpViewUtil.getWindowManager(parent.getContext()).getDefaultDisplay().getHeight() / 3,
                     Gravity.CENTER, null);
+            showInput(name);
         }
 
     }
@@ -296,8 +299,11 @@ public class PrintSetingFragment extends BaseFragment implements PrintView {
             return position;
         }
 
+        TextWatcher textWatcher;
+
         @Override
         public View getView(final int position, View convertView, final ViewGroup parent) {
+
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_printsting, parent, false);
             final TextView print_name = (TextView) convertView.findViewById(R.id.print_name);
             final TextView print_statue = (TextView) convertView.findViewById(R.id.print_statue);
@@ -317,6 +323,30 @@ public class PrintSetingFragment extends BaseFragment implements PrintView {
                     printPopView.init();
                     printPopView.show();
                     printPopView.name.setText(items.get(position).getName());
+                    textWatcher = new TextWatcher() {
+                        String s1;
+
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                            if (items.get(position).getIs_default().equals("1")) {
+                                baseShowMesg("不允许修改默认打印机名称", title);
+                                s1 = s.toString();
+                            }
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            printPopView.name.removeTextChangedListener(textWatcher);
+                            printPopView.name.setText(s1);
+                            printPopView.name.addTextChangedListener(textWatcher);
+                        }
+                    };
+                    printPopView.name.addTextChangedListener(textWatcher);
                     printPopView.key.setText(items.get(position).getKey());
                     printPopView.id.setText(items.get(position).getCode());
                     printPopView.cancel.setOnClickListener(new View.OnClickListener() {

@@ -171,7 +171,7 @@ public class DeskFragment extends BaseFragment implements AddDeskView {
 
     @Override
     public void showMesg(String mesg) {
-
+        baseShowMesg(mesg, title);
     }
 
     @Override

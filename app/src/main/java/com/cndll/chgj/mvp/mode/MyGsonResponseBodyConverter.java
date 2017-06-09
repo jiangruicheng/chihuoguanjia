@@ -59,6 +59,9 @@ public class MyGsonResponseBodyConverter<T extends BaseResponse> implements Conv
             // 按停服公告的格式解析，封装到notify字段中
             t.code = code;
             t.extra = extra;
+        } else if (code == 0) {
+            t.code = code;
+            t.extra = extra;
         } else {
             // 按标准格式解析
             return gson.fromJson(json, type);

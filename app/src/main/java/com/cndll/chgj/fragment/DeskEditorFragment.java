@@ -209,7 +209,7 @@ public class DeskEditorFragment extends BaseFragment<DeskListAdapter> implements
 
     @Override
     public void showMesg(String mesg) {
-
+        baseShowMesg(mesg, searchCaipin);
     }
 
     @Override
@@ -298,6 +298,7 @@ public class DeskEditorFragment extends BaseFragment<DeskListAdapter> implements
                     view,
                     popUpViewUtil.getWindowManager(getActivity()).getDefaultDisplay().getWidth(),
                     popUpViewUtil.getWindowManager(getActivity()).getDefaultDisplay().getHeight() / 10 * 2, Gravity.CENTER, null);
+            showInput(name);
         }
     }
 }

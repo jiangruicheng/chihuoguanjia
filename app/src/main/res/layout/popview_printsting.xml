@@ -19,10 +19,11 @@
             android:text="打印机名称" />
 
         <EditText
+            android:selectAllOnFocus="true"
             android:id="@+id/print_name"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_margin="12dp"
+            android:layout_margin="6dp"
             android:layout_weight="3"
             android:background="@color/white" />
     </LinearLayout>
@@ -44,7 +45,7 @@
             android:id="@+id/print_id"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_margin="12dp"
+            android:layout_margin="6dp"
             android:layout_weight="3"
             android:background="@color/white" />
     </LinearLayout>
@@ -66,7 +67,7 @@
             android:id="@+id/print_key"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_margin="12dp"
+            android:layout_margin="6dp"
             android:layout_weight="3"
             android:background="@color/white" />
     </LinearLayout>

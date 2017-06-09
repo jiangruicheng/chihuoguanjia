@@ -91,7 +91,7 @@ public class TurnToApplyPayFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_turn_to_apply_pay, container, false);
         unbinder = ButterKnife.bind(this, view);
         title.setText(mParam1 + "支付申请");
-        String s = "你还没有开通" + mParam1 + "支付收款，暂时不能使用" + mParam1 + "支付收款功能";
+        String s = "你还没有开通" + mParam1 + "支付收款";
         info.setText(s);
         back.setOnClickListener(new View.OnClickListener() {
             @Override

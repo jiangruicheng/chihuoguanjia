@@ -201,7 +201,7 @@ public class CaiPinFunctionFragment extends BaseFragment<CaipinFunctionListAdpat
 
     @Override
     public void showMesg(String mesg) {
-
+        baseShowMesg(mesg, searchCaipin);
     }
 
     @Override
@@ -294,6 +294,7 @@ public class CaiPinFunctionFragment extends BaseFragment<CaipinFunctionListAdpat
                     view,
                     popUpViewUtil.getWindowManager(getActivity()).getDefaultDisplay().getWidth(),
                     popUpViewUtil.getWindowManager(getActivity()).getDefaultDisplay().getHeight() / 10 * 3, Gravity.CENTER, null);
+            showInput(name);
         }
 
     }

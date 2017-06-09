@@ -114,6 +114,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
             popview = new AddCaiPin();
             popview.init();
             popview.show();
+            showInput(popview.name);
         }
     }
 
@@ -195,6 +196,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
             popview.init();
             popview.setData(position);
             popview.show();
+            showInput(popview.name);
         }
 
         @Override
@@ -247,6 +249,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
                 view,
                 popUpViewUtil.getWindowManager(getActivity()).getDefaultDisplay().getWidth(),
                 popUpViewUtil.getWindowManager(getActivity()).getDefaultDisplay().getHeight() / 10 * 2, Gravity.CENTER, null);
+        showInput(name);
     }
 
     private void switchFragment(String name) {
@@ -373,7 +376,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
 
     @Override
     public void showMesg(String mesg) {
-
+        baseShowMesg(mesg, title);
     }
 
     @Override
@@ -603,7 +606,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
             aSwitch.setLeftBackground(R.drawable.shape_button_yellow);
             aSwitch.setRightBackground(R.drawable.shape_dialog_fillet_solid);
             aSwitch.setText(left, right);
-            aSwitch.setTextColor(Color.rgb(0xdc,0x53,0x01), Color.rgb(0x00,0x00,0x00));
+            aSwitch.setTextColor(Color.rgb(0xdc, 0x53, 0x01), Color.rgb(0x00, 0x00, 0x00));
             aSwitch.init(view);
             return aSwitch;
         }

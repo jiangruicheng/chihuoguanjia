@@ -19,7 +19,6 @@ import android.widget.TextView;
 import com.cndll.chgj.R;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.mode.bean.request.RequestAddStaff;
-import com.cndll.chgj.mvp.mode.bean.request.RequestDelete;
 import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteStaff;
 import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdateStaff;
@@ -429,6 +428,7 @@ public class StaffFragment extends BaseFragment implements StaffView {
             popUpViewUtil.popListWindow(parent, view,
                     popUpViewUtil.getWindowManager(parent.getContext()).getDefaultDisplay().getWidth(),
                     popUpViewUtil.getWindowManager(parent.getContext()).getDefaultDisplay().getHeight() / 2, Gravity.CENTER, null);
+            showInput(staffName);
         }
 
         public void dismiss() {

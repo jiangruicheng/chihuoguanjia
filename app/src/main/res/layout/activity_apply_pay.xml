@@ -109,7 +109,10 @@
             android:layout_height="match_parent"
             android:layout_weight="4"
             android:background="@null"
-            android:gravity="center_vertical" />
+            android:gravity="center_vertical"
+            android:hint="必填信息"
+            android:paddingLeft="4dp"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -131,7 +134,10 @@
             android:layout_height="match_parent"
             android:layout_weight="4"
             android:background="@null"
-            android:gravity="center_vertical" />
+            android:gravity="center_vertical"
+            android:hint="必填信息"
+            android:paddingLeft="4dp"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -153,7 +159,10 @@
             android:layout_height="match_parent"
             android:layout_weight="4"
             android:background="@null"
-            android:gravity="center_vertical" />
+            android:gravity="center_vertical"
+            android:hint="必填信息"
+            android:paddingLeft="4dp"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -175,7 +184,10 @@
             android:layout_height="match_parent"
             android:layout_weight="4"
             android:background="@null"
-            android:gravity="center_vertical" />
+            android:gravity="center_vertical"
+            android:hint="开户所在行"
+            android:paddingLeft="4dp"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -197,7 +209,10 @@
             android:layout_height="match_parent"
             android:layout_weight="4"
             android:background="@null"
-            android:gravity="center_vertical" />
+            android:gravity="center_vertical"
+            android:hint="开户所在地"
+            android:paddingLeft="4dp"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -219,7 +234,10 @@
             android:layout_height="match_parent"
             android:layout_weight="4"
             android:background="@null"
-            android:gravity="center_vertical" />
+            android:gravity="center_vertical"
+            android:hint="必填信息"
+            android:paddingLeft="4dp"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <TextView

@@ -137,7 +137,7 @@ public class RegisterFragment extends BaseFragment<RegisterListAdpater> implemen
             public void onReEidetClick(View view, int position) {
                 if (adapter.getMitems() != null) {
                     ResponseGetStoreList.DataBean dataBean = ((ResponseGetStoreList.DataBean) adapter.getMitems().get(position));
-                    popview(dataBean.getName(), dataBean.getType(), AppMode.getInstance().getTel(), Integer.valueOf(dataBean.getProvince()), Integer.valueOf(dataBean.getCity()), dataBean.getCode());
+                    popview(dataBean.getName(), dataBean.getType(), AppMode.getInstance().getTel(), Integer.valueOf(dataBean.getProvince()), Integer.valueOf(dataBean.getCity()), dataBean.getId());
                 }
             }
 
@@ -374,6 +374,8 @@ public class RegisterFragment extends BaseFragment<RegisterListAdpater> implemen
                                         super.onNext(baseResponse);
                                         if (baseResponse.getCode() == 1) {
                                             showMesg("修改成功");
+                                            presenter.getStoreList(AppMode.getInstance().getUid());
+                                            dismiss();
                                         }
                                     }
                                 });
@@ -458,6 +460,7 @@ public class RegisterFragment extends BaseFragment<RegisterListAdpater> implemen
                     popUpViewUtil.getWindowManager(getContext()).
                             getDefaultDisplay().getHeight() * 3 / 5,
                     Gravity.CENTER, null);
+            showInput(name);
 
         }
 

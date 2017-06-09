@@ -20,6 +20,7 @@
             android:src="@mipmap/desk_red" />
 
         <EditText
+            android:selectAllOnFocus="true"
             android:id="@+id/edit_add_cailei"
             android:layout_width="0dp"
             android:layout_height="match_parent"
