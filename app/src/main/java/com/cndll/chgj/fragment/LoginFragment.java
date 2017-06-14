@@ -197,7 +197,12 @@ public class LoginFragment extends BaseFragment implements LoginView {
 
     @Override
     public void showProg(String mesg) {
+        baseShowProg(back);
+    }
 
+    @Override
+    public void disProg() {
+        baseDisProg();
     }
 
     private LoginPresenter presenter;

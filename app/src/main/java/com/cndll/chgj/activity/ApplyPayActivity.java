@@ -259,6 +259,11 @@ public class ApplyPayActivity extends AppCompatActivity {
         }
 
         @Override
+        public void disProg() {
+
+        }
+
+        @Override
         public void setPresenter(BasePresenter presenter) {
 
         }

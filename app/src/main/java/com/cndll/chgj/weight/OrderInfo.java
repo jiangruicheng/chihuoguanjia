@@ -69,7 +69,7 @@ public class OrderInfo {
             List<OrderDishFragment.Orders.Write> writes = new ArrayList<>(order.writeDish.values());
             if (order.writeDish != null && order.writeDish.size() > 0) {
                 for (int i = 0; i < writes.size(); i++) {
-                    count = count + Float.valueOf(writes.get(i).getCount()) + Float.valueOf(writes.get(i).getGiveCount());
+                    count = count + Float.valueOf(writes.get(i).getCount()) /*+ Float.valueOf(writes.get(i).getGiveCount())*/;
                     allPrice = allPrice + Float.valueOf(writes.get(i).getAllPrice());
                     givePrice = givePrice + Float.valueOf(writes.get(i).getGivePrice());
                 }

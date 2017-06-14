@@ -381,7 +381,12 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
 
     @Override
     public void showProg(String mesg) {
+        baseShowProg(back);
+    }
 
+    @Override
+    public void disProg() {
+        baseDisProg();
     }
 
     MenuPresenter presenter;

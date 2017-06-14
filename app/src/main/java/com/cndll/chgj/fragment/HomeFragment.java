@@ -29,9 +29,11 @@ import com.cndll.chgj.mvp.MObeserver;
 import com.cndll.chgj.mvp.mode.AppRequest;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
+import com.cndll.chgj.mvp.mode.bean.request.RequestQueryAppData;
 import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseMendianHomeList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponsePrintList;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseQueryAppData;
 import com.cndll.chgj.mvp.presenter.HomePresenter;
 import com.cndll.chgj.mvp.presenter.impl.AddDeskImpl;
 import com.cndll.chgj.mvp.presenter.impl.BillImpl;
@@ -106,6 +108,8 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @OnClick(R.id.resetpassword)
     void onclick_resetpassword() {
+        if (isAppOver())
+            return;
         replaceFragmentAddToBackStack(ResetPasswordFragment.newInstance(null, null), null);
     }
 
@@ -117,6 +121,8 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @OnClick(R.id.switch_mendian)
     void onclick_switchmendian() {
+        if (isAppOver())
+            return;
         View view = LayoutInflater.from(getContext()).inflate(R.layout.list_mendian, parent, false);
         ListView listView = (ListView) view.findViewById(R.id.list_mendian);
         if (adapter == null) {
@@ -159,7 +165,9 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @OnClick(R.id.search_baobiao)
     void onclick_baobiao() {
-        if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isExcel()) {
+        if (isAppOver())
+            return;
+        if (!AppMode.getInstance().isLoading() || (!AppMode.getInstance().isExcel() && !AppMode.getInstance().isBoss())) {
             showMesg("无查询报表权限");
             return;
         }
@@ -171,6 +179,8 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @OnClick(R.id.set_print)
     void onclick_setpirng() {
+        if (isAppOver())
+            return;
         replaceFragmentAddToBackStack(PrintSetingFragment.newInstance(null, null), new PrintListImpl());
     }
 
@@ -179,6 +189,8 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @OnClick(R.id.staff)
     void onclick_staff() {
+        if (isAppOver())
+            return;
         replaceFragmentAddToBackStack(StaffFragment.newInstance(null, null), new StaffImpl());
     }
 
@@ -187,6 +199,12 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @OnClick(R.id.search_bear)
     void onclick_bill() {
+        if (isAppOver())
+            return;
+        if (!AppMode.getInstance().isLoading() || (!AppMode.getInstance().isExcel() && !AppMode.getInstance().isBoss())) {
+            showMesg("没有报表权限");
+            return;
+        }
         replaceFragmentAddToBackStack(BillQueryFragment.newInstance(null, null), new BillImpl());
     }
 
@@ -195,6 +213,8 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @OnClick(R.id.setting)
     void onclick_setting() {
+        if (isAppOver())
+            return;
         replaceFragmentAddToBackStack(SetingFragment.newInstance(null, null), null);
     }
 
@@ -203,6 +223,8 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @OnClick(R.id.kefu)
     void onclick_kefu() {
+        if (isAppOver())
+            return;
         MesgShow.showMesg("", "4008 781 028", kefu, new MesgShow.OnButtonListener() {
             @Override
             public void onListerner() {
@@ -222,6 +244,8 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @OnClick(R.id.mode_switch)
     void onclick_modeswitch() {
+        if (isAppOver())
+            return;
         final PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
         WindowManager m = getActivity().getWindowManager();
         Display d = m.getDefaultDisplay();  //为获取屏幕宽、高
@@ -269,6 +293,8 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @OnClick(R.id.order)
     void onclick_order() {
+        if (isAppOver())
+            return;
         if (AppMode.getInstance().isDeskMode()) {
             replaceFragmentAddToBackStack(DeskFragment.newInstance(null, null), new AddDeskImpl());
         } else {
@@ -278,17 +304,23 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @OnClick(R.id.register)
     void onclick_register() {
+        if (isAppOver())
+            return;
         replaceFragmentAddToBackStack(RegisterFragment.newInstance(null, null), new RegisterImpl());
     }
 
 
     @OnClick(R.id.caipin_do)
     void onclick_do() {
+        if (isAppOver())
+            return;
         replaceFragmentAddToBackStack(CaiPinFunctionFragment.newInstance(null, null), new DeshMethodImpl());
     }
 
     @OnClick(R.id.desk_edit)
     void oclick_desk() {
+        if (isAppOver())
+            return;
         replaceFragmentAddToBackStack(DeskEditorFragment.newInstance(null, null), new AddDeskImpl());
     }
 
@@ -360,6 +392,20 @@ public class HomeFragment extends BaseFragment implements HomeView {
         });
     }
 
+    private void showPayMesg() {
+        MesgShow.showPayMesg("", "软件已过期，请续费后继续使用", logoff, new MesgShow.OnButtonListener() {
+            @Override
+            public void onListerner() {
+                replaceFragmentAddToBackStack(PayAppFragment.newInstance("", ""), null);
+            }
+        }, new MesgShow.OnButtonListener() {
+            @Override
+            public void onListerner() {
+
+            }
+        }, true);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -370,6 +416,9 @@ public class HomeFragment extends BaseFragment implements HomeView {
         circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (isAppOver()) {
+                    return;
+                }
                 replaceFragmentAddToBackStack(MenuEditorFragment.newInstance(null, null), new MenuImpl());
             }
         });
@@ -394,25 +443,27 @@ public class HomeFragment extends BaseFragment implements HomeView {
                                 @Override
                                 public void onNext(BaseResponse baseResponse) {
                                     super.onNext(baseResponse);
-                                    if (baseResponse.getCode() == 1) {
-                                        showMesg("退出成功");
-                                        AppMode.getInstance().setMid("3").setUid("3");
-                                        AppMode.getInstance().setToken(null);
-                                        AppMode.getInstance().setLoading(false);
-                                        AppMode.getInstance().setUsername("");
-                                        SharedPreferences.Editor editor = getActivity().getSharedPreferences("CHGJ", Context.MODE_PRIVATE).edit();
-                                        editor.putString("mid", AppMode.getInstance().getMid());
-                                        editor.putString("uid", AppMode.getInstance().getUid());
-                                        editor.putString("token", AppMode.getInstance().getToken());
-                                        editor.putBoolean("isloding", false);
-                                        editor.putBoolean("isboss", false);
-                                        editor.putString("username", AppMode.getInstance().getUsername());
-                                        editor.commit();
-                                        init();
+                                   /* if (baseResponse.getCode() == 1) {*/
+                                    //showMesg("退出成功");
+                                    AppMode.getInstance().setMid("3").setUid("3");
+                                    AppMode.getInstance().setToken(null);
+                                    AppMode.getInstance().setLoading(false);
+                                    AppMode.getInstance().setUsername("");
+                                    SharedPreferences.Editor editor = getActivity().getSharedPreferences("CHGJ", Context.MODE_PRIVATE).edit();
+                                    editor.putString("mid", AppMode.getInstance().getMid());
+                                    editor.putString("uid", AppMode.getInstance().getUid());
+                                    editor.putString("token", AppMode.getInstance().getToken());
+                                    editor.putBoolean("isloding", false);
+                                    editor.putBoolean("isboss", false);
+                                    editor.putString("username", AppMode.getInstance().getUsername());
+                                    editor.commit();
+                                    init();
                                        /* AppMode.getInstance().setMid("3").setUid("3");
                                         AppMode.getInstance().setToken(null);
                                         AppMode.getInstance().setLoading(false);*/
-                                    }
+                                   /* } else {
+                                        showMesg(baseResponse.getExtra());
+                                    }*/
                                 }
                             });
                         }
@@ -444,9 +495,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
     @Override
     public void onResume() {
         super.onResume();
-        presenter.getHomeInfo();
-
-
+        //presenter.getHomeInfo();
         banner.startTurning(3000);
     }
 
@@ -472,12 +521,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-       /* if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }*/
+
     }
 
     @Override
@@ -509,11 +553,51 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @Override
     public void showProg(String mesg) {
+        baseShowProg(logoff);
+    }
 
+    @Override
+    public void disProg() {
+        baseDisProg();
+    }
+
+    private void getAppLastTime() {
+        AppRequest.getAPI().getAppData(new RequestQueryAppData().setMid(AppMode.getInstance().getMid())).subscribeOn(Schedulers.io()).
+                observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(null) {
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+            }
+
+            @Override
+            public void onNext(BaseResponse baseResponse) {
+                super.onNext(baseResponse);
+                if (((ResponseQueryAppData) baseResponse).getData().getIsover() == 1) {
+                    AppMode.getInstance().setAppOver(true);
+                    showPayMesg();
+                } else {
+                    AppMode.getInstance().setAppOver(false);
+                }
+            }
+        });
+    }
+
+    private boolean isAppOver() {
+        if (AppMode.getInstance().isAppOver()) {
+            showPayMesg();
+            return true;
+        }
+        return false;
     }
 
     private void init() {
         getPrintList();
+        getAppLastTime();
         presenter.getHomeInfo();
         if (AppMode.getInstance().isBoss()) {
             switchMendian.setVisibility(View.VISIBLE);

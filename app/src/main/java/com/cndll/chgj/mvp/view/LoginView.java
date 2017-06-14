@@ -8,7 +8,6 @@ import com.cndll.chgj.mvp.presenter.LoginPresenter;
 
 public interface LoginView extends BaseView<LoginPresenter> {
     void loginSucces();
-
     void showUserMesg(String[] strings);
 
 

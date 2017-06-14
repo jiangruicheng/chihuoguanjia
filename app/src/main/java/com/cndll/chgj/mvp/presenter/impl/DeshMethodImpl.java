@@ -27,6 +27,7 @@ public class DeshMethodImpl implements DeshMethodPresenter {
 
     @Override
     public void getDeshMethodList(RequestGetMethodList requestGetMethodList) {
+        view.showProg("");
         AppRequest.getAPI().getMethodList(requestGetMethodList).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(view) {
             @Override
             public void onCompleted() {
@@ -41,8 +42,11 @@ public class DeshMethodImpl implements DeshMethodPresenter {
             @Override
             public void onNext(BaseResponse baseResponse) {
                 super.onNext(baseResponse);
+                view.disProg();
                 if (baseResponse.getCode() == 1) {
                     view.showMethodList(((ResponseMethod) baseResponse).getData());
+                    view.succGetList();
+
                 }
             }
         });

@@ -6,5 +6,4 @@ package com.cndll.chgj.mvp.view;
 
 public interface NoteView extends DeshMethodView {
 
-
 }

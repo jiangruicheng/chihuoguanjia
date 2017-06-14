@@ -158,8 +158,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                         super.onNext(baseResponse);
                         if (baseResponse.getCode() == 1) {
                             if (((ResponseAddOrd) baseResponse).getData().getOid() != 0) {
-                                replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(((ResponseAddOrd) baseResponse).getData().getOid()).setOrders(orders), null);
-
+                                presenter.printSetting(((ResponseAddOrd) baseResponse).getData().getOid());
                             }
 
                         }
@@ -210,7 +209,13 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 popOrderRequest.setFirstText("赠送");
                 popOrderRequest.setSecondText("退菜");
                 popOrderRequest.four.setVisibility(View.GONE);
-                if (orders.getOrder(orders.getCurrPosition()).getGiveCount() == 0) {
+                boolean isHaveSend;
+                if (isOrderWrite) {
+                    isHaveSend = orders.writeDish.get(orders.getCurrPosition()).getGiveCount() == 0;
+                } else {
+                    isHaveSend = orders.getOrder(orders.getCurrPosition()).getGiveCount() == 0;
+                }
+                if (isHaveSend) {
                     popOrderRequest.setViewHeight(2);
                     popOrderRequest.setThirdVisble(View.GONE);
                 } else {
@@ -229,7 +234,13 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                         } else {
                             orders.writeDish.get(orders.getCurrPosition()).addGiveCount();
                         }
-                        if (orders.getOrder(orders.getCurrPosition()).getGiveCount() == 0) {
+                        boolean isHaveSend;
+                        if (isOrderWrite) {
+                            isHaveSend = orders.writeDish.get(orders.getCurrPosition()).getGiveCount() == 0;
+                        } else {
+                            isHaveSend = orders.getOrder(orders.getCurrPosition()).getGiveCount() == 0;
+                        }
+                        if (isHaveSend) {
                             popOrderRequest.setThirdVisble(View.GONE);
                             popOrderRequest.setViewHeight(2);
                         } else {
@@ -444,7 +455,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                     orders = new Orders();
                 }
                 if (orders.Iscontan(queryListAdapter.getMitems().get(position).getId())) {
-
+                    showMesg("已点此菜，请修改数量");
                 } else {
                     Orders.Order order = new Orders.Order();
                     order.setItemsBean(queryListAdapter.getMitems().get(position).
@@ -967,8 +978,9 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
     public MainActivity.BackPressEvent backPressEvent = new MainActivity.BackPressEvent() {
         @Override
-        public void onBackPress() {
+        public boolean onBackPress() {
             back();
+            return true;
         }
     };
 
@@ -1049,7 +1061,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         if (orders != null) {
             setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
         }
-        MainActivity.setBackPressEvent(backPressEvent, this);
+        MainActivity.setBackPressEvent(backPressEvent);
     }
 
     @Override
@@ -1094,7 +1106,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                     orders = new Orders();
                 }
                 if (orders.Iscontan(deshListAdapter.getMitems().get(position).getId())) {
-
+                    showMesg("已点此菜，请修改数量");
                 } else {
                     Orders.Order order = new Orders.Order().setOrders(orders);
                     order.setItemsBean(deshListAdapter.getMitems().get(position).
@@ -1137,7 +1149,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             if (orderItemMesglayout != null)
                 Log.d("at", "setOrderInfolayoutWrite: " + orders.writeDish.get(id));
             orderItemMesglayout.setPrice(orders.writeDish.get(id).getAllPrice() + "").
-                    setName(orders.writeDish.get(id).getDeshName() + orders.writeDish.get(id).getOnePrice()).setCount(orders.writeDish.get(id).getCount() + "");
+                    setName(orders.writeDish.get(id).getDeshName() + orders.writeDish.get(id).getOnePrice()).setCount(orders.writeDish.get(id).getCount() + "").setMethod("");
             if (orders.writeDish.get(id).getItemsBean().getRemarks() != null) {
                 orderItemMesglayout.setMethod(orders.writeDish.get(id).getItemsBean().getRemarks().getRemarks().get(0).getName() + orders.writeDish.get(id).getItemsBean().getRemarks().getRemarks().get(0).getPrice());
             }
@@ -1148,9 +1160,9 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 orderItemMesglayout.setMethod(orderItemMesglayout.getMethod().getText().toString() + "退菜：" + orders.writeDish.get(id).getBackCount());
 
             }
-            if (orders.writeDish.get(id).getItemsBean().getRemarks() == null) {
+            /*if (orders.writeDish.get(id).getItemsBean().getRemarks() == null) {
                 orderItemMesglayout.setMethod(" ");
-            }
+            }*/
         }
         if (orderInfolayout != null) {
             orderInfolayout.setMesg(orders);
@@ -1231,7 +1243,12 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
     @Override
     public void showProg(String mesg) {
+        baseShowProg(back);
+    }
 
+    @Override
+    public void disProg() {
+        baseDisProg();
     }
 
 
@@ -1315,7 +1332,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                     setPernum(responseOrd.getData().getPernum()).
                     setSmoney(orderInfolayout.getGivePrice() + "").
                     setSsmoney(orderInfolayout.getLastPrice() + "").
-                    setZk(orders.getDisconut() * 10 + "").
+                    setZk(orders.getDisconut() + "").
                     setZkmoney(orderInfolayout.getDiscountPrice() + "").
                     setTmoney(orderInfolayout.getAllPrice() + "").
                     setTabname(tabname).
@@ -1360,7 +1377,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             }
         }
         List<ResponseGetCaipinList.DataBean> itemsBeen = getOrder.getData().getItems();
-        orders.setDisconut(Float.valueOf(getOrder.getData().getZk()) / 10);
+        orders.setDisconut(Float.valueOf(getOrder.getData().getZk()));
         for (int i = 0; i < itemsBeen.size(); i++) {
             /*if (orders.getOrders().containsKey(itemsBeen.get(i).getId() + "" + itemsBeen.get(i).getDc_id())) {
                 orders.getOrder(itemsBeen.get(i).getId() + "" + itemsBeen.get(i).getDc_id()).setSend(true).
@@ -1390,6 +1407,12 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         isSend = true;
         orders.isAdd = false;
         orders.isChange = false;
+    }
+
+    @Override
+    public void printNoDeskOrderSucc(int ord) {
+        replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(ord).setOrders(orders), null);
+
     }
 
     /**
@@ -1632,7 +1655,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             }
 
             public Write addGiveCount() {
-                if (count >= 1) {
+                if (count - giveCount >= 1) {
                     giveCount = giveCount + 1;
                     // count = count - 1;
                 }
@@ -1791,7 +1814,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             }
 
             public Order addGiveCount() {
-                if (count >= 1) {
+                if (count - giveCount >= 1) {
                     giveCount = giveCount + 1;
                     //count = count - 1;
                 }

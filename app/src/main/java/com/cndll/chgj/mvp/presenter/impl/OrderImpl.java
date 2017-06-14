@@ -2,6 +2,7 @@ package com.cndll.chgj.mvp.presenter.impl;
 
 import com.cndll.chgj.mvp.MObeserver;
 import com.cndll.chgj.mvp.mode.AppRequest;
+import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetCaipinList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetOrder;
 import com.cndll.chgj.mvp.mode.bean.request.RequestOrder;
@@ -11,8 +12,11 @@ import com.cndll.chgj.mvp.mode.bean.response.ResponseAddOrd;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetOrder;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetSeting;
 import com.cndll.chgj.mvp.presenter.OrderPresenter;
 import com.cndll.chgj.mvp.view.OrderView;
+
+import java.util.Calendar;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -31,6 +35,7 @@ public class OrderImpl implements OrderPresenter {
 
     @Override
     public void getDcList(RequestPrintList requestGetCaileiList) {
+        view.showProg("");
         AppRequest.getAPI().
                 getCaileiList(requestGetCaileiList).
                 subscribeOn(Schedulers.io()).
@@ -49,8 +54,10 @@ public class OrderImpl implements OrderPresenter {
                     @Override
                     public void onNext(BaseResponse baseResponse) {
                         super.onNext(baseResponse);
+                        view.disProg();
                         if (baseResponse.getCode() == 1) {
                             view.setDcList(((ResponseGetCaileiList) baseResponse).getData());
+
                         }
                     }
                 });
@@ -58,6 +65,7 @@ public class OrderImpl implements OrderPresenter {
 
     @Override
     public void getDeshList(RequestGetCaipinList requestGetCaipinList) {
+        view.showProg("");
         AppRequest.getAPI().
                 getCaipinList(requestGetCaipinList).
                 subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
@@ -75,6 +83,7 @@ public class OrderImpl implements OrderPresenter {
                     @Override
                     public void onNext(BaseResponse baseResponse) {
                         super.onNext(baseResponse);
+                        view.disProg();
                         if (baseResponse.getCode() == 1) {
                             view.setDeshList(((ResponseGetCaipinList) baseResponse).getData()
                             );
@@ -109,6 +118,66 @@ public class OrderImpl implements OrderPresenter {
                         }
                     }
                 });
+    }
+
+    @Override
+    public void printSetting(final int ord) {
+        AppRequest.getAPI().getSetting(AppMode.getInstance().getUid(),
+                AppMode.getInstance().getMid()).
+                subscribeOn(Schedulers.io()).
+                observeOn(AndroidSchedulers.mainThread()).
+                subscribe(new MObeserver(view) {
+                    @Override
+                    public void onCompleted() {
+                        super.onCompleted();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        super.onNext(baseResponse);
+                        int type;
+                        if (baseResponse.getCode() == 1) {
+                            ResponseGetSeting responseGetSeting = ((ResponseGetSeting) baseResponse);
+                            if (responseGetSeting.getData().getCd_method().equals("1")) {
+                                type = 2;
+                            } else {
+                                type = 2;
+                            }
+                            printOrders(ord, type);
+                        }
+                    }
+                });
+    }
+
+    // TODO: Rename method, update argument and hook method into UI event
+    public void printOrders(final int ord, int type) {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        AppRequest.getAPI().printOrder(ord + "", type + "", year + "-" + month + "-" + day, AppMode.getInstance().getUsername())
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(view) {
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+            }
+
+            @Override
+            public void onNext(BaseResponse baseResponse) {
+                super.onNext(baseResponse);
+                view.printNoDeskOrderSucc(ord);
+            }
+        });
     }
 
     @Override

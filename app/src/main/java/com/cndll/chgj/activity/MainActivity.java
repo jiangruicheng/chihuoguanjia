@@ -4,22 +4,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.util.ArrayMap;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 
 import com.cndll.chgj.R;
-import com.cndll.chgj.fragment.BaseFragment;
+import com.cndll.chgj.RXbus.EventType;
+import com.cndll.chgj.RXbus.RxBus;
 import com.cndll.chgj.fragment.HomeFragment;
+import com.cndll.chgj.fragment.LoginFragment;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.presenter.impl.HomeImpl;
+import com.cndll.chgj.mvp.presenter.impl.LoginImpl;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Observer;
+import rx.Subscription;
+
+import static com.cndll.chgj.fragment.BaseFragment.fragmentList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,46 +35,86 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        boolean isOnStop = false;
         if (backPressEvents.size() != 0) {
             for (int i = 0; i < backPressEvents.size(); i++) {
-                if (BaseFragment.fragmentList.get(BaseFragment.fragmentList.size() - 1).equals((backPressEvents.keyAt(i)))) {
-                    backPressEvents.get(backPressEvents.keyAt(i)).onBackPress();
+                if (backPressEvents.get(i).onBackPress()) {
+                    isOnStop = true;
+                }
+                if (isOnStop) {
                     return;
                 }
+                /*if (fragmentList.get(fragmentList.size() - 1).equals((backPressEvents.keyAt(i)))) {
+                    backPressEvents.get(backPressEvents.keyAt(i)).onBackPress();
+                    return;
+                }*/
             }
-
         }
         super.onBackPressed();
     }
 
+/*
     public static Map<Fragment, BackPressEvent> getBackPressEvents() {
         return backPressEvents;
     }
+*/
 
     public static void removeBackPressEvent(BackPressEvent backPressEvent) {
         backPressEvents.remove(backPressEvent);
     }
 
-    public static void setBackPressEvent(BackPressEvent backPressEvent, Fragment fragment) {
-        backPressEvents.put(fragment, backPressEvent);
+    public static void setBackPressEvent(BackPressEvent backPressEvent) {
+        backPressEvents.add(backPressEvent);
     }
 
-    public static ArrayMap<Fragment, BackPressEvent> backPressEvents = new ArrayMap<>();
+    public static List<BackPressEvent> backPressEvents = new ArrayList<>();
+
+    private Subscription loginOther;
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        loginOther = RxBus.getDefault().toObservable(EventType.class).subscribe(new Observer<EventType>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(EventType eventType) {
+                if (eventType.getType() == EventType.BACKKEY) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (int i = 0; i < fragmentList.size() - 1; i++) {
+                                getSupportFragmentManager().popBackStack();
+                            }
+                            LoginFragment loginFragment = LoginFragment.newInstance("", "");
+                            getSupportFragmentManager().beginTransaction().add(R.id.frame, loginFragment).addToBackStack(loginFragment.getTag()).commit();
+                            loginFragment.setPresenter(new LoginImpl());
+                            getSupportFragmentManager().beginTransaction().hide(fragmentList.get(0));
+                            fragmentList.add(loginFragment);
+                        }
+                    });
+
+                }
+            }
+        });
         SharedPreferences sharedPreferences = getSharedPreferences("CHGJ", Context.MODE_PRIVATE);
         AppMode.getInstance().setMid(sharedPreferences.getString("mid", "3"));
         AppMode.getInstance().setUid(sharedPreferences.getString("uid", "3"));
         AppMode.getInstance().setToken(sharedPreferences.getString("token", null));
         AppMode.getInstance().setLoading(sharedPreferences.getBoolean("isloding", false));
         AppMode.getInstance().setUsername(sharedPreferences.getString("username", ""));
-        AppMode.getInstance().setBoss(sharedPreferences.getBoolean("isboss", false));
         AppMode.getInstance().setMcode(sharedPreferences.getString("mdcode", null));
+        AppMode.getInstance().setBoss(sharedPreferences.getBoolean("isboss", false));
         AppMode.getInstance().setDiscount(sharedPreferences.getBoolean("isdiscount", false));
         AppMode.getInstance().setExcel(sharedPreferences.getBoolean("isexcel", false));
         AppMode.getInstance().setOrder(sharedPreferences.getBoolean("isorder", false));
@@ -85,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         HomeImpl h = new HomeImpl();
         fragment.setPresenter(h);
         fragmentManager.beginTransaction().add(R.id.frame, fragment).commit();
-        BaseFragment.fragmentList.add(fragment);
+        fragmentList.add(fragment);
     }
 
     @Override
@@ -108,6 +154,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public interface BackPressEvent {
-        void onBackPress();
+        boolean onBackPress();
     }
 }

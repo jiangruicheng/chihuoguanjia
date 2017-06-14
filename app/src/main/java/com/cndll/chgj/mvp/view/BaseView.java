@@ -11,5 +11,7 @@ public interface BaseView<T extends BasePresenter> {
 
     void showProg(String mesg);
 
+    void disProg();
+
     void setPresenter(T presenter);
 }

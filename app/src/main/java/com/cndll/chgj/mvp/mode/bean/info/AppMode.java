@@ -102,6 +102,16 @@ public class AppMode {
     private boolean isOrder;
     private boolean isExcel;
 
+    public boolean isAppOver() {
+        return isAppOver;
+    }
+
+    public void setAppOver(boolean appOver) {
+        isAppOver = appOver;
+    }
+
+    private boolean isAppOver;
+
     public synchronized boolean isDiscount() {
         return isDiscount;
     }
@@ -155,6 +165,7 @@ public class AppMode {
     }
 
     private String mcode;
+
     private AppMode() {
 
     }

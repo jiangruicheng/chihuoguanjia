@@ -198,7 +198,12 @@ public class BillQueryFragment extends BaseFragment implements BillView {
 
     @Override
     public void showProg(String mesg) {
+        baseShowProg(back);
+    }
 
+    @Override
+    public void disProg() {
+        baseDisProg();
     }
 
     BIllPresenter presenter;

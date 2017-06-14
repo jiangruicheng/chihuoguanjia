@@ -214,7 +214,12 @@ public class DeskEditorFragment extends BaseFragment<DeskListAdapter> implements
 
     @Override
     public void showProg(String mesg) {
+        baseShowProg(back);
+    }
 
+    @Override
+    public void disProg() {
+        baseDisProg();
     }
 
     private AddDeskPresenter presenter;

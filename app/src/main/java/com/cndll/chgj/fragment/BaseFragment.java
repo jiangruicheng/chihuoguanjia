@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.activity.MainActivity;
 import com.cndll.chgj.adapter.ListAdapter;
 import com.cndll.chgj.itemtouchhelperdemo.helper.SimpleItemTouchHelperCallback;
 import com.cndll.chgj.mvp.presenter.BasePresenter;
@@ -38,6 +39,13 @@ public class BaseFragment<T extends ListAdapter> extends Fragment {
         // Required empty public constructor
     }
 
+    MainActivity.BackPressEvent event = new MainActivity.BackPressEvent() {
+        @Override
+        public boolean onBackPress() {
+            baseDisProg();
+            return false;
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,6 +57,17 @@ public class BaseFragment<T extends ListAdapter> extends Fragment {
     protected ItemTouchHelper mItemTouchHelper;
     T adapter;
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity.setBackPressEvent(event);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MainActivity.removeBackPressEvent(event);
+    }
 
     protected void setListViewAdapter(RecyclerView view) {
         view.setHasFixedSize(true);
@@ -120,13 +139,15 @@ public class BaseFragment<T extends ListAdapter> extends Fragment {
             });
         }
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.progress, null, false);
-        prog.popListWindow(location, view, prog.getWindowManager(getActivity()).getDefaultDisplay().getWidth() / 5, prog.getWindowManager(getActivity()).getDefaultDisplay().getHeight() / 8, Gravity.CENTER, null);
+        prog.popListWindowNotOut(location, view, prog.getWindowManager(getActivity()).getDefaultDisplay().getWidth() / 7, prog.getWindowManager(getActivity()).getDefaultDisplay().getHeight() / 10, Gravity.CENTER, null);
     }
 
-    protected void baseDisProg() {
+    protected boolean baseDisProg() {
         if (prog != null) {
             prog.dismiss();
+            return true;
         }
+        return false;
     }
 
     @Override

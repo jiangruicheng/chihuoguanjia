@@ -32,6 +32,7 @@ public class AddDeskImpl implements AddDeskPresenter {
 
     @Override
     public void getDeskList(RequestGetDeskList requestGetDeskList) {
+        view.showProg("");
         AppRequest.getAPI().getDeskList(requestGetDeskList).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(view) {
             @Override
             public void onCompleted() {
@@ -46,8 +47,10 @@ public class AddDeskImpl implements AddDeskPresenter {
             @Override
             public void onNext(BaseResponse baseResponse) {
                 super.onNext(baseResponse);
+                view.disProg();
                 if (baseResponse.getCode() == 1) {
                     view.showDeskList(((ResponseGetDeskList) baseResponse).getData());
+
                 }
             }
         });

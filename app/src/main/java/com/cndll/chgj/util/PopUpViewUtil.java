@@ -47,15 +47,16 @@ public class PopUpViewUtil {
         return wg;
     }
 
-    public void popListWindow(View location, View view, int width, int height, int gravity, int[] locations) {
+    private void popListWindow(View location, View view, int width, int height, int gravity, int[] locations, boolean isoutside) {
         if (view == null) {
             return;
         }
         popupWindow = new PopupWindow(view, width, height);
-        popupWindow.setFocusable(true);
-
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        if (isoutside) {
+            popupWindow.setFocusable(true);
+            popupWindow.setOutsideTouchable(isoutside);
+            popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        }
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
@@ -70,6 +71,14 @@ public class PopUpViewUtil {
         } else {
             popupWindow.showAtLocation(location, gravity, 0, 0);
         }
+    }
+
+    public void popListWindowNotOut(View location, View view, int width, int height, int gravity, int[] locations) {
+        popListWindow(location, view, width, height, gravity, locations, false);
+    }
+
+    public void popListWindow(View location, View view, int width, int height, int gravity, int[] locations) {
+        popListWindow(location, view, width, height, gravity, locations, true);
     }
 
     public void showDialog(@NonNull Activity context, @LayoutRes int layout, int locationX, int locationY, int width, int heigth) {

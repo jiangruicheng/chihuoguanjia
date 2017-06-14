@@ -99,10 +99,14 @@ public class RecordFragment extends BaseFragment {
         public void showMesg(String mesg) {
 
         }
-
         @Override
         public void showProg(String mesg) {
+            baseShowProg(back);
+        }
 
+        @Override
+        public void disProg() {
+            baseDisProg();
         }
 
         @Override

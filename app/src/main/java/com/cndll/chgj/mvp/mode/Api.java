@@ -24,6 +24,7 @@ import com.cndll.chgj.mvp.mode.bean.request.RequestMendianOrd;
 import com.cndll.chgj.mvp.mode.bean.request.RequestOrder;
 import com.cndll.chgj.mvp.mode.bean.request.RequestPrintBackDesh;
 import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
+import com.cndll.chgj.mvp.mode.bean.request.RequestQueryAppData;
 import com.cndll.chgj.mvp.mode.bean.request.RequestRegister;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpLoadPayInfo;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdaCailei;
@@ -56,6 +57,7 @@ import com.cndll.chgj.mvp.mode.bean.response.ResponseMethod;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseOrd;
 import com.cndll.chgj.mvp.mode.bean.response.ResponsePayStqtue;
 import com.cndll.chgj.mvp.mode.bean.response.ResponsePrintList;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseQueryAppData;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseRecord;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseRegister;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseStoreTye;
@@ -94,7 +96,8 @@ public interface Api {
     @FormUrlEncoded
     @POST("Order/cashpay")
     Observable<ResponseOrd> payMoney(@Field("id") String id,
-                                     @Field("ssmoney") String ssmoney
+                                     @Field("ssmoney") String ssmoney,
+                                     @Field("paytype") String type
     );
 
     @FormUrlEncoded
@@ -195,6 +198,9 @@ public interface Api {
 
     @POST("Dish/adddc")
     Observable<ResponseCailei> addCailei(@Body RequestAddCailei requestAddCailei);
+
+    @POST("System/storechargewarn")
+    Observable<ResponseQueryAppData> getAppData(@Body RequestQueryAppData requestQueryAppData);
 
     @POST("Print/prlist")
     Observable<ResponsePrintList> getPrintList(@Body RequestPrintList requestPrintList);

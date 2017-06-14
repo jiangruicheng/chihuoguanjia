@@ -65,6 +65,7 @@ public class HomeImpl implements HomePresenter {
 
     @Override
     public void getMendianList() {
+        view.showProg("");
         AppRequest.getAPI().getHomeMendianList(new RequsetHomeMendianList().setUid(AppMode.getInstance().getUid())).
                 subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).
@@ -82,9 +83,11 @@ public class HomeImpl implements HomePresenter {
                     @Override
                     public void onNext(BaseResponse baseResponse) {
                         super.onNext(baseResponse);
+                        view.disProg();
                         if (baseResponse instanceof ResponseMendianHomeList) {
                             if (baseResponse.getCode() == 1) {
                                 view.setMendianList(((ResponseMendianHomeList) baseResponse).getData());
+
                             }
                         }
                     }

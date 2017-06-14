@@ -38,6 +38,7 @@ public class MenuImpl implements MenuPresenter {
 
     @Override
     public void getPrintList(String uid, String mid) {
+        view.showProg("");
         AppRequest.getAPI().getPrintList(new RequestPrintList().setMid(mid).setUid(uid)).
                 subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(view) {
@@ -54,8 +55,10 @@ public class MenuImpl implements MenuPresenter {
             @Override
             public void onNext(BaseResponse baseResponse) {
                 super.onNext(baseResponse);
+                view.disProg();
                 if (baseResponse.getCode() == 1) {
                     view.showPrintList(((ResponsePrintList) baseResponse).getData());
+
                 }
             }
         });
@@ -63,6 +66,7 @@ public class MenuImpl implements MenuPresenter {
 
     @Override
     public void getCaileiList(RequestPrintList requestGetCaileiList) {
+        view.showProg("");
         AppRequest.getAPI().
                 getCaileiList(requestGetCaileiList).
                 subscribeOn(Schedulers.io()).
@@ -81,6 +85,7 @@ public class MenuImpl implements MenuPresenter {
                     @Override
                     public void onNext(BaseResponse baseResponse) {
                         super.onNext(baseResponse);
+                        view.disProg();
                         if (baseResponse.getCode() == 1) {
                             view.setCaileiList(((ResponseGetCaileiList) baseResponse).getData());
                         }
@@ -90,6 +95,7 @@ public class MenuImpl implements MenuPresenter {
 
     @Override
     public void getCaipinList(RequestGetCaipinList requestGetCaipinList) {
+        view.showProg("");
         AppRequest.getAPI().
                 getCaipinList(requestGetCaipinList).
                 subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
@@ -107,6 +113,7 @@ public class MenuImpl implements MenuPresenter {
                     @Override
                     public void onNext(BaseResponse baseResponse) {
                         super.onNext(baseResponse);
+                        view.disProg();
                         if (baseResponse.getCode() == 1) {
                             view.setCaipinList(((ResponseGetCaipinList) baseResponse).getData()
                             );

@@ -167,12 +167,12 @@ public class SendFragment extends BaseFragment implements OrderView {
                             setPernum(personCount.getText().toString()).
                             setSmoney(orderDishFragment.orderInfolayout.getGivePrice() + "").
                             setSsmoney(orderDishFragment.orderInfolayout.getLastPrice() + "").
-                            setZk(orderDishFragment.orders.getDisconut() * 10 + "").
+                            setZk(orderDishFragment.orders.getDisconut()  + "").
                             setZkmoney(orderDishFragment.orderInfolayout.getDiscountPrice() + "").
                             setTmoney(orderDishFragment.orderInfolayout.getAllPrice() + "").
                             setTabname(orderDishFragment.tabname).
                             setTab_id(orderDishFragment.tableId).setPayee(AppMode.getInstance().getUsername()).
-                            setYsmoney(orderDishFragment.orderInfolayout.getLastPrice() + ""));
+                            setYsmoney(orderDishFragment.orderInfolayout.getLastPrice() + "").setWritedishs(orderDishFragment.orders.getWriteDish()));
                 } else {
                     orderPresenter.updateOreder(new RequestOrder().setId(orderDishFragment.orderId + "").
                             setItems(orderDishFragment.orders.getItems()).
@@ -181,7 +181,7 @@ public class SendFragment extends BaseFragment implements OrderView {
                             setPernum(personCount.getText().toString()).
                             setSmoney(orderDishFragment.orderInfolayout.getGivePrice() + "").
                             setSsmoney(orderDishFragment.orderInfolayout.getLastPrice() + "").
-                            setZk(orderDishFragment.orders.getDisconut() * 10 + "").
+                            setZk(orderDishFragment.orders.getDisconut()  + "").
                             setZkmoney(orderDishFragment.orderInfolayout.getDiscountPrice() + "").
                             setTmoney(orderDishFragment.orderInfolayout.getAllPrice() + "").
                             setTabname(orderDishFragment.tabname).
@@ -298,7 +298,12 @@ public class SendFragment extends BaseFragment implements OrderView {
 
     @Override
     public void showProg(String mesg) {
+        baseShowProg(back);
+    }
 
+    @Override
+    public void disProg() {
+        baseDisProg();
     }
 
     OrderPresenter orderPresenter;
@@ -334,6 +339,11 @@ public class SendFragment extends BaseFragment implements OrderView {
 
     @Override
     public void setOrder(ResponseGetOrder getOrder) {
+
+    }
+
+    @Override
+    public void printNoDeskOrderSucc(int orderid) {
 
     }
 

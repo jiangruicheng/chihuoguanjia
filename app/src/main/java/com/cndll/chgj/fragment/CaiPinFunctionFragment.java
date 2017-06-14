@@ -206,7 +206,12 @@ public class CaiPinFunctionFragment extends BaseFragment<CaipinFunctionListAdpat
 
     @Override
     public void showProg(String mesg) {
+        baseShowProg(back);
+    }
 
+    @Override
+    public void disProg() {
+        baseDisProg();
     }
 
     DeshMethodPresenter presenter;
@@ -220,6 +225,11 @@ public class CaiPinFunctionFragment extends BaseFragment<CaipinFunctionListAdpat
     @Override
     public void showMethodList(List<ResponseMethod.DataBean> dataBeen) {
         adapter.setMitems(dataBeen);
+    }
+
+    @Override
+    public void succGetList() {
+
     }
 
     /**

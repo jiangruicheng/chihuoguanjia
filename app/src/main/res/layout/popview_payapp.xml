@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="3"
     android:orientation="vertical">
 
     <LinearLayout
@@ -19,7 +18,7 @@
             android:gravity="center"
             android:text="提示"
             android:textColor="@color/buttonStork"
-            android:textSize="21sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/mesg_info"
@@ -33,27 +32,33 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/cancel"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="取消"
-                android:textColor="@color/apla"
-                android:textSize="18sp" />
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:padding="4dp">
 
             <Button
                 android:id="@+id/sure"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="确定"
-                android:textColor="#000fff"
+                android:background="@drawable/shape_fillet_solid"
+                android:text="去缴费"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.2" />
+
+            <Button
+                android:id="@+id/cancel"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_fillet_button"
+                android:text="取消"
+                android:textColor="@color/buttonStork"
                 android:textSize="18sp" />
         </LinearLayout>
     </LinearLayout>

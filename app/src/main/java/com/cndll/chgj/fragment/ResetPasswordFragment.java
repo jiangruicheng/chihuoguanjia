@@ -170,7 +170,12 @@ public class ResetPasswordFragment extends BaseFragment {
 
         @Override
         public void showProg(String mesg) {
+            baseShowProg(back);
+        }
 
+        @Override
+        public void disProg() {
+            baseDisProg();
         }
 
         @Override

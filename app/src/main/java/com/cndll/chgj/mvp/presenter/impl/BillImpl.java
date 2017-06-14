@@ -25,6 +25,7 @@ public class BillImpl implements BIllPresenter {
 
     @Override
     public void getBillList(RequestGetBillList billList) {
+        view.showProg("");
         AppRequest.getAPI().getBill(billList).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(view) {
             @Override
             public void onCompleted() {
@@ -39,9 +40,11 @@ public class BillImpl implements BIllPresenter {
 
             @Override
             public void onNext(BaseResponse baseResponse) {
+                view.disProg();
                 super.onNext(baseResponse);
                 if (baseResponse.getCode() == 1) {
                     view.showBillList(((ResponseGetBillList) baseResponse).getData());
+
                 }
             }
         });

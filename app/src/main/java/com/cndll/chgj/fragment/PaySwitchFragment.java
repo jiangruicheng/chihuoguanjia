@@ -71,7 +71,7 @@ public class PaySwitchFragment extends BaseFragment {
 
     @OnClick(R.id.xianjin)
     void onclick_xianjin() {
-        AppRequest.getAPI().payMoney(orderID + "", orderInfolayout.getLastPrice() + "").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(null) {
+        AppRequest.getAPI().payMoney(orderID + "", orderInfolayout.getLastPrice() + "", 3 + "").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(null) {
             @Override
             public void onCompleted() {
                 super.onCompleted();
@@ -102,7 +102,7 @@ public class PaySwitchFragment extends BaseFragment {
 
     @OnClick(R.id.card)
     void onclick_card() {
-        AppRequest.getAPI().payMoney(orderID + "", orderInfolayout.getLastPrice() + "").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(null) {
+        AppRequest.getAPI().payMoney(orderID + "", orderInfolayout.getLastPrice() + "", 4 + "").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(null) {
             @Override
             public void onCompleted() {
                 super.onCompleted();
@@ -318,7 +318,12 @@ public class PaySwitchFragment extends BaseFragment {
 
                             @Override
                             public void showProg(String mesg) {
+                                baseShowProg(back);
+                            }
 
+                            @Override
+                            public void disProg() {
+                                baseDisProg();
                             }
 
                             @Override

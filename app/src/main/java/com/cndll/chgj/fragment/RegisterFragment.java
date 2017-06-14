@@ -227,7 +227,12 @@ public class RegisterFragment extends BaseFragment<RegisterListAdpater> implemen
 
     @Override
     public void showProg(String mesg) {
+        baseShowProg(back);
+    }
 
+    @Override
+    public void disProg() {
+        baseDisProg();
     }
 
     private RegisterPresenter presenter;

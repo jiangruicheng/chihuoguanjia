@@ -11,4 +11,5 @@ import java.util.List;
 
 public interface DeshMethodView extends BaseView<DeshMethodPresenter> {
     void showMethodList(List<ResponseMethod.DataBean> dataBeen);
+    void succGetList();
 }

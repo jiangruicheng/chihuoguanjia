@@ -199,7 +199,12 @@ public class PrintSetingFragment extends BaseFragment implements PrintView {
 
     @Override
     public void showProg(String mesg) {
+        baseShowProg(back);
+    }
 
+    @Override
+    public void disProg() {
+        baseDisProg();
     }
 
     private PrintListPresenter presenter;

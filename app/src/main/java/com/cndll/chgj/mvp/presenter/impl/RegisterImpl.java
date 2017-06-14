@@ -38,6 +38,7 @@ public class RegisterImpl implements RegisterPresenter {
 
     @Override
     public void register(String storeType, String tel, String storeName, int province, int city) {
+
         AppRequest.getAPI().register(new RequestRegister().setCity(city).
                 setName(storeName).setProvince(province).
                 setTel(tel).setType(storeType)).subscribeOn(Schedulers.io())

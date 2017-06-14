@@ -29,6 +29,7 @@ public class LoginImpl implements LoginPresenter {
 
     @Override
     public void login(final RequestLogin login, final Context context) {
+        view.showProg("");
         AppRequest.getAPI().login(login).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(view) {
             @Override
             public void onCompleted() {
@@ -43,6 +44,7 @@ public class LoginImpl implements LoginPresenter {
             @Override
             public void onNext(BaseResponse baseResponse) {
                 super.onNext(baseResponse);
+                view.disProg();
                 if (baseResponse instanceof ResponseLogin) {
                     if ((baseResponse).getCode() == 1) {
                         view.loginSucces();

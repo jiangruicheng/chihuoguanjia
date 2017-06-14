@@ -22,6 +22,7 @@ import rx.schedulers.Schedulers;
 public class PrintListImpl implements PrintListPresenter {
     @Override
     public void getPrintList(RequestPrintList requestPrintList) {
+        view.showProg("");
         AppRequest.getAPI().getPrintList(requestPrintList).
                 subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(view) {
@@ -37,9 +38,10 @@ public class PrintListImpl implements PrintListPresenter {
 
             @Override
             public void onNext(BaseResponse baseResponse) {
-                super.onNext(baseResponse);
+                super.onNext(baseResponse);view.disProg();
                 if (baseResponse.getCode() == 1) {
                     view.showPrintList(((ResponsePrintList) baseResponse).getData());
+
                 }
             }
         });

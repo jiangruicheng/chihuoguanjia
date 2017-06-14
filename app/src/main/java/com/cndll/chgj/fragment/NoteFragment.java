@@ -182,6 +182,17 @@ public class NoteFragment extends BaseFragment implements NoteView {
         popBackFragment();
     }
 
+    public List<ResponseMethod.DataBean> getCurrItems() {
+        return currItems;
+    }
+
+    public NoteFragment setCurrItems(List<ResponseMethod.DataBean> currItems) {
+        this.currItems = currItems;
+        return this;
+    }
+
+    private List<ResponseMethod.DataBean> currItems;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -197,6 +208,14 @@ public class NoteFragment extends BaseFragment implements NoteView {
         });
         allMethodAdapter = new AllMethodAdapter();
         selectMethodAdapter = new SelectMethodAdapter();
+        if (order.getItemsBean().getRemark() == null) {
+            currItems = null;
+        } else {
+            currItems = new ArrayList<>(order.getItemsBean().getRemark().getRemarks());
+        }
+        if (currItems != null) {
+            selectMethodAdapter.setMitems(currItems);
+        }
         selectMethod.setAdapter(selectMethodAdapter);
         allMethod.setAdapter(allMethodAdapter);
         PagerLayoutManager gridLayoutManager = new PagerLayoutManager(getContext(), 3, 4);
@@ -242,7 +261,12 @@ public class NoteFragment extends BaseFragment implements NoteView {
 
     @Override
     public void showProg(String mesg) {
+        baseShowProg(back);
+    }
 
+    @Override
+    public void disProg() {
+        baseDisProg();
     }
 
     NotePresenter presenter;
@@ -257,6 +281,21 @@ public class NoteFragment extends BaseFragment implements NoteView {
     @Override
     public void showMethodList(List<ResponseMethod.DataBean> dataBeen) {
         allMethodAdapter.setMitems(dataBeen);
+    }
+
+    @Override
+    public void succGetList() {
+        if (currItems == null) {
+            return;
+        }
+        for (int i = 0; i < currItems.size(); i++) {
+            for (int k = 0; k < allMethodAdapter.getMitems().size(); k++) {
+                if (currItems.get(i).getId().equals(allMethodAdapter.getMitems().get(k).getId())) {
+                    allMethodAdapter.select.add(k);
+                    allMethodAdapter.notifyDataSetChanged();
+                }
+            }
+        }
     }
 
     /**
@@ -291,6 +330,16 @@ public class NoteFragment extends BaseFragment implements NoteView {
             if (mitems != null) {
                 mitems.remove(m);
                 notifyDataSetChanged();
+            }
+        }
+
+        public void removeMitem(String id) {
+            for (int i = 0; i < mitems.size(); i++) {
+                if (mitems.get(i).getId().equals(id)) {
+                    mitems.remove(i);
+                    notifyDataSetChanged();
+                    return;
+                }
             }
         }
 
@@ -331,7 +380,7 @@ public class NoteFragment extends BaseFragment implements NoteView {
             viewHolder.delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    allMethodAdapter.unselect(mitems.get(position));
+                    allMethodAdapter.unselect(mitems.get(position).getId());
                     mitems.remove(position);
                     notifyDataSetChanged();
                 }
@@ -372,6 +421,16 @@ public class NoteFragment extends BaseFragment implements NoteView {
             notifyDataSetChanged();
         }
 
+        public void unselect(String id) {
+            for (int i = 0; i < mitems.size(); i++) {
+                if (mitems.get(i).getId().equals(id)) {
+                    select.remove(Integer.valueOf(i));
+                    notifyDataSetChanged();
+                    return;
+                }
+            }
+        }
+
         List<Integer> select = new ArrayList<>();
         List<ResponseMethod.DataBean> selectItems = new ArrayList<>();
         List<ResponseMethod.DataBean> mitems;
@@ -396,7 +455,7 @@ public class NoteFragment extends BaseFragment implements NoteView {
                 public void onClick(View v) {
                     if (select.contains(position)) {
                         holder.parent.setBackgroundResource(R.drawable.shape_button_yellow);
-                        selectMethodAdapter.removeMitem(mitems.get(position));
+                        selectMethodAdapter.removeMitem(mitems.get(position).getId());
                         select.remove(Integer.valueOf(position));
                     } else {
                         holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid);

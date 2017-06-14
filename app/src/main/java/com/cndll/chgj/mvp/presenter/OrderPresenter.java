@@ -21,6 +21,9 @@ public interface OrderPresenter extends BasePresenter<OrderView> {
 
     void getOrder(RequestGetOrder order);
 
+    void printSetting(final int ord);
+
     void removeOrder(String id, String type);
-    void turnOrder(String id,String tabname,String tab_id);
+
+    void turnOrder(String id, String tabname, String tab_id);
 }

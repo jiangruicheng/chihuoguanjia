@@ -18,10 +18,9 @@ public class MesgShow {
         void onListerner();
     }
 
-
-    public static void showMesg(String title, String mesg, View location, final OnButtonListener sure, final OnButtonListener cancel, boolean isCancelShow) {
+    private static void showMesg(String title, String mesg, View location, final OnButtonListener sure, final OnButtonListener cancel, boolean isCancelShow, int layout) {
         final PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
-        View view = LayoutInflater.from(location.getContext()).inflate(R.layout.popview_showmesg, null, false);
+        View view = LayoutInflater.from(location.getContext()).inflate(layout, null, false);
         Button btn_sure = (Button) view.findViewById(R.id.sure);
         Button btn_cancel = (Button) view.findViewById(R.id.cancel);
         TextView txt_title = (TextView) view.findViewById(R.id.mesg_title);
@@ -55,8 +54,16 @@ public class MesgShow {
         int screenWidth = popUpViewUtil.getWindowManager(location.getContext()).getDefaultDisplay().getWidth();
         int screenHeight = popUpViewUtil.getWindowManager(location.getContext()).getDefaultDisplay().getHeight();
         int width = screenWidth / 7 * 6;
-        int height = screenHeight / 5 * 2;
+        int height = screenHeight / 4 * 1;
         popUpViewUtil.showDialog((Activity) location.getContext(), view, 0, 0, width, height, R.style.Translucent_Dialog);
+    }
+
+    public static void showMesg(String title, String mesg, View location, final OnButtonListener sure, final OnButtonListener cancel, boolean isCancelShow) {
+        showMesg(title, mesg, location, sure, cancel, isCancelShow, R.layout.popview_showmesg);
+    }
+
+    public static void showPayMesg(String title, String mesg, View location, final OnButtonListener sure, final OnButtonListener cancel, boolean isCancelShow) {
+        showMesg(title, mesg, location, sure, cancel, isCancelShow, R.layout.popview_payapp);
     }
 
     public static void showRigsterMesg(String mesg, View location) {

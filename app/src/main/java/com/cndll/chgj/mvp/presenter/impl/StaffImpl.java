@@ -4,7 +4,6 @@ import com.cndll.chgj.mvp.MObeserver;
 import com.cndll.chgj.mvp.mode.AppRequest;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.mode.bean.request.RequestAddStaff;
-import com.cndll.chgj.mvp.mode.bean.request.RequestDelete;
 import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteStaff;
 import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestUpdateStaff;
@@ -100,6 +99,7 @@ public class StaffImpl implements StaffPresenter {
 
     @Override
     public void getStaffList(RequestPrintList requestAddCailei) {
+        view.showProg("");
         AppRequest.getAPI().getStaffList(requestAddCailei).
                 subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(view) {
@@ -116,9 +116,11 @@ public class StaffImpl implements StaffPresenter {
             @Override
             public void onNext(BaseResponse baseResponse) {
                 super.onNext(baseResponse);
+                view.disProg();
                 if (baseResponse.getCode() == 1) {
                     view.showStaffList(((ResponseGetStaffList) baseResponse).getData());
                 }
+
             }
         });
     }

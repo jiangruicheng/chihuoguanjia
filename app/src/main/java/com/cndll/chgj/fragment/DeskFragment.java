@@ -176,7 +176,12 @@ public class DeskFragment extends BaseFragment implements AddDeskView {
 
     @Override
     public void showProg(String mesg) {
+        baseShowProg(back);
+    }
 
+    @Override
+    public void disProg() {
+        baseDisProg();
     }
 
     AddDeskPresenter presenter;
