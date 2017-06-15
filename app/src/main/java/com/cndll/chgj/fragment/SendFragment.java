@@ -30,6 +30,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -55,6 +56,12 @@ public class SendFragment extends BaseFragment implements OrderView {
     EditText note;
     @BindView(R.id.cancel)
     Button cancel;
+
+    @OnClick(R.id.cancel)
+    void onclick_cancel() {
+        popBackFragment();
+    }
+
     @BindView(R.id.delete)
     Button delete;
     @BindView(R.id.save)
@@ -167,7 +174,7 @@ public class SendFragment extends BaseFragment implements OrderView {
                             setPernum(personCount.getText().toString()).
                             setSmoney(orderDishFragment.orderInfolayout.getGivePrice() + "").
                             setSsmoney(orderDishFragment.orderInfolayout.getLastPrice() + "").
-                            setZk(orderDishFragment.orders.getDisconut()  + "").
+                            setZk(orderDishFragment.orders.getDisconut() + "").
                             setZkmoney(orderDishFragment.orderInfolayout.getDiscountPrice() + "").
                             setTmoney(orderDishFragment.orderInfolayout.getAllPrice() + "").
                             setTabname(orderDishFragment.tabname).
@@ -181,7 +188,7 @@ public class SendFragment extends BaseFragment implements OrderView {
                             setPernum(personCount.getText().toString()).
                             setSmoney(orderDishFragment.orderInfolayout.getGivePrice() + "").
                             setSsmoney(orderDishFragment.orderInfolayout.getLastPrice() + "").
-                            setZk(orderDishFragment.orders.getDisconut()  + "").
+                            setZk(orderDishFragment.orders.getDisconut() + "").
                             setZkmoney(orderDishFragment.orderInfolayout.getDiscountPrice() + "").
                             setTmoney(orderDishFragment.orderInfolayout.getAllPrice() + "").
                             setTabname(orderDishFragment.tabname).

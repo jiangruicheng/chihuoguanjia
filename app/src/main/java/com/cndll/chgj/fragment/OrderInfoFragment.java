@@ -144,7 +144,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                         super.onNext(baseResponse);
                         if (baseResponse.getCode() == 1) {
                             if (((ResponseAddOrd) baseResponse).getData().getOid() != 0) {
-                                replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(((ResponseAddOrd) baseResponse).getData().getOid()).setOrders(order), null);
+                                presenter.printSetting(((ResponseAddOrd) baseResponse).getData().getOid());
                             }
 
                         }
@@ -1218,6 +1218,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
 
     @Override
     public void printNoDeskOrderSucc(int orderId) {
+        replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(orderId).setOrders(order), null);
 
     }
 

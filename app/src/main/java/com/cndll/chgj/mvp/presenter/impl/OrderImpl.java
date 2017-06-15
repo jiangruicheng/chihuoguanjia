@@ -122,6 +122,7 @@ public class OrderImpl implements OrderPresenter {
 
     @Override
     public void printSetting(final int ord) {
+        view.showProg("");
         AppRequest.getAPI().getSetting(AppMode.getInstance().getUid(),
                 AppMode.getInstance().getMid()).
                 subscribeOn(Schedulers.io()).
@@ -176,6 +177,7 @@ public class OrderImpl implements OrderPresenter {
             public void onNext(BaseResponse baseResponse) {
                 super.onNext(baseResponse);
                 view.printNoDeskOrderSucc(ord);
+                view.disProg();
             }
         });
     }
