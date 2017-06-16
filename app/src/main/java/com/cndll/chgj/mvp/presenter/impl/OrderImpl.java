@@ -1,5 +1,7 @@
 package com.cndll.chgj.mvp.presenter.impl;
 
+import com.cndll.chgj.RXbus.EventType;
+import com.cndll.chgj.RXbus.RxBus;
 import com.cndll.chgj.mvp.MObeserver;
 import com.cndll.chgj.mvp.mode.AppRequest;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
@@ -177,6 +179,7 @@ public class OrderImpl implements OrderPresenter {
             public void onNext(BaseResponse baseResponse) {
                 super.onNext(baseResponse);
                 view.printNoDeskOrderSucc(ord);
+                RxBus.getDefault().post(new EventType().setType(EventType.SHOW).setExtra(baseResponse.getExtra()));
                 view.disProg();
             }
         });
@@ -206,6 +209,9 @@ public class OrderImpl implements OrderPresenter {
                             //   view.showMesg("更新成功");
                             getOrder(new RequestGetOrder().setId(Integer.valueOf(order.getId())));
                             // view.setDeshList(((ResponseGetCaipinList) baseResponse).getData());
+                        } else {
+                            view.disProg();
+                            view.showMesg(baseResponse.getExtra());
                         }
                     }
                 });

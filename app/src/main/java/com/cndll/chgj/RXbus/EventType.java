@@ -6,6 +6,8 @@ package com.cndll.chgj.RXbus;
 
 public class EventType {
     public final static int BACKKEY = 0;
+    public final static int SHOW = 1;
+    public final static int RESET = 2;
 
     public int getType() {
         return type;
@@ -16,5 +18,15 @@ public class EventType {
         return this;
     }
 
+    public String getExtra() {
+        return extra;
+    }
+
+    public EventType setExtra(String extra) {
+        this.extra = extra;
+        return this;
+    }
+
+    private String extra;
     private int type;
 }

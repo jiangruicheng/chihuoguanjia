@@ -413,6 +413,11 @@ public class HomeFragment extends BaseFragment implements HomeView {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         unbinder = ButterKnife.bind(this, view);
         init();
+        if (AppMode.getInstance().isDeskMode()) {
+            modeImage.setImageResource(R.mipmap.mode_yes_desk);
+        } else {
+            modeImage.setImageResource(R.mipmap.mode_not_desk);
+        }
         circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

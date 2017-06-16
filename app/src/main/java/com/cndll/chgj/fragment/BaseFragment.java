@@ -42,8 +42,8 @@ public class BaseFragment<T extends ListAdapter> extends Fragment {
     MainActivity.BackPressEvent event = new MainActivity.BackPressEvent() {
         @Override
         public boolean onBackPress() {
-            baseDisProg();
-            return false;
+            return baseDisProg();
+
         }
     };
 
@@ -93,11 +93,11 @@ public class BaseFragment<T extends ListAdapter> extends Fragment {
         }
         fragmentList.add(fragment);
         fragmentManager.beginTransaction().add(R.id.frame, fragment).addToBackStack(fragment.getTag()).commit();
-
+        /*MainActivity.removeBackPressEvent(event);*/
     }
 
     public void reload() {
-
+        /*MainActivity.setBackPressEvent(event);*/
     }
 
     protected void replaceFragment(Fragment fragment, BasePresenter presenter) {
@@ -137,9 +137,10 @@ public class BaseFragment<T extends ListAdapter> extends Fragment {
                     prog = null;
                 }
             });
+            View view = LayoutInflater.from(getActivity()).inflate(R.layout.progress, null, false);
+            prog.popListWindowNotOut(location, view, prog.getWindowManager(getActivity()).getDefaultDisplay().getWidth() / 7, prog.getWindowManager(getActivity()).getDefaultDisplay().getHeight() / 10, Gravity.CENTER, null);
         }
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.progress, null, false);
-        prog.popListWindowNotOut(location, view, prog.getWindowManager(getActivity()).getDefaultDisplay().getWidth() / 7, prog.getWindowManager(getActivity()).getDefaultDisplay().getHeight() / 10, Gravity.CENTER, null);
+
     }
 
     protected boolean baseDisProg() {

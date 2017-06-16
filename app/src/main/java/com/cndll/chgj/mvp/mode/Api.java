@@ -23,6 +23,7 @@ import com.cndll.chgj.mvp.mode.bean.request.RequestLogin;
 import com.cndll.chgj.mvp.mode.bean.request.RequestMendianOrd;
 import com.cndll.chgj.mvp.mode.bean.request.RequestOrder;
 import com.cndll.chgj.mvp.mode.bean.request.RequestPrintBackDesh;
+import com.cndll.chgj.mvp.mode.bean.request.RequestPrintBill;
 import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestQueryAppData;
 import com.cndll.chgj.mvp.mode.bean.request.RequestRegister;
@@ -128,6 +129,9 @@ public interface Api {
 
     @POST("Print/printdish")
     Observable<ResponseCailei> printOrder(@Body RequestPrintBackDesh requestPrintBackDesh);
+
+    @POST("Print/printdish")
+    Observable<ResponseCailei> printAddOrder(@Body RequestPrintBill requestPrintBackDesh);
 
     @FormUrlEncoded
     @POST("Print/printorder")

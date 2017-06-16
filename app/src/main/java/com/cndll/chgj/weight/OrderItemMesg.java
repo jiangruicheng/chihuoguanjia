@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.util.StringHelp;
 
 /**
  * Created by kongqing on 2017/5/5.
@@ -42,6 +43,17 @@ public class OrderItemMesg {
 
     public OrderItemMesg setCount(String name) {
         this.countEdit.setText(name);
+        if ((StringHelp.isFloat(name) && Float.valueOf(name) == 0) || name.equals("0.0")) {
+            countEdit.setBackgroundResource(R.color.yinse);
+            rquest.setBackgroundResource(R.color.yinse);
+            countEdit.setEnabled(false);
+            rquest.setEnabled(false);
+        } else {
+            countEdit.setBackgroundResource(R.color.white);
+            rquest.setBackgroundResource(R.color.white);
+            countEdit.setEnabled(true);
+            rquest.setEnabled(true);
+        }
         return this;
     }
 

@@ -16,9 +16,11 @@ import com.cndll.chgj.fragment.LoginFragment;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.presenter.impl.HomeImpl;
 import com.cndll.chgj.mvp.presenter.impl.LoginImpl;
+import com.cndll.chgj.weight.MesgShow;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.frame)
     FrameLayout frame;
     private FragmentManager fragmentManager;
+    Subscription show;
 
     @Override
     public void onBackPressed() {
@@ -69,6 +72,10 @@ public class MainActivity extends AppCompatActivity {
 
     public static List<BackPressEvent> backPressEvents = new ArrayList<>();
 
+    protected void baseShowMesg(String mesg) {
+        MesgShow.showMesg("", mesg, frame, null, null, false);
+    }
+
     private Subscription loginOther;
 
     @Override
@@ -76,6 +83,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        show = RxBus.getDefault().toObservable(EventType.class).throttleFirst(2, TimeUnit.SECONDS).subscribe(new Observer<EventType>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(EventType eventType) {
+                if (eventType.getType() == EventType.SHOW) {
+                    baseShowMesg(eventType.getExtra());
+                }
+            }
+        });
         loginOther = RxBus.getDefault().toObservable(EventType.class).subscribe(new Observer<EventType>() {
             @Override
             public void onCompleted() {
@@ -121,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
         AppMode.getInstance().setReturn(sharedPreferences.getBoolean("isreturn", false));
         AppMode.getInstance().setGive(sharedPreferences.getBoolean("isgive", false));
         AppMode.getInstance().setTel(sharedPreferences.getString("tel", null));
+        AppMode.getInstance().setDeskMode(sharedPreferences.getBoolean("deskmode", true));
        /* editor.putBoolean("isdiscount", AppMode.getInstance().isDiscount());
         editor.putBoolean("isexcel", AppMode.getInstance().isExcel());
         editor.putBoolean("isorder", AppMode.getInstance().isOrder());
@@ -149,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("username", AppMode.getInstance().getUsername());
         editor.putBoolean("isboss", AppMode.getInstance().isBoss());
         editor.putBoolean("isloding", AppMode.getInstance().isLoading());
+        editor.putBoolean("deskmode", AppMode.getInstance().isDeskMode());
         editor.commit();
         editor.commit();
     }

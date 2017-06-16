@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.RXbus.EventType;
+import com.cndll.chgj.RXbus.RxBus;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.util.StringHelp;
 
@@ -110,14 +112,27 @@ public class SuccessFragment extends BaseFragment {
                 @Override
                 public void onClick(View v) {
                     if (fragmentList.get(fragmentList.size() - 3) instanceof OrderInfoFragment) {
-                        popBackFragment();
-                        popBackFragment();
-                        popBackFragment();
-                        popBackFragment();
+                        if (AppMode.getInstance().isDeskMode()) {
+                            popBackFragment();
+                            popBackFragment();
+                            popBackFragment();
+                            popBackFragment();
+                        } else {
+                            popBackFragment();
+                            popBackFragment();
+                            popBackFragment();
+                            RxBus.getDefault().post(new EventType().setType(EventType.RESET));
+                        }
                     } else {
-                        popBackFragment();
-                        popBackFragment();
-                        popBackFragment();
+                        if (AppMode.getInstance().isDeskMode()) {
+                            popBackFragment();
+                            popBackFragment();
+                            popBackFragment();
+                        } else {
+                            popBackFragment();
+                            popBackFragment();
+                            RxBus.getDefault().post(new EventType().setType(EventType.RESET));
+                        }
                     }
                 }
             });

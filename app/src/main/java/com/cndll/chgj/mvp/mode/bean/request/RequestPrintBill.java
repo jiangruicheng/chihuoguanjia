@@ -89,6 +89,17 @@ public class RequestPrintBill extends BaseRequest {
         private String unit;
         private String m_name;
 
+        public String getMachine() {
+            return machine;
+        }
+
+        public ItemsBean setMachine(String machine) {
+            this.machine = machine;
+            return this;
+        }
+
+        private String machine;
+
         public String getMoney() {
             return money;
         }

@@ -68,6 +68,15 @@ public class ResponseGetCaipinList extends BaseResponse {
             this.zkmoney = zkmoney;
         }
 
+        public float getAddCount() {
+            return addCount;
+        }
+
+        public DataBean setAddCount(float addCount) {
+            this.addCount = addCount;
+            return this;
+        }
+
         /**
          * id : 81
          * unit : 份
@@ -87,6 +96,7 @@ public class ResponseGetCaipinList extends BaseResponse {
          * name : 小炒肉
          * dc_id : 39
          */
+        private float addCount;
         private String smoney;
         private String zkmoney;
         private String machine_name;

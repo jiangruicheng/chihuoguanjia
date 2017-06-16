@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,25 +14,34 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.RXbus.EventType;
+import com.cndll.chgj.RXbus.RxBus;
 import com.cndll.chgj.mvp.MObeserver;
 import com.cndll.chgj.mvp.mode.AppRequest;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.mode.bean.request.RequestOrder;
+import com.cndll.chgj.mvp.mode.bean.request.RequestPrintBill;
 import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseCailei;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetOrder;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetSeting;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseMethod;
 import com.cndll.chgj.mvp.presenter.OrderPresenter;
 import com.cndll.chgj.mvp.view.OrderView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import rx.Observable;
+import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -165,6 +175,7 @@ public class SendFragment extends BaseFragment implements OrderView {
                 if (orderDishFragment.orders == null) {
                     return;
                 }
+                showProg("");
                 orderDishFragment.orderInfolayout.setMesg(orderDishFragment.orders);
                 if (orderDishFragment.orderId == 0) {
                     orderPresenter.sendOrder(new RequestOrder().
@@ -234,14 +245,156 @@ public class SendFragment extends BaseFragment implements OrderView {
                         if (baseResponse.getCode() == 1) {
                             ResponseGetSeting responseGetSeting = ((ResponseGetSeting) baseResponse);
                             if (responseGetSeting.getData().getCd_method().equals("1")) {
-                                type = 2;
+                                type = 1;
                             } else {
                                 type = 2;
                             }
-                            printOrders(ord, type);
+
+                            if (orderDishFragment.orderId != 0) {
+                                printAddOrders(type);
+                            } else {
+                                printOrders(ord, 2);
+                            }
                         }
                     }
                 });
+    }
+
+    private void printAddOrders(int type) {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        final String data = year + "-" + month + "-" + day;
+        OrderDishFragment.Orders orders = orderDishFragment.orders;
+        List<OrderDishFragment.Orders.Order> orderList = orders.getAll();
+        List<OrderDishFragment.Orders.Write> writeList;
+        switch (type) {
+            case 1:
+                final RequestPrintBill request = new RequestPrintBill().
+                        setDate(data).
+                        setSname(AppMode.getInstance().getUsername()).
+                        setTabcode(orderDishFragment.tabname).
+                        setTitle("出品分单");
+                Observable.from(orderList).subscribe(new Observer<OrderDishFragment.Orders.Order>() {
+                    @Override
+                    public void onCompleted() {
+                        back();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(OrderDishFragment.Orders.Order order) {
+                        List<RequestPrintBill.ItemsBean> item = new ArrayList<RequestPrintBill.ItemsBean>();
+
+                        item.add(new RequestPrintBill.ItemsBean().
+                                setName(order.getItemsBean().getName()).
+                                setMoney(order.getItemsBean().getPrice()).
+                                setNum(order.getItemsBean().getAddCount()+"").
+                                setUnit(order.getItemsBean().getUnit()).
+                                setM_name(getMethodName(order)).
+                                setMachine(order.getItemsBean().getMachine()));
+                        request.setItems(item);
+                        if (order.isSend) {
+
+                        } else {
+                            AppRequest.getAPI().printAddOrder(request).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ResponseCailei>() {
+                                @Override
+                                public void onCompleted() {
+
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    e.printStackTrace();
+                                }
+
+                                @Override
+                                public void onNext(ResponseCailei responseCailei) {
+                                    RxBus.getDefault().post(new EventType().setType(EventType.SHOW).setExtra(responseCailei.getExtra()));
+                                }
+                            });
+                        }
+                    }
+                });
+                break;
+            case 2:
+                if (orders.writeDish != null && orders.writeDish.values() != null) {
+                    writeList = new ArrayList<>(orders.writeDish.values());
+                }
+                Map<String, RequestPrintBill> prints = new ArrayMap<>();
+                for (OrderDishFragment.Orders.Order o : orderList) {
+                    if (o.isSend) {
+                        continue;
+                    }
+                    if (!prints.containsKey(o.getItemsBean().getMachine())) {
+               /* if (prints.get(o.getItemsBean().getMachine()) == null) {*/
+                        prints.put(o.getItemsBean().getMachine(), new RequestPrintBill());
+                        //}
+                    }
+                    if (prints.get(o.getItemsBean().getMachine()).getItems() == null) {
+                        prints.get(o.getItemsBean().getMachine()).setItems(new ArrayList<RequestPrintBill.ItemsBean>());
+                    }
+
+                    prints.get(o.getItemsBean().getMachine()).getItems().
+                            add(new RequestPrintBill.ItemsBean().
+                                    setName(o.getItemsBean().getName()).
+                                    setUnit(o.getItemsBean().getUnit()).
+                                    setNum(o.getItemsBean().getAddCount()+"").
+                                    setMoney(o.getItemsBean().getPrice()).setM_name(getMethodName(o)).setMachine(o.getItemsBean().getMachine()));
+                }
+                prints.values();
+                Observable.from(new ArrayList<RequestPrintBill>(prints.values())).subscribe(new Observer<RequestPrintBill>() {
+                    @Override
+                    public void onCompleted() {
+                        back();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(RequestPrintBill requestPrintBill) {
+                        requestPrintBill.setDate(data).setSname(AppMode.getInstance().getUsername()).setTabcode(orderDishFragment.tabname).setTitle("总单打印");
+                        AppRequest.getAPI().printAddOrder(requestPrintBill).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ResponseCailei>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(ResponseCailei responseCailei) {
+                                RxBus.getDefault().post(new EventType().setExtra(responseCailei.getExtra()).setType(EventType.SHOW));
+                            }
+                        });
+                    }
+                });
+
+                break;
+        }
+    }
+
+    private String getMethodName(OrderDishFragment.Orders.Order o) {
+        StringBuffer mname = new StringBuffer("");
+        if (o.getItemsBean().getRemark() != null && o.getItemsBean().getRemark().getRemarks() != null)
+            for (ResponseMethod.DataBean m : o.getItemsBean().getRemark().getRemarks()) {
+                mname.append(m.getName());
+                mname.append("+" + m.getPrice() + " ");
+            }
+        mname.insert(0, "(");
+        mname.insert(mname.length(), ")");
+        return mname.toString();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -265,8 +418,21 @@ public class SendFragment extends BaseFragment implements OrderView {
             @Override
             public void onNext(BaseResponse baseResponse) {
                 super.onNext(baseResponse);
+                back();
             }
         });
+    }
+
+    private void back() {
+        disProg();
+        if (fragmentList.get(fragmentList.size() - 2) instanceof OrderDishFragment) {
+            popBackFragment();
+            popBackFragment();
+        } else {
+            popBackFragment();
+            popBackFragment();
+            popBackFragment();
+        }
     }
 
     public void onButtonPressed(Uri uri) {
@@ -300,7 +466,7 @@ public class SendFragment extends BaseFragment implements OrderView {
 
     @Override
     public void showMesg(String mesg) {
-
+        baseShowMesg(mesg, back);
     }
 
     @Override
@@ -333,15 +499,8 @@ public class SendFragment extends BaseFragment implements OrderView {
 
     @Override
     public void sendSucc(int ord) {
-        if (fragmentList.get(fragmentList.size() - 2) instanceof OrderDishFragment) {
-            popBackFragment();
-            popBackFragment();
-        } else {
-            popBackFragment();
-            popBackFragment();
-            popBackFragment();
-        }
         printSetting(ord);
+
     }
 
     @Override

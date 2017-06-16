@@ -18,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.RXbus.EventType;
+import com.cndll.chgj.RXbus.RxBus;
 import com.cndll.chgj.activity.MainActivity;
 import com.cndll.chgj.adapter.DcListAdapter;
 import com.cndll.chgj.adapter.DeshListAdapter;
@@ -61,6 +63,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import rx.Observer;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -187,6 +191,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         } else {
             replaceFragmentAddToBackStack(OrderInfoFragment.newInstance(null, null), new OrderImpl());
         }
+        MainActivity.removeBackPressEvent(backPressEvent);
     }
 
     @BindView(R.id.mode_no_desk)
@@ -262,7 +267,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                         if (!isOrderWrite) {
                             backDesh.add(new RequestPrintBackDesh.ItemsBean().setName(orders.getOrder(orders.getCurrPosition()).getItemsBean().getName()).
                                     setMoney(orders.getOrder(orders.getCurrPosition()).getItemsBean().getPrice()).
-                                    setNum(orders.getOrder(orders.getCurrPosition()).getCount() + "").
+                                    setNum(/*orders.getOrder(orders.getCurrPosition()).getCount() +*/ "1").
                                     setUnit(orders.getOrder(orders.getCurrPosition()).getItemsBean().getUnit()).
                                     setM_name(""));
                             orders.getOrder(orders.getCurrPosition()).backDesh();
@@ -270,7 +275,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                         } else {
                             backDesh.add(new RequestPrintBackDesh.ItemsBean().setName(orders.writeDish.get(orders.getCurrPosition()).getItemsBean().getName()).
                                     setMoney(orders.writeDish.get(orders.getCurrPosition()).getItemsBean().getPrice()).
-                                    setNum(orders.writeDish.get(orders.getCurrPosition()).getCount() + "").
+                                    setNum(/*orders.writeDish.get(orders.getCurrPosition()).getCount() +*/ "1").
                                     setUnit("盘").
                                     setM_name(""));
                             orders.writeDish.get(orders.getCurrPosition()).backDesh();
@@ -345,6 +350,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                             replaceFragmentAddToBackStack(NoteFragment.newInstance(null, null).setOrder(orders.getOrder(orders.getCurrPosition())), new NoteImpl());
                         }
                         popOrderRequest.dismiss();
+                        MainActivity.removeBackPressEvent(backPressEvent);
                     }
 
                     @Override
@@ -515,6 +521,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         }
         if (orders.getOrders().size() != 0 || orders.writeDish.size() != 0) {
             replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment(this), new OrderImpl());
+            MainActivity.removeBackPressEvent(backPressEvent);
         }
     }
 
@@ -528,6 +535,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         } else {
             replaceFragmentAddToBackStack(OrderInfoFragment.newInstance(null, null), new OrderImpl());
         }
+        MainActivity.removeBackPressEvent(backPressEvent);
     }
 
     @BindView(R.id.other)
@@ -810,7 +818,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         if (!orders.isChange) {
             if (orderId != 0) {
                 replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(orderId).setOrders(orders), null);
-
+                MainActivity.removeBackPressEvent(backPressEvent);
             }
         } else {
             MesgShow.showMesg("", "有菜品未送单,请先送单", dazhe, null, null, false);
@@ -983,12 +991,42 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             return true;
         }
     };
+    Subscription reSet;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_order_desh, container, false);
         unbinder = ButterKnife.bind(this, view);
+        reSet = RxBus.getDefault().toObservable(EventType.class).
+                observeOn(AndroidSchedulers.mainThread()).
+                subscribe(new Observer<EventType>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(EventType eventType) {
+                        if (eventType.getType() != EventType.RESET) {
+                            return;
+                        }
+                        if (orders != null) {
+                            if (orders.writeDish != null) {
+                                orders.writeDish.clear();
+                            }
+                            if (orders.orders != null) {
+                                orders.orders.clear();
+                            }
+                        }
+                        setOrderInfolayout(orders.getCurrPosition());
+                    }
+                });
         initlistview();
         if (tableId == null) {
             title.setText("快餐点餐");
@@ -1007,6 +1045,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                         return;
                     }
                     replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment(OrderDishFragment.this), new OrderImpl());
+                    MainActivity.removeBackPressEvent(backPressEvent);
                 }
             });
             if (responseOrd != null) {
@@ -1047,6 +1086,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 orders.setCurrPosition(orders.writeDish.keyAt(0));
             }
         }
+        MainActivity.setBackPressEvent(backPressEvent);
         setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
     }
 
@@ -1171,7 +1211,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
     private void setOrderInfolayout(String id) {
         if (id == null || orders.getOrder(id) == null) {
-            orderItemMesglayout.setMethod("").setCount("1").setName("").setPrice("");
+            orderItemMesglayout.setMethod("").setCount(" ").setName("").setPrice("");
         } else {
             if (orderItemMesglayout != null) {
                 orderItemMesglayout.
@@ -1218,6 +1258,10 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        if (reSet != null && reSet.isUnsubscribed()) {
+            reSet.unsubscribe();
+        }
+        reSet = null;
     }
 
     @Override
@@ -1386,6 +1430,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                                 getGiveCount());
             } else*/
             //{
+            itemsBeen.get(i).setAddCount(0);
             orders.setOrders(itemsBeen.get(i).getId() + "" + itemsBeen.get(i).getDc_id(),
                     new Orders.Order().setOrders(orders).setItemsBean(itemsBeen.get(i)).setSend(true).setCount(Float.valueOf(itemsBeen.get(i).getCount())).
                             setGiveCount(itemsBeen.get(i).
@@ -1412,7 +1457,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     @Override
     public void printNoDeskOrderSucc(int ord) {
         replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(ord).setOrders(orders), null);
-
+        MainActivity.removeBackPressEvent(backPressEvent);
     }
 
     /**
@@ -1536,9 +1581,13 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             boolean isADD = false;
             for (int i = 0; i < orderList.size(); i++) {
                 isADD = false;
+                if (!orderList.get(i).isSend) {
+                    orderList.get(i).getItemsBean().setAddCount(orderList.get(i).getCount());
+                }
                 for (int j = 0; j < itemsBeen.size(); j++) {
                     if (itemsBeen.get(j).getId().equals(orderList.get(i).getItemsBean().getId())) {
-                        itemsBeen.get(j).setCount(Float.valueOf(orderList.get(i).getItemsBean().getCount()) + Float.valueOf(itemsBeen.get(j).getCount()) + "").setGiveCount(orderList.get(i).getItemsBean().getGiveCount() + itemsBeen.get(j).getGiveCount());
+                        itemsBeen.get(j).setCount(Float.valueOf(orderList.get(i).getItemsBean().getCount()) + Float.valueOf(itemsBeen.get(j).getCount()) + "").
+                                setGiveCount(orderList.get(i).getItemsBean().getGiveCount() + itemsBeen.get(j).getGiveCount()).setAddCount(orderList.get(i).getItemsBean().getAddCount() + itemsBeen.get(j).getAddCount()).setBackCount((itemsBeen.get(j).getBackCount() == null ? 0 : Float.valueOf(itemsBeen.get(j).getBackCount() + orderList.get(i).getItemsBean().getBackCount() == null ? 0 : Float.valueOf(orderList.get(i).getItemsBean().getBackCount()))) + "");
                         isADD = true;
                     }
                 }

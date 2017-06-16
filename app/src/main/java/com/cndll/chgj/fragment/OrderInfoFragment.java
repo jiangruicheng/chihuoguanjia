@@ -721,17 +721,18 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                                 isOrderWrite = true;
                             }
                             backDesh = new ArrayList<RequestPrintBackDesh.ItemsBean>();
+
                             if (!isOrderWrite) {
                                 backDesh.add(new RequestPrintBackDesh.ItemsBean().setName(order.getOrder(order.getCurrPosition()).getItemsBean().getName()).
                                         setMoney(order.getOrder(order.getCurrPosition()).getItemsBean().getPrice()).
-                                        setNum(order.getOrder(order.getCurrPosition()).getCount() + "").
+                                        setNum(/*order.getOrder(order.getCurrPosition()).getCount() +*/ "1").
                                         setUnit(order.getOrder(order.getCurrPosition()).getItemsBean().getUnit()).
                                         setM_name(""));
                                 order.getOrder(order.getCurrPosition()).backDesh();
                             } else {
                                 backDesh.add(new RequestPrintBackDesh.ItemsBean().setName(order.writeDish.get(order.getCurrPosition()).getItemsBean().getName()).
                                         setMoney(order.writeDish.get(order.getCurrPosition()).getItemsBean().getPrice()).
-                                        setNum(order.writeDish.get(order.getCurrPosition()).getCount() + "").
+                                        setNum(/*order.writeDish.get(order.getCurrPosition()).getCount() +*/ "1").
                                         setUnit("盘").
                                         setM_name(""));
                                 order.writeDish.get(order.getCurrPosition()).backDesh();
@@ -1183,6 +1184,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
             }
         }
         List<ResponseGetCaipinList.DataBean> itemsBeen = getOrder.getData().getItems();
+
         order.setDisconut(Float.valueOf(getOrder.getData().getZk()));
         for (int i = 0; i < itemsBeen.size(); i++) {
             /*if (orders.getOrders().containsKey(itemsBeen.get(i).getId() + "" + itemsBeen.get(i).getDc_id())) {
@@ -1192,6 +1194,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                                 getGiveCount());
             } else*/
             //{
+            itemsBeen.get(i).setAddCount(0);
             order.setOrders(itemsBeen.get(i).getId() + "" + itemsBeen.get(i).getDc_id(),
                     new OrderDishFragment.Orders.Order().setOrders(order).setItemsBean(itemsBeen.get(i)).setSend(true).setCount(Float.valueOf(itemsBeen.get(i).getCount())).
                             setGiveCount(itemsBeen.get(i).
@@ -1297,6 +1300,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_order_desh_info, parent, false);
             ViewHolder viewHolder = new ViewHolder(convertView);
             final boolean isOrderWrite;
+            viewHolder.numberEdit.setBackgroundResource(R.color.cube_holo_blue_dark);
             int i;
             if (order.writeDish == null || position > order.writeDish.size() - 1) {
                 isOrderWrite = false;
