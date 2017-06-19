@@ -190,7 +190,8 @@ public class SendFragment extends BaseFragment implements OrderView {
                             setTmoney(orderDishFragment.orderInfolayout.getAllPrice() + "").
                             setTabname(orderDishFragment.tabname).
                             setTab_id(orderDishFragment.tableId).setPayee(AppMode.getInstance().getUsername()).
-                            setYsmoney(orderDishFragment.orderInfolayout.getLastPrice() + "").setWritedishs(orderDishFragment.orders.getWriteDish()));
+                            setYsmoney(orderDishFragment.orderInfolayout.getLastPrice() + "").
+                            setWritedishs(orderDishFragment.orders.getWriteDish()).setNote(note.getText().toString()));
                 } else {
                     orderPresenter.updateOreder(new RequestOrder().setId(orderDishFragment.orderId + "").
                             setItems(orderDishFragment.orders.getItems()).
@@ -214,7 +215,8 @@ public class SendFragment extends BaseFragment implements OrderView {
                             setWritedishs(orderDishFragment.orders.getWriteDish()).
                             setAllremarks(orderDishFragment.orders.getAllMethod())
                             .setStorename(orderDishFragment.responseOrd.getData().getStorename())
-                            .setType_txt(orderDishFragment.responseOrd.getData().getType_txt())
+                            .setType_txt(orderDishFragment.responseOrd.getData().getType_txt()).
+                                    setNote(note.getText().toString())
                     );
                 }
             }
@@ -265,7 +267,9 @@ public class SendFragment extends BaseFragment implements OrderView {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH) + 1;
         int day = calendar.get(Calendar.DAY_OF_MONTH);
-        final String data = year + "-" + month + "-" + day;
+        int hour = calendar.get(Calendar.HOUR);
+        int minute = calendar.get(Calendar.MINUTE);
+        final String data = year + "-" + month + "-" + day + " " + hour + ":" + minute;
         OrderDishFragment.Orders orders = orderDishFragment.orders;
         List<OrderDishFragment.Orders.Order> orderList = orders.getAll();
         List<OrderDishFragment.Orders.Write> writeList;
@@ -294,7 +298,7 @@ public class SendFragment extends BaseFragment implements OrderView {
                         item.add(new RequestPrintBill.ItemsBean().
                                 setName(order.getItemsBean().getName()).
                                 setMoney(order.getItemsBean().getPrice()).
-                                setNum(order.getItemsBean().getAddCount()+"").
+                                setNum(order.getItemsBean().getAddCount() + "").
                                 setUnit(order.getItemsBean().getUnit()).
                                 setM_name(getMethodName(order)).
                                 setMachine(order.getItemsBean().getMachine()));
@@ -344,7 +348,7 @@ public class SendFragment extends BaseFragment implements OrderView {
                             add(new RequestPrintBill.ItemsBean().
                                     setName(o.getItemsBean().getName()).
                                     setUnit(o.getItemsBean().getUnit()).
-                                    setNum(o.getItemsBean().getAddCount()+"").
+                                    setNum(o.getItemsBean().getAddCount() + "").
                                     setMoney(o.getItemsBean().getPrice()).setM_name(getMethodName(o)).setMachine(o.getItemsBean().getMachine()));
                 }
                 prints.values();
@@ -383,6 +387,15 @@ public class SendFragment extends BaseFragment implements OrderView {
 
                 break;
         }
+        if (orders.writeDish == null) {
+            return;
+        }
+        writeList = new ArrayList<>(orders.writeDish.values());
+        RequestPrintBill printBill = new RequestPrintBill();
+        printBill.setItems(new ArrayList<RequestPrintBill.ItemsBean>());
+        for (OrderDishFragment.Orders.Write w : writeList) {
+            printBill.getItems().add(new RequestPrintBill.ItemsBean().setUnit(w.getItemsBean().getUnit()).setName(w.getItemsBean().getName()).setNum(w.getItemsBean().getCount()).setMoney(w.getItemsBean().getPrice()));
+        }
     }
 
     private String getMethodName(OrderDishFragment.Orders.Order o) {
@@ -403,7 +416,9 @@ public class SendFragment extends BaseFragment implements OrderView {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH) + 1;
         int day = calendar.get(Calendar.DAY_OF_MONTH);
-        AppRequest.getAPI().printOrder(ord + "", type + "", year + "-" + month + "-" + day, AppMode.getInstance().getUsername())
+        int hour = calendar.get(Calendar.HOUR);
+        int minute = calendar.get(Calendar.MINUTE);
+        AppRequest.getAPI().printOrder(ord + "", type + "", year + "-" + month + "-" + day + " " + hour + ":" + minute, AppMode.getInstance().getUsername())
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(SendFragment.this) {
             @Override
             public void onCompleted() {
@@ -479,6 +494,11 @@ public class SendFragment extends BaseFragment implements OrderView {
         baseDisProg();
     }
 
+    @Override
+    public void toast(String s) {
+        showToast(s);
+    }
+
     OrderPresenter orderPresenter;
 
     @Override
@@ -511,6 +531,11 @@ public class SendFragment extends BaseFragment implements OrderView {
     @Override
     public void printNoDeskOrderSucc(int orderid) {
 
+    }
+
+    @Override
+    public void backView() {
+        popBackFragment();
     }
 
     /**

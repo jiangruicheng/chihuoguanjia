@@ -5,12 +5,14 @@ package com.cndll.chgj.adapter;
  */
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.cndll.chgj.R;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetDeskList;
+import com.cndll.chgj.util.StringHelp;
 
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class OrderDeskListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
     public void setItems(List<ResponseGetDeskList.DataBean> items) {
         this.items = items;
-         notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
     List<ResponseGetDeskList.DataBean> items;
@@ -44,8 +46,8 @@ public class OrderDeskListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
         if (items.get(position).getIsoc().equals("1")) {
             holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid);
-            holder.price.setText(items.get(position).getMoney());
-            holder.number.setText(items.get(position).getNum());
+            holder.price.setText("￥" + StringHelp.float2Int(StringHelp.round(items.get(position).getMoney())));
+            holder.number.setText(items.get(position).getNum() + "人");
         } else {
             holder.parent.setBackgroundResource(R.drawable.shape_verify_button);
             holder.price.setText("");
@@ -59,8 +61,9 @@ public class OrderDeskListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
                 }
             }
         });
+        TextPaint tp = holder.name.getPaint();
+        tp.setFakeBoldText(true);
         holder.name.setText(items.get(position).getName());
-
     }
 
     @Override

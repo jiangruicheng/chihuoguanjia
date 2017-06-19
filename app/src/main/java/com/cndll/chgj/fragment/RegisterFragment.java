@@ -235,6 +235,11 @@ public class RegisterFragment extends BaseFragment<RegisterListAdpater> implemen
         baseDisProg();
     }
 
+    @Override
+    public void toast(String s) {
+
+    }
+
     private RegisterPresenter presenter;
 
     @Override

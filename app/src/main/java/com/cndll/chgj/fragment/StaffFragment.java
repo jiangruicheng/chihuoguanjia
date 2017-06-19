@@ -220,6 +220,11 @@ public class StaffFragment extends BaseFragment implements StaffView {
         baseDisProg();
     }
 
+    @Override
+    public void toast(String s) {
+
+    }
+
     StaffPresenter presenter;
 
     @Override

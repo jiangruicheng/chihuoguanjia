@@ -9,7 +9,7 @@ import java.util.List;
  * Created by kongqing on 2017/5/4.
  */
 
-public class RequestOrder extends BaseRequest{
+public class RequestOrder extends BaseRequest {
 
     /**
      * code : 1
@@ -69,7 +69,7 @@ public class RequestOrder extends BaseRequest{
     private String tab_id;
     private String ordernum;
     private Object ym;
-    private Object note;
+    private String note;
     private List<WriteDishBean> writedishs;
     private String storename;
     private String type_txt;
@@ -265,11 +265,11 @@ public class RequestOrder extends BaseRequest{
         return this;
     }
 
-    public Object getNote() {
+    public String getNote() {
         return note;
     }
 
-    public RequestOrder setNote(Object note) {
+    public RequestOrder setNote(String note) {
         this.note = note;
         return this;
     }
@@ -367,6 +367,7 @@ public class RequestOrder extends BaseRequest{
         }
 
         private String backCount;
+
         public String getId() {
             return id;
         }
@@ -671,9 +672,28 @@ public class RequestOrder extends BaseRequest{
             return this;
         }
 
+        public String getIs_print() {
+            return is_print;
+        }
+
+        public void setIs_print(String is_print) {
+            this.is_print = is_print;
+        }
+
+        private String is_print = "1";
         private String count;
         private String giveCount;
         private String isWrite;
+
+        public String getUnit() {
+            return unit;
+        }
+
+        public void setUnit(String unit) {
+            this.unit = unit;
+        }
+
+        private String unit = "份";
         private ResponseGetCaipinList.DataBean.RemarkBean remarks;
         private String price;
         private String name;

@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
+import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.cndll.chgj.R;
 import com.cndll.chgj.adapter.MendianListAdpater;
 import com.cndll.chgj.mvp.MObeserver;
@@ -31,6 +32,7 @@ import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.mode.bean.request.RequestPrintList;
 import com.cndll.chgj.mvp.mode.bean.request.RequestQueryAppData;
 import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseHome;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseMendianHomeList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponsePrintList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseQueryAppData;
@@ -49,6 +51,7 @@ import com.cndll.chgj.util.PopUpViewUtil;
 import com.cndll.chgj.weight.MesgShow;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -148,8 +151,8 @@ public class HomeFragment extends BaseFragment implements HomeView {
         switchMendian.getLocationOnScreen(locations);
         locations[1] = locations[1] + switchMendian.getHeight();
         popUpViewUtil.popListWindow(switchMendian, view,
-                popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getWidth() / 3 * 2,
-                popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 10 * 4, Gravity.NO_GRAVITY, locations);
+                popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getWidth() / 2 * 1,
+                popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 11 * 3, Gravity.NO_GRAVITY, locations);
         /*setMendianList(new ArrayList<ResponseMendianHomeList.DataBean>());*/
         presenter.getMendianList();
     }
@@ -487,14 +490,23 @@ public class HomeFragment extends BaseFragment implements HomeView {
     }
 
 
-    private void setBannerUrl(List<String> urls) {
-
+    private void setBannerUrl(final List<ResponseHome.DataBean.BlistBean> urls) {
+        List<String> list = new ArrayList<String>();
+        for (ResponseHome.DataBean.BlistBean r : urls) {
+            list.add(r.getImgsrc());
+        }
         banner.setPages(new CBViewHolderCreator<LocalImageHolderView>() {
             @Override
             public LocalImageHolderView createHolder() {
                 return new LocalImageHolderView();
             }
-        }, urls).setCanLoop(true);
+        }, list).setCanLoop(true);
+        banner.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                replaceFragmentAddToBackStack(WebViewFragment.newInstance(urls.get(position).getUrl(), ""), null);
+            }
+        });
     }
 
     @Override
@@ -564,6 +576,11 @@ public class HomeFragment extends BaseFragment implements HomeView {
     @Override
     public void disProg() {
         baseDisProg();
+    }
+
+    @Override
+    public void toast(String s) {
+
     }
 
     private void getAppLastTime() {
@@ -636,7 +653,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
     }
 
     @Override
-    public void setBanner(List<String> urls) {
+    public void setBanner(List<ResponseHome.DataBean.BlistBean> urls) {
         setBannerUrl(urls);
     }
 

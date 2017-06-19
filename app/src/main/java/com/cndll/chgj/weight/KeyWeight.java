@@ -16,7 +16,24 @@ import com.cndll.chgj.util.PopUpViewUtil;
  */
 
 public class KeyWeight {
+    public int getCancelcolor() {
+        return cancelcolor;
+    }
 
+    public void setCancelcolor(int cancelcolor) {
+        this.cancelcolor = cancelcolor;
+    }
+
+    public int getSurecolor() {
+        return surecolor;
+    }
+
+    public void setSurecolor(int surecolor) {
+        this.surecolor = surecolor;
+    }
+
+    private int cancelcolor;
+    private int surecolor;
     private PopUpViewUtil popUpViewUtil;
 
     public void setKey(View key) {
@@ -87,6 +104,8 @@ public class KeyWeight {
         cancel = (Button) key.findViewById(R.id.cancel);
         sure = (Button) key.findViewById(R.id.sure);
         cancel.setText(cancelText);
+        cancel.setBackgroundColor(cancelcolor);
+        sure.setBackgroundColor(surecolor);
         sure.setText(sureText);
         TextView tran = (TextView) key.findViewById(R.id.tran);
         TextView show = (TextView) key.findViewById(R.id.show);

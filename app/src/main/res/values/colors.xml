@@ -19,4 +19,8 @@
     <color name="bgColor_overlay">#60000000</color>
     <color name="apla">#757575</color>
     <color name="line">#8FC1C0C0</color>
+    <color name="popRequestMethod">#f95022</color>
+    <color name="popRequestSend">#009cff</color>
+    <color name="popRequestDelete">#f701ba</color>
+
 </resources>

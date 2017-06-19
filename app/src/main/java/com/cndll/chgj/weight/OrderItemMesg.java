@@ -1,5 +1,6 @@
 package com.cndll.chgj.weight;
 
+import android.graphics.Color;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,6 +14,15 @@ import com.cndll.chgj.util.StringHelp;
 public class OrderItemMesg {
     private TextView name, method, price, countEdit, rquest;
 
+    public boolean isList() {
+        return isList;
+    }
+
+    public void setList(boolean list) {
+        isList = list;
+    }
+
+    private boolean isList;
 
     public void init(View view) {
         name = (TextView) view.findViewById(R.id.desh_name);
@@ -42,14 +52,26 @@ public class OrderItemMesg {
     }
 
     public OrderItemMesg setCount(String name) {
-        this.countEdit.setText(name);
+        this.countEdit.setText(StringHelp.float2Int(name));
+        if (name.equals(" ")) {
+            this.countEdit.setVisibility(View.GONE);
+            this.rquest.setVisibility(View.GONE);
+        } else {
+            this.countEdit.setVisibility(View.VISIBLE);
+            this.rquest.setVisibility(View.VISIBLE);
+        }
         if ((StringHelp.isFloat(name) && Float.valueOf(name) == 0) || name.equals("0.0")) {
             countEdit.setBackgroundResource(R.color.yinse);
             rquest.setBackgroundResource(R.color.yinse);
             countEdit.setEnabled(false);
             rquest.setEnabled(false);
         } else {
-            countEdit.setBackgroundResource(R.color.white);
+            if (isList) {
+                countEdit.setBackgroundResource(R.color.cube_holo_blue_dark);
+                countEdit.setTextColor(Color.WHITE);
+            } else {
+                countEdit.setBackgroundResource(R.color.white);
+            }
             rquest.setBackgroundResource(R.color.white);
             countEdit.setEnabled(true);
             rquest.setEnabled(true);

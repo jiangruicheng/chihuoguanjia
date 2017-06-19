@@ -65,9 +65,15 @@ public class BillQueryFragment extends BaseFragment implements BillView {
     @OnClick(R.id.today)
     void onclic_today() {
         Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR);
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH) + 1;
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int day /*= calendar.get(Calendar.DAY_OF_MONTH)*/;
+        if (hour > 5) {
+            day = calendar.get(Calendar.DAY_OF_MONTH);
+        } else {
+            day = calendar.get(Calendar.DAY_OF_MONTH) - 1;
+        }
         etm = stm = year + "-" + month + "-" + day;
         billInfo.setText("账单信息      日期：" + stm + "——" + etm);
         presenter.getBillList(new RequestGetBillList().setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()).setEtm(etm).setStm(stm));
@@ -79,9 +85,11 @@ public class BillQueryFragment extends BaseFragment implements BillView {
     @OnClick(R.id.yesterday)
     void onclic_yesterday() {
         Calendar calendar = Calendar.getInstance();
+
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH) + 1;
         int day = calendar.get(Calendar.DAY_OF_MONTH) - 1;
+
         etm = stm = year + "-" + month + "-" + day;
         billInfo.setText("账单信息      日期：" + stm + "——" + etm);
         presenter.getBillList(new RequestGetBillList().setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()).setEtm(etm).setStm(stm));
@@ -156,6 +164,18 @@ public class BillQueryFragment extends BaseFragment implements BillView {
                 replaceFragmentAddToBackStack(BillItemFragment.newInstance(url, adapter.getItems().get(position).getId()), null);
             }
         });
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR);
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day /*= calendar.get(Calendar.DAY_OF_MONTH)*/;
+        if (hour > 5) {
+            day = calendar.get(Calendar.DAY_OF_MONTH);
+        } else {
+            day = calendar.get(Calendar.DAY_OF_MONTH) - 1;
+        }
+        etm = stm = year + "-" + month + "-" + day;
+        billInfo.setText("账单信息      日期：" + stm + "——" + etm);
         title.setText("账单查询");
         billCondition.addTextChangedListener(new TextWatcher() {
             @Override
@@ -204,6 +224,11 @@ public class BillQueryFragment extends BaseFragment implements BillView {
     @Override
     public void disProg() {
         baseDisProg();
+    }
+
+    @Override
+    public void toast(String s) {
+
     }
 
     BIllPresenter presenter;

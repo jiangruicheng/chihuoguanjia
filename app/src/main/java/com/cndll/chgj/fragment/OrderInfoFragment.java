@@ -40,6 +40,7 @@ import com.cndll.chgj.mvp.view.OrderView;
 import com.cndll.chgj.util.LinearPagerLayoutManager;
 import com.cndll.chgj.util.PopUpViewUtil;
 import com.cndll.chgj.util.StringHelp;
+import com.cndll.chgj.weight.AllLayout;
 import com.cndll.chgj.weight.KeyWeight;
 import com.cndll.chgj.weight.MesgShow;
 import com.cndll.chgj.weight.OrderInfo;
@@ -108,7 +109,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
     @OnClick(R.id.pay_nodesk)
     void onclick_paynodesk() {
 
-        popUpkey(KeyWeight.Mode_OnlyNumb, "取消", "确认", new KeyWeight.OnKeyClick() {
+        popUpkey(KeyWeight.Mode_OnlyNumb, Color.rgb(171, 171, 171), Color.rgb(1, 169, 104), "请输入桌台号活牌号", "取消", "确认", new KeyWeight.OnKeyClick() {
             @Override
             public void onKeyCancel(String s) {
 
@@ -359,7 +360,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
             return;
         }
         if (!order.isChange && orderId != 0) {
-            popUpkey(2, "取消打折", "确定", new KeyWeight.OnKeyClick() {
+            popUpkey(2, Color.rgb(171, 171, 171), Color.rgb(1, 169, 104), "请输入折扣，例如8折则输入0.8", "取消打折", "确定", new KeyWeight.OnKeyClick() {
                 @Override
                 public void onKeyCancel(String s) {
                     order.setDisconut(1);
@@ -422,10 +423,13 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         });
     }
 
-    private void popUpkey(int mode, String hint, String sureHint, KeyWeight.OnKeyClick onKeyClick) {
+    private void popUpkey(int mode, int cancelcolor, int surecolor, String showhint, String hint, String sureHint, KeyWeight.OnKeyClick onKeyClick) {
         KeyWeight keyWeight = new KeyWeight();
         keyWeight.setCancelText(hint);
         keyWeight.setSureText(sureHint);
+        keyWeight.setShowHintText(showhint);
+        keyWeight.setCancelcolor(cancelcolor);
+        keyWeight.setSurecolor(surecolor);
         keyWeight.init(getContext(), orderListView, mode);
         keyWeight.setOnKeyClick(onKeyClick);
     }
@@ -537,18 +541,70 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                     order.setCurrPosition(order.writeDish.keyAt(position));
                     isOrderWrite = true;
                 }
-                popUpkey(KeyWeight.Mode_OnlyNumb, "删除", "确定", new KeyWeight.OnKeyClick() {
+                final boolean issend;
+                if (isOrderWrite) {
+                    issend = order.writeDish.get(order.getCurrPosition()).isSend;
+                } else {
+                    issend = order.getOrder(order.getCurrPosition()).isSend;
+                }
+                String hint = "";
+                if (issend) {
+                    hint = "退菜";
+                } else {
+                    hint = "删除";
+                }
+                popUpkey(KeyWeight.Mode_OnlyNumb, Color.rgb(241, 93, 169), Color.rgb(251, 152, 67), "请输入菜品数量", hint, "确定", new KeyWeight.OnKeyClick() {
                     @Override
                     public void onKeyCancel(String s) {
                         boolean iss;
-                        if (!isOrderWrite) {
-                            order.removeOrders(order.getCurrPosition());
-                            iss = order.getOrder(order.getCurrPosition()).isSend();
+
+                        if (issend) {
+                            if (order.isAdd) {
+                                showMesg("有菜品未送单，请先送单");
+                                return;
+                            }
+                            if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isReturn()) {
+                                showMesg("无退菜权限");
+                                return;
+                            }
+                            backDesh = new ArrayList<RequestPrintBackDesh.ItemsBean>();
+
+                            if (!isOrderWrite) {
+                                backDesh.add(new RequestPrintBackDesh.ItemsBean().setName(order.getOrder(order.getCurrPosition()).getItemsBean().getName()).
+                                        setMoney(order.getOrder(order.getCurrPosition()).getItemsBean().getPrice()).
+                                        setNum(/*order.getOrder(order.getCurrPosition()).getCount() +*/ "1").
+                                        setUnit(order.getOrder(order.getCurrPosition()).getItemsBean().getUnit()).
+                                        setM_name(""));
+                                order.getOrder(order.getCurrPosition()).backDesh();
+                            } else {
+                                backDesh.add(new RequestPrintBackDesh.ItemsBean().setName(order.writeDish.get(order.getCurrPosition()).getItemsBean().getName()).
+                                        setMoney(order.writeDish.get(order.getCurrPosition()).getItemsBean().getPrice()).
+                                        setNum(/*order.writeDish.get(order.getCurrPosition()).getCount() +*/ "1").
+                                        setUnit("盘").
+                                        setM_name(""));
+                                order.writeDish.get(order.getCurrPosition()).backDesh();
+                            }
+                            /*if (order.getOrders().size() == 0) {
+                                order.setCurrPosition(null);
+                            } else {
+                                order.setCurrPosition(order.getOrders().keyAt(0));
+                            }*/
+                            setOrderInfolayout(order.getCurrPosition(), isOrderWrite);
+
+                            sendOrds();
+
+                            isBackDesh = true;
                         } else {
-                            order.writeDish.remove(order.getCurrPosition());
-                            iss = order.writeDish.get(order.getCurrPosition()).isSend();
+                            if (!isOrderWrite) {
+                                order.removeOrders(order.getCurrPosition());
+                           /* iss = order.getOrder(order.getCurrPosition()).isSend();*/
+                            } else {
+                                order.writeDish.remove(order.getCurrPosition());
+                          /*  iss = order.writeDish.get(order.getCurrPosition()).isSend();*/
+                            }
                         }
-                        if (iss) {
+
+                        if (issend) {
                             if (order.isAdd) {
                                 showMesg("有菜品未送单，请先送单");
                                 return;
@@ -1099,6 +1155,11 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         baseDisProg();
     }
 
+    @Override
+    public void toast(String s) {
+        showToast(s);
+    }
+
     OrderPresenter presenter;
 
     @Override
@@ -1126,7 +1187,9 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH) + 1;
             int day = calendar.get(Calendar.DAY_OF_MONTH);
-            String date = year + "-" + month + "-" + day;
+            int hour = calendar.get(Calendar.HOUR);
+            int minute = calendar.get(Calendar.MINUTE);
+            String date = year + "-" + month + "-" + day + " " + hour + ":" + minute;
             printBackDesh(new RequestPrintBackDesh().setSname(AppMode.getInstance().getUsername()).setTitle("退菜单").setDate(date).setTabcode(tabname).setItems(backDesh));
             return;
         }
@@ -1225,6 +1288,11 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
 
     }
 
+    @Override
+    public void backView() {
+        popBackFragment();
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -1317,7 +1385,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
             if (isOrderWrite) {
                 viewHolder.numberEdit.setText(order.writeDish.get(order.getCurrPosition()).getCount() /*+ order.writeDish.get(order.getCurrPosition()).getGiveCount()*/ + "");
                 final View finalConvertView = convertView;
-                viewHolder.numberEdit.setOnClickListener(new View.OnClickListener() {
+                viewHolder.allLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (onItemClick != null /*&& !order.writeDish.get(order.getCurrPosition()).isSend*/) {
@@ -1367,6 +1435,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
             });
             orderItemMesg = new OrderItemMesg();
             orderItemMesg.init(convertView);
+            orderItemMesg.setList(true);
             setOrderInfolayout(order.getCurrPosition(), isOrderWrite);
             return convertView;
         }
@@ -1388,6 +1457,8 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
             public TextView yaoqiu;
             @BindView(R.id.item_mesg)
             public LinearLayout itemMesg;
+            @BindView(R.id.alllayout)
+            public AllLayout allLayout;
 
             ViewHolder(View view) {
                 ButterKnife.bind(this, view);

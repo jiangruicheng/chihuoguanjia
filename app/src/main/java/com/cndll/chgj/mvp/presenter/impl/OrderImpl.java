@@ -114,6 +114,7 @@ public class OrderImpl implements OrderPresenter {
                     public void onNext(BaseResponse baseResponse) {
                         super.onNext(baseResponse);
                         if (baseResponse.getCode() == 1) {
+                            view.toast("送单成功");
                             view.sendSucc(((ResponseAddOrd) baseResponse).getData().getOid());
                             getOrder(new RequestGetOrder().setId(((ResponseAddOrd) baseResponse).getData().getOid()));
                             // view.setDeshList(((ResponseGetCaipinList) baseResponse).getData());
@@ -246,6 +247,7 @@ public class OrderImpl implements OrderPresenter {
 
     @Override
     public void removeOrder(final String id, String type) {
+        view.showProg("");
         AppRequest.getAPI().
                 removerOrder(id, type).
                 subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
@@ -263,10 +265,13 @@ public class OrderImpl implements OrderPresenter {
                     @Override
                     public void onNext(BaseResponse baseResponse) {
                         super.onNext(baseResponse);
+                        view.disProg();
                         if (baseResponse.getCode() == 1) {
-                            view.sendSucc(0);
-                            view.showMesg("更新成功");
-                            getOrder(new RequestGetOrder().setId(Integer.valueOf(id)));
+                           // view.sendSucc(0);
+                            /*view.showMesg("更新成功");*/
+                            view.backView();
+                            view.toast("撤台成功");
+                           // getOrder(new RequestGetOrder().setId(Integer.valueOf(id)));
                             // view.setDeshList(((ResponseGetCaipinList) baseResponse).getData());
                         }
                     }
@@ -275,6 +280,7 @@ public class OrderImpl implements OrderPresenter {
 
     @Override
     public void turnOrder(final String id, String tabname, String tab_id) {
+        view.showProg("");
         AppRequest.getAPI().
                 turnOrder(id, tabname, tab_id).
                 subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
@@ -292,10 +298,13 @@ public class OrderImpl implements OrderPresenter {
                     @Override
                     public void onNext(BaseResponse baseResponse) {
                         super.onNext(baseResponse);
+                        view.disProg();
                         if (baseResponse.getCode() == 1) {
-                            view.sendSucc(((ResponseAddOrd) baseResponse).getData().getOid());
-                            view.showMesg("更新成功");
-                            getOrder(new RequestGetOrder().setId(Integer.valueOf(id)));
+                            view.backView();
+                            view.toast("换台成功");
+                           // view.sendSucc(((ResponseAddOrd) baseResponse).getData().getOid());
+                           // view.showMesg("更新成功");
+                          //  getOrder(new RequestGetOrder().setId(Integer.valueOf(id)));
                             // view.setDeshList(((ResponseGetCaipinList) baseResponse).getData());
                         }
                     }

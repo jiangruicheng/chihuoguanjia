@@ -205,6 +205,11 @@ public class LoginFragment extends BaseFragment implements LoginView {
         baseDisProg();
     }
 
+    @Override
+    public void toast(String s) {
+
+    }
+
     private LoginPresenter presenter;
 
     @Override

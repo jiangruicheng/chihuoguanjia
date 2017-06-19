@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import com.cndll.chgj.R;
 import com.cndll.chgj.fragment.OrderDishFragment;
+import com.cndll.chgj.util.StringHelp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,7 +113,7 @@ public class OrderInfo {
     }
 
     public OrderInfo setLastMoney(String count) {
-        this.lastMoney.setText(count);
+        this.lastMoney.setText(StringHelp.float2Int(StringHelp.round(count)));
         return this;
     }
 

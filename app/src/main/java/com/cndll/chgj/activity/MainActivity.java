@@ -17,6 +17,7 @@ import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.presenter.impl.HomeImpl;
 import com.cndll.chgj.mvp.presenter.impl.LoginImpl;
 import com.cndll.chgj.weight.MesgShow;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CrashReport.initCrashReport(getApplicationContext(), "f7a529b1d4", true);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         show = RxBus.getDefault().toObservable(EventType.class).throttleFirst(2, TimeUnit.SECONDS).subscribe(new Observer<EventType>() {

@@ -1,5 +1,6 @@
 package com.cndll.chgj.mvp.view;
 
+import com.cndll.chgj.mvp.mode.bean.response.ResponseHome;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseMendianHomeList;
 import com.cndll.chgj.mvp.presenter.HomePresenter;
 
@@ -10,7 +11,7 @@ import java.util.List;
  */
 
 public interface HomeView extends BaseView<HomePresenter> {
-    void setBanner(List<String> urls);
+    void setBanner(List<ResponseHome.DataBean.BlistBean> urls);
 
     void setUserNumb(String s);
 

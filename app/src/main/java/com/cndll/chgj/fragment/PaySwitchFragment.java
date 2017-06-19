@@ -327,6 +327,11 @@ public class PaySwitchFragment extends BaseFragment {
                             }
 
                             @Override
+                            public void toast(String s) {
+
+                            }
+
+                            @Override
                             public void setPresenter(BasePresenter presenter) {
 
                             }

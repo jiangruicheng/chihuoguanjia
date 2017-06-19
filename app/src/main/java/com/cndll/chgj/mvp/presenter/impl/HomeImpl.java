@@ -11,9 +11,6 @@ import com.cndll.chgj.mvp.mode.bean.response.ResponseMendianHomeList;
 import com.cndll.chgj.mvp.presenter.HomePresenter;
 import com.cndll.chgj.mvp.view.HomeView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -44,11 +41,7 @@ public class HomeImpl implements HomePresenter {
                         super.onNext(baseResponse);
                         if (baseResponse instanceof ResponseHome) {
                             if (((ResponseHome) baseResponse).getCode() == 1) {
-                                List<String> list = new ArrayList<String>();
-                                for (ResponseHome.DataBean.BlistBean r : ((ResponseHome) baseResponse).getData().getBlist()) {
-                                    list.add(r.getImgsrc());
-                                }
-                                view.setBanner(list);
+                                view.setBanner(((ResponseHome) baseResponse).getData().getBlist());
                                 view.setMendianNumb(((ResponseHome) baseResponse).getData().getCode());
                                 view.setMonthComin(((ResponseHome) baseResponse).getData().getMonthincome());
                                 view.setTodayComin(((ResponseHome) baseResponse).getData().getTodayincome() + "");

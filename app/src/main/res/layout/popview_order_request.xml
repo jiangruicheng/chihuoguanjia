@@ -11,7 +11,7 @@
         android:layout_height="0dp"
         android:layout_margin="4dp"
         android:layout_weight="1"
-        android:background="@color/cube_holo_blue_dark"
+        android:background="@drawable/shape_button_request_method"
         android:gravity="center"
         android:text="做法"
         android:textColor="@color/white" />
@@ -22,7 +22,7 @@
         android:layout_height="0dp"
         android:layout_margin="4dp"
         android:layout_weight="1"
-        android:background="@color/cube_holo_blue_dark"
+        android:background="@drawable/shape_button_request_send"
         android:gravity="center"
         android:text="赠送"
         android:textColor="@color/white" />
@@ -33,10 +33,10 @@
         android:layout_height="0dp"
         android:layout_margin="4dp"
         android:layout_weight="1"
-        android:background="@color/cube_holo_blue_dark"
+        android:background="@drawable/shape_button_request_delete"
         android:gravity="center"
         android:text="删除"
-        android:textColor="@color/white" />
+        android:textColor="@color/colorHintText" />
 
     <TextView
         android:id="@+id/four"
@@ -44,7 +44,7 @@
         android:layout_height="0dp"
         android:layout_margin="4dp"
         android:layout_weight="1"
-        android:background="@color/cube_holo_blue_dark"
+        android:background="@drawable/shape_button_request_method"
         android:gravity="center"
         android:text="取消赠送"
         android:textColor="@color/white" />

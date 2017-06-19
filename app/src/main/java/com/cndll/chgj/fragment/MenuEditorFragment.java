@@ -389,6 +389,11 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
         baseDisProg();
     }
 
+    @Override
+    public void toast(String s) {
+
+    }
+
     MenuPresenter presenter;
 
     @Override

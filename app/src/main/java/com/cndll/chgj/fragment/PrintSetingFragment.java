@@ -207,6 +207,11 @@ public class PrintSetingFragment extends BaseFragment implements PrintView {
         baseDisProg();
     }
 
+    @Override
+    public void toast(String s) {
+
+    }
+
     private PrintListPresenter presenter;
 
     @Override

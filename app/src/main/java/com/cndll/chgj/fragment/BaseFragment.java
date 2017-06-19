@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import com.cndll.chgj.R;
 import com.cndll.chgj.activity.MainActivity;
@@ -113,6 +114,13 @@ public class BaseFragment<T extends ListAdapter> extends Fragment {
 
     protected void baseShowMesg(String mesg, View view, MesgShow.OnButtonListener sure, MesgShow.OnButtonListener cancel) {
         MesgShow.showMesg("", mesg, view, sure, cancel, false);
+    }
+
+    protected void showToast(String s) {
+        Toast toast;
+        toast = Toast.makeText(getContext(), s, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 
     PopUpViewUtil prog;

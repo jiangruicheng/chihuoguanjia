@@ -13,5 +13,7 @@ public interface BaseView<T extends BasePresenter> {
 
     void disProg();
 
+    void toast(String s);
+
     void setPresenter(T presenter);
 }

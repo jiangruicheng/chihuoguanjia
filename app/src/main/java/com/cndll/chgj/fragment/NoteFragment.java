@@ -269,6 +269,11 @@ public class NoteFragment extends BaseFragment implements NoteView {
         baseDisProg();
     }
 
+    @Override
+    public void toast(String s) {
+
+    }
+
     NotePresenter presenter;
 
     @Override

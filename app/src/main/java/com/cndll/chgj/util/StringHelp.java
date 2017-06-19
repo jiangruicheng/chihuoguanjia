@@ -21,4 +21,34 @@ public class StringHelp {
         Matcher matcher = pattern.matcher(num);
         return matcher.matches();
     }
+
+    public static String round(String s) {
+        float a = 0;
+        String b = "";
+        if (isFloat(s)) {
+            a = Float.valueOf(s);
+            a = Math.round(a);
+            b = a + "";
+        }
+        return b;
+    }
+
+    public static String float2Int(String s) {
+        float a;
+        int c;
+        String b = "";
+        if (isFloat(s)) {
+            a = Float.valueOf(s);
+            if (a == 0) {
+                b = "0";
+            }
+            if (a % ((int) a) == 0) {
+                c = (int) a;
+                b = c + "";
+            } else {
+                b = a + "";
+            }
+        }
+        return b;
+    }
 }

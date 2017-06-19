@@ -184,6 +184,11 @@ public class DeskFragment extends BaseFragment implements AddDeskView {
         baseDisProg();
     }
 
+    @Override
+    public void toast(String s) {
+
+    }
+
     AddDeskPresenter presenter;
 
     @Override

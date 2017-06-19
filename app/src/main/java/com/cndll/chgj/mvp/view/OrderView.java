@@ -21,4 +21,5 @@ public interface OrderView extends BaseView<OrderPresenter> {
     void setOrder(ResponseGetOrder getOrder);
 
     void printNoDeskOrderSucc(int ord);
+    void backView();
 }
