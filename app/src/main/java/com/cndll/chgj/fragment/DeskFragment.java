@@ -108,8 +108,8 @@ public class DeskFragment extends BaseFragment implements AddDeskView {
         unbinder = ButterKnife.bind(this, view);
         title.setText("管咸事");
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) rightText.getLayoutParams();
-        params.width = 46;
-        params.height = 46;
+        params.width = 58;
+        params.height = 58;
         rightText.setLayoutParams(params);
         rightText.setOnClickListener(new View.OnClickListener() {
             @Override

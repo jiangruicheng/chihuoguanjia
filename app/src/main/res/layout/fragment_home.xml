@@ -177,6 +177,8 @@
         </LinearLayout>
 
         <View
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:background="@color/yinse" />
@@ -201,11 +203,12 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="369"
-
                 android:textSize="11sp" />
         </LinearLayout>
 
         <View
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:background="@color/yinse" />
@@ -237,11 +240,10 @@
             android:id="@+id/search_baobiao"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginBottom="2dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="1dp"
+            android:layout_marginLeft="32dp"
             android:layout_marginRight="6dp"
-            android:layout_marginTop="2dp"
-
+            android:layout_marginTop="1dp"
             android:layout_weight="1"
             android:background="@drawable/shape_fillet_solid"
             android:text="报表查询"

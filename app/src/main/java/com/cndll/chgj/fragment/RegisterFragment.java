@@ -197,7 +197,7 @@ public class RegisterFragment extends BaseFragment<RegisterListAdpater> implemen
         for (int i = 0; i < a.size(); i++) {
             b.add(new RequestMendianOrd().setId(Integer.valueOf(a.get(i).getId())).setOrd(a.get(i).getOrderList()));
         }*/
-        presenter.ordStore(adapter.getOrd());
+        // presenter.ordStore(adapter.getOrd());
     }
 
     private RegisterInfo registerInfo;

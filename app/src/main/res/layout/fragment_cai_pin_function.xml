@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
+    android:orientation="vertical"
     android:weightSum="10"
     tools:context="com.cndll.chgj.fragment.CaipinFragment">
 
@@ -20,7 +20,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="3dp"
-            android:background="@color/white" />
+            android:background="@color/white"
+            android:drawableLeft="@mipmap/search"
+            android:hint="可以输入做法名称、首字母查询"
+            android:textSize="11sp" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
@@ -34,10 +37,13 @@
         android:id="@+id/add_method"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="12dp"
-        android:layout_weight="1"
-        android:background="#F73CB7"
+        android:background="@drawable/shape_button_addmethod"
         android:text="添加做法"
         android:textColor="@color/white"
-        android:textSize="24sp" />
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="2dp"
+        android:layout_weight="0.8"
+        android:textSize="20sp" />
 </LinearLayout>

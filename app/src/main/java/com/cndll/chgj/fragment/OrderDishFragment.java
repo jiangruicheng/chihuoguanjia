@@ -370,20 +370,22 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                         }
                         backDesh = new ArrayList<RequestPrintBackDesh.ItemsBean>();
                         if (!isOrderWrite) {
+                            orders.getOrder(orders.getCurrPosition()).backDesh();
                             backDesh.add(new RequestPrintBackDesh.ItemsBean().setName(orders.getOrder(orders.getCurrPosition()).getItemsBean().getName()).
                                     setMoney(orders.getOrder(orders.getCurrPosition()).getItemsBean().getPrice()).
-                                    setNum(/*orders.getOrder(orders.getCurrPosition()).getCount() +*/ "1").
+                                    setNum(/*orders.getOrder(orders.getCurrPosition()).getCount() +*/ orders.getOrders().get(orders.getCurrPosition()).backCountOnce + "").
                                     setUnit(orders.getOrder(orders.getCurrPosition()).getItemsBean().getUnit()).
                                     setM_name(""));
-                            orders.getOrder(orders.getCurrPosition()).backDesh();
+
 
                         } else {
+                            orders.writeDish.get(orders.getCurrPosition()).backDesh();
                             backDesh.add(new RequestPrintBackDesh.ItemsBean().setName(orders.writeDish.get(orders.getCurrPosition()).getItemsBean().getName()).
                                     setMoney(orders.writeDish.get(orders.getCurrPosition()).getItemsBean().getPrice()).
-                                    setNum(/*orders.writeDish.get(orders.getCurrPosition()).getCount() +*/ "1").
+                                    setNum(/*orders.writeDish.get(orders.getCurrPosition()).getCount() +*/ orders.writeDish.get(orders.getCurrPosition()).backCountOnce + "").
                                     setUnit("盘").
                                     setM_name(""));
-                            orders.writeDish.get(orders.getCurrPosition()).backDesh();
+
                         }
                         if (orders.getOrders().size() == 0) {
                             orders.setCurrPosition(null);
@@ -1751,8 +1753,8 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 return backCount;
             }
 
-            public void setBackCount() {
-                backCount = Float.valueOf(backCount) + 1;
+            public void setBackCount(float a) {
+                backCount = Float.valueOf(backCount) + a;
                 itemsBean.setBackCount(backCount + "");
 
             }
@@ -1794,16 +1796,26 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 return this;
             }
 
+            float backCountOnce = 0;
+
             public void backDesh() {
+
                 if (count - giveCount > 0) {
-                    count = count - 1;
+                    if (count - giveCount > 0 && count - giveCount < 1) {
+                        backCountOnce = count - (int) count;
+                        count = 0;
+                    } else {
+                        count = count - 1;
+                        backCountOnce = 1;
+                    }
                 } else if (giveCount > 0) {
                     giveCount = giveCount - 1;
                     count = count - 1;
+                    backCountOnce = 1;
                 }
-                setBackCount();
+                setBackCount(backCountOnce);
                 itemsBean.setGiveCount((int) giveCount + "");
-                itemsBean.setCount((int) count + "");
+                itemsBean.setCount(count + "");
                 orders.isChange = true;
             }
 
@@ -1878,8 +1890,8 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 return backCount;
             }
 
-            public void setBackCount() {
-                backCount = Float.valueOf(backCount) + 1;
+            public void setBackCount(float a) {
+                backCount = Float.valueOf(backCount) + a;
                 itemsBean.setBackCount(backCount + "");
             }
 
@@ -1911,16 +1923,27 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 return this;
             }
 
+            float backCountOnce = 0;
+
             public void backDesh() {
+                backCountOnce = 0;
                 if (count - giveCount > 0) {
-                    count = count - 1;
+                    if (count - giveCount > 0 && count - giveCount < 1) {
+                        backCountOnce = count - (int) count;
+                        count = 0;
+                    } else {
+                        count = count - 1;
+                        backCountOnce = 1;
+                    }
+
                 } else if (giveCount > 0) {
                     giveCount = giveCount - 1;
                     count = count - 1;
+                    backCountOnce = 1;
                 }
-                setBackCount();
+                setBackCount(backCountOnce);
                 itemsBean.setGiveCount((int) giveCount);
-                itemsBean.setCount((int) count + "");
+                itemsBean.setCount(count + "");
                 orders.isChange = true;
             }
 

@@ -1,13 +1,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:background="@color/yinse"
+        android:gravity="center_vertical"
+        android:paddingLeft="8dp"
+        android:text="注意：添加菜品时请点击相对应的菜类"
+        android:textColor="@color/buttonStork"
+        android:textSize="11sp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/menu_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-         />
+        android:layout_height="0dp"
+        android:layout_weight="7" />
 </LinearLayout>
 
 

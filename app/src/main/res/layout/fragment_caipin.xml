@@ -9,11 +9,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.6"
+        android:layout_weight="0.5"
         android:background="#CCCCCC">
 
         <EditText
+            android:hint="可以输入菜品名字、编号、首字母查询"
+            android:textSize="11sp"
             android:id="@+id/search_caipin"
+            android:drawableLeft="@mipmap/search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="3dp"

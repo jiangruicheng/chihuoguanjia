@@ -4,6 +4,7 @@ package com.cndll.chgj.adapter;
  * Created by jiang_ruicheng on 17/5/4.
  */
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextPaint;
 import android.view.LayoutInflater;
@@ -43,13 +44,14 @@ public class OrderDeskListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
     @Override
     public void onBindViewHolder(ItemViewHolder holder, final int position) {
-
+        holder.price.setTextColor(Color.WHITE);
+        holder.number.setTextColor(Color.WHITE);
         if (items.get(position).getIsoc().equals("1")) {
             holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid);
             holder.price.setText("￥" + StringHelp.float2Int(StringHelp.round(items.get(position).getMoney())));
             holder.number.setText(items.get(position).getNum() + "人");
         } else {
-            holder.parent.setBackgroundResource(R.drawable.shape_verify_button);
+            holder.parent.setBackgroundResource(R.drawable.shape_button_orderdesh_dc);
             holder.price.setText("");
             holder.number.setText("");
         }

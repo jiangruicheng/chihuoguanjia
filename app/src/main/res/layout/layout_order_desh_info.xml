@@ -2,13 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/item_mesg"
     android:layout_width="match_parent"
-    android:layout_height="56dp"
+    android:layout_height="@dimen/item_weight"
+    android:background="@mipmap/blacbackground"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@mipmap/blacbackground">
+        android:layout_height="match_parent">
 
         <com.cndll.chgj.weight.AllLayout
             android:id="@+id/alllayout"
@@ -77,6 +77,7 @@
             </LinearLayout>
 
         </com.cndll.chgj.weight.AllLayout>
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -104,6 +105,7 @@
                 android:textColor="@color/white"
                 android:visibility="gone" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -112,9 +114,9 @@
 
             <TextView
                 android:id="@+id/yaoqiu"
-                android:layout_margin="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="6dp"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
 

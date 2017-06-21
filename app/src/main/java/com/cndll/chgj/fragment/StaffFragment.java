@@ -72,13 +72,7 @@ public class StaffFragment extends BaseFragment implements StaffView {
     void onclick_register() {
         final PopviewStaff popviewStaff = new PopviewStaff();
         popviewStaff.show();
-        title.setText("我的员工");
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popBackFragment();
-            }
-        });
+
         popviewStaff.cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,6 +159,7 @@ public class StaffFragment extends BaseFragment implements StaffView {
         unbinder = ButterKnife.bind(this, view);
         adapter = new StaffAdapter();
         list.setAdapter(adapter);
+        title.setText("我的员工");
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -290,9 +285,9 @@ public class StaffFragment extends BaseFragment implements StaffView {
         public View getView(final int position, View convertView, ViewGroup parent) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_staff, parent, false);
             ViewHolder viewHolder = new ViewHolder(convertView);
-            viewHolder.satffPassword.setText(mitems.get(position).getPasstext());
+            viewHolder.satffPassword.setText("密码 " + mitems.get(position).getPasstext());
             viewHolder.staff.setText(mitems.get(position).getUsername() + " " + mitems.get(position).getTel());
-            viewHolder.staffQuanxian.setText(mitems.get(position).getQxtxt());
+            viewHolder.staffQuanxian.setText("权限：" + mitems.get(position).getQxtxt());
             viewHolder.staffQuanxian.setTextColor(Color.RED);
             viewHolder.sting.setOnClickListener(new View.OnClickListener() {
                 @Override

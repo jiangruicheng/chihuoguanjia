@@ -13,21 +13,23 @@
         android:id="@+id/frame1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="9" />
+        android:layout_weight="9.2" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="2dp"
-        android:layout_weight="1"
+        android:layout_weight="0.8"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/add_cailei"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginRight="4dp"
+           android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:layout_weight="1"
+            android:layout_marginTop="2dp"
             android:background="@mipmap/greenback"
             android:text="添加菜类"
             android:textColor="@color/black"
@@ -37,7 +39,8 @@
             android:id="@+id/add_caipin"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="4dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:layout_weight="1"
             android:background="@mipmap/addcaipin"
             android:text="添加菜品"

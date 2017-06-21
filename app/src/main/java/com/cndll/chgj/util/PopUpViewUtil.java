@@ -67,11 +67,11 @@ public class PopUpViewUtil {
             }
         });
         if (null != locations && locations.length == 2) {
-            if (null == location.getWindowToken())
+            if (location==null||null == location.getWindowToken())
                 return;
             popupWindow.showAtLocation(location, gravity, locations[0], locations[1]);
         } else {
-            if (null == location.getWindowToken())
+            if (location==null||null == location.getWindowToken())
                 return;
             popupWindow.showAtLocation(location, gravity, 0, 0);
         }

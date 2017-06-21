@@ -35,17 +35,17 @@ public class RegisterListAdpater extends ListAdapter<ResponseGetStoreList.DataBe
                 }
             }
         });
-        ((RegistHolderView)holder).move.setOnTouchListener(new View.OnTouchListener() {
+        ((RegistHolderView) holder).move.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
-                    mDragStartListener.onStartDrag(holder);
+                    //     mDragStartListener.onStartDrag(holder);
                 }
                 return false;
             }
         });
         ((RegistHolderView) holder).name.setText(mitems.get(position).getName());
-        ((RegistHolderView) holder).id.setText("门店编号："+mitems.get(position).getId());
+        ((RegistHolderView) holder).id.setText("门店编号：" + mitems.get(position).getId());
     }
 
     @Override

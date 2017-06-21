@@ -10,15 +10,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="0.6"
         android:background="@color/yinse">
 
         <EditText
             android:id="@+id/bill_condition"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="8dp"
-            android:background="@drawable/shape_dialog_fillet_solid" />
+            android:layout_margin="3dp"
+            android:background="@drawable/shape_dialog_fillet_solid"
+            android:drawableLeft="@mipmap/search"
+            android:hint="可输入账单号后4四位或桌台号查询"
+            android:textSize="11sp" />
     </LinearLayout>
 
     <TextView
@@ -47,7 +50,7 @@
             android:layout_height="match_parent"
             android:layout_margin="8dp"
             android:layout_weight="1"
-            android:background="@drawable/shape_fillet_solid_red"
+            android:background="@drawable/shape_button_querybill_today"
             android:text="今天" />
 
         <Button
@@ -56,7 +59,7 @@
             android:layout_height="match_parent"
             android:layout_margin="8dp"
             android:layout_weight="1"
-            android:background="@drawable/shape_fillet_solid_red"
+            android:background="@drawable/shape_button_querybill_yestoday"
             android:text="昨天" />
 
         <Button
@@ -65,7 +68,7 @@
             android:layout_height="match_parent"
             android:layout_margin="8dp"
             android:layout_weight="1"
-            android:background="@drawable/shape_fillet_solid_red"
+            android:background="@drawable/shape_button_querybill_yestoday"
             android:text="自定日期" />
     </LinearLayout>
 </LinearLayout>

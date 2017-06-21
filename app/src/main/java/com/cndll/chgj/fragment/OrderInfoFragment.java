@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -174,7 +175,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         popviewOther.trunDesk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (order == null) {
+                if (orderId == 0) {
                     showMesg("此台不存在消费，无需转台");
                     return;
                 }
@@ -230,7 +231,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         popviewOther.printOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (order == null) {
+                if (orderId == 0) {
                     showMesg("此台不存在消费，无需打印");
                     return;
                 }
@@ -250,7 +251,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         popviewOther.removeDesk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (order == null) {
+                if (orderId == 0) {
                     showMesg("此台不存在消费，无需撤台");
                     return;
                 }
@@ -334,7 +335,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
             showMesg("无买单权限");
             return;
         }
-        if (order == null) {
+        if (orderId == 0) {
             showMesg("此台不存在消费，无需买单");
             return;
         }
@@ -352,8 +353,9 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
 
     @OnClick(R.id.dazhe)
     void onclick_discount() {
-        if (order == null) {
+        if (orderId == 0) {
             showMesg("此台不存在消费，无需打折");
+            return;
         }
         if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isDiscount()) {
             showMesg("无打折权限");
@@ -490,7 +492,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         return this;
     }
 
-    int orderId;
+    int orderId = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
@@ -511,6 +513,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         titleLeft.setText(mParam1);
         titleRight.setText(mParam2);
         adapter = new OrderListAdapter();
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -521,6 +524,13 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
             adapter.setOrderList(order);
         }
         orderListView.setAdapter(adapter);
+        orderListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                adapter.selectItem = position;
+                adapter.notifyDataSetChanged();
+            }
+        });
         orderInfo = new OrderInfo();
         orderInfo.init(orderinfolayout);
         orderInfo.setMesg(order);
@@ -528,6 +538,8 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
             @Override
             public void onNumbClick(final OrderDishFragment.Orders order, final List<OrderDishFragment.Orders.Order> orders, final int position, View Item) {
                 final boolean isOrderWrite;
+                adapter.selectItem = position;
+                adapter.notifyDataSetChanged();
                 int i;
                 if (order.writeDish == null || position > order.writeDish.size() - 1) {
                     isOrderWrite = false;
@@ -651,6 +663,8 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
 
             @Override
             public void onRequest(final int position, View view) {
+                adapter.selectItem = position;
+                adapter.notifyDataSetChanged();
                 boolean iss;
                 final boolean isOrderWrite;
                 orderItemMesg = new OrderItemMesg();
@@ -1316,6 +1330,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
 
     public class OrderListAdapter extends BaseAdapter {
 
+        int selectItem = 0;
 
         public OnItemClick getOnItemClick() {
             return onItemClick;
@@ -1366,9 +1381,10 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_order_desh_info, parent, false);
+            convertView.setBackgroundColor(Color.BLACK);
+
             ViewHolder viewHolder = new ViewHolder(convertView);
             final boolean isOrderWrite;
-            viewHolder.numberEdit.setBackgroundResource(R.color.cube_holo_blue_dark);
             int i;
             if (order.writeDish == null || position > order.writeDish.size() - 1) {
                 isOrderWrite = false;
@@ -1406,7 +1422,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
             } else {
                 viewHolder.numberEdit.setText(order.getOrders().get(order.getCurrPosition()).getCount() /*+ order.getOrders().get(order.getCurrPosition()).getGiveCount() */ + "");
                 final View finalConvertView = convertView;
-                viewHolder.numberEdit.setOnClickListener(new View.OnClickListener() {
+                viewHolder.allLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (onItemClick != null /*&& !order.getOrders().get(order.getCurrPosition()).isSend*/) {
@@ -1437,6 +1453,22 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
             orderItemMesg.init(convertView);
             orderItemMesg.setList(true);
             setOrderInfolayout(order.getCurrPosition(), isOrderWrite);
+            if (order.getOrder(order.getCurrPosition()).getItemsBean().getCount().equals("0.0")) {
+
+            } else {
+                if (position == selectItem) {
+                    viewHolder.numberEdit.setBackgroundResource(R.drawable.shape_button_orderinfo_edit);
+                    viewHolder.yaoqiu.setBackgroundResource(R.drawable.shape_button_orderinfo_edit);
+                    viewHolder.numberEdit.setTextColor(Color.WHITE);
+                    viewHolder.yaoqiu.setTextColor(Color.WHITE);
+                } else {
+                    viewHolder.numberEdit.setBackgroundResource(R.drawable.shape_dialog_fillet_solid);
+                    viewHolder.numberEdit.setTextColor(Color.rgb(0x06, 0x3c, 0x9f));
+                    viewHolder.yaoqiu.setBackgroundResource(R.drawable.shape_dialog_fillet_solid);
+                    viewHolder.yaoqiu.setTextColor(Color.rgb(0x06, 0x3c, 0x9f));
+                }
+            }
+
             return convertView;
         }
 
@@ -1479,6 +1511,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         TextView printOrder;
         @BindView(R.id.cancel)
         TextView cancel;
+
         Unbinder unbinder;
 
         private void init() {

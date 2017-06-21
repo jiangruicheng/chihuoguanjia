@@ -147,7 +147,7 @@ public class SendFragment extends BaseFragment implements OrderView {
         delete.setVisibility(View.GONE);
         titleRight.setText("人数：" + personCount.getText().toString());
         title.setText("");
-        rightText.setText("修改");
+        //rightText.setText("修改");
         if (orderDishFragment.responseOrd != null) {
             titleRight.setText("人数：" + orderDishFragment.responseOrd.getData().getPernum());
         } else {

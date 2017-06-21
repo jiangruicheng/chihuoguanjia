@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cndll.chgj.R;
 import com.cndll.chgj.mvp.MObeserver;
@@ -99,7 +98,7 @@ public class SetingFragment extends BaseFragment {
             public void onNext(BaseResponse baseResponse) {
                 super.onNext(baseResponse);
                 if (baseResponse.getCode() == 1) {
-                    Toast.makeText(getContext(), "sucess", Toast.LENGTH_SHORT).show();
+                    showToast("设置成功");
                 }
             }
         });
@@ -190,16 +189,16 @@ public class SetingFragment extends BaseFragment {
         printSet = new ButtonSwitch();
         discountSet = new ButtonSwitch();
         backSet.setText("是", "否");
-        backSet.setTextColor(Color.WHITE, Color.GRAY);
-        backSet.setRightBackground(R.drawable.shape_dialog_fillet_solid);
+        backSet.setTextColor(Color.WHITE, Color.BLACK);
+        backSet.setRightBackground(R.drawable.shape_button_black);
         backSet.setLeftBackground(R.drawable.shape_fillet_solid_blue);
         printSet.setText("一菜一单", "一桌一单");
-        printSet.setTextColor(Color.WHITE, Color.GRAY);
-        printSet.setRightBackground(R.drawable.shape_dialog_fillet_solid);
+        printSet.setTextColor(Color.WHITE, Color.BLACK);
+        printSet.setRightBackground(R.drawable.shape_button_black);
         printSet.setLeftBackground(R.drawable.shape_fillet_solid_blue);
-        discountSet.setText("是", "否");
-        discountSet.setTextColor(Color.WHITE, Color.GRAY);
-        discountSet.setRightBackground(R.drawable.shape_dialog_fillet_solid);
+        discountSet.setText("否", "是");
+        discountSet.setTextColor(Color.WHITE, Color.BLACK);
+        discountSet.setRightBackground(R.drawable.shape_button_black);
         discountSet.setLeftBackground(R.drawable.shape_fillet_solid_blue);
         backSet.init(view1);
         printSet.init(view2);
@@ -230,9 +229,9 @@ public class SetingFragment extends BaseFragment {
                         backSet.setLeft(false);
                     }
                     if (IsTrue(responseGetSeting.getData().getDis_zk())) {
-                        discountSet.setLeft(true);
-                    } else {
                         discountSet.setLeft(false);
+                    } else {
+                        discountSet.setLeft(true);
                     }
                     if (IsTrue(responseGetSeting.getData().getCd_method())) {
                         printSet.setLeft(true);

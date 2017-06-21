@@ -13,6 +13,7 @@ import com.cndll.chgj.util.StringHelp;
 
 public class OrderItemMesg {
     private TextView name, method, price, countEdit, rquest;
+    private View alllayout;
 
     public boolean isList() {
         return isList;
@@ -30,6 +31,7 @@ public class OrderItemMesg {
         price = (TextView) view.findViewById(R.id.all_price);
         countEdit = (TextView) view.findViewById(R.id.number_edit);
         rquest = (TextView) view.findViewById(R.id.yaoqiu);
+        alllayout = view.findViewById(R.id.alllayout);
     }
 
     public OrderItemMesg setName(String name) {
@@ -52,6 +54,7 @@ public class OrderItemMesg {
     }
 
     public OrderItemMesg setCount(String name) {
+        // this.countEdit.setText(name);
         this.countEdit.setText(StringHelp.float2Int(name));
         if (name.equals(" ")) {
             this.countEdit.setVisibility(View.GONE);
@@ -64,6 +67,7 @@ public class OrderItemMesg {
             countEdit.setBackgroundResource(R.drawable.shape_button_miss);
             rquest.setBackgroundResource(R.drawable.shape_button_miss);
             countEdit.setEnabled(false);
+            alllayout.setEnabled(false);
             rquest.setEnabled(false);
         } else {
             if (isList) {
@@ -74,6 +78,7 @@ public class OrderItemMesg {
             }
             rquest.setBackgroundResource(R.drawable.shape_dialog_fillet_solid);
             countEdit.setEnabled(true);
+            alllayout.setEnabled(true);
             rquest.setEnabled(true);
         }
         return this;

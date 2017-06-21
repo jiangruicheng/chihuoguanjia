@@ -4,6 +4,7 @@ package com.cndll.chgj.adapter;
  * Created by jiang_ruicheng on 17/5/4.
  */
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextPaint;
 import android.view.LayoutInflater;
@@ -49,10 +50,10 @@ public class DcListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
     public void onBindViewHolder(final ItemViewHolder holder, final int position) {
         holder.setIsRecyclable(false);
         if (position == selecteItems) {
-
+            holder.name.setTextColor(Color.WHITE);
             holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid);
         } else {
-            holder.parent.setBackgroundResource(R.drawable.shape_verify_button);
+            holder.parent.setBackgroundResource(R.drawable.shape_button_orderdesh_dc);
         }
         holder.price.setVisibility(View.GONE);
         holder.parent.setOnClickListener(new View.OnClickListener() {

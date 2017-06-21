@@ -29,26 +29,20 @@ public class StringHelp {
             a = Float.valueOf(s);
             a = Math.round(a);
             b = a + "";
+        } else {
+            b = s;
         }
         return b;
     }
 
     public static String float2Int(String s) {
-        float a;
-        int c;
-        String b = "";
-        if (isFloat(s)) {
-            a = Float.valueOf(s);
-            if (a == 0) {
-                b = "0";
-            }
-            if (a % ((int) a) == 0) {
-                c = (int) a;
-                b = c + "";
-            } else {
-                b = a + "";
-            }
+
+        if (isFloat(s) || s.equals("0.0")) {
+            String[] s1 =/*s.split("\\.") */s.indexOf(".") != -1 ? s.split("\\.") : new String[]{s.toString()};
+            s = s1[1] == null ? s : (Float.valueOf(s1[1]) == 0 ? s1[0] : s);
+            return s;
+        } else {
+            return s;
         }
-        return b;
     }
 }

@@ -42,7 +42,7 @@
                 android:padding="8dp"
                 android:text="小炒类"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/info"
