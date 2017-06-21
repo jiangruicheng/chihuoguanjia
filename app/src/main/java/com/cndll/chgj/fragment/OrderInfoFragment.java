@@ -1453,7 +1453,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
             orderItemMesg.init(convertView);
             orderItemMesg.setList(true);
             setOrderInfolayout(order.getCurrPosition(), isOrderWrite);
-            if (order.getOrder(order.getCurrPosition()).getItemsBean().getCount().equals("0.0")) {
+            if (order.getOrder(order.getCurrPosition())!=null? order.getOrder(order.getCurrPosition()).getItemsBean().getCount().equals("0.0"):order.writeDish.get(order.getCurrPosition()).getCount()==0) {
 
             } else {
                 if (position == selectItem) {
