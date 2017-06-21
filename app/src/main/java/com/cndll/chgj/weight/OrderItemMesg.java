@@ -61,18 +61,18 @@ public class OrderItemMesg {
             this.rquest.setVisibility(View.VISIBLE);
         }
         if ((StringHelp.isFloat(name) && Float.valueOf(name) == 0) || name.equals("0.0")) {
-            countEdit.setBackgroundResource(R.color.yinse);
-            rquest.setBackgroundResource(R.color.yinse);
+            countEdit.setBackgroundResource(R.drawable.shape_button_miss);
+            rquest.setBackgroundResource(R.drawable.shape_button_miss);
             countEdit.setEnabled(false);
             rquest.setEnabled(false);
         } else {
             if (isList) {
-                countEdit.setBackgroundResource(R.color.cube_holo_blue_dark);
+                countEdit.setBackgroundResource(R.drawable.shape_fillet_solid_blue);
                 countEdit.setTextColor(Color.WHITE);
             } else {
-                countEdit.setBackgroundResource(R.color.white);
+                countEdit.setBackgroundResource(R.drawable.shape_dialog_fillet_solid);
             }
-            rquest.setBackgroundResource(R.color.white);
+            rquest.setBackgroundResource(R.drawable.shape_dialog_fillet_solid);
             countEdit.setEnabled(true);
             rquest.setEnabled(true);
         }

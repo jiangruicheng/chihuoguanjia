@@ -76,7 +76,7 @@ public class OrderInfo {
                 }
             }
         }
-        discountPrice = allDiscountPrice - allDiscountPrice * order.getDisconut();
+        discountPrice = allDiscountPrice - allDiscountPrice * (order.getDisconut() != 0 ? order.getDisconut() : 1);
         /*lastPrice = allPrice * order.getDisconut();*/
         lastPrice = allPrice - discountPrice - givePrice;
         setCount(count + "").setAllMoney(allPrice + "").setDiscount(discountPrice + "").setLastMoney(lastPrice + "").setGive(givePrice + "");

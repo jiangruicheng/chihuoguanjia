@@ -2,13 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fbffffff"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
-        android:background="@drawable/shape_dialog_fillet_solid"
         android:orientation="vertical">
 
         <TextView
@@ -50,7 +50,10 @@
             android:text="转台"
             android:textColor="@color/colorPrimary"
             android:textSize="24sp" />
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#cdcdcd" />
         <TextView
             android:id="@+id/print_order"
             android:layout_width="match_parent"
@@ -71,7 +74,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@drawable/shape_dialog_fillet_solid"
         android:gravity="center"
         android:text="取消"
         android:textColor="@color/colorPrimary"

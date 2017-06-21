@@ -6,7 +6,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cndll.chgj.R;
 import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
@@ -58,7 +57,7 @@ public class CaipinFunctionListAdpater extends ListAdapter<ResponseMethod.DataBe
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
-        Toast.makeText(context, "" + toPosition, Toast.LENGTH_SHORT).show();
+        //  Toast.makeText(context, "" + toPosition, Toast.LENGTH_SHORT).show();
 
         return super.onItemMove(fromPosition, toPosition);
     }

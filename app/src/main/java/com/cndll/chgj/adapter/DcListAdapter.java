@@ -5,6 +5,7 @@ package com.cndll.chgj.adapter;
  */
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +69,8 @@ public class DcListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
         if (mitems != null) {
             holder.name.setText(mitems.get(position).getName());
         }
+        TextPaint tp = holder.name.getPaint();
+        tp.setFakeBoldText(true);
             /*GridLayoutManager.LayoutParams params = (GridLayoutManager.LayoutParams) holder.parent.getLayoutParams();
             params.height = w/5;
             holder.parent.setLayoutParams(params);*/

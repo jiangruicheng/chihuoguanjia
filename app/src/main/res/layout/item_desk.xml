@@ -2,14 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_weight"
-    android:layout_margin="4dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginLeft="14dp"
+    android:layout_marginRight="14dp"
+    android:layout_marginTop="4dp"
     android:orientation="horizontal">
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="4"
-        android:background="#F47A83">
+        android:layout_weight="@integer/itemWeight"
+        android:background="@drawable/shape_layout_deskedit">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -50,6 +53,7 @@
             android:id="@+id/move"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_margin="1dp"
             android:layout_weight="0.5"
             android:background="#FABDC1"
             android:gravity="center"
@@ -64,7 +68,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="4dp"
         android:layout_weight="1.3"
-        android:background="@color/menuEditorItemDelete"
+        android:background="@drawable/shape_fillet_solid"
         android:gravity="center"
         android:text="修改"
         android:textColor="@color/white"

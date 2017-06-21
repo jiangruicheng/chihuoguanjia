@@ -280,13 +280,9 @@ public class HomeFragment extends BaseFragment implements HomeView {
             }
         });
         popUpViewUtil.
-                showDialog(getActivity(),
-                        view,
-                        0,
-                        (int) (d.getHeight() * 0.5),
-                        (int) (d.getWidth() * 0.9),
-                        (int) (d.getHeight() * 0.4),
-                        R.style.Translucent_Dialog);
+                popListWindow(modeImage,
+                        view, d.getWidth(), d.getHeight() / 3, Gravity.BOTTOM, null
+                );
     }
 
     @BindView(R.id.usernumber)

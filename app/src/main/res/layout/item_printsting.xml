@@ -3,7 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_weight"
     android:background="@color/white"
-    android:layout_margin="2dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginLeft="14dp"
+    android:layout_marginRight="14dp"
+    android:layout_marginTop="4dp"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -31,12 +34,14 @@
             android:id="@+id/print_name"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:textSize="11sp"
             android:layout_weight="1" />
 
         <TextView
             android:id="@+id/print_statue"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:textSize="11sp"
             android:layout_weight="1" />
     </LinearLayout>
 
@@ -45,7 +50,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_margin="4dp"
-        android:layout_weight="1"
+        android:layout_weight="0.4"
         android:background="@drawable/shape_fillet_solid"
         android:text="设置"
         android:textColor="@color/white" />

@@ -1226,6 +1226,10 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 if (orders == null) {
                     orders = new Orders();
                 }
+                if (deshListAdapter.getMitems().get(position).getIs_over().equals("1")) {
+                    toast("此菜已售完");
+                    return;
+                }
                 if (orders.Iscontan(deshListAdapter.getMitems().get(position).getId())) {
                     showMesg("已点此菜，请修改数量");
                 } else {
@@ -1616,10 +1620,17 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         private ArrayMap<String, Order> orders = new ArrayMap<>();
 
         public float getDisconut() {
+            if (disconut == 1) {
+                return 0;
+            }
             return disconut;
         }
 
         public void setDisconut(float disconut) {
+            if (disconut == 0) {
+                this.disconut = 1;
+                return;
+            }
             this.disconut = disconut;
         }
 

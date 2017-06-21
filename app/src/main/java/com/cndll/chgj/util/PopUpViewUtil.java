@@ -67,8 +67,12 @@ public class PopUpViewUtil {
             }
         });
         if (null != locations && locations.length == 2) {
+            if (null == location.getWindowToken())
+                return;
             popupWindow.showAtLocation(location, gravity, locations[0], locations[1]);
         } else {
+            if (null == location.getWindowToken())
+                return;
             popupWindow.showAtLocation(location, gravity, 0, 0);
         }
     }
@@ -85,7 +89,7 @@ public class PopUpViewUtil {
         showDialog(context, layout, locationX, locationY, width, heigth, 0);
     }
 
-    public void showDialog(@NonNull Activity context, View layout, int locationX, int locationY, int width, int heigth, @StyleRes int style) {
+    public void showDialog(@NonNull Context context, View layout, int locationX, int locationY, int width, int heigth, @StyleRes int style) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(context, style);
         alertDialog = dialog.create();
         alertDialog.setCanceledOnTouchOutside(true);

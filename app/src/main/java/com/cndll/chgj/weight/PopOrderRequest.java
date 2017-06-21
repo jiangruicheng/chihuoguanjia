@@ -104,7 +104,7 @@ public class PopOrderRequest {
         int[] locations = new int[2];
         location.getLocationOnScreen(locations);
         locations[0] = locations[0] - popUpViewUtil.getWindowManager(context).getDefaultDisplay().getWidth() / 3;
-        locations[1] = locations[1] - popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 3 + location.getHeight();
+        locations[1] = locations[1] - popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 4 + location.getHeight();
         if (height == 0) {
             height = popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 3;
         }

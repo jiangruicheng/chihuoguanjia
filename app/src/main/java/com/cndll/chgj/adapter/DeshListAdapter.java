@@ -67,7 +67,7 @@ public class DeshListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (onItemClickLister != null && mitems.get(position).getIs_over().equals("0")) {
+                if (onItemClickLister != null /*&& mitems.get(position).getIs_over().equals("0")*/) {
                     onItemClickLister.OnItemClick(v, position);
                 }
             }

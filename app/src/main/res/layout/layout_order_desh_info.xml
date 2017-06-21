@@ -25,11 +25,11 @@
 
                 <TextView
                     android:id="@+id/number_edit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="6dp"
                     android:background="@drawable/shape_dialog_fillet_solid"
                     android:gravity="center"
-                    android:padding="8dp"
                     android:text=""
                     android:textColor="#050BFA" />
             </LinearLayout>
@@ -47,16 +47,17 @@
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:orientation="vertical"
-                    android:paddingLeft="16dp">
+                    android:paddingLeft="4dp">
 
                     <TextView
+
                         android:id="@+id/desh_name"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="2"
                         android:ellipsize="end"
                         android:gravity="center_vertical|left"
-                        android:lines="2"
+                        android:lines="1"
                         android:textColor="@color/white"
                         android:textSize="12sp" />
 
@@ -64,7 +65,7 @@
                         android:id="@+id/desh_method"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="1.5"
+                        android:layout_weight="2"
                         android:ellipsize="end"
                         android:gravity="center_vertical|left"
                         android:lines="1"
@@ -111,11 +112,12 @@
 
             <TextView
                 android:id="@+id/yaoqiu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:padding="8dp"
+
                 android:text="要求"
                 android:textColor="#050BFA" />
         </LinearLayout>

@@ -123,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
                             for (int i = 0; i < fragmentList.size() - 1; i++) {
                                 getSupportFragmentManager().popBackStack();
                             }
+                            backPressEvents.clear();
                             LoginFragment loginFragment = LoginFragment.newInstance("", "");
                             getSupportFragmentManager().beginTransaction().add(R.id.frame, loginFragment).addToBackStack(loginFragment.getTag()).commit();
                             loginFragment.setPresenter(new LoginImpl());

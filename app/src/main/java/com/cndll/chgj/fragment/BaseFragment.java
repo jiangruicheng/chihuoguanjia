@@ -154,6 +154,7 @@ public class BaseFragment<T extends ListAdapter> extends Fragment {
     protected boolean baseDisProg() {
         if (prog != null) {
             prog.dismiss();
+            prog = null;
             return true;
         }
         return false;
@@ -176,7 +177,7 @@ public class BaseFragment<T extends ListAdapter> extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-
+        baseDisProg();
     }
 
     protected void popBackFragment() {
