@@ -539,7 +539,6 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
             public void onNumbClick(final OrderDishFragment.Orders order, final List<OrderDishFragment.Orders.Order> orders, final int position, View Item) {
                 final boolean isOrderWrite;
                 adapter.selectItem = position;
-                adapter.notifyDataSetChanged();
                 int i;
                 if (order.writeDish == null || position > order.writeDish.size() - 1) {
                     isOrderWrite = false;
@@ -664,7 +663,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
             @Override
             public void onRequest(final int position, View view) {
                 adapter.selectItem = position;
-                adapter.notifyDataSetChanged();
+               // adapter.notifyDataSetChanged();
                 boolean iss;
                 final boolean isOrderWrite;
                 orderItemMesg = new OrderItemMesg();
