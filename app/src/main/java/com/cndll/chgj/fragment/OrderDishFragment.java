@@ -131,7 +131,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         } else {
             isClick = orders.getOrder(orders.getCurrPosition()).isSend;
         }*/
-        if (orders != null /*&& !isClick*/) {
+        if (orders != null && (orders.getOrders().size() != 0 || orders.writeDish == null ? false : orders.writeDish.size() != 0) /*&& !isClick*/) {
             final boolean isSend;
             String hint = "";
             if (isOrderWrite) {
