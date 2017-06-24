@@ -253,7 +253,7 @@ public class PayAppFragment extends BaseFragment {
 
     private void gotoWebview() {
         String url = String.format(
-                "http://dc.idc.zhonxing.com/web/spay?money=%d&uid=%s&mid=%s&month=%d&name=%s",
+                AppRequest.ACCOUNTURL + "web/spay?money=%d&uid=%s&mid=%s&month=%d&name=%s",
                 money * month,
                 AppMode.getInstance().getUid(),
                 AppMode.getInstance().getMid(),

@@ -16,6 +16,7 @@ import com.cndll.chgj.mvp.MObeserver;
 import com.cndll.chgj.mvp.mode.AppRequest;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
+import com.cndll.chgj.mvp.mode.bean.response.ResponsePayStatue;
 import com.cndll.chgj.mvp.presenter.BasePresenter;
 import com.cndll.chgj.mvp.view.BaseView;
 import com.cndll.chgj.weight.OrderInfo;
@@ -231,7 +232,7 @@ public class PaySwitchFragment extends BaseFragment {
     String titlename;
 
     private void gotoWebView() {
-        String url = String.format("http://dc.idc.zhonxing.com/web/costpay?id=%d&type=%d&mid=%s", orderID, type, AppMode.getInstance().getMid());
+        String url = String.format(AppRequest.ACCOUNTURL+"web/costpay?id=%d&type=%d&mid=%s", orderID, type, AppMode.getInstance().getMid());
         replaceFragmentAddToBackStack(WebViewFragment.newInstance(url, titlename), null);
     }
 
@@ -350,7 +351,7 @@ public class PaySwitchFragment extends BaseFragment {
                     @Override
                     public void onNext(BaseResponse baseResponse) {
                         super.onNext(baseResponse);
-                        if (baseResponse.getCode() == 1) {
+                        if (((ResponsePayStatue)baseResponse).getData() == 1) {
                             gotoWebView();
                         } else {
                             replaceFragmentAddToBackStack(TurnToApplyPayFragment.newInstance(s, null), null);

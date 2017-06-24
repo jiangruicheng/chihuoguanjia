@@ -34,7 +34,7 @@
                 android:padding="2dp"
                 android:text="小炒类"
                 android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textSize="@dimen/mid_text" />
 
             <TextView
                 android:id="@+id/price"
@@ -46,7 +46,7 @@
                 android:paddingLeft="2dp"
                 android:text="￥18/份"
                 android:textColor="@color/white"
-                android:textSize="10sp" />
+                android:textSize="@dimen/small_text" />
 
             <TextView
                 android:id="@+id/info"
@@ -58,7 +58,7 @@
                 android:paddingLeft="2dp"
                 android:text="折扣：可  编号：12  厨房打印机"
                 android:textColor="@color/white"
-                android:textSize="10sp" />
+                android:textSize="@dimen/small_text" />
         </LinearLayout>
 
 
@@ -66,12 +66,12 @@
             android:id="@+id/move"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.5"
+            android:layout_weight="0.3"
             android:background="@drawable/shape_order_capinlist_button"
             android:gravity="center"
             android:text="排序"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/mid_text" />
     </LinearLayout>
 
     <Button

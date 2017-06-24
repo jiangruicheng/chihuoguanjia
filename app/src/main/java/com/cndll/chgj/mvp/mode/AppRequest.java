@@ -12,7 +12,7 @@ public class AppRequest {
 
     //  private static String ACCOUNTURL = "http://dc.idc.zhonxing.com/";
 
-    private static String ACCOUNTURL = "http://chihuo.51edn.com/";
+    public static String ACCOUNTURL = "http://chihuo.51edn.com/";
 
     /*private static AppRequest zkTecoRequest;
 

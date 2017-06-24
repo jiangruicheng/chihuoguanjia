@@ -56,7 +56,7 @@ import com.cndll.chgj.mvp.mode.bean.response.ResponseLogin;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseMendianHomeList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseMethod;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseOrd;
-import com.cndll.chgj.mvp.mode.bean.response.ResponsePayStqtue;
+import com.cndll.chgj.mvp.mode.bean.response.ResponsePayStatue;
 import com.cndll.chgj.mvp.mode.bean.response.ResponsePrintList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseQueryAppData;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseRecord;
@@ -176,8 +176,8 @@ public interface Api {
     Observable<ResponseGetBillList> getBill(@Body RequestGetBillList info);
 
     @FormUrlEncoded
-    @POST("User/getuserpay")
-    Observable<ResponsePayStqtue> payStatue(@Field("uid") String uid, @Field("mid") String mid);
+    @POST("User/get_applypay_status")
+    Observable<ResponsePayStatue> payStatue(@Field("uid") String uid, @Field("mid") String mid);
 
     @POST("Store/getstorelist")
     Observable<ResponseMendianHomeList> getHomeMendianList(@Body RequsetHomeMendianList info);

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,17 +18,17 @@
             android:gravity="center"
             android:text="恭喜！"
             android:textColor="@color/buttonStork"
-            android:textSize="21sp"/>
+            android:textSize="@dimen/big_text" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.5"
             android:gravity="center_vertical"
-            android:padding="12dp"
+            android:padding="4dp"
             android:text="您已成功注册"
             android:textColor="@color/black"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/mid_text" />
 
         <TextView
             android:id="@+id/mesg_info"
@@ -36,29 +36,34 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:padding="12dp"
+            android:padding="4dp"
             android:textColor="@color/buttonStork"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/mid_text" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1.5"
             android:gravity="center_vertical"
-            android:padding="12dp"
+            android:padding="4dp"
             android:text="请牢记门店号、登录账号和登录密码老板账号登录系统后可以添加员工账号以及控制员工权限，一家门店只需要一个编号请勿重复注册，如果您有多家门店欢迎继续注册，使用过程如有任何问题请拨打客服热线"
             android:textColor="@color/black"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/small_text" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:padding="12dp"
+            android:padding="4dp"
             android:text="4008781028"
             android:textColor="@color/buttonStork"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/mid_text" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/yinse" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -75,7 +80,7 @@
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:text="确定"
                 android:textColor="#000fff"
-                android:textSize="21sp"/>
+                android:textSize="@dimen/mid_text" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

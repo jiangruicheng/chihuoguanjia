@@ -5,11 +5,12 @@
 
     <Button
         android:id="@+id/cancel"
+        android:textSize="@dimen/small_text"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_margin="4dp"
         android:layout_weight="1"
-        android:background="#E8BC47"
+        android:background="@drawable/shape_butto_cancel"
         android:text="取消"
         android:textColor="@color/white" />
 
@@ -18,8 +19,9 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_margin="4dp"
+        android:textSize="@dimen/small_text"
         android:layout_weight="1"
-        android:background="#FF87D6"
+        android:background="@drawable/shape_butto_delete"
         android:gravity="center"
         android:text="删除"
         android:textColor="@color/white" />
@@ -29,8 +31,9 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_margin="4dp"
+        android:textSize="@dimen/small_text"
         android:layout_weight="1"
-        android:background="#0DD37D"
+        android:background="@drawable/shape_butto_save"
         android:text="保存"
         android:textColor="@color/white" />
 
