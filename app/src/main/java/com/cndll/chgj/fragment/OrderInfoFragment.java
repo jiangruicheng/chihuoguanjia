@@ -570,10 +570,10 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                         boolean iss;
 
                         if (issend) {
-                            if (order.isAdd) {
+                            /*if (order.isAdd) {
                                 showMesg("有菜品未送单，请先送单");
                                 return;
-                            }
+                            }*/
                             if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isReturn()) {
                                 showMesg("无退菜权限");
                                 return;
@@ -616,10 +616,10 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                         }
 
                         if (issend) {
-                            if (order.isAdd) {
+                           /* if (order.isAdd) {
                                 showMesg("有菜品未送单，请先送单");
                                 return;
-                            }
+                            }*/
                             sendOrds();
                             return;
                             //
@@ -641,10 +641,10 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                         }
                         /*sendOrds();*/
                         if (iss) {
-                            if (order.isAdd) {
+                            /*if (order.isAdd) {
                                 showMesg("有菜品未送单，请先送单");
                                 return;
-                            }
+                            }*/
                             sendOrds();
                             return;
                             //setOrderInfolayout(order.getCurrPosition(), isOrderWrite);
@@ -715,10 +715,10 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                         public void onFirst(View view) {
                             boolean isOrderWrite;
                             int i;
-                            if (order.isAdd) {
+                          /*  if (order.isAdd) {
                                 showMesg("有菜品未送单，请先送单");
                                 return;
-                            }
+                            }*/
                             if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isGive()) {
                                 showMesg("无赠送权限");
                                 return;
@@ -767,10 +767,10 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
 
                         @Override
                         public void onSecond(View view) {
-                            if (order.isAdd) {
+                           /* if (order.isAdd) {
                                 showMesg("有菜品未送单，请先送单");
                                 return;
-                            }
+                            }*/
                             if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isReturn()) {
                                 showMesg("无退菜权限");
                                 return;
@@ -822,10 +822,10 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                         public void onThird(View view) {
                             boolean isOrderWrite;
                             int i;
-                            if (order.isAdd) {
+                           /* if (order.isAdd) {
                                 showMesg("有菜品未送单，请先送单");
                                 return;
-                            }
+                            }*/
                             if (order.writeDish == null || position > order.writeDish.size() - 1) {
                                 isOrderWrite = false;
                                 if (order.writeDish == null) {

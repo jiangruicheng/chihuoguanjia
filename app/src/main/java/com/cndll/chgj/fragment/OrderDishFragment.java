@@ -573,6 +573,10 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 if (orders == null) {
                     orders = new Orders();
                 }
+                if (queryListAdapter.getMitems().get(position).getIs_over().equals("1")) {
+                    toast("此菜已售完");
+                    return;
+                }
                 if (orders.Iscontan(queryListAdapter.getMitems().get(position).getId())) {
                     showMesg("已点此菜，请修改数量");
                 } else {
