@@ -42,7 +42,7 @@
         android:layout_marginRight="12dp"
         android:layout_marginTop="2dp"
         android:layout_weight="0.8"
-        android:background="@drawable/shape_button_adddesk"
+        android:background="@drawable/shape_button_addstaff"
         android:text="添加桌台"
         android:textColor="@color/white"
         android:textSize="20sp" />

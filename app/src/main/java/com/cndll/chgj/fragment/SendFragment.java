@@ -59,7 +59,7 @@ public class SendFragment extends BaseFragment implements OrderView {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     @BindView(R.id.tablename)
-    EditText tablename;
+    TextView tablename;
     @BindView(R.id.person_count)
     EditText personCount;
     @BindView(R.id.note)
@@ -168,7 +168,7 @@ public class SendFragment extends BaseFragment implements OrderView {
                 popBackFragment();
             }
         });
-        save.setText("送单");
+        save.setText("确定");
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -221,6 +221,10 @@ public class SendFragment extends BaseFragment implements OrderView {
                 }
             }
         });
+        personCount.setFocusable(true);
+        personCount.setFocusableInTouchMode(true);
+        personCount.requestFocus();
+        showInput(personCount);
         return view;
     }
 
@@ -396,6 +400,12 @@ public class SendFragment extends BaseFragment implements OrderView {
         for (OrderDishFragment.Orders.Write w : writeList) {
             printBill.getItems().add(new RequestPrintBill.ItemsBean().setUnit(w.getItemsBean().getUnit()).setName(w.getItemsBean().getName()).setNum(w.getItemsBean().getCount()).setMoney(w.getItemsBean().getPrice()));
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
     }
 
     private String getMethodName(OrderDishFragment.Orders.Order o) {

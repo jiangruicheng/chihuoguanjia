@@ -45,7 +45,7 @@ public class RegisterListAdpater extends ListAdapter<ResponseGetStoreList.DataBe
             }
         });
         ((RegistHolderView) holder).name.setText(mitems.get(position).getName());
-        ((RegistHolderView) holder).id.setText("门店编号：" + mitems.get(position).getId());
+        ((RegistHolderView) holder).id.setText("门店编号：" + mitems.get(position).getCode());
     }
 
     @Override

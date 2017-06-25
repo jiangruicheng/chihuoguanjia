@@ -501,8 +501,8 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         View view = inflater.inflate(R.layout.fragment_order_request, container, false);
         unbinder = ButterKnife.bind(this, view);
         if (!AppMode.getInstance().isDeskMode()) {
-            txtDiscount.setVisibility(View.INVISIBLE);
-            zhekou.setVisibility(View.INVISIBLE);
+            //txtDiscount.setVisibility(View.INVISIBLE);
+            //zhekou.setVisibility(View.INVISIBLE);
             layoutModeHaveTesk.setVisibility(View.GONE);
             payNodesk.setVisibility(View.VISIBLE);
         } else {
@@ -570,10 +570,10 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                         boolean iss;
 
                         if (issend) {
-                            if (order.isAdd) {
+                            /*if (order.isAdd) {
                                 showMesg("有菜品未送单，请先送单");
                                 return;
-                            }
+                            }*/
                             if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isReturn()) {
                                 showMesg("无退菜权限");
                                 return;
@@ -616,10 +616,10 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                         }
 
                         if (issend) {
-                            if (order.isAdd) {
+                           /* if (order.isAdd) {
                                 showMesg("有菜品未送单，请先送单");
                                 return;
-                            }
+                            }*/
                             sendOrds();
                             return;
                             //
@@ -641,10 +641,10 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                         }
                         /*sendOrds();*/
                         if (iss) {
-                            if (order.isAdd) {
+                            /*if (order.isAdd) {
                                 showMesg("有菜品未送单，请先送单");
                                 return;
-                            }
+                            }*/
                             sendOrds();
                             return;
                             //setOrderInfolayout(order.getCurrPosition(), isOrderWrite);
@@ -663,7 +663,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
             @Override
             public void onRequest(final int position, View view) {
                 adapter.selectItem = position;
-               // adapter.notifyDataSetChanged();
+                // adapter.notifyDataSetChanged();
                 boolean iss;
                 final boolean isOrderWrite;
                 orderItemMesg = new OrderItemMesg();
@@ -715,10 +715,10 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                         public void onFirst(View view) {
                             boolean isOrderWrite;
                             int i;
-                            if (order.isAdd) {
+                          /*  if (order.isAdd) {
                                 showMesg("有菜品未送单，请先送单");
                                 return;
-                            }
+                            }*/
                             if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isGive()) {
                                 showMesg("无赠送权限");
                                 return;
@@ -767,10 +767,10 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
 
                         @Override
                         public void onSecond(View view) {
-                            if (order.isAdd) {
+                           /* if (order.isAdd) {
                                 showMesg("有菜品未送单，请先送单");
                                 return;
-                            }
+                            }*/
                             if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isReturn()) {
                                 showMesg("无退菜权限");
                                 return;
@@ -822,10 +822,10 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                         public void onThird(View view) {
                             boolean isOrderWrite;
                             int i;
-                            if (order.isAdd) {
+                           /* if (order.isAdd) {
                                 showMesg("有菜品未送单，请先送单");
                                 return;
-                            }
+                            }*/
                             if (order.writeDish == null || position > order.writeDish.size() - 1) {
                                 isOrderWrite = false;
                                 if (order.writeDish == null) {
@@ -1408,7 +1408,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                         }
                     }
                 });
-                viewHolder.deshName.setText(order.writeDish.get(order.getCurrPosition()).getDeshName() + order.writeDish.get(order.getCurrPosition()).getDeshPrice());
+                viewHolder.deshName.setText(order.writeDish.get(order.getCurrPosition()).getDeshName() + "  " + order.writeDish.get(order.getCurrPosition()).getDeshPrice());
                 viewHolder.deshMethod.setText(order.writeDish.get(order.getCurrPosition()).getMethodName() + order.writeDish.get(order.getCurrPosition()).getMethodPrice());
                 viewHolder.sendstatue.setVisibility(View.VISIBLE);
                 if (order.writeDish.get(order.getCurrPosition()).isSend) {
@@ -1429,7 +1429,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                         }
                     }
                 });
-                viewHolder.deshName.setText(order.getOrders().get(order.getCurrPosition()).getDeshName() + order.getOrders().get(order.getCurrPosition()).getDeshPrice());
+                viewHolder.deshName.setText(order.getOrders().get(order.getCurrPosition()).getDeshName() + "  " + order.getOrders().get(order.getCurrPosition()).getDeshPrice());
                 viewHolder.deshMethod.setText(order.getOrders().get(order.getCurrPosition()).getMethodName() + order.getOrders().get(order.getCurrPosition()).getMethodPrice());
                 viewHolder.sendstatue.setVisibility(View.VISIBLE);
                 if (order.getOrders().get(order.getCurrPosition()).isSend) {
@@ -1452,7 +1452,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
             orderItemMesg.init(convertView);
             orderItemMesg.setList(true);
             setOrderInfolayout(order.getCurrPosition(), isOrderWrite);
-            if (order.getOrder(order.getCurrPosition())!=null? order.getOrder(order.getCurrPosition()).getItemsBean().getCount().equals("0.0"):order.writeDish.get(order.getCurrPosition()).getCount()==0) {
+            if (order.getOrder(order.getCurrPosition()) != null ? order.getOrder(order.getCurrPosition()).getItemsBean().getCount().equals("0.0") : order.writeDish.get(order.getCurrPosition()).getCount() == 0) {
 
             } else {
                 if (position == selectItem) {

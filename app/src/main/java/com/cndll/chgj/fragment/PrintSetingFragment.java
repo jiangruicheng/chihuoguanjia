@@ -319,10 +319,10 @@ public class PrintSetingFragment extends BaseFragment implements PrintView {
             final TextView print_statue = (TextView) convertView.findViewById(R.id.print_statue);
             print_name.setText(items.get(position).getName());
             if (items.get(position).getStatus() == 1) {
-                print_statue.setText("状态:通讯正常");
+                print_statue.setText("通讯正常");
                 print_statue.setTextColor(Color.rgb(0, 56, 234));
             } else {
-                print_statue.setText("状态:通讯故障");
+                print_statue.setText("通讯故障");
                 print_statue.setTextColor(Color.RED);
             }
             Button seting = (Button) convertView.findViewById(R.id.sting);

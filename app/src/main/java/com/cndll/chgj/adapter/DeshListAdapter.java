@@ -38,7 +38,7 @@ public class DeshListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_desh, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_desh_order, parent, false);
         return new ItemViewHolder(view, parent);
     }
 

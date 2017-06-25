@@ -15,7 +15,7 @@
         android:background="@drawable/shape_fillet_titlebar_back"
         android:text="返回"
         android:textColor="@color/white"
-        android:textSize="16sp" />
+        android:textSize="@dimen/mid_text" />
 
     <TextView
         android:id="@+id/title"
@@ -26,7 +26,7 @@
         android:lines="1"
         android:text="菜品编辑"
         android:textColor="@color/white"
-        android:textSize="18sp" />
+        android:textSize="@dimen/mid_text" />
 
     <LinearLayout
         android:id="@+id/title_tow"
@@ -45,7 +45,7 @@
             android:gravity="center"
             android:lines="1"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="@dimen/mid_text" />
 
         <TextView
             android:id="@+id/title_right"
@@ -56,7 +56,7 @@
             android:gravity="center"
             android:lines="1"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="@dimen/mid_text" />
     </LinearLayout>
 
     <TextView
@@ -69,5 +69,5 @@
         android:gravity="center_vertical|right"
         android:text=" "
         android:textColor="@color/white"
-        android:textSize="16sp" />
+        android:textSize="@dimen/mid_text" />
 </RelativeLayout>

@@ -283,6 +283,7 @@ public class ApplyPayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apply_pay);
+        ButterKnife.bind(this);
         title.setText("支付申请");
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -290,7 +291,7 @@ public class ApplyPayActivity extends AppCompatActivity {
                 finish();
             }
         });
-        ButterKnife.bind(this);
+
     }
 
     private File getTempImage(int position) {

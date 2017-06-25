@@ -13,7 +13,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:gravity="center_vertical|right"
             android:text="数" />
 
@@ -31,7 +31,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:gravity="center_vertical|right"
             android:text="计" />
 
@@ -50,7 +50,7 @@
             android:id="@+id/txt_discount"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:gravity="center_vertical|right"
             android:text="折" />
 
@@ -68,7 +68,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:gravity="center_vertical|right"
             android:text="赠" />
 
@@ -86,7 +86,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:gravity="center_vertical|right"
             android:text="实" />
 

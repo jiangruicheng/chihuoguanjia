@@ -27,10 +27,11 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="4dp"
-        android:layout_weight="1"
+        android:layout_weight="1.5"
         android:gravity="center"
-        android:text="当前门店号:1234556\n老乡店"
-        android:textColor="@color/black" />
+        android:text="当前门店号:1234556\n\n老乡店"
+        android:textColor="@color/black"
+        android:textSize="@dimen/small_text" />
 
     <EditText
         android:id="@+id/number"
@@ -42,10 +43,11 @@
         android:drawableLeft="@mipmap/mendianhao"
         android:drawablePadding="12dp"
         android:gravity="center_vertical|left"
-        android:hint="门店号"
+        android:hint="请输入门店号"
         android:inputType="number"
         android:paddingLeft="12dp"
-        android:selectAllOnFocus="true" />
+        android:selectAllOnFocus="true"
+        android:textSize="@dimen/small_text" />
 
     <EditText
         android:id="@+id/tel"
@@ -56,10 +58,11 @@
         android:drawableLeft="@mipmap/telphone"
         android:drawablePadding="12dp"
         android:gravity="center_vertical|left"
-        android:hint="电话号码"
+        android:hint="请输入登录账号（手机号码）"
         android:inputType="number"
         android:paddingLeft="12dp"
-        android:selectAllOnFocus="true" />
+        android:selectAllOnFocus="true"
+        android:textSize="@dimen/small_text" />
 
     <EditText
         android:id="@+id/password"
@@ -70,15 +73,16 @@
         android:drawableLeft="@mipmap/password"
         android:drawablePadding="12dp"
         android:gravity="center_vertical|left"
-        android:hint="密码"
+        android:hint="请输入登录密码"
         android:inputType="number"
         android:paddingLeft="12dp"
-        android:selectAllOnFocus="true" />
+        android:selectAllOnFocus="true"
+        android:textSize="@dimen/small_text" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="0.8">
 
         <TextView
             android:id="@+id/findpassword"
@@ -87,7 +91,8 @@
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:text="忘记密码？"
-            android:textColor="@color/buttonStork" />
+            android:textColor="@color/buttonStork"
+            android:textSize="@dimen/small_text" />
     </RelativeLayout>
 
     <Button
@@ -97,11 +102,11 @@
         android:layout_marginLeft="42dp"
         android:layout_marginRight="42dp"
         android:layout_marginTop="12dp"
-        android:layout_weight="1"
+        android:layout_weight="0.8"
         android:background="@drawable/shape_fillet_solid"
         android:text="登录"
         android:textColor="@color/white"
-        android:textSize="21sp" />
+        android:textSize="@dimen/mid_text" />
 
     <Button
         android:id="@+id/register"
@@ -110,9 +115,9 @@
         android:layout_marginLeft="42dp"
         android:layout_marginRight="42dp"
         android:layout_marginTop="12dp"
-        android:layout_weight="1"
+        android:layout_weight="0.8"
         android:background="@drawable/shape_fillet_button"
         android:text="注册门店号"
         android:textColor="@color/buttonStork"
-        android:textSize="21sp" />
+        android:textSize="@dimen/mid_text" />
 </LinearLayout>

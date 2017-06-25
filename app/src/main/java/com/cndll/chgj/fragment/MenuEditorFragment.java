@@ -469,8 +469,8 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
             }
             if (position == -2) {
                 name.setText("");
-                unit.setText("");
-                price.setText("");
+                unit.setText("份");
+                price.setText("0");
                 printer.setText("");
                 queryid.setText("");
                 dazhe.setLeft(true);
@@ -491,9 +491,9 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
                 dazhe.setLeft(false);
             }
             if (data.getIs_over().equals("1")) {
-                over.setLeft(true);
-            } else {
                 over.setLeft(false);
+            } else {
+                over.setLeft(true);
             }
             if (data.getIs_print().equals("1")) {
                 print.setLeft(true);
@@ -514,10 +514,9 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
             printer = (TextView) view.findViewById(R.id.print);
             save = (Button) view.findViewById(R.id.save);
             delete = (Button) view.findViewById(R.id.delete);
-            dazhe = initSiwtch(buttonSwitch, "可", "否");
+            dazhe = initSiwtch(buttonSwitch, "是", "否");
             print = initSiwtch(buttonSwitch2, "是", "否");
-            over = initSiwtch(buttonSwitch1, "是", "否");
-            over.setLeft(false);
+            over = initSiwtch(buttonSwitch1, "否", "是");
             cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -543,7 +542,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
                                 setUnit(unit.getText().toString()).
                                 setIs_discount(dazhe.isLeftInt()).
                                 setPrice(price.getText().toString()).
-                                setIs_over(over.isLeftInt()).
+                                setIs_over(over.isLeftInt() == 0 ? 1 : 0).
                                 setMachine(printId).setMachine_name(printer.getText().toString()).
                                 setIs_print(print.isLeftInt()).
                                 setCode(queryid.getText().toString()).
@@ -613,10 +612,10 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
 
         private ButtonSwitch initSiwtch(View view, String left, String right) {
             ButtonSwitch aSwitch = new ButtonSwitch();
-            aSwitch.setLeftBackground(R.drawable.shape_button_yellow);
+            aSwitch.setLeftBackground(R.drawable.shape_button_addcaipinquanxian);
             aSwitch.setRightBackground(R.drawable.shape_dialog_fillet_solid);
             aSwitch.setText(left, right);
-            aSwitch.setTextColor(Color.rgb(0xdc, 0x53, 0x01), Color.rgb(0x00, 0x00, 0x00));
+            aSwitch.setTextColor(Color.rgb(0xff, 0xff, 0xff), Color.rgb(0xfb, 0x56, 0x30));
             aSwitch.init(view);
             return aSwitch;
         }

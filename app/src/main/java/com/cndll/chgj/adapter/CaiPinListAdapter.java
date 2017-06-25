@@ -72,7 +72,7 @@ public class CaiPinListAdapter extends ListAdapter<ResponseGetCaipinList.DataBea
             ((ListItemViewHolder) holder).handleView.setBackgroundResource(R.drawable.shape_order_capinlist_button);
         }
         if (mitems.get(position).getIs_discount().equals("1")) {
-            isDiscount = "折扣:可 ";
+            isDiscount = "折扣:是 ";
         } else {
             isDiscount = "折扣:否 ";
         }

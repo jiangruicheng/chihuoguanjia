@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.mvp.mode.AppRequest;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetBillList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetBillList;
@@ -160,7 +161,7 @@ public class BillQueryFragment extends BaseFragment implements BillView {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String url = String.format("http://dc.idc.zhonxing.com/Web/orderprint?id=%s", adapter.getItems().get(position).getId());
+                String url = String.format(AppRequest.ACCOUNTURL + "Web/orderprint?id=%s", adapter.getItems().get(position).getId());
                 replaceFragmentAddToBackStack(BillItemFragment.newInstance(url, adapter.getItems().get(position).getId()), null);
             }
         });

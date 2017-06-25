@@ -131,7 +131,10 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         } else {
             isClick = orders.getOrder(orders.getCurrPosition()).isSend;
         }*/
-        if (orders != null && (orders.getOrders().size() != 0 || orders.writeDish == null ? false : orders.writeDish.size() != 0) /*&& !isClick*/) {
+        boolean is = orders.getOrders().size() != 0;
+        boolean isa = orders.writeDish == null ? false : orders.writeDish.size() != 0;
+        boolean isb = is || isa;
+        if (orders != null && (orders.getOrders().size() != 0 || (orders.writeDish == null ? false : orders.writeDish.size() != 0))) {
             final boolean isSend;
             String hint = "";
             if (isOrderWrite) {
@@ -547,8 +550,11 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         queryDesh();
     }
 
+    PopUpViewUtil popUpQuery;
+
     private void queryDesh() {
-        final PopUpViewUtil popUpQuery = PopUpViewUtil.getInstance();
+
+        popUpQuery = PopUpViewUtil.getInstance();
         View view = LayoutInflater.from(getContext()).inflate(R.layout.popview_orderdesh_query, null, false);
         View key = view.findViewById(R.id.key);
         popUpQuery.setOnDismissAction(new PopUpViewUtil.OnDismissAction() {
@@ -566,6 +572,10 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             public void OnItemClick(View view, int position) {
                 if (orders == null) {
                     orders = new Orders();
+                }
+                if (queryListAdapter.getMitems().get(position).getIs_over().equals("1")) {
+                    toast("此菜已售完");
+                    return;
                 }
                 if (orders.Iscontan(queryListAdapter.getMitems().get(position).getId())) {
                     showMesg("已点此菜，请修改数量");
@@ -823,10 +833,13 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
                     }
                 });
+                int[] locations = new int[2];
+                locations[0] = 0;
+                locations[1] = popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 4;
                 popUpViewUtil.popListWindow(send, view,
                         popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getWidth(),
                         popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 3,
-                        Gravity.NO_GRAVITY, null);
+                        Gravity.NO_GRAVITY, locations);
             }
         });
         popviewOther.popUpViewUtil.popListWindow(send, popviewOther.view,

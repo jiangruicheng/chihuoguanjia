@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/item_weight"
-    android:background="@color/white"
+    android:layout_height="@dimen/item_weight_print"
     android:layout_marginBottom="4dp"
     android:layout_marginLeft="14dp"
     android:layout_marginRight="14dp"
     android:layout_marginTop="4dp"
+    android:background="@color/white"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -19,7 +19,7 @@
         <ImageView
             android:layout_width="56dp"
             android:layout_height="match_parent"
-            android:scaleType="fitXY"
+            android:scaleType="centerInside"
             android:src="@mipmap/printsting" />
     </LinearLayout>
 
@@ -34,15 +34,34 @@
             android:id="@+id/print_name"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:textSize="11sp"
-            android:layout_weight="1" />
+            android:layout_weight="1.5"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/mid_text" />
 
-        <TextView
-            android:id="@+id/print_statue"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:textSize="11sp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:gravity="center_vertical"
+                android:text="状态:"
+                android:textColor="@color/buttonStork"
+                android:textSize="@dimen/small_text" />
+
+            <TextView
+                android:id="@+id/print_statue"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/small_text" />
+        </LinearLayout>
     </LinearLayout>
 
     <Button
@@ -50,8 +69,9 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_margin="4dp"
-        android:layout_weight="0.4"
+        android:layout_weight="0.6"
         android:background="@drawable/shape_fillet_solid"
         android:text="设置"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:textSize="@dimen/small_text" />
 </LinearLayout>

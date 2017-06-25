@@ -33,49 +33,68 @@
                 android:background="@color/black"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/textView2"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="2dp"
-                    android:text="当前账号"
-                    android:textColor="@color/white" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/usernumber"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical|left"
-                    android:lines="1"
-                    android:paddingLeft="2dp"
-                    android:text="6666"
-                    android:textColor="@color/white" />
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.5"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="4dp"
+                        android:text="当前账号:"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/small_text" />
 
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:lines="1"
-                    android:paddingLeft="2dp"
-                    android:text="当前门号店"
-                    android:textColor="@color/white" />
+                    <TextView
+                        android:id="@+id/usernumber"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical|left"
+                        android:lines="1"
+                        android:paddingLeft="2dp"
+                        android:text="6666"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/small_text" />
 
-                <TextView
-                    android:id="@+id/mendian_numb"
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical|left"
-                    android:paddingLeft="2dp"
-                    android:text="66666"
-                    android:textColor="@color/white" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.5"
+                        android:gravity="center_vertical"
+                        android:lines="1"
+                        android:paddingLeft="4dp"
+                        android:text="当前门号店"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/small_text" />
+
+                    <TextView
+                        android:id="@+id/mendian_numb"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical|left"
+                        android:paddingLeft="2dp"
+                        android:text="66666"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/small_text" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -85,57 +104,76 @@
                 android:background="@color/black"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/username"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:lines="1"
-                    android:paddingLeft="2dp"
-                    android:text="杨某某"
-                    android:textColor="@color/white" />
+                    android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/resetpassword"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginLeft="6dp"
-                    android:layout_marginRight="6dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_fillet"
-                    android:gravity="center"
-                    android:text="修改密码"
-                    android:textColor="@color/buttonStork" />
+                    <TextView
+                        android:id="@+id/username"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:lines="1"
+                        android:paddingLeft="4dp"
+                        android:text="杨某某"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/small_text" />
 
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:lines="1"
-                    android:paddingLeft="2dp"
-                    android:text=""
-                    android:textColor="@color/white" />
+                    <Button
+                        android:id="@+id/resetpassword"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginRight="36dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_fillet"
+                        android:gravity="center"
+                        android:text="修改密码"
+                        android:textColor="@color/buttonStork"
+                        android:textSize="@dimen/small_text" />
 
-                <Button
-                    android:id="@+id/switch_mendian"
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginLeft="6dp"
-                    android:layout_marginRight="6dp"
-                    android:layout_marginTop="2dp"
                     android:layout_weight="1"
-                    android:background="@drawable/shape_fillet"
-                    android:gravity="center"
-                    android:text="切换门店"
-                    android:textColor="@color/buttonStork" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:lines="1"
+                        android:paddingLeft="4dp"
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/small_text" />
+
+                    <Button
+                        android:id="@+id/switch_mendian"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginRight="36dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_fillet"
+                        android:gravity="center"
+                        android:text="切换门店"
+                        android:textColor="@color/buttonStork"
+                        android:textSize="@dimen/small_text" />
+                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>
@@ -165,7 +203,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="今日收入"
-                android:textSize="12sp" />
+                android:textSize="@dimen/mid_text" />
 
             <TextView
                 android:id="@+id/today_comin"
@@ -173,14 +211,15 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="10000"
-                android:textSize="11sp" />
+                android:textColor="@color/buttonStork"
+                android:textSize="@dimen/small_text" />
         </LinearLayout>
 
         <View
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
             android:layout_width="1dp"
             android:layout_height="match_parent"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
             android:background="@color/yinse" />
 
         <LinearLayout
@@ -191,11 +230,12 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/textView13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="今日单数"
-                android:textSize="12sp" />
+                android:textSize="@dimen/mid_text" />
 
             <TextView
                 android:id="@+id/today_numb"
@@ -203,14 +243,15 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="369"
-                android:textSize="11sp" />
+                android:textColor="@color/buttonStork"
+                android:textSize="@dimen/small_text" />
         </LinearLayout>
 
         <View
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
             android:layout_width="1dp"
             android:layout_height="match_parent"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
             android:background="@color/yinse" />
 
         <LinearLayout
@@ -225,7 +266,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="本月收入"
-                android:textSize="12sp" />
+                android:textSize="@dimen/mid_text" />
 
             <TextView
                 android:id="@+id/month_comin"
@@ -233,7 +274,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="36万"
-                android:textSize="11sp" />
+                android:textColor="@color/buttonStork"
+                android:textSize="@dimen/small_text" />
         </LinearLayout>
 
         <Button
@@ -247,6 +289,7 @@
             android:layout_weight="1"
             android:background="@drawable/shape_fillet_solid"
             android:text="报表查询"
+            android:textSize="@dimen/mid_text"
             android:textColor="@color/white" />
     </LinearLayout>
 
@@ -278,7 +321,7 @@
                 android:gravity="center"
                 android:text="编辑菜品"
 
-                android:textSize="11sp" />
+                android:textSize="@dimen/small_text" />
         </LinearLayout>
 
         <LinearLayout
@@ -303,7 +346,7 @@
                 android:gravity="center"
 
                 android:text="菜品做法"
-                android:textSize="11sp" />
+                android:textSize="@dimen/small_text" />
         </LinearLayout>
 
         <LinearLayout
@@ -328,7 +371,7 @@
                 android:gravity="center"
                 android:text="编辑桌台"
 
-                android:textSize="11sp" />
+                android:textSize="@dimen/small_text" />
         </LinearLayout>
 
         <LinearLayout
@@ -352,7 +395,7 @@
                 android:gravity="center"
                 android:text="打印设置"
 
-                android:textSize="11sp" />
+                android:textSize="@dimen/small_text" />
         </LinearLayout>
     </LinearLayout>
 
@@ -383,7 +426,7 @@
                 android:layout_weight="0.1"
                 android:gravity="center"
                 android:text="注册门店"
-                android:textSize="11sp" />
+                android:textSize="@dimen/small_text" />
         </LinearLayout>
 
         <LinearLayout
@@ -408,7 +451,7 @@
                 android:gravity="center"
                 android:text="员工账号"
 
-                android:textSize="11sp" />
+                android:textSize="@dimen/small_text" />
         </LinearLayout>
 
         <LinearLayout
@@ -432,7 +475,7 @@
                 android:gravity="center"
                 android:text="查询账单"
 
-                android:textSize="11sp" />
+                android:textSize="@dimen/small_text" />
         </LinearLayout>
 
         <LinearLayout
@@ -456,7 +499,7 @@
                 android:gravity="center"
                 android:text="高级设置"
 
-                android:textSize="11sp" />
+                android:textSize="@dimen/small_text" />
         </LinearLayout>
     </LinearLayout>
 
@@ -509,12 +552,12 @@
                 android:id="@+id/logoff"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_margin="2dp"
+
                 android:layout_weight="2"
                 android:background="@mipmap/loginout"
                 android:text="登录"
                 android:textColor="@color/white"
-                android:textSize="24sp" />
+                android:textSize="@dimen/big_text" />
 
             <ImageButton
                 android:id="@+id/mode_switch"

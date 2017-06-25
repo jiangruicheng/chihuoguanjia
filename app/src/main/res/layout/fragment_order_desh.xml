@@ -150,7 +150,7 @@
                 android:layout_height="0dp"
                 android:layout_marginBottom="2dp"
                 android:layout_marginTop="2dp"
-                android:layout_weight="1">
+                android:layout_weight="1.5">
 
                 <Button
                     android:id="@+id/query_nodesk"
