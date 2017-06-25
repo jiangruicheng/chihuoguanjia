@@ -6,7 +6,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.cndll.chgj.R;
 import com.cndll.chgj.RXbus.EventType;
@@ -73,6 +75,13 @@ public class MainActivity extends AppCompatActivity {
 
     public static List<BackPressEvent> backPressEvents = new ArrayList<>();
 
+    protected void showToast(String s) {
+        Toast toast;
+        toast = Toast.makeText(this, s, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+    }
+
     protected void baseShowMesg(String mesg) {
         MesgShow.showMesg("", mesg, frame, null, null, false);
     }
@@ -99,7 +108,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onNext(EventType eventType) {
                 if (eventType.getType() == EventType.SHOW) {
-                    baseShowMesg(eventType.getExtra());
+                    //baseShowMesg(eventType.getExtra());
+                    showToast(eventType.getExtra());
                 }
             }
         });

@@ -9,8 +9,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
@@ -21,6 +23,9 @@ import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseRecord;
 import com.cndll.chgj.mvp.presenter.BasePresenter;
 import com.cndll.chgj.mvp.view.BaseView;
+import com.cndll.chgj.util.StringHelp;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,26 +59,19 @@ public class PayAppFragment extends BaseFragment {
     LinearLayout titleTow;
     @BindView(R.id.right_text)
     TextView rightText;
-    @BindView(R.id.one)
-    TextView one;
-    @BindView(R.id.three)
-    TextView three;
-    @BindView(R.id.six)
-    TextView six;
-    @BindView(R.id.year)
-    TextView year;
-    @BindView(R.id.all)
-    TextView all;
+
     @BindView(R.id.pay)
     TextView pay;
     @BindView(R.id.store_name)
     TextView storeName;
     @BindView(R.id.overtime)
     TextView overtime;
+    @BindView(R.id.list)
+    ListView list;
 
     @OnClick(R.id.pay)
     void onclick_pay() {
-        if (name == " ") {
+        if (money == "") {
 
         } else {
             gotoWebview();
@@ -81,8 +79,10 @@ public class PayAppFragment extends BaseFragment {
     }
 
     Unbinder unbinder;
+/*
     @BindView(R.id.bottons)
     LinearLayout bottons;
+*/
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -124,8 +124,8 @@ public class PayAppFragment extends BaseFragment {
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            setTextStyle(bottons, v.getId());
-            switch (v.getId()) {
+            //  setTextStyle(bottons, v.getId());
+           /* switch (v.getId()) {
                 case R.id.one:
                     month = 1;
                     name = "一个月";
@@ -146,8 +146,8 @@ public class PayAppFragment extends BaseFragment {
                     month = 70 * 12;
                     name = "70年";
                     break;
-            }
-            pay.setText("去支付（" + month * money + ")");
+            }*/
+            //  pay.setText("去支付（" + month * money + ")");
         }
     };
 
@@ -199,6 +199,7 @@ public class PayAppFragment extends BaseFragment {
 
         }
     };
+    ChargeAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -206,7 +207,9 @@ public class PayAppFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pay_app, container, false);
         unbinder = ButterKnife.bind(this, view);
-        setOnClick(bottons);
+        // setOnClick(bottons);
+        adapter = new ChargeAdapter();
+        list.setAdapter(adapter);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -241,20 +244,22 @@ public class PayAppFragment extends BaseFragment {
                 if (baseResponse.getCode() == 1) {
                     ResponseRecord responseRecord = (ResponseRecord) baseResponse;
                     storeName.setText(responseRecord.getData().getStoreinfo().getName());
-                    overtime.setText(responseRecord.getData().getStoreinfo().getCode() + "\n" + responseRecord.getData().getStoreinfo().getOvertm_tx());
+                    overtime.setText(responseRecord.getData().getStoreinfo().getCode() + "\n" + "到期时间" + responseRecord.getData().getStoreinfo().getOvertm_tx());
+                    adapter.setMitems(((ResponseRecord) baseResponse).getData().getPaylist());
                 }
             }
         });
+
         return view;
     }
 
-    int money = 50, month;
-    String name = " ";
+    String money = "", month;
+    String name = "";
 
     private void gotoWebview() {
         String url = String.format(
-                AppRequest.ACCOUNTURL + "web/spay?money=%d&uid=%s&mid=%s&month=%d&name=%s",
-                money * month,
+                AppRequest.ACCOUNTURL + "web/spay?money=%s&uid=%s&mid=%s&month=%s&name=%s",
+                money,
                 AppMode.getInstance().getUid(),
                 AppMode.getInstance().getMid(),
                 month, name);
@@ -305,5 +310,74 @@ public class PayAppFragment extends BaseFragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public class ChargeAdapter extends BaseAdapter {
+        public List<ResponseRecord.DataBean.PaylistBean> getMitems() {
+            return mitems;
+        }
+
+        private int select = -1;
+
+        public void setMitems(List<ResponseRecord.DataBean.PaylistBean> mitems) {
+            this.mitems = mitems;
+            notifyDataSetChanged();
+        }
+
+        private List<ResponseRecord.DataBean.PaylistBean> mitems;
+
+        @Override
+        public int getCount() {
+            if (mitems != null) {
+                return mitems.size();
+            }
+            return 0;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            if (mitems != null) {
+                return mitems.get(position);
+            }
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_storecharge, parent, false);
+            final ViewHolder viewHolder = new ViewHolder(convertView);
+            if (position == select) {
+                viewHolder.one.setTextColor(Color.WHITE);
+                viewHolder.one.setBackgroundResource(R.drawable.shape_button_yellow);
+            }
+            viewHolder.one.setText(mitems.get(position).getName());
+            viewHolder.one.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    month = (mitems.get(position).getMonth());
+                    name = mitems.get(position).getName();
+                    money = (mitems.get(position).getMoney());
+                    pay.setText("去支付（" + StringHelp.float2Int(money + "") + ")");
+                    select = position;
+                    notifyDataSetChanged();
+
+                }
+            });
+            return convertView;
+        }
+
+        public class ViewHolder {
+            @BindView(R.id.one)
+            TextView one;
+
+            ViewHolder(View view) {
+                ButterKnife.bind(this, view);
+            }
+        }
     }
 }

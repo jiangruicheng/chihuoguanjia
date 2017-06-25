@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,17 +8,19 @@
     tools:context="com.cndll.chgj.fragment.PayAppFragment">
 
     <LinearLayout
+        android:id="@+id/info"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="5"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:orientation="vertical">
 
         <include layout="@layout/title_bar" />
 
+
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.4"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:gravity="center"
             android:text="欢迎来到管咸事缴费大厅"
             android:textColor="#ffd100"
@@ -26,8 +28,8 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.4"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:gravity="center"
             android:text="请选择您需要购买的时长"
             android:textColor="#ffd100"
@@ -36,8 +38,8 @@
         <TextView
             android:id="@+id/store_name"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.3"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:gravity="center"
             android:text=""
             android:textColor="@color/white"
@@ -46,108 +48,32 @@
         <TextView
             android:id="@+id/overtime"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.3"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:gravity="center"
             android:text=""
             android:textColor="@color/white"
             android:textSize="14sp" />
     </LinearLayout>
-<View
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="0.2"/>
-    <LinearLayout
-        android:id="@+id/bottons"
+
+    <ListView
+        android:id="@id/list"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="4"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/one"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
-            android:layout_marginTop="4dp"
-            android:layout_weight="1"
-            android:background="@drawable/shape_fillet_button_yellow"
-            android:gravity="center"
-            android:text="一个月"
-            android:textColor="@color/white" />
-
-        <TextView
-            android:id="@+id/three"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
-            android:layout_marginTop="4dp"
-            android:layout_weight="1"
-            android:background="@drawable/shape_fillet_button_yellow"
-            android:gravity="center"
-            android:text="三个月"
-            android:textColor="@color/white" />
-
-        <TextView
-            android:id="@+id/six"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
-            android:layout_marginTop="4dp"
-            android:layout_weight="1"
-            android:background="@drawable/shape_fillet_button_yellow"
-            android:gravity="center"
-            android:text="六个月"
-            android:textColor="@color/white" />
-
-        <TextView
-            android:id="@+id/year"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
-            android:layout_marginTop="4dp"
-            android:layout_weight="1"
-            android:background="@drawable/shape_fillet_button_yellow"
-            android:gravity="center"
-            android:text="一年"
-            android:textColor="@color/white" />
-
-        <TextView
-            android:id="@+id/all"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
-            android:layout_marginTop="4dp"
-            android:layout_weight="1"
-            android:background="@drawable/shape_fillet_button_yellow"
-            android:gravity="center"
-            android:text="70年产权"
-            android:textColor="@color/white" />
-
-
-    </LinearLayout>
+        android:layout_height="match_parent"
+        android:layout_above="@+id/pay"
+        android:layout_below="@id/info" />
 
     <TextView
         android:id="@+id/pay"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/item_weight"
+        android:layout_alignParentBottom="true"
         android:layout_marginBottom="4dp"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         android:layout_marginTop="4dp"
-        android:layout_weight="0.8"
         android:background="@drawable/shape_button_yellow"
         android:gravity="center"
         android:text="去支付"
         android:textColor="@color/white" />
-</LinearLayout>
+</RelativeLayout>

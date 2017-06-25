@@ -16,7 +16,9 @@ import com.cndll.chgj.R;
 import com.cndll.chgj.mvp.MObeserver;
 import com.cndll.chgj.mvp.mode.AppRequest;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
+import com.cndll.chgj.mvp.mode.bean.request.RequestGetMethodList;
 import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseAppRecord;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseRecord;
 import com.cndll.chgj.mvp.presenter.BasePresenter;
 import com.cndll.chgj.mvp.view.BaseView;
@@ -99,6 +101,7 @@ public class RecordFragment extends BaseFragment {
         public void showMesg(String mesg) {
 
         }
+
         @Override
         public void showProg(String mesg) {
             baseShowProg(back);
@@ -137,7 +140,7 @@ public class RecordFragment extends BaseFragment {
                 popBackFragment();
             }
         });
-        AppRequest.getAPI().record(AppMode.getInstance().getMid()).
+        AppRequest.getAPI().getAppRecord(new RequestGetMethodList().setMid(AppMode.getInstance().getMid())).
                 subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(baseView) {
             @Override
@@ -154,7 +157,7 @@ public class RecordFragment extends BaseFragment {
             public void onNext(BaseResponse baseResponse) {
                 super.onNext(baseResponse);
                 if (baseResponse.getCode() == 1) {
-                    adapter.setMitems(((ResponseRecord) baseResponse).getData().getPaylist());
+                    adapter.setMitems(((ResponseAppRecord) baseResponse).getData());
                 }
             }
         });
@@ -168,16 +171,16 @@ public class RecordFragment extends BaseFragment {
     }
 
     public class RecordAdapter extends BaseAdapter {
-        public List<ResponseRecord.DataBean.PaylistBean> getMitems() {
+        public List<ResponseAppRecord.DataBean> getMitems() {
             return mitems;
         }
 
-        public void setMitems(List<ResponseRecord.DataBean.PaylistBean> mitems) {
+        public void setMitems(List<ResponseAppRecord.DataBean> mitems) {
             this.mitems = mitems;
             notifyDataSetChanged();
         }
 
-        private List<ResponseRecord.DataBean.PaylistBean> mitems;
+        private List<ResponseAppRecord.DataBean> mitems;
 
         public int getCount() {
             if (mitems != null) {

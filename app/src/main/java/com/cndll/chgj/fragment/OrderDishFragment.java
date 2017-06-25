@@ -1,6 +1,7 @@
 package com.cndll.chgj.fragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -339,6 +340,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                     public void onFirst(View view) {
                         if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isGive()) {
                             showMesg("无赠送权限");
+                            popOrderRequest.dismiss();
                             return;
                         }
                         if (!isOrderWrite) {
@@ -362,44 +364,51 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                         }
                         popOrderRequest.dismiss();
                         setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
-                        sendOrds();
+                        sendOrds(presenter.GIVE);
                     }
 
                     @Override
                     public void onSecond(View view) {
                         if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isReturn()) {
                             showMesg("无退菜权限");
+                            popOrderRequest.dismiss();
                             return;
                         }
-                        backDesh = new ArrayList<RequestPrintBackDesh.ItemsBean>();
-                        if (!isOrderWrite) {
-                            orders.getOrder(orders.getCurrPosition()).backDesh();
-                            backDesh.add(new RequestPrintBackDesh.ItemsBean().setName(orders.getOrder(orders.getCurrPosition()).getItemsBean().getName()).
-                                    setMoney(orders.getOrder(orders.getCurrPosition()).getItemsBean().getPrice()).
-                                    setNum(/*orders.getOrder(orders.getCurrPosition()).getCount() +*/ orders.getOrders().get(orders.getCurrPosition()).backCountOnce + "").
-                                    setUnit(orders.getOrder(orders.getCurrPosition()).getItemsBean().getUnit()).
-                                    setM_name(""));
+                        showMesg("是否确定退菜", new MesgShow.OnButtonListener() {
+                            @Override
+                            public void onListerner() {
+                                backDesh = new ArrayList<RequestPrintBackDesh.ItemsBean>();
+                                if (!isOrderWrite) {
+                                    orders.getOrder(orders.getCurrPosition()).backDesh();
+                                    backDesh.add(new RequestPrintBackDesh.ItemsBean().setName(orders.getOrder(orders.getCurrPosition()).getItemsBean().getName()).
+                                            setMoney(orders.getOrder(orders.getCurrPosition()).getItemsBean().getPrice()).
+                                            setNum(/*orders.getOrder(orders.getCurrPosition()).getCount() +*/ orders.getOrders().get(orders.getCurrPosition()).backCountOnce + "").
+                                            setUnit(orders.getOrder(orders.getCurrPosition()).getItemsBean().getUnit()).
+                                            setM_name(""));
 
 
-                        } else {
-                            orders.writeDish.get(orders.getCurrPosition()).backDesh();
-                            backDesh.add(new RequestPrintBackDesh.ItemsBean().setName(orders.writeDish.get(orders.getCurrPosition()).getItemsBean().getName()).
-                                    setMoney(orders.writeDish.get(orders.getCurrPosition()).getItemsBean().getPrice()).
-                                    setNum(/*orders.writeDish.get(orders.getCurrPosition()).getCount() +*/ orders.writeDish.get(orders.getCurrPosition()).backCountOnce + "").
-                                    setUnit("盘").
-                                    setM_name(""));
+                                } else {
+                                    orders.writeDish.get(orders.getCurrPosition()).backDesh();
+                                    backDesh.add(new RequestPrintBackDesh.ItemsBean().setName(orders.writeDish.get(orders.getCurrPosition()).getItemsBean().getName()).
+                                            setMoney(orders.writeDish.get(orders.getCurrPosition()).getItemsBean().getPrice()).
+                                            setNum(/*orders.writeDish.get(orders.getCurrPosition()).getCount() +*/ orders.writeDish.get(orders.getCurrPosition()).backCountOnce + "").
+                                            setUnit("盘").
+                                            setM_name(""));
 
-                        }
-                        if (orders.getOrders().size() == 0) {
-                            orders.setCurrPosition(null);
-                        } else {
-                            orders.setCurrPosition(orders.getOrders().keyAt(0));
-                        }
-                        popOrderRequest.setThirdVisble(View.GONE);
-                        popOrderRequest.setViewHeight(2);
-                        setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
-                        sendOrds();
-                        isBackDesh = true;
+                                }
+                                if (orders.getOrders().size() == 0) {
+                                    orders.setCurrPosition(null);
+                                } else {
+                                    orders.setCurrPosition(orders.getOrders().keyAt(0));
+                                }
+                                popOrderRequest.setThirdVisble(View.GONE);
+                                popOrderRequest.setViewHeight(2);
+                                popOrderRequest.dismiss();
+                                setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
+                                sendOrds(presenter.BACK);
+                                isBackDesh = true;
+                            }
+                        });
                     }
 
                     @Override
@@ -409,6 +418,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                         } else {
                             orders.writeDish.get(orders.getCurrPosition()).cancelGive();
                         }
+                        popOrderRequest.dismiss();
                         setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
                         sendOrds();
                     }
@@ -443,6 +453,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                             }
                             popOrderRequest.setViewHeight(3);
                             popOrderRequest.four.setVisibility(View.GONE);
+                            popOrderRequest.dismiss();
                             setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
                         }
                     });
@@ -465,6 +476,11 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
                     @Override
                     public void onSecond(final View view) {
+                        if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isGive()) {
+                            showMesg("无赠送权限");
+                            popOrderRequest.dismiss();
+                            return;
+                        }
                         if (orders != null) {
                             if (!isOrderWrite) {
                                 orders.getOrder(orders.getCurrPosition()).addGiveCount();
@@ -493,12 +509,13 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                                     popOrderRequest.setViewHeight(3);
                                     popOrderRequest.four.setVisibility(View.GONE);
                                     setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
+                                    popOrderRequest.dismiss();
                                 }
                             });
                             popOrderRequest.setViewHeight(4);
                             popOrderRequest.four.setVisibility(View.VISIBLE);
                             popOrderRequest.four.setText("取消赠送");
-
+                            popOrderRequest.dismiss();
                         }
                     }
 
@@ -516,8 +533,8 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                             orderItemMesglayout.setMethod("").setCount(" ").setName("").setPrice("");
                             orderInfolayout.setAllMoney("0").setCount("0").setDiscount("0").setGive("0").setLastMoney("0");
                             orders = null;
-                            popOrderRequest.dismiss();
                         }
+                        popOrderRequest.dismiss();
                     }
                 });
 
@@ -600,6 +617,22 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         KeyWeight keyWeight = new KeyWeight();
         keyWeight.setKey(key);
         keyWeight.setChilder(true);
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("CHGJ", Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
+        keyWeight.setOnTransClick(new KeyWeight.OnTransClick() {
+            @Override
+            public void onTrans(int mode) {
+                switch (mode) {
+                    case ABC:
+                        editor.putInt("KEYSTATUE", ABC).commit();
+                        break;
+                    case NUMB:
+                        editor.putInt("KEYSTATUE", NUMB).commit();
+                        break;
+                }
+            }
+        });
+        keyWeight.setKeyIsABC(sharedPreferences.getInt("KEYSTATUE", -1));
         keyWeight.setShowHintText("输入菜品查询码，首字母查询点餐");
         keyWeight.setOnKeyClick(new KeyWeight.OnKeyClick() {
             @Override
@@ -614,9 +647,11 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
             @Override
             public void onKeyNub(String s) {
+
                 presenter.getDeshList(new RequestGetCaipinList().setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()).setName(s));
             }
         });
+
         keyWeight.init(getContext(), view, KeyWeight.Mode_NoButton);
         int[] locations = new int[2];
         deshList.getLocationOnScreen(locations);
@@ -1464,7 +1499,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     private boolean isSend = true;
     ResponseGetOrder responseOrd;
 
-    private void sendOrds() {
+    private void sendOrds(int type) {
         if (orderId == 0) {
          /*   orderPresenter.sendOrder(new RequestOrder().
                     setItems(orderDishFragment.orders.getItems()).
@@ -1481,30 +1516,34 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                     setYsmoney(orderDishFragment.orderInfolayout.getLastPrice() + ""));*/
         } else {
             presenter.updateOreder(new RequestOrder().setId(orderId + "").
-                    setItems(orders.getItems()).
-                    setMid(AppMode.getInstance().getMid()).
-                    setUid(AppMode.getInstance().getUid()).
-                    setPernum(responseOrd.getData().getPernum()).
-                    setSmoney(orderInfolayout.getGivePrice() + "").
-                    setSsmoney(orderInfolayout.getLastPrice() + "").
-                    setZk(orders.getDisconut() + "").
-                    setZkmoney(orderInfolayout.getDiscountPrice() + "").
-                    setTmoney(orderInfolayout.getAllPrice() + "").
-                    setTabname(tabname).
-                    setTab_id(tableId).setPayee(AppMode.getInstance().getUsername()).
-                    setYsmoney(orderInfolayout.getLastPrice() + "").
-                    setType("0").
-                    setCre_tm(responseOrd.getData().getCre_tm()).
-                    setE_tm(responseOrd.getData().getE_tm()).
-                    setOrdernum(responseOrd.getData().getOrdernum()).
-                    setOrdnum(responseOrd.getData().getOrdnum()).
-                    setYm(responseOrd.getData().getYm()).
-                    setWritedishs(orders.getWriteDish()).
-                    setAllremarks(orders.getAllMethod())
-                    .setStorename(responseOrd.getData().getStorename())
-                    .setType_txt(responseOrd.getData().getType_txt())
-            );
+                            setItems(orders.getItems()).
+                            setMid(AppMode.getInstance().getMid()).
+                            setUid(AppMode.getInstance().getUid()).
+                            setPernum(responseOrd.getData().getPernum()).
+                            setSmoney(orderInfolayout.getGivePrice() + "").
+                            setSsmoney(orderInfolayout.getLastPrice() + "").
+                            setZk(orders.getDisconut() + "").
+                            setZkmoney(orderInfolayout.getDiscountPrice() + "").
+                            setTmoney(orderInfolayout.getAllPrice() + "").
+                            setTabname(tabname).
+                            setTab_id(tableId).setPayee(AppMode.getInstance().getUsername()).
+                            setYsmoney(orderInfolayout.getLastPrice() + "").
+                            setType("0").
+                            setCre_tm(responseOrd.getData().getCre_tm()).
+                            setE_tm(responseOrd.getData().getE_tm()).
+                            setOrdernum(responseOrd.getData().getOrdernum()).
+                            setOrdnum(responseOrd.getData().getOrdnum()).
+                            setYm(responseOrd.getData().getYm()).
+                            setWritedishs(orders.getWriteDish()).
+                            setAllremarks(orders.getAllMethod())
+                            .setStorename(responseOrd.getData().getStorename())
+                            .setType_txt(responseOrd.getData().getType_txt())
+                    , type);
         }
+    }
+
+    private void sendOrds() {
+        sendOrds(0);
     }
 
     @Override

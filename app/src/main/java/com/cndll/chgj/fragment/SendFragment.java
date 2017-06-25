@@ -444,6 +444,7 @@ public class SendFragment extends BaseFragment implements OrderView {
             public void onNext(BaseResponse baseResponse) {
                 super.onNext(baseResponse);
                 back();
+                RxBus.getDefault().post(new EventType().setExtra(baseResponse.getExtra()).setType(EventType.SHOW));
             }
         });
     }

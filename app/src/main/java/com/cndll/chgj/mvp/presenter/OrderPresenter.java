@@ -11,6 +11,8 @@ import com.cndll.chgj.mvp.view.OrderView;
  */
 
 public interface OrderPresenter extends BasePresenter<OrderView> {
+    static final int GIVE = 1;
+    static final int BACK = 2;
     void getDcList(RequestPrintList requestGetCaileiList);
 
     void getDeshList(RequestGetCaipinList requestGetCaipinList);
@@ -18,6 +20,8 @@ public interface OrderPresenter extends BasePresenter<OrderView> {
     void sendOrder(RequestOrder order);
 
     void updateOreder(RequestOrder order);
+
+    void updateOreder(RequestOrder order, int type);
 
     void getOrder(RequestGetOrder order);
 

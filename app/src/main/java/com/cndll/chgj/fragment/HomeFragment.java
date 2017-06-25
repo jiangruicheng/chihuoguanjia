@@ -194,6 +194,10 @@ public class HomeFragment extends BaseFragment implements HomeView {
     void onclick_staff() {
         if (isAppOver())
             return;
+        if (!AppMode.getInstance().isBoss()) {
+            toast("员工账号不能操作此项");
+            return;
+        }
         replaceFragmentAddToBackStack(StaffFragment.newInstance(null, null), new StaffImpl());
     }
 
@@ -204,10 +208,10 @@ public class HomeFragment extends BaseFragment implements HomeView {
     void onclick_bill() {
         if (isAppOver())
             return;
-        if (!AppMode.getInstance().isLoading() || (!AppMode.getInstance().isExcel() && !AppMode.getInstance().isBoss())) {
+        /*if (!AppMode.getInstance().isLoading() || (!AppMode.getInstance().isExcel() && !AppMode.getInstance().isBoss())) {
             showMesg("没有报表权限");
             return;
-        }
+        }*/
         replaceFragmentAddToBackStack(BillQueryFragment.newInstance(null, null), new BillImpl());
     }
 
@@ -305,6 +309,10 @@ public class HomeFragment extends BaseFragment implements HomeView {
     void onclick_register() {
         if (isAppOver())
             return;
+        if (!AppMode.getInstance().isBoss()) {
+            toast("员工账号不能操作此项");
+            return;
+        }
         replaceFragmentAddToBackStack(RegisterFragment.newInstance(null, null), new RegisterImpl());
     }
 
@@ -433,6 +441,19 @@ public class HomeFragment extends BaseFragment implements HomeView {
                     MesgShow.showMesg("", "确定退出登录?", logoff, new MesgShow.OnButtonListener() {
                         @Override
                         public void onListerner() {
+                            AppMode.getInstance().setMid("3").setUid("3");
+                            AppMode.getInstance().setToken(null);
+                            AppMode.getInstance().setLoading(false);
+                            AppMode.getInstance().setUsername("");
+                            SharedPreferences.Editor editor = getActivity().getSharedPreferences("CHGJ", Context.MODE_PRIVATE).edit();
+                            editor.putString("mid", AppMode.getInstance().getMid());
+                            editor.putString("uid", AppMode.getInstance().getUid());
+                            editor.putString("token", AppMode.getInstance().getToken());
+                            editor.putBoolean("isloding", false);
+                            editor.putBoolean("isboss", false);
+                            editor.putString("username", AppMode.getInstance().getUsername());
+                            editor.commit();
+                            init();
                             AppRequest.getAPI().logoff(AppMode.getInstance().getUid()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(null) {
                                 @Override
                                 public void onCompleted() {
@@ -449,19 +470,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
                                     super.onNext(baseResponse);
                                    /* if (baseResponse.getCode() == 1) {*/
                                     //showMesg("退出成功");
-                                    AppMode.getInstance().setMid("3").setUid("3");
-                                    AppMode.getInstance().setToken(null);
-                                    AppMode.getInstance().setLoading(false);
-                                    AppMode.getInstance().setUsername("");
-                                    SharedPreferences.Editor editor = getActivity().getSharedPreferences("CHGJ", Context.MODE_PRIVATE).edit();
-                                    editor.putString("mid", AppMode.getInstance().getMid());
-                                    editor.putString("uid", AppMode.getInstance().getUid());
-                                    editor.putString("token", AppMode.getInstance().getToken());
-                                    editor.putBoolean("isloding", false);
-                                    editor.putBoolean("isboss", false);
-                                    editor.putString("username", AppMode.getInstance().getUsername());
-                                    editor.commit();
-                                    init();
+
                                        /* AppMode.getInstance().setMid("3").setUid("3");
                                         AppMode.getInstance().setToken(null);
                                         AppMode.getInstance().setLoading(false);*/
@@ -576,7 +585,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @Override
     public void toast(String s) {
-
+        showToast(s);
     }
 
     private void getAppLastTime() {

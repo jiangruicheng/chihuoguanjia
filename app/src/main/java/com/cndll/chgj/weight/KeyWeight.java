@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
@@ -53,6 +54,16 @@ public class KeyWeight {
     public final static int Mode_NoButton = 1;
     public final static int Mode_OnlyNumb = 2;
     boolean isButtonShow;
+
+    public int getKeyIsABC() {
+        return KeyIsABC;
+    }
+
+    public void setKeyIsABC(int keyIsABC) {
+        KeyIsABC = keyIsABC;
+    }
+
+    private int KeyIsABC;
 
     public void buttonShowIs(boolean is) {
         isButtonShow = is;
@@ -110,6 +121,7 @@ public class KeyWeight {
         TextView tran = (TextView) key.findViewById(R.id.tran);
         TextView show = (TextView) key.findViewById(R.id.show);
         show.setHint(showHint);
+
         View layout = key.findViewById(R.id.buttonlayout);
         View keyabc = key.findViewById(R.id.abc_key);
         View keynum = key.findViewById(R.id.number_key);
@@ -137,6 +149,16 @@ public class KeyWeight {
             show = (TextView) key.findViewById(R.id.show);
         }
         show.setText(showbuffer.toString());
+        switch (KeyIsABC) {
+            case OnTransClick.ABC:
+                key.findViewById(R.id.number_key).setVisibility(View.GONE);
+                key.findViewById(R.id.abc_key).setVisibility(View.VISIBLE);
+                break;
+            case OnTransClick.NUMB:
+                key.findViewById(R.id.number_key).setVisibility(View.VISIBLE);
+                key.findViewById(R.id.abc_key).setVisibility(View.GONE);
+                break;
+        }
     }
 
     private void setOnclick(View view) {
@@ -211,11 +233,17 @@ public class KeyWeight {
                 if (v.getId() == R.id.tran_number) {
                     key.findViewById(R.id.number_key).setVisibility(View.VISIBLE);
                     key.findViewById(R.id.abc_key).setVisibility(View.GONE);
+                    if (onTransClick != null) {
+                        onTransClick.onTrans(OnTransClick.NUMB);
+                    }
                     return;
                 }
                 if (v.getId() == R.id.tran && ((TextView) v).getText().equals("ABC")) {
                     key.findViewById(R.id.number_key).setVisibility(View.GONE);
                     key.findViewById(R.id.abc_key).setVisibility(View.VISIBLE);
+                    if (onTransClick != null) {
+                        onTransClick.onTrans(OnTransClick.ABC);
+                    }
                     return;
                 }
                 if (show == null) {
@@ -237,6 +265,23 @@ public class KeyWeight {
         void onKeySure(String s);
 
         void onKeyNub(String s);
+    }
+
+    public OnTransClick getOnTransClick() {
+        return onTransClick;
+    }
+
+    public void setOnTransClick(OnTransClick onTransClick) {
+        this.onTransClick = onTransClick;
+    }
+
+    private OnTransClick onTransClick;
+
+    public interface OnTransClick {
+        int ABC = 1;
+        int NUMB = 2;
+
+        void onTrans(int mode);
     }
 
     public OnKeyClick getOnKeyClick() {

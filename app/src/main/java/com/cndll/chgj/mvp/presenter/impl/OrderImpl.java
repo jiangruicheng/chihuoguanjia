@@ -188,6 +188,11 @@ public class OrderImpl implements OrderPresenter {
 
     @Override
     public void updateOreder(final RequestOrder order) {
+        updateOreder(order, 0);
+    }
+
+    @Override
+    public void updateOreder(final RequestOrder order, final int type) {
         AppRequest.getAPI().
                 updateOrd(order).
                 subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
@@ -208,11 +213,19 @@ public class OrderImpl implements OrderPresenter {
                         if (baseResponse.getCode() == 1) {
                             view.sendSucc(Integer.valueOf(order.getId()));
                             //   view.showMesg("更新成功");
+                            switch (type) {
+                                case BACK:
+                                    view.toast("退菜成功");
+                                    break;
+                                case GIVE:
+                                    view.toast("修改成功");
+                                    break;
+                            }
                             getOrder(new RequestGetOrder().setId(Integer.valueOf(order.getId())));
                             // view.setDeshList(((ResponseGetCaipinList) baseResponse).getData());
                         } else {
                             view.disProg();
-                            view.showMesg(baseResponse.getExtra());
+                            view.toast(baseResponse.getExtra());
                         }
                     }
                 });
@@ -267,11 +280,11 @@ public class OrderImpl implements OrderPresenter {
                         super.onNext(baseResponse);
                         view.disProg();
                         if (baseResponse.getCode() == 1) {
-                           // view.sendSucc(0);
+                            // view.sendSucc(0);
                             /*view.showMesg("更新成功");*/
                             view.backView();
                             view.toast("撤台成功");
-                           // getOrder(new RequestGetOrder().setId(Integer.valueOf(id)));
+                            // getOrder(new RequestGetOrder().setId(Integer.valueOf(id)));
                             // view.setDeshList(((ResponseGetCaipinList) baseResponse).getData());
                         }
                     }
@@ -302,9 +315,9 @@ public class OrderImpl implements OrderPresenter {
                         if (baseResponse.getCode() == 1) {
                             view.backView();
                             view.toast("换台成功");
-                           // view.sendSucc(((ResponseAddOrd) baseResponse).getData().getOid());
-                           // view.showMesg("更新成功");
-                          //  getOrder(new RequestGetOrder().setId(Integer.valueOf(id)));
+                            // view.sendSucc(((ResponseAddOrd) baseResponse).getData().getOid());
+                            // view.showMesg("更新成功");
+                            //  getOrder(new RequestGetOrder().setId(Integer.valueOf(id)));
                             // view.setDeshList(((ResponseGetCaipinList) baseResponse).getData());
                         }
                     }

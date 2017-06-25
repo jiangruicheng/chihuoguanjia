@@ -39,6 +39,7 @@ import com.cndll.chgj.mvp.mode.bean.request.RequestVerify;
 import com.cndll.chgj.mvp.mode.bean.request.RequsetHomeMendianList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseAddOrd;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseAddPrint;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseAppRecord;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseArea;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseBank;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseCailei;
@@ -85,6 +86,9 @@ import rx.Observable;
 public interface Api {
     @POST("/Store/upstoreinfo")
     Observable<ResponseCailei> updateStore(@Body RequestUpdateStoery requestUpdateStoery);
+
+    @POST("/System/storechargelist")
+    Observable<ResponseAppRecord> getAppRecord(@Body RequestGetMethodList requestGetMethodList);
 
     @Multipart
     @POST("File/uploadPicture")
