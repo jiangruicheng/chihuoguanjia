@@ -79,6 +79,7 @@ public class OrderInfo {
         discountPrice = allDiscountPrice - allDiscountPrice * (order.getDisconut() != 0 ? order.getDisconut() : 1);
         /*lastPrice = allPrice * order.getDisconut();*/
         lastPrice = allPrice - discountPrice - givePrice;
+        lastPrice = Math.round(lastPrice);
         setCount(count + "").setAllMoney(String.valueOf(allPrice)).setDiscount(discountPrice + "").setLastMoney(lastPrice + "").setGive(givePrice + "");
 
     }
@@ -113,6 +114,7 @@ public class OrderInfo {
     }
 
     public OrderInfo setLastMoney(String count) {
+
         this.lastMoney.setText(StringHelp.float2Int(StringHelp.round(count)));
         return this;
     }

@@ -16,34 +16,41 @@
         android:padding="12dp"
         android:text="报表类型"
         android:textColor="@color/cube_holo_blue_dark" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/yinse"/>
+        android:background="@color/yinse" />
+
     <TextView
         android:id="@+id/day_report"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:drawableRight="@mipmap/right"
         android:gravity="center_vertical"
         android:padding="12dp"
         android:text="日总结单"
         android:textColor="@color/buttonStork" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/yinse"/>
+        android:background="@color/yinse" />
+
     <TextView
         android:id="@+id/all_report"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:drawableRight="@mipmap/right"
         android:gravity="center_vertical"
         android:padding="12dp"
         android:text="销售汇总单"
         android:textColor="@color/buttonStork" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/yinse"/>
+        android:background="@color/yinse" />
 </LinearLayout>

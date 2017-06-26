@@ -16,17 +16,17 @@ import com.cndll.chgj.mvp.MObeserver;
 import com.cndll.chgj.mvp.mode.AppRequest;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseAddOrd;
 import com.cndll.chgj.mvp.mode.bean.response.ResponsePayStatue;
 import com.cndll.chgj.mvp.presenter.BasePresenter;
 import com.cndll.chgj.mvp.view.BaseView;
 import com.cndll.chgj.weight.OrderInfo;
 
-import java.util.Calendar;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -72,26 +72,7 @@ public class PaySwitchFragment extends BaseFragment {
 
     @OnClick(R.id.xianjin)
     void onclick_xianjin() {
-        AppRequest.getAPI().payMoney(orderID + "", orderInfolayout.getLastPrice() + "", 3 + "").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(null) {
-            @Override
-            public void onCompleted() {
-                super.onCompleted();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                super.onError(e);
-            }
-
-            @Override
-            public void onNext(BaseResponse baseResponse) {
-                super.onNext(baseResponse);
-                if (baseResponse.getCode() == 1) {
-                    // printOrders();
-                    replaceFragmentAddToBackStack(SuccessFragment.newInstance("现金收款", orderInfolayout.getLastPrice() + ""), null);
-                }
-            }
-        });
+        gotoPay("3");
     }
 
     @BindView(R.id.weixin)
@@ -103,7 +84,9 @@ public class PaySwitchFragment extends BaseFragment {
 
     @OnClick(R.id.card)
     void onclick_card() {
-        AppRequest.getAPI().payMoney(orderID + "", orderInfolayout.getLastPrice() + "", 4 + "").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(null) {
+
+        gotoPay(4 + "");
+        /*AppRequest.getAPI().payMoney(orderID + "", orderInfolayout.getLastPrice() + "", 4 + "").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(null) {
             @Override
             public void onCompleted() {
                 super.onCompleted();
@@ -118,19 +101,23 @@ public class PaySwitchFragment extends BaseFragment {
             public void onNext(BaseResponse baseResponse) {
                 super.onNext(baseResponse);
                 if (baseResponse.getCode() == 1) {
-                    replaceFragmentAddToBackStack(SuccessFragment.newInstance("刷卡收款", orderInfolayout.getLastPrice() + ""), null);
-                    // printOrders();
+
+                     printOrders();
                 }
             }
-        });
+        });*/
     }
 
-    private void printOrders() {
+    private void gotoPay(String type) {
+        replaceFragmentAddToBackStack(SuccessFragment.newInstance(type, orderInfolayout.getLastPrice() + "").setOrderID(orderID), null);
+    }
+
+/*    private void printOrders() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH) + 1;
         int day = calendar.get(Calendar.DAY_OF_MONTH);
-       /* AppRequest.getAPI().printOrder(orderID + "", "总出品单", year + "-" + month + "-" + day, AppMode.getInstance().getUsername(), AppMode.getInstance().getPrint_code()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(null) {
+       *//* AppRequest.getAPI().printOrder(orderID + "", "总出品单", year + "-" + month + "-" + day, AppMode.getInstance().getUsername(), AppMode.getInstance().getPrint_code()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(null) {
             @Override
             public void onCompleted() {
                 super.onCompleted();
@@ -145,8 +132,8 @@ public class PaySwitchFragment extends BaseFragment {
             public void onNext(BaseResponse baseResponse) {
                 super.onNext(baseResponse);
             }
-        });*/
-    }
+        });*//*
+    }*/
 
     Unbinder unbinder;
 
@@ -196,7 +183,22 @@ public class PaySwitchFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_pay_switch, container, false);
         unbinder = ButterKnife.bind(this, view);
         orderInfolayout = new OrderInfo();
+        AppRequest.getAPI().updataPayee(orderID + "", AppMode.getInstance().getUsername()).subscribeOn(Schedulers.io()).subscribe(new Observer<ResponseAddOrd>() {
+            @Override
+            public void onCompleted() {
 
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(ResponseAddOrd responseAddOrd) {
+                responseAddOrd.getData();
+            }
+        });
         title.setText("收款");
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -232,7 +234,7 @@ public class PaySwitchFragment extends BaseFragment {
     String titlename;
 
     private void gotoWebView() {
-        String url = String.format(AppRequest.ACCOUNTURL+"web/costpay?id=%d&type=%d&mid=%s", orderID, type, AppMode.getInstance().getMid());
+        String url = String.format(AppRequest.ACCOUNTURL + "web/costpay?id=%d&type=%d&mid=%s", orderID, type, AppMode.getInstance().getMid());
         replaceFragmentAddToBackStack(WebViewFragment.newInstance(url, titlename), null);
     }
 
@@ -351,7 +353,7 @@ public class PaySwitchFragment extends BaseFragment {
                     @Override
                     public void onNext(BaseResponse baseResponse) {
                         super.onNext(baseResponse);
-                        if (((ResponsePayStatue)baseResponse).getData() == 1) {
+                        if (((ResponsePayStatue) baseResponse).getData() == 1) {
                             gotoWebView();
                         } else {
                             replaceFragmentAddToBackStack(TurnToApplyPayFragment.newInstance(s, null), null);

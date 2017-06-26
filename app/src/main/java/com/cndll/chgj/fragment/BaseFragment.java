@@ -178,6 +178,11 @@ public class BaseFragment<T extends ListAdapter> extends Fragment {
     public void onStop() {
         super.onStop();
         baseDisProg();
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(getActivity().getWindow().getDecorView().getWindowToken(),
+                    0);
+        }
     }
 
     protected void popBackFragment() {

@@ -107,7 +107,7 @@ public class PrintReportFragment extends BaseFragment {
     }
 
     String url;
-    String baseUrl = "http://dc.idc.zhonxing.com/";
+    String baseUrl = AppRequest.ACCOUNTURL;
     String stm, etm;
 
     @Override

@@ -234,7 +234,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
     @OnClick(R.id.pay_nodesk)
     void onclick_paynodesk() {
-        popUpkey(KeyWeight.Mode_OnlyNumb, Color.rgb(171, 171, 171), Color.rgb(1, 169, 104), "请输入桌台号活牌号", "取消", "确认", new KeyWeight.OnKeyClick() {
+        popUpkey(KeyWeight.Mode_OnlyNumb, Color.rgb(171, 171, 171), Color.rgb(1, 169, 104), "请输入桌台号或牌号", "取消", "确认", new KeyWeight.OnKeyClick() {
             @Override
             public void onKeyCancel(String s) {
 
@@ -242,6 +242,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
             @Override
             public void onKeySure(String s) {
+                showProg("");
                 AppRequest.getAPI().sendOrd(new RequestOrder().
                         setItems(orders.getItems()).
                         setMid(AppMode.getInstance().getMid()).
@@ -268,9 +269,12 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                     @Override
                     public void onNext(BaseResponse baseResponse) {
                         super.onNext(baseResponse);
+                        disProg();
                         if (baseResponse.getCode() == 1) {
                             if (((ResponseAddOrd) baseResponse).getData().getOid() != 0) {
-                                presenter.printSetting(((ResponseAddOrd) baseResponse).getData().getOid());
+                                replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(((ResponseAddOrd) baseResponse).getData().getOid()).setOrders(orders), null);
+                                MainActivity.removeBackPressEvent(backPressEvent);
+                                //   presenter.printSetting(((ResponseAddOrd) baseResponse).getData().getOid());
                             }
 
                         }
@@ -732,7 +736,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                             public void onListerner() {
                                 presenter.turnOrder(orderId + "", orderDeskListAdapter.getItems().get(position).getName(), orderDeskListAdapter.getItems().get(position).getId());
                                 popviewDesk.dismiss();
-                                popviewOther.dismiss();
+
                             }
                         });
                     }
@@ -777,6 +781,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         popviewOther.printOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                popviewOther.dismiss();
                 if (orderId == 0) {
                     showMesg("此台不存在消费，无需打印");
                     return;
@@ -884,6 +889,8 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     }
 
     private void printOrders() {
+        showProg("");
+        toast("正在打印");
         AppRequest.getAPI().printBill(orderId + "", AppMode.getInstance().getPrint_code(), AppMode.getInstance().getUsername()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(OrderDishFragment.this) {
             @Override
             public void onCompleted() {
@@ -898,6 +905,8 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             @Override
             public void onNext(BaseResponse baseResponse) {
                 super.onNext(baseResponse);
+                disProg();
+                toast(baseResponse.extra);
             }
         });
     }
@@ -1606,8 +1615,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
     @Override
     public void printNoDeskOrderSucc(int ord) {
-        replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(ord).setOrders(orders), null);
-        MainActivity.removeBackPressEvent(backPressEvent);
+
     }
 
     @Override

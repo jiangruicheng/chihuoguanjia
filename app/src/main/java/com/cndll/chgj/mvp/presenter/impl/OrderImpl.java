@@ -17,8 +17,7 @@ import com.cndll.chgj.mvp.mode.bean.response.ResponseGetOrder;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetSeting;
 import com.cndll.chgj.mvp.presenter.OrderPresenter;
 import com.cndll.chgj.mvp.view.OrderView;
-
-import java.util.Calendar;
+import com.cndll.chgj.util.DateFormatUtil;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -160,11 +159,8 @@ public class OrderImpl implements OrderPresenter {
 
     // TODO: Rename method, update argument and hook method into UI event
     public void printOrders(final int ord, int type) {
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH) + 1;
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        AppRequest.getAPI().printOrder(ord + "", type + "", year + "-" + month + "-" + day, AppMode.getInstance().getUsername())
+        final String time = DateFormatUtil.transForDate(DateFormatUtil.currentTimeStamp()).toString();
+        AppRequest.getAPI().printOrder(ord + "", type + "", /*year + "-" + month + "-" + day*/time, AppMode.getInstance().getUsername())
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(view) {
             @Override
             public void onCompleted() {

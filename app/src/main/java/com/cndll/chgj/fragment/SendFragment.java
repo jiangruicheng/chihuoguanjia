@@ -30,6 +30,7 @@ import com.cndll.chgj.mvp.mode.bean.response.ResponseGetSeting;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseMethod;
 import com.cndll.chgj.mvp.presenter.OrderPresenter;
 import com.cndll.chgj.mvp.view.OrderView;
+import com.cndll.chgj.util.DateFormatUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -271,8 +272,9 @@ public class SendFragment extends BaseFragment implements OrderView {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH) + 1;
         int day = calendar.get(Calendar.DAY_OF_MONTH);
-        int hour = calendar.get(Calendar.HOUR);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
+        final String time = DateFormatUtil.transForDate1(DateFormatUtil.currentTimeStamp());
         final String data = year + "-" + month + "-" + day + " " + hour + ":" + minute;
         OrderDishFragment.Orders orders = orderDishFragment.orders;
         List<OrderDishFragment.Orders.Order> orderList = orders.getAll();
@@ -280,14 +282,14 @@ public class SendFragment extends BaseFragment implements OrderView {
         switch (type) {
             case 1:
                 final RequestPrintBill request = new RequestPrintBill().
-                        setDate(data).
-                        setSname(AppMode.getInstance().getUsername()).
+                        setDate(time).
+                        setSname("下单人：" + AppMode.getInstance().getUsername()).
                         setTabcode(orderDishFragment.tabname).
                         setTitle("出品分单");
                 Observable.from(orderList).subscribe(new Observer<OrderDishFragment.Orders.Order>() {
                     @Override
                     public void onCompleted() {
-                        back();
+
                     }
 
                     @Override
@@ -359,7 +361,6 @@ public class SendFragment extends BaseFragment implements OrderView {
                 Observable.from(new ArrayList<RequestPrintBill>(prints.values())).subscribe(new Observer<RequestPrintBill>() {
                     @Override
                     public void onCompleted() {
-                        back();
                     }
 
                     @Override
@@ -369,7 +370,7 @@ public class SendFragment extends BaseFragment implements OrderView {
 
                     @Override
                     public void onNext(RequestPrintBill requestPrintBill) {
-                        requestPrintBill.setDate(data).setSname(AppMode.getInstance().getUsername()).setTabcode(orderDishFragment.tabname).setTitle("总单打印");
+                        requestPrintBill.setDate(time).setSname("下单人：" + AppMode.getInstance().getUsername()).setTabcode(orderDishFragment.tabname).setTitle("总单打印");
                         AppRequest.getAPI().printAddOrder(requestPrintBill).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ResponseCailei>() {
                             @Override
                             public void onCompleted() {
@@ -428,7 +429,8 @@ public class SendFragment extends BaseFragment implements OrderView {
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         int hour = calendar.get(Calendar.HOUR);
         int minute = calendar.get(Calendar.MINUTE);
-        AppRequest.getAPI().printOrder(ord + "", type + "", year + "-" + month + "-" + day + " " + hour + ":" + minute, AppMode.getInstance().getUsername())
+        final String time = DateFormatUtil.transForDate1(DateFormatUtil.currentTimeStamp());
+        AppRequest.getAPI().printOrder(ord + "", type + "", /*year + "-" + month + "-" + day + " " + hour + ":" + minute*/time, "下单人：" + AppMode.getInstance().getUsername())
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(SendFragment.this) {
             @Override
             public void onCompleted() {
@@ -443,7 +445,7 @@ public class SendFragment extends BaseFragment implements OrderView {
             @Override
             public void onNext(BaseResponse baseResponse) {
                 super.onNext(baseResponse);
-                back();
+
                 RxBus.getDefault().post(new EventType().setExtra(baseResponse.getExtra()).setType(EventType.SHOW));
             }
         });
@@ -530,6 +532,7 @@ public class SendFragment extends BaseFragment implements OrderView {
 
     @Override
     public void sendSucc(int ord) {
+        back();
         printSetting(ord);
 
     }

@@ -110,7 +110,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
     @OnClick(R.id.pay_nodesk)
     void onclick_paynodesk() {
 
-        popUpkey(KeyWeight.Mode_OnlyNumb, Color.rgb(171, 171, 171), Color.rgb(1, 169, 104), "请输入桌台号活牌号", "取消", "确认", new KeyWeight.OnKeyClick() {
+        popUpkey(KeyWeight.Mode_OnlyNumb, Color.rgb(171, 171, 171), Color.rgb(1, 169, 104), "请输入桌台号或牌号", "取消", "确认", new KeyWeight.OnKeyClick() {
             @Override
             public void onKeyCancel(String s) {
 
@@ -118,6 +118,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
 
             @Override
             public void onKeySure(String s) {
+                showProg("");
                 AppRequest.getAPI().sendOrd(new RequestOrder().
                         setItems(order.getItems()).
                         setMid(AppMode.getInstance().getMid()).
@@ -143,10 +144,13 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
 
                     @Override
                     public void onNext(BaseResponse baseResponse) {
+                        disProg();
+                        disProg();
                         super.onNext(baseResponse);
                         if (baseResponse.getCode() == 1) {
                             if (((ResponseAddOrd) baseResponse).getData().getOid() != 0) {
-                                presenter.printSetting(((ResponseAddOrd) baseResponse).getData().getOid());
+                                replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(((ResponseAddOrd) baseResponse).getData().getOid()).setOrders(order), null);
+                                // presenter.printSetting(((ResponseAddOrd) baseResponse).getData().getOid());
                             }
 
                         }
@@ -175,6 +179,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         popviewOther.trunDesk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                popviewOther.dismiss();
                 if (orderId == 0) {
                     showMesg("此台不存在消费，无需转台");
                     return;
@@ -189,8 +194,15 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
 
                 orderDeskListAdapter.setOnItemClickLister(new OnItemClickLister() {
                     @Override
-                    public void OnItemClick(View view, int position) {
-                        presenter.turnOrder(orderId + "", orderDeskListAdapter.getItems().get(position).getName(), orderDeskListAdapter.getItems().get(position).getId());
+                    public void OnItemClick(View view, final int position) {
+                        showMesg("确定转到" + orderDeskListAdapter.getItems().get(position).getName(), new MesgShow.OnButtonListener() {
+                            @Override
+                            public void onListerner() {
+                                presenter.turnOrder(orderId + "", orderDeskListAdapter.getItems().get(position).getName(), orderDeskListAdapter.getItems().get(position).getId());
+                                popviewDesk.dismiss();
+
+                            }
+                        });
                     }
                 });
                 Button cancel = (Button) view.findViewById(R.id.cancel);
@@ -231,6 +243,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         popviewOther.printOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                popviewOther.dismiss();
                 if (orderId == 0) {
                     showMesg("此台不存在消费，无需打印");
                     return;
@@ -256,7 +269,13 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                     return;
                 }
                 if (orderId != 0) {
-                    presenter.removeOrder(orderId + "", 2 + "");
+                    showMesg("撤台将会撤销消费，是否确认", new MesgShow.OnButtonListener() {
+                        @Override
+                        public void onListerner() {
+                            presenter.removeOrder(orderId + "", 2 + "");
+                            popviewOther.dismiss();
+                        }
+                    });
                 }
             }
         });
@@ -407,6 +426,8 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
     }
 
     private void printOrders() {
+        showProg("");
+        toast("正在打印");
         AppRequest.getAPI().printBill(orderId + "", AppMode.getInstance().getPrint_code(), AppMode.getInstance().getUsername()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(OrderInfoFragment.this) {
             @Override
             public void onCompleted() {
@@ -421,6 +442,8 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
             @Override
             public void onNext(BaseResponse baseResponse) {
                 super.onNext(baseResponse);
+                disProg();
+                toast(baseResponse.extra);
             }
         });
     }
@@ -1317,7 +1340,6 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
 
     @Override
     public void printNoDeskOrderSucc(int orderId) {
-        replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(orderId).setOrders(order), null);
 
     }
 
@@ -1327,6 +1349,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
 
     @Override
     public void backView() {
+        popBackFragment();
         popBackFragment();
     }
 

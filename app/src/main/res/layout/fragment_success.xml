@@ -14,6 +14,7 @@
         android:layout_weight="0.5" />
 
     <ImageView
+        android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1.5"
@@ -52,4 +53,20 @@
         android:layout_weight="1"
         android:background="@drawable/shape_fillet_solid"
         android:textColor="@color/white" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5" />
+
+    <Button
+        android:id="@+id/cancel"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_weight="1"
+        android:background="@drawable/shape_fillet_button"
+        android:textColor="@color/buttonStork"
+        android:visibility="gone" />
 </LinearLayout>
