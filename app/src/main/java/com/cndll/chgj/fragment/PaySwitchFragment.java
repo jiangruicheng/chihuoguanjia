@@ -15,6 +15,7 @@ import com.cndll.chgj.R;
 import com.cndll.chgj.mvp.MObeserver;
 import com.cndll.chgj.mvp.mode.AppRequest;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
+import com.cndll.chgj.mvp.mode.bean.info.Orders;
 import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseAddOrd;
 import com.cndll.chgj.mvp.mode.bean.response.ResponsePayStatue;
@@ -259,17 +260,17 @@ public class PaySwitchFragment extends BaseFragment {
 
     private int orderID = 0;
 
-    public OrderDishFragment.Orders getOrders() {
+    public Orders getOrders() {
         return orders;
     }
 
-    public PaySwitchFragment setOrders(OrderDishFragment.Orders orders) {
+    public PaySwitchFragment setOrders(Orders orders) {
         this.orders = orders;
 
         return this;
     }
 
-    private OrderDishFragment.Orders orders;
+    private Orders orders;
 
     private void setOrderInfolayout() {
 

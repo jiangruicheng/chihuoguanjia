@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.cndll.chgj.R;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
+import com.cndll.chgj.mvp.mode.bean.info.Orders;
 import com.cndll.chgj.mvp.mode.bean.request.RequestDeleteMethod;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetMethodList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
@@ -131,23 +132,23 @@ public class NoteFragment extends BaseFragment implements NoteView {
     }
 
 
-    public OrderDishFragment.Orders.Order getOrder() {
+    public Orders.Order getOrder() {
         return order;
     }
 
-    public NoteFragment setOrder(OrderDishFragment.Orders.Order order) {
+    public NoteFragment setOrder(Orders.Order order) {
         this.order = order;
         return this;
     }
 
-    private OrderDishFragment.Orders.Order order;
+    private Orders.Order order;
 
-    public NoteFragment setWrite(OrderDishFragment.Orders.Write write) {
+    public NoteFragment setWrite(Orders.Write write) {
         this.write = write;
         return this;
     }
 
-    private OrderDishFragment.Orders.Write write;
+    private Orders.Write write;
     private boolean isWrite;
     private AllMethodAdapter allMethodAdapter;
     private SelectMethodAdapter selectMethodAdapter;

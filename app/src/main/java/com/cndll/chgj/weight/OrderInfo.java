@@ -4,7 +4,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
-import com.cndll.chgj.fragment.OrderDishFragment;
+import com.cndll.chgj.mvp.mode.bean.info.Orders;
 import com.cndll.chgj.util.StringHelp;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class OrderInfo {
 
     float count = 0, allPrice = 0, discountPrice = 0, givePrice = 0, lastPrice = 0, allDiscountPrice = 0;
 
-    public void setMesg(OrderDishFragment.Orders order) {
+    public void setMesg(Orders order) {
         count = 0;
         allPrice = 0;
         discountPrice = 0;
@@ -50,7 +50,7 @@ public class OrderInfo {
         if (order == null) {
             return;
         }
-        List<OrderDishFragment.Orders.Order> orders = order.getAll();
+        List<Orders.Order> orders = order.getAll();
         if (orders == null) {
             return;
         }
@@ -67,7 +67,7 @@ public class OrderInfo {
             givePrice = givePrice + orders.get(i).getGivePrice();
         }
         if (order.writeDish != null) {
-            List<OrderDishFragment.Orders.Write> writes = new ArrayList<>(order.writeDish.values());
+            List<Orders.Write> writes = new ArrayList<>(order.writeDish.values());
             if (order.writeDish != null && order.writeDish.size() > 0) {
                 for (int i = 0; i < writes.size(); i++) {
                     count = count + Float.valueOf(writes.get(i).getCount()) /*+ Float.valueOf(writes.get(i).getGiveCount())*/;

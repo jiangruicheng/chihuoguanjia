@@ -19,6 +19,7 @@ import com.cndll.chgj.RXbus.RxBus;
 import com.cndll.chgj.mvp.MObeserver;
 import com.cndll.chgj.mvp.mode.AppRequest;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
+import com.cndll.chgj.mvp.mode.bean.info.Orders;
 import com.cndll.chgj.mvp.mode.bean.request.RequestOrder;
 import com.cndll.chgj.mvp.mode.bean.request.RequestPrintBill;
 import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
@@ -276,9 +277,9 @@ public class SendFragment extends BaseFragment implements OrderView {
         int minute = calendar.get(Calendar.MINUTE);
         final String time = DateFormatUtil.transForDate1(DateFormatUtil.currentTimeStamp());
         final String data = year + "-" + month + "-" + day + " " + hour + ":" + minute;
-        OrderDishFragment.Orders orders = orderDishFragment.orders;
-        List<OrderDishFragment.Orders.Order> orderList = orders.getAll();
-        List<OrderDishFragment.Orders.Write> writeList;
+        Orders orders = orderDishFragment.orders;
+        List<Orders.Order> orderList = orders.getAll();
+        List<Orders.Write> writeList;
         switch (type) {
             case 1:
                 final RequestPrintBill request = new RequestPrintBill().
@@ -286,7 +287,7 @@ public class SendFragment extends BaseFragment implements OrderView {
                         setSname("下单人：" + AppMode.getInstance().getUsername()).
                         setTabcode(orderDishFragment.tabname).
                         setTitle("出品分单");
-                Observable.from(orderList).subscribe(new Observer<OrderDishFragment.Orders.Order>() {
+                Observable.from(orderList).subscribe(new Observer<Orders.Order>() {
                     @Override
                     public void onCompleted() {
 
@@ -298,7 +299,7 @@ public class SendFragment extends BaseFragment implements OrderView {
                     }
 
                     @Override
-                    public void onNext(OrderDishFragment.Orders.Order order) {
+                    public void onNext(Orders.Order order) {
                         List<RequestPrintBill.ItemsBean> item = new ArrayList<RequestPrintBill.ItemsBean>();
 
                         item.add(new RequestPrintBill.ItemsBean().
@@ -337,7 +338,7 @@ public class SendFragment extends BaseFragment implements OrderView {
                     writeList = new ArrayList<>(orders.writeDish.values());
                 }
                 Map<String, RequestPrintBill> prints = new ArrayMap<>();
-                for (OrderDishFragment.Orders.Order o : orderList) {
+                for (Orders.Order o : orderList) {
                     if (o.isSend) {
                         continue;
                     }
@@ -398,7 +399,7 @@ public class SendFragment extends BaseFragment implements OrderView {
         writeList = new ArrayList<>(orders.writeDish.values());
         RequestPrintBill printBill = new RequestPrintBill();
         printBill.setItems(new ArrayList<RequestPrintBill.ItemsBean>());
-        for (OrderDishFragment.Orders.Write w : writeList) {
+        for (Orders.Write w : writeList) {
             printBill.getItems().add(new RequestPrintBill.ItemsBean().setUnit(w.getItemsBean().getUnit()).setName(w.getItemsBean().getName()).setNum(w.getItemsBean().getCount()).setMoney(w.getItemsBean().getPrice()));
         }
     }
@@ -409,7 +410,7 @@ public class SendFragment extends BaseFragment implements OrderView {
 
     }
 
-    private String getMethodName(OrderDishFragment.Orders.Order o) {
+    private String getMethodName(Orders.Order o) {
         StringBuffer mname = new StringBuffer("");
         if (o.getItemsBean().getRemark() != null && o.getItemsBean().getRemark().getRemarks() != null)
             for (ResponseMethod.DataBean m : o.getItemsBean().getRemark().getRemarks()) {

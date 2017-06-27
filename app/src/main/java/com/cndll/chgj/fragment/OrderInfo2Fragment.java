@@ -65,10 +65,10 @@ import rx.schedulers.Schedulers;
  * Activities that contain this fragment must implement the
  * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link OrderInfoFragment#newInstance} factory method to
+ * Use the {@link OrderInfo2Fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class OrderInfoFragment extends BaseFragment implements OrderView {
+public class OrderInfo2Fragment extends BaseFragment implements OrderView {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -132,7 +132,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                         setTmoney(orderInfo.getAllPrice() + "").
                         setTabname(s).
                         setTab_id(0 + "").setPayee("1234").
-                        setYsmoney(orderInfo.getLastPrice() + "")).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(OrderInfoFragment.this) {
+                        setYsmoney(orderInfo.getLastPrice() + "")).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(OrderInfo2Fragment.this) {
                     @Override
                     public void onCompleted() {
                         super.onCompleted();
@@ -220,7 +220,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                         orderListView.getHeight(),
                         Gravity.NO_GRAVITY, locations);
                 AppRequest.getAPI().getDeskList(new RequestGetDeskList().setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()).setIsoc(2 + "")).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
-                        subscribe(new MObeserver(OrderInfoFragment.this) {
+                        subscribe(new MObeserver(OrderInfo2Fragment.this) {
                             @Override
                             public void onCompleted() {
                                 super.onCompleted();
@@ -429,7 +429,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
     private void printOrders() {
         showProg("");
         toast("正在打印");
-        AppRequest.getAPI().printBill(orderId + "", AppMode.getInstance().getPrint_code(), AppMode.getInstance().getUsername()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(OrderInfoFragment.this) {
+        AppRequest.getAPI().printBill(orderId + "", AppMode.getInstance().getPrint_code(), AppMode.getInstance().getUsername()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(OrderInfo2Fragment.this) {
             @Override
             public void onCompleted() {
                 super.onCompleted();
@@ -460,7 +460,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         keyWeight.setOnKeyClick(onKeyClick);
     }
 
-    public OrderInfoFragment setOrderList(Orders order) {
+    public OrderInfo2Fragment setOrderList(Orders order) {
         this.order = order;
         if (adapter != null) {
             adapter.setOrderList(order);
@@ -470,7 +470,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
 
     private Orders order;
 
-    public OrderInfoFragment() {
+    public OrderInfo2Fragment() {
         // Required empty public constructor
     }
 
@@ -483,8 +483,8 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
      * @return A new instance of fragment OrderInfoFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static OrderInfoFragment newInstance(String param1, String param2) {
-        OrderInfoFragment fragment = new OrderInfoFragment();
+    public static OrderInfo2Fragment newInstance(String param1, String param2) {
+        OrderInfo2Fragment fragment = new OrderInfo2Fragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -511,7 +511,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         return orderId;
     }
 
-    public OrderInfoFragment setOrderId(int orderId) {
+    public OrderInfo2Fragment setOrderId(int orderId) {
         this.orderId = orderId;
         return this;
     }
@@ -1044,7 +1044,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         return responseOrd;
     }
 
-    public OrderInfoFragment setResponseOrd(ResponseGetOrder responseOrd) {
+    public OrderInfo2Fragment setResponseOrd(ResponseGetOrder responseOrd) {
         this.responseOrd = responseOrd;
         return this;
     }
@@ -1055,7 +1055,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         return tabname;
     }
 
-    public OrderInfoFragment setTabname(String tabname) {
+    public OrderInfo2Fragment setTabname(String tabname) {
         this.tabname = tabname;
         return this;
     }
@@ -1064,7 +1064,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         return tabID;
     }
 
-    public OrderInfoFragment setTabID(String tabID) {
+    public OrderInfo2Fragment setTabID(String tabID) {
         this.tabID = tabID;
         return this;
     }
