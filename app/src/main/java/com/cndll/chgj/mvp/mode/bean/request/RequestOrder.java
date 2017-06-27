@@ -645,11 +645,11 @@ public class RequestOrder extends BaseRequest {
             return this;
         }
 
-        public ResponseGetCaipinList.DataBean.RemarkBean getRemarks() {
+        public List<ResponseMethod.DataBean> getRemarks() {
             return remarks;
         }
 
-        public WriteDishBean setRemarks(ResponseGetCaipinList.DataBean.RemarkBean remarks) {
+        public WriteDishBean setRemarks(List<ResponseMethod.DataBean> remarks) {
             this.remarks = remarks;
             return this;
         }
@@ -671,16 +671,6 @@ public class RequestOrder extends BaseRequest {
             this.name = name;
             return this;
         }
-
-        public String getIs_print() {
-            return is_print;
-        }
-
-        public void setIs_print(String is_print) {
-            this.is_print = is_print;
-        }
-
-        private String is_print = "1";
         private String count;
         private String giveCount;
         private String isWrite;
@@ -694,7 +684,7 @@ public class RequestOrder extends BaseRequest {
         }
 
         private String unit = "份";
-        private ResponseGetCaipinList.DataBean.RemarkBean remarks;
+        private List<ResponseMethod.DataBean> remarks;
         private String price;
         private String name;
 

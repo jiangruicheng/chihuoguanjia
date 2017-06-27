@@ -215,12 +215,14 @@ public class MenuImpl implements MenuPresenter {
                     public void onNext(BaseResponse baseResponse) {
                         super.onNext(baseResponse);
                         view.updataCaiPinList();
+                        view.disProg();
                     }
                 });
     }
 
     @Override
     public void deleteCaipin(RequestDeleteCaipin requestDeleteCaipin) {
+        view.showProg("");
         AppRequest.getAPI().deleteCaipin(requestDeleteCaipin).
                 subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).
@@ -238,6 +240,7 @@ public class MenuImpl implements MenuPresenter {
                     @Override
                     public void onNext(BaseResponse baseResponse) {
                         super.onNext(baseResponse);
+                        view.disProg();
                         view.updataCaiPinList();
                     }
                 });

@@ -1127,8 +1127,8 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
         OrderDishFragment.Orders.Write write = order.writeDish.get(id);
         orderItemMesg.setPrice(order.writeDish.get(id).getAllPrice() + "").
                 setName(order.writeDish.get(id).getDeshName() + order.writeDish.get(id).getOnePrice()).setCount(order.writeDish.get(id).getCount() + "").setMethod("");
-        if (order.writeDish.get(id).getItemsBean().getRemarks() != null) {
-            orderItemMesg.setMethod(order.writeDish.get(id).getItemsBean().getRemarks().getRemarks().get(0).getName() + order.writeDish.get(id).getItemsBean().getRemarks().getRemarks().get(0).getPrice());
+        if (order.writeDish.get(id).getItemsBean().getRemarks() != null && order.writeDish.get(id).getItemsBean().getRemarks().size() != 0) {
+            orderItemMesg.setMethod(order.writeDish.get(id).getItemsBean().getRemarks().get(0).getName() + order.writeDish.get(id).getItemsBean().getRemarks().get(0).getPrice());
         }
         if (order.writeDish.get(id).getGiveCount() != 0) {
             orderItemMesg.setMethod(orderItemMesg.getMethod().getText().toString() + "赠送：" + order.writeDish.get(id).getGiveCount());

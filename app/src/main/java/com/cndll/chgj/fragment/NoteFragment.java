@@ -160,14 +160,12 @@ public class NoteFragment extends BaseFragment implements NoteView {
     private void setNote() {
         if (write != null) {
             if (write.getItemsBean().getRemarks() == null) {
-                write.getItemsBean().setRemarks(new ResponseGetCaipinList.DataBean.RemarkBean());
+                write.getItemsBean().setRemarks(new ArrayList<ResponseMethod.DataBean>());
             }
-            if (write.getItemsBean().getRemarks().getRemarks() == null) {
-                write.getItemsBean().getRemarks().setRemarks(new ArrayList<ResponseMethod.DataBean>());
-            }
-            write.itemsBean.getRemarks().setRemarks(selectMethodAdapter.getMitems());
-            write.itemsBean.getRemarks().setCount(write.getCount() + "");
-            write.itemsBean.getRemarks().setId(write.getItemsBean().getName());
+
+            write.itemsBean.setRemarks(selectMethodAdapter.getMitems());
+           /* write.itemsBean.getRemarks().setCount(write.getCount() + "");
+            write.itemsBean.getRemarks().setId(write.getItemsBean().getName());*/
         } else {
             if (order.getItemsBean().getRemark() == null) {
                 order.getItemsBean().setRemark(new ResponseGetCaipinList.DataBean.RemarkBean());

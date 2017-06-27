@@ -4,7 +4,6 @@ package com.cndll.chgj.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -85,15 +84,15 @@ public class BaseFragment<T extends ListAdapter> extends Fragment {
 
 
     protected void replaceFragmentAddToBackStack(BaseFragment fragment, BasePresenter presenter) {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        // FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         if (fragment instanceof BaseView && presenter != null) {
             ((BaseView) fragment).setPresenter(presenter);
         }
         if (fragmentList.size() > 0) {
-            fragmentManager.beginTransaction().hide(fragmentList.get(fragmentList.size() - 1)).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().hide(fragmentList.get(fragmentList.size() - 1)).commit();
         }
         fragmentList.add(fragment);
-        fragmentManager.beginTransaction().add(R.id.frame, fragment).addToBackStack(fragment.getTag()).commit();
+        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.frame, fragment).addToBackStack(fragment.getTag()).commit();
         /*MainActivity.removeBackPressEvent(event);*/
     }
 

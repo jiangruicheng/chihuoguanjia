@@ -429,6 +429,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
 
     @Override
     public void updataCaiPinList() {
+        showProg("");
         presenter.getCaipinList(new RequestGetCaipinList().
                 setDc_id(((CaipinFragment) fragments.get(CAIPIN)).getDcId()).
                 setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()));
@@ -547,8 +548,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
                                 setIs_print(print.isLeftInt()).
                                 setCode(queryid.getText().toString()).
                                 setDc_id(((CaipinFragment) fragments.get(CAIPIN)).getDcId()));
-
-                        setData(-2);
+                                setData(-2);
                     } else {
                         presenter.updataCaipin(new RequestUpdaCaipin().setMid(AppMode.getInstance().getMid()).
                                 setUid(AppMode.getInstance().getUid()).
@@ -556,7 +556,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
                                 setUnit(unit.getText().toString()).
                                 setIs_discount(dazhe.isLeftInt()).
                                 setPrice(price.getText().toString()).
-                                setIs_over(over.isLeftInt()).
+                                setIs_over(over.isLeftInt() == 0 ? 1 : 0).
                                 setMachine(printId).setMachine_name(printer.getText().toString()).
                                 setIs_print(print.isLeftInt()).
                                 setCode(queryid.getText().toString()).

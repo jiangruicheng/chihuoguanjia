@@ -244,7 +244,7 @@ public interface Api {
     Observable<ResponseOrd> deleteCailei(@Body RequestDeleteCailei requestGetCaipinList);
 
     @POST("Dish/deldish")
-    Observable<ResponseOrd> deleteCaipin(@Body RequestDeleteCaipin requestGetCaipinList);
+    Observable<ResponseCailei> deleteCaipin(@Body RequestDeleteCaipin requestGetCaipinList);
 
     @POST("store/multisort")
     Observable<ResponseOrd> ordMendian(@Body List<RequestMendianOrd> list);
@@ -291,9 +291,11 @@ public interface Api {
     @FormUrlEncoded
     @POST("order/modifyorder")
     Observable<ResponseAddOrd> removerOrder(@Field("id") String id, @Field("type") String type);
+
     @FormUrlEncoded
     @POST("order/modifyorder")
     Observable<ResponseAddOrd> updataPayee(@Field("id") String id, @Field("payee") String payee);
+
     @FormUrlEncoded
     @POST("order/modifyorder")
     Observable<ResponseAddOrd> turnOrder(@Field("id") String id, @Field("tabname") String tabname, @Field("tab_id") String tab_id);

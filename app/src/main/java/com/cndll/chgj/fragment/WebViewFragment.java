@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -87,7 +88,6 @@ public class WebViewFragment extends BaseFragment {
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -103,7 +103,22 @@ public class WebViewFragment extends BaseFragment {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
+                if (!AppMode.getInstance().isDeskMode()) {
+                    if (url.contains("index.php?s=/Web/costpay_jump/ordnum/ordnum.html")) {
+
+                    }
+                }
                 return super.shouldOverrideUrlLoading(view, url);
+            }
+
+            @Override
+            public void onLoadResource(WebView view, String url) {
+                super.onLoadResource(view, url);
+            }
+
+            @Override
+            public void onPageCommitVisible(WebView view, String url) {
+                super.onPageCommitVisible(view, url);
             }
         });
         back.setOnClickListener(new View.OnClickListener() {

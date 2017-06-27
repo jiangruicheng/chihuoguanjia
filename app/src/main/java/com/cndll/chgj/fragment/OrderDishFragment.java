@@ -1131,6 +1131,17 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
     };
     Subscription reSet;
 
+    public String getPersionNum() {
+        return persionNum;
+    }
+
+    public OrderDishFragment setPersionNum(String persionNum) {
+        this.persionNum = persionNum;
+        return this;
+    }
+
+    private String persionNum = "2";
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -1191,7 +1202,11 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             if (responseOrd != null) {
                 titleRight.setText("人数：" + responseOrd.getData().getPernum());
             } else {
-                titleRight.setText("人数：2");
+                if (persionNum.equals("0")) {
+                    titleRight.setText("人数: " + "2");
+                } else {
+                    titleRight.setText("人数: " + persionNum);
+                }
             }
             titleLeft.setText(" 桌台: " + tabname);
         }
@@ -1205,7 +1220,6 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         orderItemMesglayout = new OrderItemMesg();
         orderItemMesglayout.init(itemMesg);
         orderInfolayout.init(orderInfo);
-
         return view;
     }
 
@@ -1317,6 +1331,8 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         presenter.getDcList(new RequestPrintList().setUid(AppMode.getInstance().getUid()).setMid(AppMode.getInstance().getMid()));
     }
 
+    public Orders addOrders;
+
     private void setOrderInfolayout(String id, boolean iswrite) {
         if (iswrite) {
             setOrderInfolayoutWrite(id);
@@ -1334,8 +1350,8 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 Log.d("at", "setOrderInfolayoutWrite: " + orders.writeDish.get(id));
             orderItemMesglayout.setPrice(orders.writeDish.get(id).getAllPrice() + "").
                     setName(orders.writeDish.get(id).getDeshName() + orders.writeDish.get(id).getOnePrice()).setCount(orders.writeDish.get(id).getCount() + "").setMethod("");
-            if (orders.writeDish.get(id).getItemsBean().getRemarks() != null) {
-                orderItemMesglayout.setMethod(orders.writeDish.get(id).getItemsBean().getRemarks().getRemarks().get(0).getName() + orders.writeDish.get(id).getItemsBean().getRemarks().getRemarks().get(0).getPrice());
+            if (orders.writeDish.get(id).getItemsBean().getRemarks() != null && orders.writeDish.get(id).getItemsBean().getRemarks().size() != 0) {
+                orderItemMesglayout.setMethod(orders.writeDish.get(id).getItemsBean().getRemarks().get(0).getName() + orders.writeDish.get(id).getItemsBean().getRemarks().get(0).getPrice());
             }
             if (orders.writeDish.get(id).getGiveCount() != 0) {
                 orderItemMesglayout.setMethod(orderItemMesglayout.getMethod().getText().toString() + "赠送：" + orders.writeDish.get(id).getGiveCount());
@@ -1912,15 +1928,15 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             }
 
             public String getMethodName() {
-                if (itemsBean.getRemarks() != null && itemsBean.getRemarks().getRemarks().size() > 0) {
-                    return itemsBean.getRemarks().getRemarks().get(0).getName();
+                if (itemsBean.getRemarks() != null && itemsBean.getRemarks().size() > 0) {
+                    return itemsBean.getRemarks().get(0).getName();
                 }
                 return "";
             }
 
             public String getMethodPrice() {
-                if (itemsBean.getRemarks() != null && itemsBean.getRemarks().getRemarks().size() > 0) {
-                    return itemsBean.getRemarks().getRemarks().get(0).getPrice();
+                if (itemsBean.getRemarks() != null && itemsBean.getRemarks().size() > 0) {
+                    return itemsBean.getRemarks().get(0).getPrice();
                 }
                 return "";
             }
@@ -1931,10 +1947,10 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
             public float getAllPrice() {
                 float price = 0;
-                if (itemsBean.getRemarks() != null && itemsBean.getRemarks().getRemarks() != null)
-                    for (int i = 0; i < itemsBean.getRemarks().getRemarks().size(); i++) {
-                        if (itemsBean.getRemarks().getRemarks().get(i).getPrice() != null && StringHelp.isFloat(itemsBean.getRemarks().getRemarks().get(i).getPrice()))
-                            price = price + Float.valueOf(itemsBean.getRemarks().getRemarks().get(i).getPrice());
+                if (itemsBean.getRemarks() != null && itemsBean.getRemarks() != null)
+                    for (int i = 0; i < itemsBean.getRemarks().size(); i++) {
+                        if (itemsBean.getRemarks().get(i).getPrice() != null && StringHelp.isFloat(itemsBean.getRemarks().get(i).getPrice()))
+                            price = price + Float.valueOf(itemsBean.getRemarks().get(i).getPrice());
                     }
                 return price + Float.valueOf(itemsBean.getPrice()) * count;
 

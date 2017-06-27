@@ -18,7 +18,9 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="演示模式"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="@dimen/mid_text" />
+
 
         <LinearLayout
             android:id="@+id/loding_top"
@@ -289,8 +291,8 @@
             android:layout_weight="1"
             android:background="@drawable/shape_fillet_solid"
             android:text="报表查询"
-            android:textSize="@dimen/mid_text"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="@dimen/mid_text" />
     </LinearLayout>
 
     <LinearLayout

@@ -128,7 +128,7 @@ public class DeskFragment extends BaseFragment implements AddDeskView {
         adapter.setOnItemClickLister(new OnItemClickLister() {
             @Override
             public void OnItemClick(View view, int position) {
-                replaceFragmentAddToBackStack(OrderDishFragment.newInstance(null, null).setTableId(adapter.getItems().get(position).getId()).setTabname(adapter.getItems().get(position).getName()).setOrderId(adapter.getItems().get(position).getOid()), new OrderImpl());
+                replaceFragmentAddToBackStack(OrderDishFragment.newInstance(null, null).setPersionNum(adapter.getItems().get(position).getNum()).setTableId(adapter.getItems().get(position).getId()).setTabname(adapter.getItems().get(position).getName()).setOrderId(adapter.getItems().get(position).getOid()), new OrderImpl());
             }
         });
 

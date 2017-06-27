@@ -18,10 +18,9 @@ import com.cndll.chgj.mvp.MObeserver;
 import com.cndll.chgj.mvp.mode.AppRequest;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
-import com.cndll.chgj.mvp.mode.bean.response.ResponseGetSeting;
 import com.cndll.chgj.mvp.presenter.BasePresenter;
 import com.cndll.chgj.mvp.view.BaseView;
-import com.cndll.chgj.util.DateFormatUtil;
+import com.cndll.chgj.util.PrintUtil;
 import com.cndll.chgj.util.StringHelp;
 
 import butterknife.BindView;
@@ -255,7 +254,8 @@ public class SuccessFragment extends BaseFragment {
                     button.setOnClickListener(succListener);
                     isplay = true;
                     if (!AppMode.getInstance().isDeskMode()) {
-                        printSetting(orderID);
+                        PrintUtil printUtil = new PrintUtil();
+                       printUtil.printSetting(orderID);
                     }
                 } else {
                     image.setImageResource(R.mipmap.fail);
@@ -285,65 +285,6 @@ public class SuccessFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-    }
-
-    public void printSetting(final int ord) {
-
-        AppRequest.getAPI().getSetting(AppMode.getInstance().getUid(),
-                AppMode.getInstance().getMid()).
-                subscribeOn(Schedulers.io()).
-                observeOn(AndroidSchedulers.mainThread()).
-                subscribe(new MObeserver(null) {
-                    @Override
-                    public void onCompleted() {
-                        super.onCompleted();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                    }
-
-                    @Override
-                    public void onNext(BaseResponse baseResponse) {
-                        super.onNext(baseResponse);
-                        int type;
-                        if (baseResponse.getCode() == 1) {
-                            ResponseGetSeting responseGetSeting = ((ResponseGetSeting) baseResponse);
-                            if (responseGetSeting.getData().getCd_method().equals("1")) {
-                                type = 2;
-                            } else {
-                                type = 2;
-                            }
-                            printOrders(ord, type);
-                        }
-                    }
-                });
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void printOrders(final int ord, int type) {
-        final String time = DateFormatUtil.transForDate1(DateFormatUtil.currentTimeStamp());
-        AppRequest.getAPI().printOrder(ord + "", type + "", /*year + "-" + month + "-" + day*/time, "下单人：" + AppMode.getInstance().getUsername())
-                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(null) {
-            @Override
-            public void onCompleted() {
-                super.onCompleted();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                super.onError(e);
-            }
-
-            @Override
-            public void onNext(BaseResponse baseResponse) {
-                super.onNext(baseResponse);
-
-                //  RxBus.getDefault().post(new EventType().setType(EventType.SHOW).setExtra(baseResponse.getExtra()));
-
-            }
-        });
     }
 
     public interface DoThing {

@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                             LoginFragment loginFragment = LoginFragment.newInstance("", "");
                             getSupportFragmentManager().beginTransaction().add(R.id.frame, loginFragment).addToBackStack(loginFragment.getTag()).commit();
                             loginFragment.setPresenter(new LoginImpl());
-                            getSupportFragmentManager().beginTransaction().hide(fragmentList.get(0));
+                            getSupportFragmentManager().beginTransaction().hide(fragmentList.get(0)).commit();
                             fragmentList.add(loginFragment);
                         }
                     });
