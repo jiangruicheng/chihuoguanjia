@@ -240,6 +240,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
             }
 
+
             @Override
             public void onKeySure(String s) {
                 showProg("");
@@ -1625,6 +1626,11 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
         isSend = true;
         orders.isAdd = false;
         orders.isChange = false;
+    }
+
+    @Override
+    public void showMesgView(String mesg, MesgShow.OnButtonListener sure) {
+
     }
 
     @Override

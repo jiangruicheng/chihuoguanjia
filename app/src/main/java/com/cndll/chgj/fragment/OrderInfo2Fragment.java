@@ -692,7 +692,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                 final boolean isOrderWrite;
                 orderItemMesg = new OrderItemMesg();
                 orderItemMesg.init(container);
-                int i;
+                final int i;
                 if (order.writeDish == null || position > order.writeDish.size() - 1) {
                     isOrderWrite = false;
                     if (order.writeDish == null) {
@@ -796,7 +796,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                                 showMesg("有菜品未送单，请先送单");
                                 return;
                             }*/
-                            if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isReturn()) {
+                         /*   if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isReturn()) {
                                 showMesg("无退菜权限");
                                 popOrderRequest.dismiss();
                                 return;
@@ -823,25 +823,34 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                                     if (!isOrderWrite) {
                                         backDesh.add(new RequestPrintBackDesh.ItemsBean().setName(order.getOrder(order.getCurrPosition()).getItemsBean().getName()).
                                                 setMoney(order.getOrder(order.getCurrPosition()).getItemsBean().getPrice()).
-                                                setNum(/*order.getOrder(order.getCurrPosition()).getCount() +*/ "1").
+                                                setNum(*//*order.getOrder(order.getCurrPosition()).getCount() +*//* "1").
                                                 setUnit(order.getOrder(order.getCurrPosition()).getItemsBean().getUnit()).
                                                 setM_name(""));
                                         order.getOrder(order.getCurrPosition()).backDesh();
                                     } else {
                                         backDesh.add(new RequestPrintBackDesh.ItemsBean().setName(order.writeDish.get(order.getCurrPosition()).getItemsBean().getName()).
                                                 setMoney(order.writeDish.get(order.getCurrPosition()).getItemsBean().getPrice()).
-                                                setNum(/*order.writeDish.get(order.getCurrPosition()).getCount() +*/ "1").
+                                                setNum(*//*order.writeDish.get(order.getCurrPosition()).getCount() +*//* "1").
                                                 setUnit("盘").
                                                 setM_name(""));
                                         order.writeDish.get(order.getCurrPosition()).backDesh();
                                     }
-                            /*if (order.getOrders().size() == 0) {
+                            *//*if (order.getOrders().size() == 0) {
                                 order.setCurrPosition(null);
                             } else {
                                 order.setCurrPosition(order.getOrders().keyAt(0));
-                            }*/
+                            }*//*
                                     setOrderInfolayout(order.getCurrPosition(), isOrderWrite);
                                     popOrderRequest.dismiss();
+                                    sendOrds(presenter.BACK);
+                                    isBackDesh = true;
+                                }
+                            });*/
+                            order.view = OrderInfo2Fragment.this;
+                            order.backDesh(order.getCurrPosition(), new Orders.DoFuck<List<RequestPrintBackDesh.ItemsBean>>() {
+                                @Override
+                                public void doFuck(List<RequestPrintBackDesh.ItemsBean> itemsBeen) {
+                                    backDesh = itemsBeen;
                                     sendOrds(presenter.BACK);
                                     isBackDesh = true;
                                 }
@@ -1337,6 +1346,11 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
         //isSend = true;
         order.isChange = false;
         order.isAdd = false;
+    }
+
+    @Override
+    public void showMesgView(String mesg, MesgShow.OnButtonListener sure) {
+        showMesg(mesg, sure);
     }
 
     @Override

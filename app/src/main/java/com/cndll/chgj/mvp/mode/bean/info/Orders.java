@@ -1,10 +1,14 @@
 package com.cndll.chgj.mvp.mode.bean.info;
 
+import android.content.Context;
 import android.support.v4.util.ArrayMap;
 
 import com.cndll.chgj.mvp.mode.bean.request.RequestOrder;
+import com.cndll.chgj.mvp.mode.bean.request.RequestPrintBackDesh;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
+import com.cndll.chgj.mvp.view.OrderView;
 import com.cndll.chgj.util.StringHelp;
+import com.cndll.chgj.weight.MesgShow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +20,11 @@ import java.util.List;
 public class Orders {
     public boolean isAdd = false;
     public boolean isChange = false;
+    public OrderView view;
+
+    public interface DoFuck<T> {
+        void doFuck(T t);
+    }
 
     public ArrayMap<String, Order> getOrders() {
         return orders;
@@ -35,19 +44,61 @@ public class Orders {
 
     }
 
-    private boolean isWritDesh(String s) {
+    public boolean isWritDesh(String s) {
+        if (writeDish == null || writeDish.size() == 0) {
+            return false;
+        }
+        return writeDish.containsKey(s);
+    }
+
+    public boolean isOrderDesh(String s) {
+        if (orders == null || orders.size() == 0) {
+            return false;
+        }
         return orders.containsKey(s);
     }
 
-    public void backDesh(String id) {
-        if (isWritDesh(id)) {
-            writeDish.get(id).backDesh();
-        } else {
-            orders.get(id).backDesh();
+    public void backDesh(final String id, final DoFuck<List<RequestPrintBackDesh.ItemsBean>> doFuck) {
+        if (!(isWritDesh(id) ? writeDish.get(id).isSend : orders.get(id).isSend)) {
+            return;
         }
+        if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isReturn()) {
+            view.showMesg("无退菜权限");
+            return;
+        }
+
+        view.showMesgView("是否确定退菜", new MesgShow.OnButtonListener() {
+            @Override
+            public void onListerner() {
+                List<RequestPrintBackDesh.ItemsBean> backDesh = new ArrayList<RequestPrintBackDesh.ItemsBean>();
+                if (isWritDesh(id)) {
+                    backDesh.add(new RequestPrintBackDesh.ItemsBean().setName(writeDish.get(id).getItemsBean().getName()).
+                            setMoney(writeDish.get(id).getItemsBean().getPrice()).
+                            setNum(/*order.writeDish.get(order.getCurrPosition()).getCount() +*/ "1").
+                            setUnit("盘").
+                            setM_name(""));
+                    writeDish.get(id).backDesh();
+                } else if (isOrderDesh(id)) {
+                    backDesh.add(new RequestPrintBackDesh.ItemsBean().setName(orders.get(id).getItemsBean().getName()).
+                            setMoney(orders.get(id).getItemsBean().getPrice()).
+                            setNum(/*order.getOrder(order.getCurrPosition()).getCount() +*/ "1").
+                            setUnit(orders.get(id).getItemsBean().getUnit()).
+                            setM_name(""));
+                    orders.get(id).backDesh();
+                }
+                if (null != doFuck)
+                    doFuck.doFuck(backDesh);
+            }
+        });
     }
 
-    public void numbEdit(String id, String count) {
+    public void numbEdit(String id, String count, Context context) {
+        String hint = "";
+        if (isWritDesh(id) ? writeDish.get(id).isSend : orders.get(id).isSend) {
+            hint = "退菜";
+        }else {
+            hint = "删除";
+        }
         if (isWritDesh(id)) {
             writeDish.get(id).setCount(Float.valueOf(count));
         } else {
@@ -56,11 +107,11 @@ public class Orders {
     }
 
     public void giveDesh(String id) {
-
+        Object o = isWritDesh(id) ? writeDish.get(id).addGiveCount() : orders.get(id).addGiveCount();
     }
 
     public void cancelGive(String id) {
-
+        Object o = isWritDesh(id) ? writeDish.get(id).cancelGive() : orders.get(id).cancelGive();
     }
 
     public ArrayMap<String, Write> writeDish;

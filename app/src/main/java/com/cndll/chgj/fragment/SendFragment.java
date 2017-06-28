@@ -32,6 +32,7 @@ import com.cndll.chgj.mvp.mode.bean.response.ResponseMethod;
 import com.cndll.chgj.mvp.presenter.OrderPresenter;
 import com.cndll.chgj.mvp.view.OrderView;
 import com.cndll.chgj.util.DateFormatUtil;
+import com.cndll.chgj.weight.MesgShow;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -540,6 +541,11 @@ public class SendFragment extends BaseFragment implements OrderView {
 
     @Override
     public void setOrder(ResponseGetOrder getOrder) {
+
+    }
+
+    @Override
+    public void showMesgView(String mesg, MesgShow.OnButtonListener sure) {
 
     }
 

@@ -119,7 +119,10 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
 
     @OnClick(R.id.alllayout)
     void onclick_alllayout() {
-
+        orders.view = this;
+        orders.backDesh(orders.getCurrPosition(), null);
+        sendOrds();
+        //  setOrderInfolayout(orders.getCurrPosition(), orders.isWritDesh(orders.getCurrPosition()));
     }
 
     @BindView(R.id.txt_discount)
@@ -349,9 +352,9 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
     @OnClick(R.id.info)
     void onclick_info() {
         if (orders != null && orders.getAll() != null) {
-            replaceFragmentAddToBackStack(OrderInfoFragment.newInstance(titleLeft.getText().toString(), titleRight.getText().toString()).setOrderList(orders).setOrderId(orderId).setResponseOrd(responseOrd).setTabID(tableId).setTabname(tabname), new OrderImpl());
+            replaceFragmentAddToBackStack(OrderInfo2Fragment.newInstance(titleLeft.getText().toString(), titleRight.getText().toString()).setOrderList(orders).setOrderId(orderId).setResponseOrd(responseOrd).setTabID(tableId).setTabname(tabname), new OrderImpl());
         } else {
-            replaceFragmentAddToBackStack(OrderInfoFragment.newInstance(null, null), new OrderImpl());
+            replaceFragmentAddToBackStack(OrderInfo2Fragment.newInstance(null, null), new OrderImpl());
         }
         MainActivity.removeBackPressEvent(backPressEvent);
     }
@@ -857,7 +860,7 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
                         showMesg("还未点菜，不能修改");
                         return;
                     }
-                   // replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment(OrderDish2Fragment.this), new OrderImpl());
+                    // replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment(OrderDish2Fragment.this), new OrderImpl());
                     MainActivity.removeBackPressEvent(backPressEvent);
                 }
             });
@@ -1289,6 +1292,11 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
         isSend = true;
         orders.isAdd = false;
         orders.isChange = false;
+    }
+
+    @Override
+    public void showMesgView(String mesg, MesgShow.OnButtonListener sure) {
+        showMesg(mesg, sure);
     }
 
     @Override

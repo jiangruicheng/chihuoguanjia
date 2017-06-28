@@ -1340,6 +1340,11 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
     }
 
     @Override
+    public void showMesgView(String mesg, MesgShow.OnButtonListener sure) {
+
+    }
+
+    @Override
     public void printNoDeskOrderSucc(int orderId) {
 
     }
