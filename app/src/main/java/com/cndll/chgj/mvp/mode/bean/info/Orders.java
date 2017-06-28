@@ -35,12 +35,24 @@ public class Orders {
 
     }
 
-    public void backDesh(String id) {
+    private boolean isWritDesh(String s) {
+        return orders.containsKey(s);
+    }
 
+    public void backDesh(String id) {
+        if (isWritDesh(id)) {
+            writeDish.get(id).backDesh();
+        } else {
+            orders.get(id).backDesh();
+        }
     }
 
     public void numbEdit(String id, String count) {
-
+        if (isWritDesh(id)) {
+            writeDish.get(id).setCount(Float.valueOf(count));
+        } else {
+            orders.get(id).setCount(Float.valueOf(count));
+        }
     }
 
     public void giveDesh(String id) {
