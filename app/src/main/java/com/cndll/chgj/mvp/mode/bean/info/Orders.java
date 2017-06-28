@@ -1,6 +1,5 @@
 package com.cndll.chgj.mvp.mode.bean.info;
 
-import android.content.Context;
 import android.support.v4.util.ArrayMap;
 
 import com.cndll.chgj.mvp.mode.bean.request.RequestOrder;
@@ -8,6 +7,8 @@ import com.cndll.chgj.mvp.mode.bean.request.RequestPrintBackDesh;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
 import com.cndll.chgj.mvp.view.OrderView;
 import com.cndll.chgj.util.StringHelp;
+import com.cndll.chgj.weight.KeyUtuil;
+import com.cndll.chgj.weight.KeyWeight;
 import com.cndll.chgj.weight.MesgShow;
 
 import java.util.ArrayList;
@@ -92,18 +93,45 @@ public class Orders {
         });
     }
 
-    public void numbEdit(String id, String count, Context context) {
+    public void numbEdit(final String id, final KeyUtuil.Builder builder) {
         String hint = "";
         if (isWritDesh(id) ? writeDish.get(id).isSend : orders.get(id).isSend) {
             hint = "退菜";
-        }else {
+        } else {
             hint = "删除";
         }
-        if (isWritDesh(id)) {
-            writeDish.get(id).setCount(Float.valueOf(count));
-        } else {
-            orders.get(id).setCount(Float.valueOf(count));
-        }
+        KeyUtuil.popUpkey(builder.setHint(hint).
+                setOnKeyClick(new KeyWeight.OnKeyClick() {
+                    @Override
+                    public void onKeyCancel(String s) {
+                        if (isWritDesh(id) ? writeDish.get(id).isSend : orders.get(id).isSend) {
+                            if (builder.getDoFuckCancelSend() != null)
+                                backDesh(id, builder.getDoFuckCancelSend());
+                        } else {
+                            if (builder.getDoFuckCancelUnsend() != null)
+                                builder.getDoFuckCancelUnsend().doFuck(null);
+                        }
+                    }
+
+                    @Override
+                    public void onKeySure(String s) {
+                        if (!StringHelp.isFloat(s)) {
+                            return;
+                        }
+                        if (isWritDesh(id)) {
+                            writeDish.get(id).setCount(Float.valueOf(s));
+                        } else {
+                            orders.get(id).setCount(Float.valueOf(s));
+                        }
+                        if (builder.getDoFuckSureUnSend() != null)
+                            builder.getDoFuckSureUnSend().doFuck(null);
+                    }
+
+                    @Override
+                    public void onKeyNub(String s) {
+
+                    }
+                }));
     }
 
     public void giveDesh(String id) {

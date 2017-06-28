@@ -50,6 +50,7 @@ import com.cndll.chgj.util.PagerLayoutManager;
 import com.cndll.chgj.util.PopUpViewUtil;
 import com.cndll.chgj.util.StringHelp;
 import com.cndll.chgj.weight.AllLayout;
+import com.cndll.chgj.weight.KeyUtuil;
 import com.cndll.chgj.weight.KeyWeight;
 import com.cndll.chgj.weight.MesgShow;
 import com.cndll.chgj.weight.OrderInfo;
@@ -119,9 +120,30 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
 
     @OnClick(R.id.alllayout)
     void onclick_alllayout() {
-        orders.view = this;
+        /*orders.view = this;
         orders.backDesh(orders.getCurrPosition(), null);
-        sendOrds();
+        sendOrds();*/
+        orders.view = this;
+        orders.numbEdit(orders.getCurrPosition(), new KeyUtuil.Builder().
+                setMode(KeyWeight.Mode_OnlyNumb).
+                setCancelcolor(Color.rgb(241, 93, 169)).
+                setSurecolor(Color.rgb(251, 152, 67)).
+                setSureHint("确定").
+                setContext(getContext()).
+                setLocation(numberEdit).
+                setShowhint("请输入菜品数量").setDoFuckSureUnSend(new Orders.DoFuck() {
+            @Override
+            public void doFuck(Object o) {
+                setOrderInfolayout(orders.getCurrPosition(), orders.isWritDesh(orders.getCurrPosition()));
+            }
+        }).setDoFuckCancelSend(new Orders.DoFuck<List<RequestPrintBackDesh.ItemsBean>>() {
+            @Override
+            public void doFuck(List<RequestPrintBackDesh.ItemsBean> itemsBeen) {
+                backDesh = itemsBeen;
+                sendOrds(presenter.BACK);
+                isBackDesh = true;
+            }
+        }));
         //  setOrderInfolayout(orders.getCurrPosition(), orders.isWritDesh(orders.getCurrPosition()));
     }
 

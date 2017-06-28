@@ -3,6 +3,8 @@ package com.cndll.chgj.weight;
 import android.content.Context;
 import android.view.View;
 
+import com.cndll.chgj.mvp.mode.bean.info.Orders;
+
 /**
  * Created by kongqing on 2017-06-28.
  */
@@ -47,6 +49,45 @@ public class KeyUtuil {
         String hint;
         String sureHint;
 
+        public Orders.DoFuck getDoFuckSureSend() {
+            return doFuckSureSend;
+        }
+
+        public Builder setDoFuckSureSend(Orders.DoFuck doFuckSureSend) {
+            this.doFuckSureSend = doFuckSureSend;return this;
+        }
+
+        public Orders.DoFuck getDoFuckSureUnSend() {
+            return doFuckSureUnSend;
+        }
+
+        public Builder setDoFuckSureUnSend(Orders.DoFuck doFuckSureUnSend) {
+            this.doFuckSureUnSend = doFuckSureUnSend;
+            return this;
+        }
+
+        Orders.DoFuck doFuckSureSend;
+        Orders.DoFuck doFuckSureUnSend;
+        public Orders.DoFuck getDoFuckCancelSend() {
+
+            return doFuckCancelSend;
+        }
+
+        public Builder setDoFuckCancelSend(Orders.DoFuck doFuckCancelSend) {
+            this.doFuckCancelSend = doFuckCancelSend;return this;
+        }
+
+        Orders.DoFuck doFuckCancelSend;
+
+        public Orders.DoFuck getDoFuckCancelUnsend() {
+            return doFuckCancelUnsend;
+        }
+
+        public Builder setDoFuckCancelUnsend(Orders.DoFuck doFuckCancelUnsend) {
+            this.doFuckCancelUnsend = doFuckCancelUnsend;return this;
+        }
+
+        Orders.DoFuck doFuckCancelUnsend;
         public int getMode() {
             return mode;
         }
