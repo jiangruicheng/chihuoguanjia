@@ -853,6 +853,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                                     backDesh = itemsBeen;
                                     sendOrds(presenter.BACK);
                                     isBackDesh = true;
+                                    popOrderRequest.dismiss();
                                 }
                             });
 

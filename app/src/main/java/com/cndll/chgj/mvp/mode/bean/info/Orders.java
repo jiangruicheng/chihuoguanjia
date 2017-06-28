@@ -93,9 +93,13 @@ public class Orders {
         });
     }
 
+    public boolean isDeshSend(String id) {
+        return isWritDesh(id) ? writeDish.get(id).isSend : orders.get(id).isSend;
+    }
+
     public void numbEdit(final String id, final KeyUtuil.Builder builder) {
         String hint = "";
-        if (isWritDesh(id) ? writeDish.get(id).isSend : orders.get(id).isSend) {
+        if (isDeshSend(id)) {
             hint = "退菜";
         } else {
             hint = "删除";
@@ -104,7 +108,7 @@ public class Orders {
                 setOnKeyClick(new KeyWeight.OnKeyClick() {
                     @Override
                     public void onKeyCancel(String s) {
-                        if (isWritDesh(id) ? writeDish.get(id).isSend : orders.get(id).isSend) {
+                        if (isDeshSend(id)) {
                             if (builder.getDoFuckCancelSend() != null)
                                 backDesh(id, builder.getDoFuckCancelSend());
                         } else {
@@ -134,8 +138,13 @@ public class Orders {
                 }));
     }
 
-    public void giveDesh(String id) {
+    public void giveDesh(String id, KeyUtuil.Builder builder) {
         Object o = isWritDesh(id) ? writeDish.get(id).addGiveCount() : orders.get(id).addGiveCount();
+        if (isDeshSend(id)) {
+
+        } else {
+
+        }
     }
 
     public void cancelGive(String id) {
