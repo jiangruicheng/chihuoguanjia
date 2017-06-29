@@ -416,6 +416,14 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
 
     Unbinder unbinder;
 
+    @Override
+    public void reload() {
+        super.reload();
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+    }
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;

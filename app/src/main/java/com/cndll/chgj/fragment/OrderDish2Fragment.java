@@ -940,6 +940,7 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
     private DeshListAdapter deshListAdapter;
     private DcListAdapter dcListAdapter;
     Orders orders;
+    Orders sendOrders;
     private boolean isOrderWrite = false;
 
     @Override
@@ -1266,21 +1267,21 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
 
     @Override
     public void setOrder(ResponseGetOrder getOrder) {
-        if (orders == null) {
-            orders = new Orders();
+        if (sendOrders == null) {
+            sendOrders = new Orders();
         } else {
-            if (orders.writeDish != null) {
-                orders.writeDish.clear();
+            if (sendOrders.writeDish != null) {
+                sendOrders.writeDish.clear();
             }
-            orders.getOrders().clear();
+            sendOrders.getOrders().clear();
         }
         this.responseOrd = getOrder;
         List<RequestOrder.WriteDishBean> writedishs = null;
         if (getOrder.getData().getWritedishs() != null) {
             writedishs = getOrder.getData().getWritedishs();
             for (int i = 0; i < writedishs.size(); i++) {
-                orders.addWriteDish(writedishs.get(i).getName(), new Orders.Write().
-                        setOrders(orders).
+                sendOrders.addWriteDish(writedishs.get(i).getName(), new Orders.Write().
+                        setOrders(sendOrders).
                         setItemsBean(writedishs.get(i)).
                         setSend(isSend).
                         setCount(Float.valueOf(writedishs.get(i).getCount())).
