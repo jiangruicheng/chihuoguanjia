@@ -478,6 +478,17 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
 
     private Orders order;
 
+    public Orders getSendOrders() {
+        return sendOrders;
+    }
+
+    public OrderInfo2Fragment setSendOrders(Orders sendOrders) {
+        this.sendOrders = sendOrders;
+        return this;
+    }
+
+    private Orders sendOrders;
+
     public OrderInfo2Fragment() {
         // Required empty public constructor
     }

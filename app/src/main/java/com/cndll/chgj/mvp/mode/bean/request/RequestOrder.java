@@ -1,5 +1,6 @@
 package com.cndll.chgj.mvp.mode.bean.request;
 
+import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseMethod;
 
@@ -671,6 +672,7 @@ public class RequestOrder extends BaseRequest {
             this.name = name;
             return this;
         }
+
         private String count;
         private String giveCount;
         private String isWrite;
@@ -687,6 +689,8 @@ public class RequestOrder extends BaseRequest {
         private List<ResponseMethod.DataBean> remarks;
         private String price;
         private String name;
+        private String uid = AppMode.getInstance().getUid();
+        private String mid = AppMode.getInstance().getMid();
 
         public String getBackCount() {
             return backCount;

@@ -120,7 +120,7 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
 
     @OnClick(R.id.alllayout)
     void onclick_alllayout() {
-        Orders o;
+        final Orders o;
         if (orders != null && (orders.isWritDesh(orders.getCurrPosition()) || orders.isOrderDesh(orders.getCurrPosition()))) {
             o = orders;
         } else if (sendOrders != null) {
@@ -134,12 +134,13 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
                 setLocation(numberEdit).
                 setDoFuckSureUnSend(new Orders.DoFuck() {
                     @Override
-                    public void doFuck(Object o) {
-                        setOrderInfolayout(orders.getCurrPosition(), orders.isWritDesh(orders.getCurrPosition()));
+                    public void doFuck(Object b) {
+                        setOrderInfolayout(o.getCurrPosition(), o.isWritDesh(o.getCurrPosition()));
                     }
                 }).setDoFuckSureSend(new Orders.DoFuck() {
             @Override
-            public void doFuck(Object o) {
+            public void doFuck(Object b) {
+                setOrderInfolayout(o.getCurrPosition(), o.isWritDesh(o.getCurrPosition()));
                 sendOrds();
             }
         }).setDoFuckCancelSend(new Orders.DoFuck<List<RequestPrintBackDesh.ItemsBean>>() {
@@ -151,8 +152,8 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
             }
         }).setDoFuckCancelUnsend(new Orders.DoFuck() {
             @Override
-            public void doFuck(Object o) {
-                setOrderInfolayout(orders.getCurrPosition(), orders.isWritDesh(orders.getCurrPosition()));
+            public void doFuck(Object b) {
+                setOrderInfolayout(o.getCurrPosition(), o.isWritDesh(o.getCurrPosition()));
             }
         }));
 
@@ -485,7 +486,7 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
                     showMesg("此台不存在消费，无需打印");
                     return;
                 }
-                if (orders.isChange) {
+                if (orders != null /*|| orders.isChange*/) {
                     showMesg("有菜品未送单，不能打印");
                 } else {
                     printOrders();
@@ -643,7 +644,7 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
 
     @OnClick(R.id.dazhe)
     void onclick_discount() {
-        if (orders == null) {
+        if (sendOrders == null) {
             showMesg("此台不存在消费，无需打折");
             return;
         }
@@ -651,12 +652,12 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
             showMesg("无打折权限");
             return;
         }
-        if (!orders.isChange && orderId != 0) {
+        if (orders == null && orderId != 0) {
             popUpkey(2, Color.rgb(171, 171, 171), Color.rgb(1, 169, 104), "请输入折扣，例如8折则输入0.8", "取消打折", "确定", new KeyWeight.OnKeyClick() {
                 @Override
                 public void onKeyCancel(String s) {
-                    orders.setDisconut(1);
-                    setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
+                    sendOrders.setDisconut(1);
+                    setOrderInfolayout(sendOrders.getCurrPosition(), isOrderWrite);
                     sendOrds();
                 }
 
@@ -665,8 +666,8 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
 
                     if (StringHelp.isFloat(s)) {
                         if (Float.valueOf(s) <= 0.99 && Float.valueOf(s) >= 0.1) {
-                            orders.setDisconut(Float.valueOf(s));
-                            setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
+                            sendOrders.setDisconut(Float.valueOf(s));
+                            setOrderInfolayout(sendOrders.getCurrPosition(), isOrderWrite);
                             sendOrds();
                         }
                     }

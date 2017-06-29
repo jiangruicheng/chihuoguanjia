@@ -56,6 +56,11 @@ public class OrderInfo {
         if (sendOrder != null) {
             setM(sendOrder);
         }
+        if (sendOrder != null)
+            discountPrice = allDiscountPrice - allDiscountPrice * (sendOrder.getDisconut() != 0 ? sendOrder.getDisconut() : 1);
+        /*lastPrice = allPrice * order.getDisconut();*/
+        lastPrice = allPrice - discountPrice - givePrice;
+        lastPrice = Math.round(lastPrice);
         setCount(count + "").setAllMoney(String.valueOf(allPrice)).setDiscount(discountPrice + "").setLastMoney(lastPrice + "").setGive(givePrice + "");
 
     }
@@ -84,14 +89,12 @@ public class OrderInfo {
                         for (int i = 0; i < writes.size(); i++) {
                             count = count + Float.valueOf(writes.get(i).getCount()) /*+ Float.valueOf(writes.get(i).getGiveCount())*/;
                             allPrice = allPrice + Float.valueOf(writes.get(i).getAllPrice());
+                            allDiscountPrice = allDiscountPrice + writes.get(i).getAllPrice();
                             givePrice = givePrice + Float.valueOf(writes.get(i).getGivePrice());
                         }
                     }
                 }
-                discountPrice = allDiscountPrice - allDiscountPrice * (order.getDisconut() != 0 ? order.getDisconut() : 1);
-        /*lastPrice = allPrice * order.getDisconut();*/
-                lastPrice = allPrice - discountPrice - givePrice;
-                lastPrice = Math.round(lastPrice);
+
             }
         }
     }
