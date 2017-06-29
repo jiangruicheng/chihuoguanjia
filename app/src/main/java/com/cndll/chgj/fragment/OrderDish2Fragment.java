@@ -1235,7 +1235,7 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
                     setYsmoney(orderDishFragment.orderInfolayout.getLastPrice() + ""));*/
         } else {
             presenter.updateOreder(new RequestOrder().setId(orderId + "").
-                            setItems(orders.getItems()).
+                            setItems(sendOrders.getItems()).
                             setMid(AppMode.getInstance().getMid()).
                             setUid(AppMode.getInstance().getUid()).
                             setPernum(responseOrd.getData().getPernum()).
@@ -1253,10 +1253,10 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
                             setOrdernum(responseOrd.getData().getOrdernum()).
                             setOrdnum(responseOrd.getData().getOrdnum()).
                             setYm(responseOrd.getData().getYm()).
-                            setWritedishs(orders.getWriteDish()).
+                            setWritedishs(orders.getWriteDish())/*.
                             setAllremarks(orders.getAllMethod())
                             .setStorename(responseOrd.getData().getStorename())
-                            .setType_txt(responseOrd.getData().getType_txt())
+                            .setType_txt(responseOrd.getData().getType_txt())*/
                     , type);
         }
     }
@@ -1290,7 +1290,7 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
             }
         }
         List<ResponseGetCaipinList.DataBean> itemsBeen = getOrder.getData().getItems();
-        orders.setDisconut(Float.valueOf(getOrder.getData().getZk()));
+        sendOrders.setDisconut(Float.valueOf(getOrder.getData().getZk()));
         for (int i = 0; i < itemsBeen.size(); i++) {
             /*if (orders.getOrders().containsKey(itemsBeen.get(i).getId() + "" + itemsBeen.get(i).getDc_id())) {
                 orders.getOrder(itemsBeen.get(i).getId() + "" + itemsBeen.get(i).getDc_id()).setSend(true).
@@ -1300,27 +1300,27 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
             } else*/
             //{
             itemsBeen.get(i).setAddCount(0);
-            orders.setOrders(itemsBeen.get(i).getId() + "" + itemsBeen.get(i).getDc_id(),
-                    new Orders.Order().setOrders(orders).setItemsBean(itemsBeen.get(i)).setSend(true).setCount(Float.valueOf(itemsBeen.get(i).getCount())).
+            sendOrders.setOrders(itemsBeen.get(i).getId() + "" + itemsBeen.get(i).getDc_id(),
+                    new Orders.Order().setOrders(sendOrders).setItemsBean(itemsBeen.get(i)).setSend(true).setCount(Float.valueOf(itemsBeen.get(i).getCount())).
                             setGiveCount(itemsBeen.get(i).
                                     getGiveCount()).setBackCount(itemsBeen.get(i).getBackCount()));
             //}
         }
         if (itemsBeen.size() != 0) {
             isOrderWrite = false;
-            orders.setCurrPosition(orders.getOrders().keyAt(0));
+            sendOrders.setCurrPosition(orders.getOrders().keyAt(0));
         } else if (writedishs != null && writedishs.size() != 0) {
             isOrderWrite = true;
-            orders.setCurrPosition(orders.writeDish.keyAt(0));
+            sendOrders.setCurrPosition(orders.writeDish.keyAt(0));
 
         } else {
-            orders.setCurrPosition(null);
+            sendOrders.setCurrPosition(null);
         }
 
-        setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
+        setOrderInfolayout(sendOrders.getCurrPosition(), isOrderWrite);
         isSend = true;
-        orders.isAdd = false;
-        orders.isChange = false;
+        sendOrders.isAdd = false;
+        sendOrders.isChange = false;
     }
 
     @Override
