@@ -120,11 +120,16 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
 
     @OnClick(R.id.alllayout)
     void onclick_alllayout() {
-        /*orders.view = this;
-        orders.backDesh(orders.getCurrPosition(), null);
-        sendOrds();*/
-        orders.view = this;
-        orders.numbEdit(orders.getCurrPosition(), new KeyUtuil.Builder().
+        Orders o;
+        if (orders != null && (orders.isWritDesh(orders.getCurrPosition()) || orders.isOrderDesh(orders.getCurrPosition()))) {
+            o = orders;
+        } else if (sendOrders != null) {
+            o = sendOrders;
+        } else {
+            return;
+        }
+        o.view = this;
+        o.numbEdit(o.getCurrPosition(), new KeyUtuil.Builder().
                 setContext(getContext()).
                 setLocation(numberEdit).
                 setDoFuckSureUnSend(new Orders.DoFuck() {
@@ -150,6 +155,7 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
                 setOrderInfolayout(orders.getCurrPosition(), orders.isWritDesh(orders.getCurrPosition()));
             }
         }));
+
         //  setOrderInfolayout(orders.getCurrPosition(), orders.isWritDesh(orders.getCurrPosition()));
     }
 
@@ -1284,7 +1290,7 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
                             setPernum(responseOrd.getData().getPernum()).
                             setSmoney(orderInfolayout.getGivePrice() + "").
                             setSsmoney(orderInfolayout.getLastPrice() + "").
-                            setZk(orders.getDisconut() + "").
+                            setZk(sendOrders.getDisconut() + "").
                             setZkmoney(orderInfolayout.getDiscountPrice() + "").
                             setTmoney(orderInfolayout.getAllPrice() + "").
                             setTabname(tabname).
@@ -1296,7 +1302,7 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
                             setOrdernum(responseOrd.getData().getOrdernum()).
                             setOrdnum(responseOrd.getData().getOrdnum()).
                             setYm(responseOrd.getData().getYm()).
-                            setWritedishs(orders.getWriteDish())/*.
+                            setWritedishs(sendOrders.getWriteDish())/*.
                             setAllremarks(orders.getAllMethod())
                             .setStorename(responseOrd.getData().getStorename())
                             .setType_txt(responseOrd.getData().getType_txt())*/
