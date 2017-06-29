@@ -279,13 +279,15 @@ public class SendFragment extends BaseFragment implements OrderView {
         OrderDishFragment.Orders orders = orderDishFragment.orders;
         List<OrderDishFragment.Orders.Order> orderList = orders.getAll();
         List<OrderDishFragment.Orders.Write> writeList;
+        String title;
         switch (type) {
             case 1:
+                title = "追加单";
                 final RequestPrintBill request = new RequestPrintBill().
                         setDate(time).
                         setSname("下单人：" + AppMode.getInstance().getUsername()).
                         setTabcode(orderDishFragment.tabname).
-                        setTitle("出品分单");
+                        setTitle("追加单");
                 Observable.from(orderList).subscribe(new Observer<OrderDishFragment.Orders.Order>() {
                     @Override
                     public void onCompleted() {
@@ -370,7 +372,7 @@ public class SendFragment extends BaseFragment implements OrderView {
 
                     @Override
                     public void onNext(RequestPrintBill requestPrintBill) {
-                        requestPrintBill.setDate(time).setSname("下单人：" + AppMode.getInstance().getUsername()).setTabcode(orderDishFragment.tabname).setTitle("总单打印");
+                        requestPrintBill.setDate(time).setSname("下单人：" + AppMode.getInstance().getUsername()).setTabcode(orderDishFragment.tabname).setTitle("追加单");
                         AppRequest.getAPI().printAddOrder(requestPrintBill).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ResponseCailei>() {
                             @Override
                             public void onCompleted() {
@@ -392,15 +394,37 @@ public class SendFragment extends BaseFragment implements OrderView {
 
                 break;
         }
+
         if (orders.writeDish == null) {
             return;
         }
         writeList = new ArrayList<>(orders.writeDish.values());
         RequestPrintBill printBill = new RequestPrintBill();
         printBill.setItems(new ArrayList<RequestPrintBill.ItemsBean>());
+        printBill.setDate(time).setSname("下单人：" + AppMode.getInstance().getUsername()).setTabcode(orderDishFragment.tabname).setTitle("追加单");
         for (OrderDishFragment.Orders.Write w : writeList) {
-            printBill.getItems().add(new RequestPrintBill.ItemsBean().setUnit(w.getItemsBean().getUnit()).setName(w.getItemsBean().getName()).setNum(w.getItemsBean().getCount()).setMoney(w.getItemsBean().getPrice()));
+            if (w.isSend) {
+
+            } else {
+                printBill.getItems().add(new RequestPrintBill.ItemsBean().setUnit(w.getItemsBean().getUnit()).setName(w.getItemsBean().getName()).setNum(w.getItemsBean().getCount()).setMoney(w.getItemsBean().getPrice()));
+            }
         }
+        AppRequest.getAPI().printAddOrder(printBill).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ResponseCailei>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(ResponseCailei responseCailei) {
+                RxBus.getDefault().post(new EventType().setExtra(responseCailei.getExtra()).setType(EventType.SHOW));
+            }
+        });
     }
 
     @Override

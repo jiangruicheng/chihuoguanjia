@@ -89,6 +89,25 @@ public class RequestPrintBill extends BaseRequest {
         private String unit;
         private String m_name;
 
+        public String getMid() {
+            return mid;
+        }
+
+        public void setMid(String mid) {
+            this.mid = mid;
+        }
+
+        public String getUid() {
+            return uid;
+        }
+
+        public void setUid(String uid) {
+            this.uid = uid;
+        }
+
+        private String mid = AppMode.getInstance().getMid();
+        private String uid = AppMode.getInstance().getUid();
+
         public String getMachine() {
             return machine;
         }
