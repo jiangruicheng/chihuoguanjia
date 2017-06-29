@@ -1,5 +1,6 @@
 package com.cndll.chgj.mvp.mode.bean.info;
 
+import android.graphics.Color;
 import android.support.v4.util.ArrayMap;
 
 import com.cndll.chgj.mvp.mode.bean.request.RequestOrder;
@@ -59,6 +60,17 @@ public class Orders {
         return orders.containsKey(s);
     }
 
+    public void deleteDesh(String id, DoFuck doFuck) {
+        if (isWritDesh(id)) {
+            writeDish.remove(id);
+        } else if (isOrderDesh(id)) {
+            orders.remove(id);
+        }
+        if (doFuck != null) {
+            doFuck.doFuck(null);
+        }
+    }
+
     public void backDesh(final String id, final DoFuck<List<RequestPrintBackDesh.ItemsBean>> doFuck) {
         if (!(isWritDesh(id) ? writeDish.get(id).isSend : orders.get(id).isSend)) {
             return;
@@ -94,6 +106,7 @@ public class Orders {
     }
 
     public boolean isDeshSend(String id) {
+
         return isWritDesh(id) ? writeDish.get(id).isSend : orders.get(id).isSend;
     }
 
@@ -104,7 +117,10 @@ public class Orders {
         } else {
             hint = "删除";
         }
-        KeyUtuil.popUpkey(builder.setHint(hint).
+        KeyUtuil.popUpkey(builder.setHint(hint).setMode(KeyWeight.Mode_OnlyNumb).
+                setCancelcolor(Color.rgb(241, 93, 169)).
+                setSurecolor(Color.rgb(251, 152, 67)).
+                setSureHint("确定").setShowhint("请输入菜品数量").
                 setOnKeyClick(new KeyWeight.OnKeyClick() {
                     @Override
                     public void onKeyCancel(String s) {
@@ -113,7 +129,7 @@ public class Orders {
                                 backDesh(id, builder.getDoFuckCancelSend());
                         } else {
                             if (builder.getDoFuckCancelUnsend() != null)
-                                builder.getDoFuckCancelUnsend().doFuck(null);
+                                deleteDesh(id, builder.getDoFuckCancelUnsend());
                         }
                     }
 
@@ -127,8 +143,15 @@ public class Orders {
                         } else {
                             orders.get(id).setCount(Float.valueOf(s));
                         }
-                        if (builder.getDoFuckSureUnSend() != null)
-                            builder.getDoFuckSureUnSend().doFuck(null);
+                        if (isDeshSend(id)) {
+                            if (builder.getDoFuckSureSend() != null)
+                                builder.getDoFuckSureSend().doFuck(null);
+                        } else {
+                            if (builder.getDoFuckSureUnSend() != null) {
+                                builder.getDoFuckSureUnSend().doFuck(null);
+                            }
+                        }
+
                     }
 
                     @Override
@@ -139,16 +162,34 @@ public class Orders {
     }
 
     public void giveDesh(String id, KeyUtuil.Builder builder) {
+        if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isGive()) {
+            view.showMesg("无赠送权限");
+            if (builder.getDoFuckCancelSend() != null) {
+                builder.getDoFuckCancelSend().doFuck(null);
+            }
+            return;
+        }
         Object o = isWritDesh(id) ? writeDish.get(id).addGiveCount() : orders.get(id).addGiveCount();
         if (isDeshSend(id)) {
-
+            if (builder.getDoFuckSureSend() != null)
+                builder.getDoFuckSureSend().doFuck(null);
         } else {
-
+            if (builder.getDoFuckSureUnSend() != null) {
+                builder.getDoFuckSureUnSend().doFuck(null);
+            }
         }
     }
 
-    public void cancelGive(String id) {
+    public void cancelGive(String id, KeyUtuil.Builder builder) {
         Object o = isWritDesh(id) ? writeDish.get(id).cancelGive() : orders.get(id).cancelGive();
+        if (isDeshSend(id)) {
+            if (builder.getDoFuckSureSend() != null)
+                builder.getDoFuckSureSend().doFuck(null);
+        } else {
+            if (builder.getDoFuckSureUnSend() != null) {
+                builder.getDoFuckSureUnSend().doFuck(null);
+            }
+        }
     }
 
     public ArrayMap<String, Write> writeDish;

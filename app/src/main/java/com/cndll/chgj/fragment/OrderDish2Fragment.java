@@ -125,16 +125,17 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
         sendOrds();*/
         orders.view = this;
         orders.numbEdit(orders.getCurrPosition(), new KeyUtuil.Builder().
-                setMode(KeyWeight.Mode_OnlyNumb).
-                setCancelcolor(Color.rgb(241, 93, 169)).
-                setSurecolor(Color.rgb(251, 152, 67)).
-                setSureHint("确定").
                 setContext(getContext()).
                 setLocation(numberEdit).
-                setShowhint("请输入菜品数量").setDoFuckSureUnSend(new Orders.DoFuck() {
+                setDoFuckSureUnSend(new Orders.DoFuck() {
+                    @Override
+                    public void doFuck(Object o) {
+                        setOrderInfolayout(orders.getCurrPosition(), orders.isWritDesh(orders.getCurrPosition()));
+                    }
+                }).setDoFuckSureSend(new Orders.DoFuck() {
             @Override
             public void doFuck(Object o) {
-                setOrderInfolayout(orders.getCurrPosition(), orders.isWritDesh(orders.getCurrPosition()));
+                sendOrds();
             }
         }).setDoFuckCancelSend(new Orders.DoFuck<List<RequestPrintBackDesh.ItemsBean>>() {
             @Override
@@ -142,6 +143,11 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
                 backDesh = itemsBeen;
                 sendOrds(presenter.BACK);
                 isBackDesh = true;
+            }
+        }).setDoFuckCancelUnsend(new Orders.DoFuck() {
+            @Override
+            public void doFuck(Object o) {
+                setOrderInfolayout(orders.getCurrPosition(), orders.isWritDesh(orders.getCurrPosition()));
             }
         }));
         //  setOrderInfolayout(orders.getCurrPosition(), orders.isWritDesh(orders.getCurrPosition()));

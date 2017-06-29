@@ -43,13 +43,13 @@ import com.cndll.chgj.util.LinearPagerLayoutManager;
 import com.cndll.chgj.util.PopUpViewUtil;
 import com.cndll.chgj.util.StringHelp;
 import com.cndll.chgj.weight.AllLayout;
+import com.cndll.chgj.weight.KeyUtuil;
 import com.cndll.chgj.weight.KeyWeight;
 import com.cndll.chgj.weight.MesgShow;
 import com.cndll.chgj.weight.OrderInfo;
 import com.cndll.chgj.weight.OrderItemMesg;
 import com.cndll.chgj.weight.PopOrderRequest;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -560,171 +560,56 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
         orderInfo.setMesg(order);
         adapter.setOnItemClick(new OnItemClick() {
             @Override
-            public void onNumbClick(final Orders order, final List<Orders.Order> orders, final int position, View Item) {
-                final boolean isOrderWrite;
-                adapter.selectItem = position;
-                int i;
-                if (order.writeDish == null || position > order.writeDish.size() - 1) {
-                    isOrderWrite = false;
-                    if (order.writeDish == null) {
-                        i = 0;
-                    } else {
-                        i = order.writeDish.size();
-                    }
-                    order.setCurrPosition(order.getOrders().keyAt(position - i));
-                } else {
-                    order.setCurrPosition(order.writeDish.keyAt(position));
-                    isOrderWrite = true;
-                }
-                final boolean issend;
-                if (isOrderWrite) {
-                    issend = order.writeDish.get(order.getCurrPosition()).isSend;
-                } else {
-                    issend = order.getOrder(order.getCurrPosition()).isSend;
-                }
-                String hint = "";
-                if (issend) {
-                    hint = "退菜";
-                } else {
-                    hint = "删除";
-                }
-                popUpkey(KeyWeight.Mode_OnlyNumb, Color.rgb(241, 93, 169), Color.rgb(251, 152, 67), "请输入菜品数量", hint, "确定", new KeyWeight.OnKeyClick() {
+            public void onNumbClick(Orders orders, String id, final int position, View Item) {
+                orders.view = OrderInfo2Fragment.this;
+                orders.numbEdit(orders.getCurrPosition(), new KeyUtuil.Builder().setContext(getContext()).setLocation(Item).
+                        setDoFuckCancelUnsend(new Orders.DoFuck() {
+                            @Override
+                            public void doFuck(Object o) {
+                                adapter.notifyDataSetChanged();
+                            }
+                        }).setDoFuckCancelSend(new Orders.DoFuck<List<RequestPrintBackDesh.ItemsBean>>() {
                     @Override
-                    public void onKeyCancel(String s) {
-                        boolean iss;
-
-                        if (issend) {
-                            /*if (order.isAdd) {
-                                showMesg("有菜品未送单，请先送单");
-                                return;
-                            }*/
-                            if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isReturn()) {
-                                showMesg("无退菜权限");
-                                return;
-                            }
-                            backDesh = new ArrayList<RequestPrintBackDesh.ItemsBean>();
-
-                            if (!isOrderWrite) {
-                                backDesh.add(new RequestPrintBackDesh.ItemsBean().setName(order.getOrder(order.getCurrPosition()).getItemsBean().getName()).
-                                        setMoney(order.getOrder(order.getCurrPosition()).getItemsBean().getPrice()).
-                                        setNum(/*order.getOrder(order.getCurrPosition()).getCount() +*/ "1").
-                                        setUnit(order.getOrder(order.getCurrPosition()).getItemsBean().getUnit()).
-                                        setM_name(""));
-                                order.getOrder(order.getCurrPosition()).backDesh();
-                            } else {
-                                backDesh.add(new RequestPrintBackDesh.ItemsBean().setName(order.writeDish.get(order.getCurrPosition()).getItemsBean().getName()).
-                                        setMoney(order.writeDish.get(order.getCurrPosition()).getItemsBean().getPrice()).
-                                        setNum(/*order.writeDish.get(order.getCurrPosition()).getCount() +*/ "1").
-                                        setUnit("盘").
-                                        setM_name(""));
-                                order.writeDish.get(order.getCurrPosition()).backDesh();
-                            }
-                            /*if (order.getOrders().size() == 0) {
-                                order.setCurrPosition(null);
-                            } else {
-                                order.setCurrPosition(order.getOrders().keyAt(0));
-                            }*/
-                            setOrderInfolayout(order.getCurrPosition(), isOrderWrite);
-
-                            sendOrds();
-
-                            isBackDesh = true;
-                        } else {
-                            if (!isOrderWrite) {
-                                order.removeOrders(order.getCurrPosition());
-                           /* iss = order.getOrder(order.getCurrPosition()).isSend();*/
-                            } else {
-                                order.writeDish.remove(order.getCurrPosition());
-                          /*  iss = order.writeDish.get(order.getCurrPosition()).isSend();*/
-                            }
-                        }
-
-                        if (issend) {
-                           /* if (order.isAdd) {
-                                showMesg("有菜品未送单，请先送单");
-                                return;
-                            }*/
-                            sendOrds();
-                            return;
-                            //
-                        }
+                    public void doFuck(List<RequestPrintBackDesh.ItemsBean> o) {
+                        backDesh = o;
+                        sendOrds(presenter.BACK);
+                        isBackDesh = true;
+                    }
+                }).setDoFuckSureUnSend(new Orders.DoFuck() {
+                    @Override
+                    public void doFuck(Object o) {
                         adapter.notifyDataSetChanged();
                     }
-
+                }).setDoFuckSureSend(new Orders.DoFuck() {
                     @Override
-                    public void onKeySure(String s) {
-                        orderItemMesg = new OrderItemMesg();
-                        orderItemMesg.init(container);
-                        boolean iss;
-                        if (!isOrderWrite) {
-                            order.getOrder(order.getCurrPosition()).setCount(Float.valueOf(s));
-                            iss = order.getOrder(order.getCurrPosition()).isSend();
-                        } else {
-                            order.writeDish.get(order.getCurrPosition()).setCount(Float.valueOf(s));
-                            iss = order.writeDish.get(order.getCurrPosition()).isSend();
-                        }
-                        /*sendOrds();*/
-                        if (iss) {
-                            /*if (order.isAdd) {
-                                showMesg("有菜品未送单，请先送单");
-                                return;
-                            }*/
-                            sendOrds();
-                            return;
-                            //setOrderInfolayout(order.getCurrPosition(), isOrderWrite);
-                            //
-                        }
-                        adapter.notifyDataSetChanged();
+                    public void doFuck(Object o) {
+                        sendOrds();
                     }
-
-                    @Override
-                    public void onKeyNub(String s) {
-
-                    }
-                });
+                }));
             }
 
             @Override
-            public void onRequest(final int position, View view) {
+            public void onRequest(final Orders orders, final int position, final String id, View view) {
                 adapter.selectItem = position;
+                orders.view = OrderInfo2Fragment.this;
                 // adapter.notifyDataSetChanged();
-                boolean iss;
-                final boolean isOrderWrite;
-                orderItemMesg = new OrderItemMesg();
-                orderItemMesg.init(container);
-                final int i;
-                if (order.writeDish == null || position > order.writeDish.size() - 1) {
-                    isOrderWrite = false;
-                    if (order.writeDish == null) {
-                        i = 0;
-                    } else {
-                        i = order.writeDish.size();
-                    }
-                    order.setCurrPosition(order.getOrders().keyAt(position - i));
-                } else {
-                    order.setCurrPosition(order.writeDish.keyAt(position));
-                    isOrderWrite = true;
-                }
-                if (isOrderWrite) {
-                    iss = order.writeDish.get(order.getCurrPosition()).isSend();
-                } else {
-                    iss = order.getOrder(order.getCurrPosition()).isSend;
-                }
-                if (iss) {
-                    final PopOrderRequest popOrderRequest = new PopOrderRequest();
+                final PopOrderRequest popOrderRequest;
+                if (orders.isDeshSend(id)) {
+                    popOrderRequest = new PopOrderRequest();
                     popOrderRequest.init(getContext(), view);
                     popOrderRequest.four.setVisibility(View.GONE);
                     popOrderRequest.setFirstText("赠送");
                     popOrderRequest.setSecondText("退菜");
                     popOrderRequest.show();
-                    if (isOrderWrite) {
-                        if (order.writeDish.get(order.getCurrPosition()).getGiveCount() == 0) {
-                            popOrderRequest.setThirdVisble(View.GONE);
-                            popOrderRequest.setViewHeight(2);
-                        } else {
-                            popOrderRequest.setThirdText("取消赠送");
-                            popOrderRequest.setViewHeight(3);
-                        }
+                    if (orders.isWritDesh(id)) {
+                        if (orders.isWritDesh(id))
+                            if (order.writeDish.get(order.getCurrPosition()).getGiveCount() == 0) {
+                                popOrderRequest.setThirdVisble(View.GONE);
+                                popOrderRequest.setViewHeight(2);
+                            } else {
+                                popOrderRequest.setThirdText("取消赠送");
+                                popOrderRequest.setViewHeight(3);
+                            }
                     } else {
                         if (order.getOrder(order.getCurrPosition()).getGiveCount() == 0) {
                             popOrderRequest.setThirdVisble(View.GONE);
@@ -734,64 +619,77 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                             popOrderRequest.setViewHeight(3);
                         }
                     }
-                    popOrderRequest.setOnItemClick(new PopOrderRequest.onItemClick() {
-                        @Override
-                        public void onFirst(View view) {
-                            boolean isOrderWrite;
-                            int i;
-                          /*  if (order.isAdd) {
-                                showMesg("有菜品未送单，请先送单");
-                                return;
-                            }*/
-                            if (!AppMode.getInstance().isBoss() && !AppMode.getInstance().isGive()) {
-                                showMesg("无赠送权限");
+                } else {
+                    popOrderRequest = new PopOrderRequest();
+                    popOrderRequest.init(getContext(), view);
+                    popOrderRequest.show();
+                    boolean isGive = false;
+                    if (orders.isDeshSend(id)) {
+                        if (order.writeDish.get(order.getCurrPosition()).giveCount != 0) {
+                            isGive = true;
+                        }
+                    } else {
+                        if (order.getOrder(order.getCurrPosition()).giveCount != 0) {
+                            isGive = true;
+                        }
+                    }
+                    if (isGive) {
+                        popOrderRequest.setViewHeight(4);
+                        popOrderRequest.four.setVisibility(View.VISIBLE);
+                        popOrderRequest.four.setText("取消赠送");
+                        popOrderRequest.four.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                popOrderRequest.setViewHeight(3);
+                                popOrderRequest.four.setVisibility(View.GONE);
                                 popOrderRequest.dismiss();
-                                return;
                             }
-                            if (order.writeDish == null || position > order.writeDish.size() - 1) {
-                                isOrderWrite = false;
-                                if (order.writeDish == null) {
-                                    i = 0;
-                                } else {
-                                    i = order.writeDish.size();
+                        });
+                    } else {
+                        popOrderRequest.four.setVisibility(View.GONE);
+                        popOrderRequest.setViewHeight(3);
+                    }
+
+                }
+                popOrderRequest.setOnItemClick(new PopOrderRequest.onItemClick() {
+                    @Override
+                    public void onFirst(View view) {
+
+                        if (orders.isDeshSend(id)) {
+                            orders.giveDesh(id, new KeyUtuil.Builder().setContext(getContext()).setLocation(view).
+                                    setDoFuckSureUnSend(new Orders.DoFuck() {
+                                        @Override
+                                        public void doFuck(Object o) {
+                                            adapter.notifyDataSetChanged();
+                                            popOrderRequest.dismiss();
+                                        }
+                                    }).setDoFuckSureSend(new Orders.DoFuck() {
+                                @Override
+                                public void doFuck(Object o) {
+                                    sendOrds(presenter.GIVE);
+                                    popOrderRequest.dismiss();
                                 }
-                                order.setCurrPosition(order.getOrders().keyAt(position - i));
-                            } else {
-                                order.setCurrPosition(order.writeDish.keyAt(position));
-                                isOrderWrite = true;
-                            }
-                            if (!isOrderWrite) {
-                                order.getOrder(order.getCurrPosition()).addGiveCount();
-                            } else {
-                                String id = order.getCurrPosition();
-                                Orders.Write w = order.writeDish.get(id);
-                                order.writeDish.get(order.getCurrPosition()).addGiveCount();
-                            }
-                            if (!isOrderWrite) {
-                                if (order.getOrder(order.getCurrPosition()).getGiveCount() == 0) {
-                                    popOrderRequest.setThirdVisble(View.GONE);
-                                    popOrderRequest.setViewHeight(2);
-                                } else {
-                                    popOrderRequest.setThirdVisble(View.VISIBLE);
-                                    popOrderRequest.setThirdText("取消赠送");
-                                    popOrderRequest.setViewHeight(3);
+                            }).setDoFuckCancelSend(new Orders.DoFuck() {
+                                @Override
+                                public void doFuck(Object o) {
+                                    popOrderRequest.dismiss();
                                 }
+                            }));
+
+                        } else {
+                            if (orders.isWritDesh(id)) {
+                                replaceFragmentAddToBackStack(NoteFragment.newInstance(null, null).setWrite(order.writeDish.get(id)), new NoteImpl());
                             } else {
-                                if (order.writeDish.get(order.getCurrPosition()).getGiveCount() == 0) {
-                                    popOrderRequest.setThirdVisble(View.GONE);
-                                } else {
-                                    popOrderRequest.setThirdVisble(View.VISIBLE);
-                                    popOrderRequest.setThirdText("取消赠送");
-                                }
+                                replaceFragmentAddToBackStack(NoteFragment.newInstance(null, null).setOrder(orders.getOrder(id)), new NoteImpl());
                             }
                             popOrderRequest.dismiss();
-                            setOrderInfolayout(order.getCurrPosition(), isOrderWrite);
-                            sendOrds(presenter.GIVE);
-
                         }
 
-                        @Override
-                        public void onSecond(View view) {
+                    }
+
+                    @Override
+                    public void onSecond(View view) {
                            /* if (order.isAdd) {
                                 showMesg("有菜品未送单，请先送单");
                                 return;
@@ -846,8 +744,8 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                                     isBackDesh = true;
                                 }
                             });*/
-                            order.view = OrderInfo2Fragment.this;
-                            order.backDesh(order.getCurrPosition(), new Orders.DoFuck<List<RequestPrintBackDesh.ItemsBean>>() {
+                        if (orders.isDeshSend(id)) {
+                            orders.backDesh(orders.getCurrPosition(), new Orders.DoFuck<List<RequestPrintBackDesh.ItemsBean>>() {
                                 @Override
                                 public void doFuck(List<RequestPrintBackDesh.ItemsBean> itemsBeen) {
                                     backDesh = itemsBeen;
@@ -856,47 +754,69 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                                     popOrderRequest.dismiss();
                                 }
                             });
-
-                        }
-
-                        @Override
-                        public void onThird(View view) {
-                            boolean isOrderWrite;
-                            int i;
-                           /* if (order.isAdd) {
-                                showMesg("有菜品未送单，请先送单");
-                                return;
-                            }*/
-                            if (order.writeDish == null || position > order.writeDish.size() - 1) {
-                                isOrderWrite = false;
-                                if (order.writeDish == null) {
-                                    i = 0;
-                                } else {
-                                    i = order.writeDish.size();
+                        } else {
+                            orders.giveDesh(id, new KeyUtuil.Builder().setDoFuckSureUnSend(new Orders.DoFuck() {
+                                @Override
+                                public void doFuck(Object o) {
+                                    adapter.notifyDataSetChanged();
+                                    popOrderRequest.dismiss();
                                 }
-                                order.setCurrPosition(order.getOrders().keyAt(position - i));
-                            } else {
-                                order.setCurrPosition(order.writeDish.keyAt(position));
-                                isOrderWrite = true;
-                            }
-                            if (!isOrderWrite) {
-                                order.getOrder(order.getCurrPosition()).cancelGive();
-                            } else {
-                                order.writeDish.get(order.getCurrPosition()).cancelGive();
-                            }
-                            setOrderInfolayout(order.getCurrPosition(), isOrderWrite);
-                            popOrderRequest.dismiss();
-                            sendOrds();
-
+                            }).setDoFuckSureSend(new Orders.DoFuck() {
+                                @Override
+                                public void doFuck(Object o) {
+                                    sendOrds();
+                                    popOrderRequest.dismiss();
+                                }
+                            }).setDoFuckCancelSend(new Orders.DoFuck() {
+                                @Override
+                                public void doFuck(Object o) {
+                                    popOrderRequest.dismiss();
+                                }
+                            }));
                         }
-                    });
 
-                } else {
+                    }
+
+                    @Override
+                    public void onThird(View view) {
+                        if (orders.isDeshSend(id)) {
+                            orders.cancelGive(id, new KeyUtuil.Builder().setDoFuckSureSend(new Orders.DoFuck() {
+                                @Override
+                                public void doFuck(Object o) {
+                                    sendOrds();
+                                    popOrderRequest.dismiss();
+                                }
+                            }).setDoFuckSureUnSend(new Orders.DoFuck() {
+                                @Override
+                                public void doFuck(Object o) {
+                                    adapter.notifyDataSetChanged();
+                                    popOrderRequest.dismiss();
+                                }
+                            }).setDoFuckCancelUnsend(new Orders.DoFuck() {
+                                @Override
+                                public void doFuck(Object o) {
+                                    popOrderRequest.dismiss();
+                                }
+                            }));
+                        } else {
+                            orders.deleteDesh(id, new Orders.DoFuck() {
+                                @Override
+                                public void doFuck(Object o) {
+                                    adapter.notifyDataSetChanged();
+                                    popOrderRequest.dismiss();
+                                }
+                            });
+                        }
+
+                    }
+                });
+
+                 /*else*/ /*{
                     final PopOrderRequest popOrderRequest = new PopOrderRequest();
                     popOrderRequest.init(getContext(), view);
                     popOrderRequest.show();
                     boolean isGive = false;
-                    if (isOrderWrite) {
+                    if (orders.isDeshSend(id)) {
                         if (order.writeDish.get(order.getCurrPosition()).giveCount != 0) {
                             isGive = true;
                         }
@@ -913,15 +833,10 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                         popOrderRequest.four.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                if (!isOrderWrite) {
-                                    order.getOrder(order.getCurrPosition()).cancelGive();
-                                } else {
-                                    order.writeDish.get(order.getCurrPosition()).cancelGive();
-                                }
+
                                 popOrderRequest.setViewHeight(3);
                                 popOrderRequest.four.setVisibility(View.GONE);
                                 popOrderRequest.dismiss();
-                                setOrderInfolayout(order.getCurrPosition(), isOrderWrite);
                             }
                         });
                     } else {
@@ -932,7 +847,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                     popOrderRequest.setOnItemClick(new PopOrderRequest.onItemClick() {
                         @Override
                         public void onFirst(View v) {
-                            if (isOrderWrite) {
+                            if (orders.isOrderDesh(id)) {
                                 replaceFragmentAddToBackStack(NoteFragment.newInstance(null, null).setWrite(order.writeDish.get(order.getCurrPosition())), new NoteImpl());
                             } else {
                                 replaceFragmentAddToBackStack(NoteFragment.newInstance(null, null).setOrder(order.getOrder(order.getCurrPosition())), new NoteImpl());
@@ -1028,7 +943,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                         }
                     });
 
-                }
+                }*/
             }
         });
         return view;
@@ -1385,9 +1300,9 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
     }
 
     public interface OnItemClick {
-        void onNumbClick(Orders order, List<Orders.Order> orders, int position, View Item);
+        void onNumbClick(Orders order, String id, int position, View Item);
 
-        void onRequest(int position, View view);
+        void onRequest(Orders orders, int position, String id, View view);
     }
 
     public class OrderListAdapter extends BaseAdapter {
@@ -1448,6 +1363,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
             ViewHolder viewHolder = new ViewHolder(convertView);
             final boolean isOrderWrite;
             int i;
+            String id;
             if (order.writeDish == null || position > order.writeDish.size() - 1) {
                 isOrderWrite = false;
                 if (order.writeDish == null) {
@@ -1455,8 +1371,10 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                 } else {
                     i = order.writeDish.size();
                 }
+                id = order.getOrders().keyAt(position - i);
                 order.setCurrPosition(order.getOrders().keyAt(position - i));
             } else {
+                id = order.writeDish.keyAt(position);
                 order.setCurrPosition(order.writeDish.keyAt(position));
                 isOrderWrite = true;
             }
@@ -1467,7 +1385,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                     @Override
                     public void onClick(View v) {
                         if (onItemClick != null /*&& !order.writeDish.get(order.getCurrPosition()).isSend*/) {
-                            onItemClick.onNumbClick(order, orderList, position, finalConvertView);
+                            onItemClick.onNumbClick(order, order.getCurrPosition(), position, finalConvertView);
                         }
                     }
                 });
@@ -1488,7 +1406,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                     @Override
                     public void onClick(View v) {
                         if (onItemClick != null /*&& !order.getOrders().get(order.getCurrPosition()).isSend*/) {
-                            onItemClick.onNumbClick(order, orderList, position, finalConvertView);
+                            onItemClick.onNumbClick(order, order.getCurrPosition(), position, finalConvertView);
                         }
                     }
                 });
@@ -1507,7 +1425,8 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                 @Override
                 public void onClick(View v) {
                     if (onItemClick != null) {
-                        onItemClick.onRequest(position, v);
+
+                        onItemClick.onRequest(order, position, order.getCurrPosition(), v);
                     }
                 }
             });
