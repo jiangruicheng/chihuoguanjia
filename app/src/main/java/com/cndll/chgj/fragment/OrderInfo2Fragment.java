@@ -632,7 +632,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                     popOrderRequest.init(getContext(), view);
                     popOrderRequest.show();
                     boolean isGive = false;
-                    if (orders.isDeshSend(id)) {
+                    if (orders.isWritDesh(id)) {
                         if (order.writeDish.get(order.getCurrPosition()).giveCount != 0) {
                             isGive = true;
                         }

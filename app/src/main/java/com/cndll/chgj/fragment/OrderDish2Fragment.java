@@ -919,22 +919,39 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
     @Override
     public void reload() {
         super.reload();
-        if (orders == null) {
+        if (orders == null && sendOrders == null) {
             return;
         }
-        if (orders.getOrders().size() > 0) {
-            isOrderWrite = false;
-            orders.setCurrPosition(orders.getOrders().keyAt(0));
-        } else {
-            if (orders.writeDish == null || orders.writeDish.size() == 0) {
-
+        if (orders != null) {
+            if (orders.getOrders().size() > 0) {
+                isOrderWrite = false;
+                orders.setCurrPosition(orders.getOrders().keyAt(0));
             } else {
-                isOrderWrite = true;
-                orders.setCurrPosition(orders.writeDish.keyAt(0));
+                if (orders.writeDish == null || orders.writeDish.size() == 0) {
+
+                } else {
+                    isOrderWrite = true;
+                    orders.setCurrPosition(orders.writeDish.keyAt(0));
+                }
             }
+            setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
+        }
+        if (sendOrders != null) {
+            if (sendOrders.getOrders().size() > 0) {
+                isOrderWrite = false;
+                sendOrders.setCurrPosition(sendOrders.getOrders().keyAt(0));
+            } else {
+                if (sendOrders.writeDish == null || sendOrders.writeDish.size() == 0) {
+
+                } else {
+                    isOrderWrite = true;
+                    sendOrders.setCurrPosition(sendOrders.writeDish.keyAt(0));
+                }
+            }
+            setOrderInfolayout(sendOrders.getCurrPosition(), isOrderWrite);
         }
         MainActivity.setBackPressEvent(backPressEvent);
-        setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
+
     }
 
     private DeshListAdapter deshListAdapter;
@@ -1036,10 +1053,10 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
     }
 
     private void setOrderInfolayoutWrite(String id) {
-        if (orders.writeDish.get(id) == null || id == null) {
+        if ((orders == null || orders.writeDish == null || orders.writeDish.get(id) == null || id == null) && (sendOrders == null || sendOrders.writeDish == null || sendOrders.writeDish.get(id) == null || id == null)) {
             orderItemMesglayout.setMethod("").setCount("1").setName("").setPrice("");
 
-        } else {
+        } else if (orders != null && orders.writeDish != null && orders.writeDish.get(id) != null) {
             if (orderItemMesglayout != null)
                 Log.d("at", "setOrderInfolayoutWrite: " + orders.writeDish.get(id));
             orderItemMesglayout.setPrice(orders.writeDish.get(id).getAllPrice() + "").
@@ -1057,16 +1074,29 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
             /*if (orders.writeDish.get(id).getItemsBean().getRemarks() == null) {
                 orderItemMesglayout.setMethod(" ");
             }*/
+        } else if (sendOrders != null && sendOrders.writeDish != null && sendOrders.writeDish.get(id) != null) {
+            orderItemMesglayout.setPrice(sendOrders.writeDish.get(id).getAllPrice() + "").
+                    setName(sendOrders.writeDish.get(id).getDeshName() + sendOrders.writeDish.get(id).getOnePrice()).setCount(sendOrders.writeDish.get(id).getCount() + "").setMethod("");
+            if (sendOrders.writeDish.get(id).getItemsBean().getRemarks() != null && sendOrders.writeDish.get(id).getItemsBean().getRemarks().size() != 0) {
+                orderItemMesglayout.setMethod(sendOrders.writeDish.get(id).getItemsBean().getRemarks().get(0).getName() + sendOrders.writeDish.get(id).getItemsBean().getRemarks().get(0).getPrice());
+            }
+            if (sendOrders.writeDish.get(id).getGiveCount() != 0) {
+                orderItemMesglayout.setMethod(orderItemMesglayout.getMethod().getText().toString() + "赠送：" + sendOrders.writeDish.get(id).getGiveCount());
+            }
+            if (sendOrders.writeDish.get(id).getBackCount() != 0) {
+                orderItemMesglayout.setMethod(orderItemMesglayout.getMethod().getText().toString() + "退菜：" + sendOrders.writeDish.get(id).getBackCount());
+
+            }
         }
         if (orderInfolayout != null) {
-            orderInfolayout.setMesg(orders);
+            orderInfolayout.setMesg(orders, sendOrders);
         }
     }
 
     private void setOrderInfolayout(String id) {
-        if (id == null || orders.getOrder(id) == null) {
+        if ((id == null || (orders == null ? true : orders.getOrder(id) == null)) && (id == null || (sendOrders == null ? true : sendOrders.getOrder(id) == null))) {
             orderItemMesglayout.setMethod("").setCount(" ").setName("").setPrice("");
-        } else {
+        } else if (orders != null && orders.getOrder(id) != null) {
             if (orderItemMesglayout != null) {
                 orderItemMesglayout.
                         setPrice(orders.getOrder(id).getAllPrice() + "").
@@ -1080,9 +1110,22 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
                 }
             }
 
+        } else if (sendOrders != null && sendOrders.getOrder(id) != null) {
+            if (orderItemMesglayout != null) {
+                orderItemMesglayout.
+                        setPrice(sendOrders.getOrder(id).getAllPrice() + "").
+                        setName(sendOrders.getOrder(id).getDeshName() + " " + sendOrders.getOrder(id).getOnePrice()).
+                        setMethod(sendOrders.getOrder(id).getMethodName() + sendOrders.getOrder(id).getMethodPrice()).setCount(sendOrders.getOrder(id).getCount() /*+ orders.getOrder(id).getGiveCount() */ + "");
+                if (sendOrders.getOrder(id).getGiveCount() != 0) {
+                    orderItemMesglayout.setMethod(orderItemMesglayout.getMethod().getText().toString() + "赠送：" + sendOrders.getOrder(id).getGiveCount());
+                }
+                if (sendOrders.getOrder(id).getBackCount() != 0) {
+                    orderItemMesglayout.setMethod(orderItemMesglayout.getMethod().getText().toString() + "退菜：" + sendOrders.getOrder(id).getBackCount());
+                }
+            }
         }
         if (orderInfolayout != null) {
-            orderInfolayout.setMesg(orders);
+            orderInfolayout.setMesg(orders, sendOrders);
         }
     }
 
@@ -1308,10 +1351,10 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
         }
         if (itemsBeen.size() != 0) {
             isOrderWrite = false;
-            sendOrders.setCurrPosition(orders.getOrders().keyAt(0));
+            sendOrders.setCurrPosition(sendOrders.getOrders().keyAt(0));
         } else if (writedishs != null && writedishs.size() != 0) {
             isOrderWrite = true;
-            sendOrders.setCurrPosition(orders.writeDish.keyAt(0));
+            sendOrders.setCurrPosition(sendOrders.writeDish.keyAt(0));
 
         } else {
             sendOrders.setCurrPosition(null);

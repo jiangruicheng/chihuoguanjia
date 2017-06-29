@@ -39,7 +39,8 @@ public class StringHelp {
 
         if (isFloat(s) || s.equals("0.0")) {
             String[] s1 =/*s.split("\\.") */s.indexOf(".") != -1 ? s.split("\\.") : new String[]{s.toString()};
-            s = s1[1] == null ? s : (Float.valueOf(s1[1]) == 0 ? s1[0] : s);
+            if (s1.length > 1)
+                s = s1[1] == null ? s : (Float.valueOf(s1[1]) == 0 ? s1[0] : s);
             return s;
         } else {
             return s;
