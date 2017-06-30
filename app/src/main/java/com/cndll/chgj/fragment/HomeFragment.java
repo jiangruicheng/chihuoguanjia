@@ -301,7 +301,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
         if (AppMode.getInstance().isDeskMode()) {
             replaceFragmentAddToBackStack(DeskFragment.newInstance(null, null), new AddDeskImpl());
         } else {
-            replaceFragmentAddToBackStack(OrderDishFragment.newInstance(null, null), new OrderImpl());
+            replaceFragmentAddToBackStack(OrderDish2Fragment.newInstance(null, null), new OrderImpl());
         }
     }
 

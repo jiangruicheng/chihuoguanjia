@@ -238,9 +238,9 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
     @OnClick(R.id.info_nodesk)
     void onclick_infonodesk() {
         if (orders != null && orders.getAll() != null) {
-            replaceFragmentAddToBackStack(OrderInfoFragment.newInstance(titleLeft.getText().toString(), titleRight.getText().toString()).setOrderList(orders).setOrderId(orderId), new OrderImpl());
+            replaceFragmentAddToBackStack(OrderInfo2Fragment.newInstance(titleLeft.getText().toString(), titleRight.getText().toString()).setOrderList(orders).setOrderId(orderId), new OrderImpl());
         } else {
-            replaceFragmentAddToBackStack(OrderInfoFragment.newInstance(null, null), new OrderImpl());
+            replaceFragmentAddToBackStack(OrderInfo2Fragment.newInstance(null, null), new OrderImpl());
         }
         MainActivity.removeBackPressEvent(backPressEvent);
     }
@@ -703,7 +703,7 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
         // replaceFragmentAddToBackStack(ApplyPayFragment.newInstance(null, null), null);
         if (!orders.isChange) {
             if (orderId != 0) {
-                replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(orderId).setOrders(orders), null);
+                replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(orderId).setOrders(sendOrders), null);
                 MainActivity.removeBackPressEvent(backPressEvent);
             }
         } else {
@@ -1050,7 +1050,6 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
         }
         presenter.getDcList(new RequestPrintList().setUid(AppMode.getInstance().getUid()).setMid(AppMode.getInstance().getMid()));
     }
-
 
 
     private void setOrderInfolayout(String id, boolean iswrite) {

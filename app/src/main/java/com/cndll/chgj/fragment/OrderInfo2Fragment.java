@@ -361,7 +361,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
         }
         if (order == null || (order.orders.size() == 0 && (order.writeDish == null ? true : (order.writeDish.size() == 0)))) {
             if (orderId != 0) {
-                replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(orderId).setOrders(order), null);
+                replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(orderId).setOrders(sendOrders), null);
             }
         } else {
             MesgShow.showMesg("", "有菜品未送单,不能买单", dazhe, null, null, false);
@@ -1203,7 +1203,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
             printBackDesh(new RequestPrintBackDesh().setSname(AppMode.getInstance().getUsername()).setTitle("退菜单").setDate(date).setTabcode(tabname).setItems(backDesh));
             return;
         }
-        order.isChange = true;
+        //order.isChange = true;
     }
 
     private void printBackDesh(RequestPrintBackDesh requestPrintBackDesh) {

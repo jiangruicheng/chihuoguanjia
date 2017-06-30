@@ -275,7 +275,7 @@ public class PaySwitchFragment extends BaseFragment {
     private void setOrderInfolayout() {
 
         if (orderInfolayout != null) {
-            orderInfolayout.setMesg(orders);
+            orderInfolayout.setMesg(null, orders);
         }
     }
 

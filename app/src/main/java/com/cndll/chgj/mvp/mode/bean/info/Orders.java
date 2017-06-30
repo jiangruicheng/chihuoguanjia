@@ -639,7 +639,7 @@ public class Orders {
                         price = price + Float.valueOf(itemsBean.getRemark().getRemarks().get(i).getPrice());
                 }
             //return (price + Float.valueOf(itemsBean.getPrice())) * count;
-            return (price + Float.valueOf(itemsBean.getPrice())) * Float.valueOf(itemsBean.getCount());
+            return (price + Float.valueOf(itemsBean.getPrice())) * (Float.valueOf(itemsBean.getCount()));
 
         }
     }

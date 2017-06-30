@@ -57,7 +57,7 @@ public class OrderInfo {
             setM(sendOrder);
         }
         if (sendOrder != null)
-            discountPrice = allDiscountPrice - allDiscountPrice * (sendOrder.getDisconut() != 0 ? sendOrder.getDisconut() : 1);
+            discountPrice = (allDiscountPrice - givePrice) - (allDiscountPrice - givePrice) * (sendOrder.getDisconut() != 0 ? sendOrder.getDisconut() : 1);
         /*lastPrice = allPrice * order.getDisconut();*/
         lastPrice = allPrice - discountPrice - givePrice;
         lastPrice = Math.round(lastPrice);
@@ -181,7 +181,7 @@ public class OrderInfo {
         /*lastPrice = allPrice * order.getDisconut();*/
         lastPrice = allPrice - discountPrice - givePrice;
         lastPrice = Math.round(lastPrice);
-        // setCount(count + "").setAllMoney(String.valueOf(allPrice)).setDiscount(discountPrice + "").setLastMoney(lastPrice + "").setGive(givePrice + "");
+        //setCount(count + "").setAllMoney(String.valueOf(allPrice)).setDiscount(discountPrice + "").setLastMoney(lastPrice + "").setGive(givePrice + "");
 
     }
 
