@@ -39,6 +39,7 @@ import com.cndll.chgj.mvp.presenter.OrderPresenter;
 import com.cndll.chgj.mvp.presenter.impl.NoteImpl;
 import com.cndll.chgj.mvp.presenter.impl.OrderImpl;
 import com.cndll.chgj.mvp.view.OrderView;
+import com.cndll.chgj.util.DateFormatUtil;
 import com.cndll.chgj.util.LinearPagerLayoutManager;
 import com.cndll.chgj.util.PopUpViewUtil;
 import com.cndll.chgj.util.StringHelp;
@@ -50,7 +51,6 @@ import com.cndll.chgj.weight.OrderInfo;
 import com.cndll.chgj.weight.OrderItemMesg;
 import com.cndll.chgj.weight.PopOrderRequest;
 
-import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -111,7 +111,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
     @OnClick(R.id.pay_nodesk)
     void onclick_paynodesk() {
 
-        popUpkey(KeyWeight.Mode_OnlyNumb, Color.rgb(171, 171, 171), Color.rgb(1, 169, 104), "请输入桌台号或牌号", "取消", "确认", new KeyWeight.OnKeyClick() {
+        popUpkey(KeyWeight.Mode_OnlyNumb, R.drawable.shape_bg_discount, R.drawable.shape_bg_mendian, "请输入桌台号或牌号", "取消", "确认", new KeyWeight.OnKeyClick() {
             @Override
             public void onKeyCancel(String s) {
 
@@ -382,7 +382,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
             return;
         }
         if ((order == null || (order.orders.size() == 0 && (order.writeDish == null ? true : (order.writeDish.size() == 0)))) && sendOrders != null) {
-            popUpkey(2, Color.rgb(171, 171, 171), Color.rgb(1, 169, 104), "请输入折扣，例如8折则输入0.8", "取消打折", "确定", new KeyWeight.OnKeyClick() {
+            popUpkey(2, R.drawable.shape_bg_discount, R.drawable.shape_bg_mendian, "请输入折扣，例如8折则输入0.8", "撤销打折", "确定", new KeyWeight.OnKeyClick() {
                 @Override
                 public void onKeyCancel(String s) {
                     sendOrders.setDisconut(1);
@@ -660,10 +660,26 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                         popOrderRequest.four.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-
-                                popOrderRequest.setViewHeight(3);
-                                popOrderRequest.four.setVisibility(View.GONE);
-                                popOrderRequest.dismiss();
+                                orders.cancelGive(id, new KeyUtuil.Builder().setDoFuckSureSend(new Orders.DoFuck() {
+                                    @Override
+                                    public void doFuck(Object o) {
+                                        orderInfo.setMesg(sendOrders);
+                                        sendOrds();
+                                        popOrderRequest.dismiss();
+                                    }
+                                }).setDoFuckSureUnSend(new Orders.DoFuck() {
+                                    @Override
+                                    public void doFuck(Object o) {
+                                        adapter.notifyDataSetChanged();
+                                        popOrderRequest.dismiss();
+                                    }
+                                }).setDoFuckCancelUnsend(new Orders.DoFuck() {
+                                    @Override
+                                    public void doFuck(Object o) {
+                                        adapter.notifyDataSetChanged();
+                                        popOrderRequest.dismiss();
+                                    }
+                                }));
                             }
                         });
                     } else {
@@ -1005,16 +1021,11 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
     @Override
     public void sendSucc(int ord) {
         if (isBackDesh) {
-            Calendar calendar = Calendar.getInstance();
-            int year = calendar.get(Calendar.YEAR);
-            int month = calendar.get(Calendar.MONTH) + 1;
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
-            int hour = calendar.get(Calendar.HOUR);
-            int minute = calendar.get(Calendar.MINUTE);
-            String date = year + "-" + month + "-" + day + " " + hour + ":" + minute;
+            String date = DateFormatUtil.transForDate1(DateFormatUtil.currentTimeStamp());
             printBackDesh(new RequestPrintBackDesh().setSname(AppMode.getInstance().getUsername()).setTitle("退菜单").setDate(date).setTabcode(tabname).setItems(backDesh));
             return;
         }
+        toast("修改成功");
         //order.isChange = true;
     }
 

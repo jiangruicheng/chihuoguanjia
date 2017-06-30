@@ -77,11 +77,11 @@
                         android:id="@+id/textView3"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.5"
+                        android:layout_weight="0.8"
                         android:gravity="center_vertical"
                         android:lines="1"
                         android:paddingLeft="4dp"
-                        android:text="当前门号店"
+                        android:text="当前门店号"
                         android:textColor="@color/white"
                         android:textSize="@dimen/small_text" />
 
@@ -167,7 +167,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginBottom="4dp"
                         android:layout_marginLeft="6dp"
-                        android:layout_marginRight="36dp"
+                        android:layout_marginRight="12dp"
                         android:layout_marginTop="4dp"
                         android:layout_weight="1"
                         android:background="@drawable/shape_fillet"
@@ -205,7 +205,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="今日收入"
-                android:textSize="@dimen/mid_text" />
+                android:textSize="@dimen/small_text" />
 
             <TextView
                 android:id="@+id/today_comin"
@@ -214,7 +214,7 @@
                 android:gravity="center"
                 android:text="10000"
                 android:textColor="@color/buttonStork"
-                android:textSize="@dimen/small_text" />
+                android:textSize="@dimen/ssmall_text" />
         </LinearLayout>
 
         <View
@@ -237,7 +237,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="今日单数"
-                android:textSize="@dimen/mid_text" />
+                android:textSize="@dimen/small_text" />
 
             <TextView
                 android:id="@+id/today_numb"
@@ -246,7 +246,7 @@
                 android:gravity="center"
                 android:text="369"
                 android:textColor="@color/buttonStork"
-                android:textSize="@dimen/small_text" />
+                android:textSize="@dimen/ssmall_text" />
         </LinearLayout>
 
         <View
@@ -268,7 +268,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="本月收入"
-                android:textSize="@dimen/mid_text" />
+                android:textSize="@dimen/small_text" />
 
             <TextView
                 android:id="@+id/month_comin"
@@ -277,7 +277,7 @@
                 android:gravity="center"
                 android:text="36万"
                 android:textColor="@color/buttonStork"
-                android:textSize="@dimen/small_text" />
+                android:textSize="@dimen/ssmall_text" />
         </LinearLayout>
 
         <Button
@@ -519,8 +519,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/order"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="@dimen/image_order"
+                android:layout_height="@dimen/image_order"
                 android:layout_centerInParent="true"
                 android:src="@mipmap/order" />
 

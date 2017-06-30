@@ -31,7 +31,7 @@
         android:gravity="center"
         android:text="当前门店号:1234556\n\n老乡店"
         android:textColor="@color/black"
-        android:textSize="@dimen/small_text" />
+        android:textSize="@dimen/mid_text" />
 
     <EditText
         android:id="@+id/number"
@@ -106,7 +106,7 @@
         android:background="@drawable/shape_fillet_solid"
         android:text="登录"
         android:textColor="@color/white"
-        android:textSize="@dimen/mid_text" />
+        android:textSize="@dimen/big_text" />
 
     <Button
         android:id="@+id/register"
@@ -119,5 +119,5 @@
         android:background="@drawable/shape_fillet_button"
         android:text="注册门店号"
         android:textColor="@color/buttonStork"
-        android:textSize="@dimen/mid_text" />
+        android:textSize="@dimen/big_text" />
 </LinearLayout>

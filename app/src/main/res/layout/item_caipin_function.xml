@@ -35,24 +35,24 @@
             <TextView
                 android:id="@+id/name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:gravity="center_vertical|left"
-                android:padding="8dp"
+                android:padding="2dp"
                 android:text="小炒类"
                 android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textSize="@dimen/mid_text" />
 
             <TextView
                 android:id="@+id/info"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
                 android:gravity="center_vertical|left"
-                android:paddingLeft="8dp"
+                android:paddingLeft="2dp"
                 android:textColor="@color/white"
-                android:textSize="10sp" />
+                android:textSize="@dimen/mid_text" />
         </LinearLayout>
 
 
@@ -66,7 +66,7 @@
             android:gravity="center"
             android:text="排序"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/mid_text" />
     </LinearLayout>
 
     <Button

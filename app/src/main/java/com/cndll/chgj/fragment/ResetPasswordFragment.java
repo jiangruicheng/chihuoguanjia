@@ -24,6 +24,7 @@ import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseVerify;
 import com.cndll.chgj.mvp.presenter.BasePresenter;
 import com.cndll.chgj.mvp.view.BaseView;
+import com.cndll.chgj.util.StringHelp;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -116,29 +117,33 @@ public class ResetPasswordFragment extends BaseFragment {
     @OnClick(R.id.sure)
     void onclick_sure() {
         if (sverify != null && sverify.equals(verify.getText().toString()))
-            AppRequest.getAPI().updatePassword(AppMode.getInstance().getUid(), AppMode.getInstance().getTel(), password.getText().toString()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(baseView) {
-                @Override
-                public void onCompleted() {
-                    super.onCompleted();
-                }
+            if (!StringHelp.isNumeric(password.getText().toString())) {
+                showToast("请输入纯数字密码");
+                return;
+            }
+        AppRequest.getAPI().updatePassword(AppMode.getInstance().getUid(), AppMode.getInstance().getTel(), password.getText().toString()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(baseView) {
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+            }
 
-                @Override
-                public void onError(Throwable e) {
-                    super.onError(e);
-                }
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+            }
 
-                @Override
-                public void onNext(BaseResponse baseResponse) {
-                    super.onNext(baseResponse);
-                    if (baseResponse.getCode() == 1) {
-                        replaceFragmentAddToBackStack(SuccessFragment.newInstance("修改密码", "修改成功"), null);
-                        AppMode.getInstance().setUid("3");
-                        AppMode.getInstance().setLoading(false);
-                        AppMode.getInstance().setMid("3");
-                        AppMode.getInstance().setToken(null);
-                    }
+            @Override
+            public void onNext(BaseResponse baseResponse) {
+                super.onNext(baseResponse);
+                if (baseResponse.getCode() == 1) {
+                    replaceFragmentAddToBackStack(SuccessFragment.newInstance("修改密码", "修改成功"), null);
+                    AppMode.getInstance().setUid("3");
+                    AppMode.getInstance().setLoading(false);
+                    AppMode.getInstance().setMid("3");
+                    AppMode.getInstance().setToken(null);
                 }
-            });
+            }
+        });
     }
 
     Unbinder unbinder;

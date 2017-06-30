@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:background="@color/yinse"
-             android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/yinse"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/abc_key"
@@ -25,7 +25,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="q"/>
+                android:text="q"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
@@ -34,7 +35,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="w"/>
+                android:text="w"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
@@ -43,7 +45,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="e"/>
+                android:text="e"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
@@ -52,7 +55,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="r"/>
+                android:text="r"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
@@ -61,7 +65,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="t"/>
+                android:text="t"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
@@ -70,7 +75,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="y"/>
+                android:text="y"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
@@ -79,7 +85,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="u"/>
+                android:text="u"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
@@ -88,7 +95,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="i"/>
+                android:text="i"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
@@ -97,7 +105,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="o"/>
+                android:text="o"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
@@ -106,7 +115,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="p"/>
+                android:text="p"
+                android:textSize="@dimen/big_text" />
 
         </LinearLayout>
 
@@ -119,7 +129,7 @@
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.5"/>
+                android:layout_weight="0.5" />
 
             <Button
                 android:layout_width="0dp"
@@ -128,7 +138,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="a"/>
+                android:text="a"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
@@ -137,7 +148,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="s"/>
+                android:text="s"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
@@ -146,7 +158,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="d"/>
+                android:text="d"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
@@ -155,7 +168,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="f"/>
+                android:text="f"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
@@ -164,7 +178,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="g"/>
+                android:text="g"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
@@ -173,7 +188,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="h"/>
+                android:text="h"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
@@ -182,7 +198,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="j"/>
+                android:text="j"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
@@ -191,7 +208,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="k"/>
+                android:text="k"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
@@ -200,12 +218,13 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="l"/>
+                android:text="l"
+                android:textSize="@dimen/big_text" />
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.5"/>
+                android:layout_weight="0.5" />
 
         </LinearLayout>
 
@@ -223,8 +242,7 @@
                 android:layout_weight="1.5"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:src="@mipmap/shift"
-                />
+                android:src="@mipmap/shift" />
 
             <Button
                 android:layout_width="0dp"
@@ -233,7 +251,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="z"/>
+                android:text="z"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
@@ -242,7 +261,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="x"/>
+                android:text="x"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
@@ -251,7 +271,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="c"/>
+                android:text="c"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
@@ -260,7 +281,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="v"/>
+                android:text="v"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
@@ -269,7 +291,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="b"/>
+                android:text="b"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
@@ -278,7 +301,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="n"/>
+                android:text="n"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
@@ -287,7 +311,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:text="m"/>
+                android:text="m"
+                android:textSize="@dimen/big_text" />
 
 
             <ImageView
@@ -298,8 +323,7 @@
                 android:layout_weight="1.5"
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:gravity="center"
-                android:src="@mipmap/back"
-                />
+                android:src="@mipmap/back" />
 
         </LinearLayout>
 
@@ -316,7 +340,8 @@
                 android:layout_margin="4dp"
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="123"/>
+                android:text="123"
+                android:textSize="@dimen/big_text" />
 
 
             <Button
@@ -326,7 +351,8 @@
                 android:layout_margin="4dp"
                 android:layout_weight="3"
                 android:background="@drawable/shape_dialog_fillet_solid"
-                android:text=" "/>
+                android:text=" "
+                android:textSize="@dimen/big_text" />
 
             <Button
 
@@ -336,7 +362,8 @@
                 android:layout_margin="4dp"
                 android:layout_weight="1"
                 android:background="@drawable/shape_button_key_reurn"
-                android:text="退出"/>
+                android:text="退出"
+                android:textSize="@dimen/big_text" />
 
         </LinearLayout>
     </LinearLayout>
@@ -345,8 +372,7 @@
         android:id="@+id/number_key"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -360,25 +386,64 @@
                 android:layout_margin="4dp"
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="7"/>
+                android:text="7"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
+                android:layout_height="match_parent"
 
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
+                android:text="8"
+                android:textSize="@dimen/big_text" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_dialog_fillet_solid"
+                android:text="9"
+                android:textSize="@dimen/big_text" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <Button
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="8"/>
+
+                android:text="4"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
 
+                android:background="@drawable/shape_dialog_fillet_solid"
+                android:text="5"
+                android:textSize="@dimen/big_text" />
+
+            <Button
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
                 android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="9"/>
+
+                android:text="6"
+                android:textSize="@dimen/big_text" />
         </LinearLayout>
 
         <LinearLayout
@@ -393,40 +458,18 @@
                 android:layout_weight="1"
 
                 android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="4"/>
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="4dp"
-
-                android:layout_weight="1"
-                android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="5"/>
+                android:text="1"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
-
                 android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="6"/>
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="4dp"
-
-                android:layout_weight="1"
-                android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="1"/>
+                android:text="2"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
@@ -435,16 +478,8 @@
                 android:layout_weight="1"
 
                 android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="2"/>
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="4dp"
-
-                android:layout_weight="1"
-                android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="3"/>
+                android:text="3"
+                android:textSize="@dimen/big_text" />
         </LinearLayout>
 
         <LinearLayout
@@ -457,19 +492,21 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
-
                 android:layout_weight="1"
+
                 android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="ABC"/>
+                android:text="ABC"
+                android:textSize="@dimen/big_text" />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="4dp"
-
                 android:layout_weight="1"
+
                 android:background="@drawable/shape_dialog_fillet_solid"
-                android:text="0"/>
+                android:text="0"
+                android:textSize="@dimen/big_text" />
 
             <ImageView
                 android:id="@+id/delete_number"
@@ -479,8 +516,7 @@
                 android:layout_weight="1"
 
                 android:background="@drawable/shape_dialog_fillet_solid"
-                android:src="@mipmap/back"
-                />
+                android:src="@mipmap/back" />
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

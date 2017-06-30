@@ -30,7 +30,7 @@
                 android:padding="8dp"
                 android:text="乡村18碗（龙岗店）"
                 android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textSize="@dimen/small_text" />
 
             <TextView
                 android:id="@+id/store_id"

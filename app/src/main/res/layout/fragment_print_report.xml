@@ -32,7 +32,8 @@
             android:layout_weight="1"
             android:background="@drawable/shape_button_querybill_today"
             android:text="今天"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="@dimen/mid_text" />
 
         <Button
             android:id="@+id/yesterday"
@@ -43,7 +44,8 @@
             android:layout_weight="1"
             android:background="@drawable/shape_button_querybill_yestoday"
             android:text="昨天"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="@dimen/mid_text" />
 
         <Button
             android:id="@+id/defined"
@@ -54,7 +56,8 @@
             android:layout_weight="1"
             android:background="@drawable/shape_button_querybill_yestoday"
             android:text="自定日期"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="@dimen/mid_text" />
 
         <Button
             android:id="@+id/print"
@@ -65,6 +68,7 @@
             android:layout_weight="1"
             android:background="@drawable/shape_fillet_solid_deepgreen"
             android:text="打印"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="@dimen/mid_text" />
     </LinearLayout>
 </LinearLayout>

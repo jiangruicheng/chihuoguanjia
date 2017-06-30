@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
@@ -115,8 +114,8 @@ public class KeyWeight {
         cancel = (Button) key.findViewById(R.id.cancel);
         sure = (Button) key.findViewById(R.id.sure);
         cancel.setText(cancelText);
-        cancel.setBackgroundColor(cancelcolor);
-        sure.setBackgroundColor(surecolor);
+        cancel.setBackgroundResource(cancelcolor);
+        sure.setBackgroundResource(surecolor);
         sure.setText(sureText);
         TextView tran = (TextView) key.findViewById(R.id.tran);
         TextView show = (TextView) key.findViewById(R.id.show);

@@ -19,13 +19,15 @@
             android:text="打印机名称" />
 
         <EditText
-            android:selectAllOnFocus="true"
             android:id="@+id/print_name"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="6dp"
             android:layout_weight="3"
-            android:background="@color/white" />
+            android:background="@drawable/shape_dialog_fillet_solid"
+            android:hint="请输入打印机名称"
+            android:selectAllOnFocus="true"
+            android:textSize="@dimen/mid_text" />
     </LinearLayout>
 
     <LinearLayout
@@ -46,8 +48,11 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="6dp"
+
             android:layout_weight="3"
-            android:background="@color/white" />
+            android:background="@drawable/shape_dialog_fillet_solid"
+            android:hint="请输入打印机编号"
+            android:textSize="@dimen/mid_text" />
     </LinearLayout>
 
     <LinearLayout
@@ -69,7 +74,9 @@
             android:layout_height="match_parent"
             android:layout_margin="6dp"
             android:layout_weight="3"
-            android:background="@color/white" />
+            android:background="@drawable/shape_dialog_fillet_solid"
+            android:hint="请输入打印机KEY"
+            android:textSize="@dimen/mid_text" />
     </LinearLayout>
 
     <include

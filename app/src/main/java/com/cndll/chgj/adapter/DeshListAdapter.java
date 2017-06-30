@@ -48,19 +48,19 @@ public class DeshListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
             holder.parent.setBackgroundResource(R.mipmap.orderovergray);
         } else {
             if ((position / 3) % 5 == 0) {
-                holder.parent.setBackgroundResource(R.drawable.shape_button_querybill_today);
+                holder.parent.setBackgroundResource(R.drawable.selector_order);
             }
             if ((position / 3) % 5 == 1) {
-                holder.parent.setBackgroundResource(R.drawable.shape_button_orderdesh_tow);
+                holder.parent.setBackgroundResource(R.drawable.selector_order_tow);
             }
             if ((position / 3) % 5 == 2) {
-                holder.parent.setBackgroundResource(R.drawable.shape_button_orderdesh_three);
+                holder.parent.setBackgroundResource(R.drawable.selector_three);
             }
             if ((position / 3) % 5 == 3) {
-                holder.parent.setBackgroundResource(R.drawable.shape_button_orderdesh_four);
+                holder.parent.setBackgroundResource(R.drawable.selector_order_four);
             }
             if ((position / 3) % 5 == 4) {
-                holder.parent.setBackgroundResource(R.drawable.shape_button_orderdesh_five);
+                holder.parent.setBackgroundResource(R.drawable.selector_order_five);
             }
         }
         // holder.parent.setBackgroundResource(R.drawable.shape_fillet_solid);

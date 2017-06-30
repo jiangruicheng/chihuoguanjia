@@ -13,7 +13,7 @@
         android:paddingLeft="8dp"
         android:text="注意：添加菜品时请点击相对应的菜类"
         android:textColor="@color/buttonStork"
-        android:textSize="11sp" />
+        android:textSize="@dimen/ssmall_text" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/menu_list"

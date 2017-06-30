@@ -194,7 +194,7 @@ public class SendFragment extends BaseFragment implements OrderView {
                             setTabname(orderDishFragment.tabname).
                             setTab_id(orderDishFragment.tableId).setPayee(AppMode.getInstance().getUsername()).
                             setYsmoney(orderDishFragment.orderInfolayout.getLastPrice() + "").
-                            setWritedishs(orderDishFragment.orders.getWriteDish()).setNote(note.getText().toString()));
+                            setWritedishs(orderDishFragment.orders.getWriteDish()).setAllremarks(orderDishFragment.orders.getAllMethod()).setNote(note.getText().toString()));
                 } else {
                     new Thread() {
                         @Override
@@ -404,7 +404,7 @@ public class SendFragment extends BaseFragment implements OrderView {
 
                     @Override
                     public void onNext(RequestPrintBill requestPrintBill) {
-                        requestPrintBill.setDate(time).setSname("下单人：" + AppMode.getInstance().getUsername()).setTabcode(orderDishFragment.tabname).setTitle("总单打印");
+                        requestPrintBill.setDate(time).setSname("下单人：" + AppMode.getInstance().getUsername()).setTabcode(orderDishFragment.tabname).setTitle("追加单");
                         AppRequest.getAPI().printAddOrder(requestPrintBill).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ResponseCailei>() {
                             @Override
                             public void onCompleted() {
@@ -432,9 +432,30 @@ public class SendFragment extends BaseFragment implements OrderView {
         writeList = new ArrayList<>(orders.writeDish.values());
         RequestPrintBill printBill = new RequestPrintBill();
         printBill.setItems(new ArrayList<RequestPrintBill.ItemsBean>());
+        printBill.setDate(time).setSname("下单人：" + AppMode.getInstance().getUsername()).setTabcode(orderDishFragment.tabname).setTitle("追加单");
         for (Orders.Write w : writeList) {
-            printBill.getItems().add(new RequestPrintBill.ItemsBean().setUnit(w.getItemsBean().getUnit()).setName(w.getItemsBean().getName()).setNum(w.getItemsBean().getCount()).setMoney(w.getItemsBean().getPrice()));
+            if (w.isSend) {
+
+            } else {
+                printBill.getItems().add(new RequestPrintBill.ItemsBean().setUnit(w.getItemsBean().getUnit()).setName(w.getItemsBean().getName()).setNum(w.getItemsBean().getCount()).setMoney(w.getItemsBean().getPrice()));
+            }
         }
+        AppRequest.getAPI().printAddOrder(printBill).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ResponseCailei>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(ResponseCailei responseCailei) {
+                RxBus.getDefault().post(new EventType().setExtra(responseCailei.getExtra()).setType(EventType.SHOW));
+            }
+        });
     }
 
     @Override
@@ -445,13 +466,14 @@ public class SendFragment extends BaseFragment implements OrderView {
 
     private String getMethodName(Orders.Order o) {
         StringBuffer mname = new StringBuffer("");
-        if (o.getItemsBean().getRemark() != null && o.getItemsBean().getRemark().getRemarks() != null)
+        if (o.getItemsBean().getRemark() != null && o.getItemsBean().getRemark().getRemarks() != null) {
             for (ResponseMethod.DataBean m : o.getItemsBean().getRemark().getRemarks()) {
                 mname.append(m.getName());
                 mname.append("+" + m.getPrice() + " ");
             }
-        mname.insert(0, "(");
-        mname.insert(mname.length(), ")");
+            mname.insert(0, "(");
+            mname.insert(mname.length(), ")");
+        }
         return mname.toString();
     }
 
@@ -487,7 +509,7 @@ public class SendFragment extends BaseFragment implements OrderView {
 
     private void back() {
         disProg();
-        if (fragmentList.get(fragmentList.size() - 2) instanceof OrderDishFragment) {
+        if (fragmentList.get(fragmentList.size() - 2) instanceof OrderDish2Fragment) {
             popBackFragment();
             popBackFragment();
         } else {

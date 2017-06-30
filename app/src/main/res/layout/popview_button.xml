@@ -5,7 +5,7 @@
 
     <Button
         android:id="@+id/cancel"
-        android:textSize="@dimen/small_text"
+        android:textSize="@dimen/mid_text"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_margin="4dp"
@@ -19,7 +19,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_margin="4dp"
-        android:textSize="@dimen/small_text"
+        android:textSize="@dimen/mid_text"
         android:layout_weight="1"
         android:background="@drawable/shape_butto_delete"
         android:gravity="center"
@@ -31,7 +31,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_margin="4dp"
-        android:textSize="@dimen/small_text"
+        android:textSize="@dimen/mid_text"
         android:layout_weight="1"
         android:background="@drawable/shape_butto_save"
         android:text="保存"

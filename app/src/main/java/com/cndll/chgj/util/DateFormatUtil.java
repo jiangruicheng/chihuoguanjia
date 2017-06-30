@@ -129,7 +129,7 @@ public class DateFormatUtil {
         String str = "";
         if (ms != null) {
             long msl = (long) ms * 1000;
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
             if (ms != null) {
                 try {

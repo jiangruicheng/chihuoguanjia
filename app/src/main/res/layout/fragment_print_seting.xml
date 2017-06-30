@@ -17,6 +17,8 @@
         android:layout_weight="0.6"
         android:gravity="center_vertical|left"
         android:paddingLeft="24dp"
+
+        android:textSize="@dimen/ssmall_text"
         android:text="当前打印机列表"
         android:textColor="@color/black" />
 

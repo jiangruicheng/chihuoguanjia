@@ -45,6 +45,7 @@ import com.cndll.chgj.mvp.presenter.OrderPresenter;
 import com.cndll.chgj.mvp.presenter.impl.NoteImpl;
 import com.cndll.chgj.mvp.presenter.impl.OrderImpl;
 import com.cndll.chgj.mvp.view.OrderView;
+import com.cndll.chgj.util.DateFormatUtil;
 import com.cndll.chgj.util.HorizontalPageLayoutManager;
 import com.cndll.chgj.util.LinearPagerLayoutManager;
 import com.cndll.chgj.util.PagerLayoutManager;
@@ -58,7 +59,6 @@ import com.cndll.chgj.weight.OrderInfo;
 import com.cndll.chgj.weight.OrderItemMesg;
 import com.cndll.chgj.weight.PopOrderRequest;
 
-import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -175,7 +175,7 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
 
     @OnClick(R.id.pay_nodesk)
     void onclick_paynodesk() {
-        popUpkey(KeyWeight.Mode_OnlyNumb, Color.rgb(171, 171, 171), Color.rgb(1, 169, 104), "请输入桌台号或牌号", "取消", "确认", new KeyWeight.OnKeyClick() {
+        popUpkey(KeyWeight.Mode_OnlyNumb, R.drawable.shape_bg_discount, R.drawable.shape_bg_mendian, "请输入桌台号或牌号", "取消", "确认", new KeyWeight.OnKeyClick() {
             @Override
             public void onKeyCancel(String s) {
 
@@ -309,10 +309,27 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
                 popOrderRequest.four.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        orders.cancelGive(id, new KeyUtuil.Builder().setDoFuckSureSend(new Orders.DoFuck() {
+                            @Override
+                            public void doFuck(Object o) {
+                                orderInfolayout.setMesg(sendOrders);
+                                sendOrds();
+                                popOrderRequest.dismiss();
+                            }
+                        }).setDoFuckSureUnSend(new Orders.DoFuck() {
+                            @Override
+                            public void doFuck(Object o) {
+                                setOrderInfolayout(id, isOrderWrite);
+                                popOrderRequest.dismiss();
+                            }
+                        }).setDoFuckCancelUnsend(new Orders.DoFuck() {
+                            @Override
+                            public void doFuck(Object o) {
+                                setOrderInfolayout(id, isOrderWrite);
+                                popOrderRequest.dismiss();
+                            }
+                        }));
 
-                        popOrderRequest.setViewHeight(3);
-                        popOrderRequest.four.setVisibility(View.GONE);
-                        popOrderRequest.dismiss();
                     }
                 });
             } else {
@@ -581,7 +598,7 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
             return;
         }
         if (orders.getOrders().size() != 0 || (orders.writeDish == null ? false : orders.writeDish.size() != 0)) {
-            replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment((OrderDish2Fragment) fragmentList.get(fragmentList.size() - 2)), new OrderImpl());
+            replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment(this), new OrderImpl());
         }
     }
 
@@ -859,7 +876,7 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
             return;
         }
         if (orders == null && orderId != 0) {
-            popUpkey(2, Color.rgb(171, 171, 171), Color.rgb(1, 169, 104), "请输入折扣，例如8折则输入0.8", "取消打折", "确定", new KeyWeight.OnKeyClick() {
+            popUpkey(2, R.drawable.shape_bg_discount, R.drawable.shape_bg_mendian, "请输入折扣，例如8折则输入0.8", "撤销打折", "确定", new KeyWeight.OnKeyClick() {
                 @Override
                 public void onKeyCancel(String s) {
                     sendOrders.setDisconut(1);
@@ -900,7 +917,7 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
             showMesg("无买单权限");
             return;
         }
-        if (orders == null) {
+        if (orderId == 0) {
             showMesg("此台不存在消费，无需买单");
             return;
         }
@@ -1097,11 +1114,11 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
             rightText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (orders == null) {
+                    /*if (orders == null) {
                         showMesg("还未点菜，不能修改");
                         return;
-                    }
-                    // replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment(OrderDish2Fragment.this), new OrderImpl());
+                    }*/
+                    replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment(OrderDish2Fragment.this), new OrderImpl());
                     MainActivity.removeBackPressEvent(backPressEvent);
                 }
             });
@@ -1489,16 +1506,11 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
     @Override
     public void sendSucc(int ord) {
         if (isBackDesh) {
-            Calendar calendar = Calendar.getInstance();
-            int year = calendar.get(Calendar.YEAR);
-            int month = calendar.get(Calendar.MONTH) + 1;
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
-            int hour = calendar.get(Calendar.HOUR);
-            int minute = calendar.get(Calendar.MINUTE);
-            String date = year + "-" + month + "-" + day + " " + hour + ":" + minute;
+            String date = DateFormatUtil.transForDate1(DateFormatUtil.currentTimeStamp());
             printBackDesh(new RequestPrintBackDesh().setSname(AppMode.getInstance().getUsername()).setTitle("退菜单").setDate(date).setTabcode(tabname).setItems(backDesh));
             return;
         }
+        toast("修改成功");
         isSend = true;
     }
 

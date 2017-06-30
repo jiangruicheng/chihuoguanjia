@@ -49,6 +49,7 @@
             android:id="@+id/write_method"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:textSize="@dimen/mid_text"
             android:layout_margin="2dp"
             android:layout_weight="1"
             android:background="@drawable/shape_dialog_fillet_solid"
@@ -59,6 +60,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="2dp"
+            android:textSize="@dimen/mid_text"
             android:layout_weight="1"
             android:background="@drawable/shape_button_yellow"
             android:text="取消"
@@ -70,6 +72,7 @@
             android:layout_height="match_parent"
             android:layout_margin="2dp"
             android:layout_weight="1"
+            android:textSize="@dimen/mid_text"
             android:background="@drawable/shape_fillet_solid_green"
             android:text="确定"
             android:textColor="@color/white" />

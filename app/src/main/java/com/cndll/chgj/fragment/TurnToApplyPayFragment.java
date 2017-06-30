@@ -109,6 +109,7 @@ public class TurnToApplyPayFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), ApplyPayActivity.class));
+                popBackFragment();
             }
         });
         return view;

@@ -17,8 +17,14 @@
         android:layout_weight="0.6"
         android:gravity="center_vertical|left"
         android:paddingLeft="24dp"
-        android:textColor="@color/black"
-        android:text="员工列表" />
+        android:text="员工列表"
+        android:textSize="@dimen/ssmall_text"
+        android:textColor="@color/black" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/yinse" />
 
     <ListView
         android:id="@+id/list"

@@ -93,7 +93,8 @@
                 android:gravity="center_vertical|right"
                 android:paddingRight="16dp"
                 android:text=""
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/mid_text" />
 
             <TextView
                 android:id="@+id/sendstatue"
@@ -122,7 +123,7 @@
                 android:gravity="center"
                 android:text="要求"
                 android:textColor="#050BFA"
-                android:textSize="@dimen/mid_text" />
+                android:textSize="@dimen/small_text" />
         </LinearLayout>
 
     </LinearLayout>

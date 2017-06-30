@@ -1,8 +1,8 @@
 package com.cndll.chgj.mvp.mode.bean.info;
 
-import android.graphics.Color;
 import android.support.v4.util.ArrayMap;
 
+import com.cndll.chgj.R;
 import com.cndll.chgj.mvp.mode.bean.request.RequestOrder;
 import com.cndll.chgj.mvp.mode.bean.request.RequestPrintBackDesh;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
@@ -85,18 +85,30 @@ public class Orders {
             public void onListerner() {
                 List<RequestPrintBackDesh.ItemsBean> backDesh = new ArrayList<RequestPrintBackDesh.ItemsBean>();
                 if (isWritDesh(id)) {
+                    StringBuffer mname = new StringBuffer("");
+                    /*if (writeDish.get(id).getItemsBean().getRemarks() != null) {
+                        for (int i = 0; i < writeDish.get(id).getItemsBean().getRemarks().size(); i++) {
+                            mname.append(writeDish.get(id).getItemsBean().getRemarks().get(i).getName() + " " + writeDish.get(id).getItemsBean().getRemarks().get(i).getPrice());
+                        }
+                    }*/
                     backDesh.add(new RequestPrintBackDesh.ItemsBean().setName(writeDish.get(id).getItemsBean().getName()).
                             setMoney(writeDish.get(id).getItemsBean().getPrice()).
                             setNum(/*order.writeDish.get(order.getCurrPosition()).getCount() +*/ "1").
                             setUnit("盘").
-                            setM_name(""));
+                            setM_name(mname.toString()));
                     writeDish.get(id).backDesh();
                 } else if (isOrderDesh(id)) {
+                    StringBuffer mname = new StringBuffer("");
+                    /*if (orders.get(id).getItemsBean().getRemark() != null && orders.get(id).getItemsBean().getRemark().getRemarks() != null) {
+                        for (int i = 0; i < orders.get(id).getItemsBean().getRemark().getRemarks().size(); i++) {
+                            mname.append(orders.get(id).getItemsBean().getRemark().getRemarks().get(i).getName() + " " + orders.get(id).getItemsBean().getRemark().getRemarks().get(i).getPrice());
+                        }
+                    }*/
                     backDesh.add(new RequestPrintBackDesh.ItemsBean().setName(orders.get(id).getItemsBean().getName()).
                             setMoney(orders.get(id).getItemsBean().getPrice()).
                             setNum(/*order.getOrder(order.getCurrPosition()).getCount() +*/ "1").
                             setUnit(orders.get(id).getItemsBean().getUnit()).
-                            setM_name(""));
+                            setM_name(mname.toString()));
                     orders.get(id).backDesh();
                 }
                 if (null != doFuck)
@@ -118,8 +130,8 @@ public class Orders {
             hint = "删除";
         }
         KeyUtuil.popUpkey(builder.setHint(hint).setMode(KeyWeight.Mode_OnlyNumb).
-                setCancelcolor(Color.rgb(241, 93, 169)).
-                setSurecolor(Color.rgb(251, 152, 67)).
+                setCancelcolor(R.drawable.shape_bg_cancel).
+                setSurecolor(R.drawable.shape_bg_sure).
                 setSureHint("确定").setShowhint("请输入菜品数量").
                 setOnKeyClick(new KeyWeight.OnKeyClick() {
                     @Override

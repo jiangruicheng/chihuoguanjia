@@ -24,5 +24,6 @@
         android:layout_weight="1"
         android:background="@drawable/shape_fillet_solid_red"
         android:text="打印"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:textSize="@dimen/mid_text" />
 </LinearLayout>

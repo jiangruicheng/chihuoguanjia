@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/black"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
@@ -11,13 +11,13 @@
         android:layout_weight="0.5"
         android:gravity="center_vertical"
         android:paddingLeft="4dp"
-        android:text="请选择希望转到的桌台"/>
+        android:text="请选择希望转到的桌台" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/desk_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"/>
+        android:layout_weight="3" />
 
     <Button
         android:id="@+id/cancel"
@@ -26,5 +26,6 @@
         android:layout_weight="0.8"
         android:background="@drawable/shape_fillet_solid_red"
         android:text="取消"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white"
+        android:textSize="@dimen/mid_text" />
 </LinearLayout>

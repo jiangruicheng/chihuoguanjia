@@ -23,6 +23,7 @@ import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseVerify;
 import com.cndll.chgj.mvp.presenter.BasePresenter;
 import com.cndll.chgj.mvp.view.BaseView;
+import com.cndll.chgj.util.StringHelp;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -113,6 +114,10 @@ public class FindPasswordFragment extends BaseFragment {
 
     @OnClick(R.id.sure)
     void onclick_sure() {
+        if (!StringHelp.isNumeric(password.getText().toString())) {
+            showToast("请输入纯数字密码");
+            return;
+        }
         if (sverify != null && sverify.equals(verify.getText().toString()))
             AppRequest.getAPI().updatePassword(username.getText().toString(), password.getText().toString()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(baseView) {
                 @Override

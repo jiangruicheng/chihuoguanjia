@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.cndll.chgj.R;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
+import com.cndll.chgj.util.PrintUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,6 +55,16 @@ public class WebViewFragment extends BaseFragment {
     private String mParam1;
     private String mParam2;
 
+    public int getOrderID() {
+        return orderID;
+    }
+
+    public WebViewFragment setOrderID(int orderID) {
+        this.orderID = orderID;
+        return this;
+    }
+
+    private int orderID;
     private OnFragmentInteractionListener mListener;
 
     public WebViewFragment() {
@@ -105,7 +116,10 @@ public class WebViewFragment extends BaseFragment {
                 view.loadUrl(url);
                 if (!AppMode.getInstance().isDeskMode()) {
                     if (url.contains("index.php?s=/Web/costpay_jump/ordnum/ordnum.html")) {
-
+                        if (!AppMode.getInstance().isDeskMode() && orderID != 0) {
+                            PrintUtil printUtil = new PrintUtil();
+                            printUtil.printSetting(orderID);
+                        }
                     }
                 }
                 return super.shouldOverrideUrlLoading(view, url);

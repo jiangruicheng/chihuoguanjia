@@ -236,7 +236,7 @@ public class PaySwitchFragment extends BaseFragment {
 
     private void gotoWebView() {
         String url = String.format(AppRequest.ACCOUNTURL + "web/costpay?id=%d&type=%d&mid=%s", orderID, type, AppMode.getInstance().getMid());
-        replaceFragmentAddToBackStack(WebViewFragment.newInstance(url, titlename), null);
+        replaceFragmentAddToBackStack(WebViewFragment.newInstance(url, titlename).setOrderID(orderID), null);
     }
 
     private int type;

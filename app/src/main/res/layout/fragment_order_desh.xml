@@ -71,7 +71,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/shape_dialog_fillet_solid"
                     android:text="查询点餐"
-                    android:textColor="#2DD1F8" />
+                    android:textColor="#2DD1F8"
+                    android:textSize="@dimen/mid_text" />
 
                 <Button
                     android:id="@+id/send"
@@ -81,7 +82,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/shape_dialog_fillet_solid"
                     android:text="送单"
-                    android:textColor="#F70000" />
+                    android:textColor="#F70000"
+                    android:textSize="@dimen/mid_text" />
 
                 <Button
                     android:id="@+id/info"
@@ -91,9 +93,9 @@
                     android:layout_weight="1"
                     android:background="@drawable/shape_dialog_fillet_solid"
                     android:text="明细"
-                    android:textColor="#2DD1F8" />
-            </LinearLayout
->
+                    android:textColor="#2DD1F8"
+                    android:textSize="@dimen/mid_text" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -111,7 +113,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/shape_dialog_fillet_solid"
                     android:text="其他功能"
-                    android:textColor="#FA05DA" />
+                    android:textColor="#FA05DA"
+                    android:textSize="@dimen/mid_text" />
 
                 <Button
                     android:id="@+id/dazhe"
@@ -121,7 +124,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/shape_dialog_fillet_solid"
                     android:text="打折"
-                    android:textColor="#050BFA" />
+                    android:textColor="#050BFA"
+                    android:textSize="@dimen/mid_text" />
 
                 <Button
                     android:id="@+id/pay"
@@ -131,7 +135,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/shape_dialog_fillet_solid"
                     android:text="买单"
-                    android:textColor="#F70000" />
+                    android:textColor="#F70000"
+                    android:textSize="@dimen/mid_text" />
             </LinearLayout>
         </LinearLayout>
 
@@ -161,7 +166,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/shape_dialog_fillet_solid"
                     android:text="查询点餐"
-                    android:textColor="#FA05DA" />
+                    android:textColor="#FA05DA"
+                    android:textSize="@dimen/mid_text" />
 
                 <Button
                     android:id="@+id/pay_nodesk"
@@ -171,7 +177,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/shape_dialog_fillet_solid"
                     android:text="买单"
-                    android:textColor="#050BFA" />
+                    android:textColor="#050BFA"
+                    android:textSize="@dimen/mid_text" />
 
                 <Button
                     android:id="@+id/info_nodesk"
@@ -181,7 +188,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/shape_dialog_fillet_solid"
                     android:text="明细"
-                    android:textColor="#F70000" />
+                    android:textColor="#F70000"
+                    android:textSize="@dimen/mid_text" />
             </LinearLayout>
         </LinearLayout>
     </FrameLayout>

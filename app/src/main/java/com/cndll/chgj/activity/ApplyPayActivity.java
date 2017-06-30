@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cndll.chgj.R;
 import com.cndll.chgj.mvp.MObeserver;
@@ -372,6 +373,7 @@ public class ApplyPayActivity extends AppCompatActivity {
                                     public void onNext(BaseResponse baseResponse) {
                                         super.onNext(baseResponse);
                                         if (baseResponse.getCode() == 1) {
+                                            Toast.makeText(ApplyPayActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
                                             ApplyPayActivity.this.finish();
                                         }
                                     }

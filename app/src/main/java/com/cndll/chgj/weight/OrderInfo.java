@@ -58,6 +58,7 @@ public class OrderInfo {
         }
         if (sendOrder != null)
             discountPrice = (allDiscountPrice - givePrice) - (allDiscountPrice - givePrice) * (sendOrder.getDisconut() != 0 ? sendOrder.getDisconut() : 1);
+        discountPrice = (float) (Math.round(discountPrice * 100) / 100);
         /*lastPrice = allPrice * order.getDisconut();*/
         lastPrice = allPrice - discountPrice - givePrice;
         lastPrice = Math.round(lastPrice);

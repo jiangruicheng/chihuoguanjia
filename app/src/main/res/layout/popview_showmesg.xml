@@ -15,7 +15,7 @@
             android:id="@+id/mesg_title"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="0.8"
             android:gravity="center"
             android:text="提示"
             android:textColor="@color/buttonStork"
@@ -28,7 +28,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/mid_text" />
 
         <View
             android:layout_width="match_parent"
@@ -49,7 +49,7 @@
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:text="取消"
                 android:textColor="@color/apla"
-                android:textSize="18sp" />
+                android:textSize="@dimen/mid_text" />
 
             <View
                 android:layout_width="1dp"
@@ -64,7 +64,7 @@
                 android:background="@drawable/shape_dialog_fillet_solid"
                 android:text="确定"
                 android:textColor="#000fff"
-                android:textSize="18sp" />
+                android:textSize="@dimen/mid_text" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

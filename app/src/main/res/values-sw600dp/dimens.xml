@@ -22,8 +22,15 @@
     <dimen name="pickerview_topbar_btn_textsize">20sp</dimen>
     <dimen name="pickerview_topbar_title_textsize">21sp</dimen>
     <!-- 选项文字大小 需要配合 bools.xml 的 pickerview_customTextSize 为 true 才有效果-->
-    <dimen name="pickerview_textsize">11sp</dimen>
-    <dimen name="small_text">16sp</dimen>
-    <dimen name="mid_text">19sp</dimen>
-    <dimen name="big_text">30sp</dimen>
+    <dimen name="pickerview_textsize">16sp</dimen>
+    <dimen name="image_order">200dp</dimen>
+    <dimen name="ssmall_text">16sp</dimen>
+    <dimen name="small_text">19sp</dimen>
+    <dimen name="mid_text">22sp</dimen>
+    <dimen name="big_text">34sp</dimen>
+    <dimen name="button_text">39sp</dimen>
+    <dimen name="pay_big">24sp</dimen>
+    <dimen name="pay_mid">21sp</dimen>
+    <dimen name="pay_small">18sp</dimen>
+    <dimen name="pay_ssmall">16sp</dimen>
 </resources>

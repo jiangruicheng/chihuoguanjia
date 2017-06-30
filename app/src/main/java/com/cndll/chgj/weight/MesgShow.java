@@ -19,6 +19,9 @@ public class MesgShow {
     }
 
     private static void showMesg(String title, String mesg, View location, final OnButtonListener sure, final OnButtonListener cancel, boolean isCancelShow, int layout) {
+        if (location == null || location.getContext() == null) {
+            return;
+        }
         final PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
         View view = LayoutInflater.from(location.getContext()).inflate(layout, null, false);
         Button btn_sure = (Button) view.findViewById(R.id.sure);

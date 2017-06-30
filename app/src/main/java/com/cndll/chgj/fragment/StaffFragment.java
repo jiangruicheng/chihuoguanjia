@@ -26,6 +26,7 @@ import com.cndll.chgj.mvp.mode.bean.response.ResponseGetStaffList;
 import com.cndll.chgj.mvp.presenter.StaffPresenter;
 import com.cndll.chgj.mvp.view.StaffView;
 import com.cndll.chgj.util.PopUpViewUtil;
+import com.cndll.chgj.util.StringHelp;
 import com.cndll.chgj.weight.SelectView;
 
 import java.util.List;
@@ -72,7 +73,11 @@ public class StaffFragment extends BaseFragment implements StaffView {
     void onclick_register() {
         final PopviewStaff popviewStaff = new PopviewStaff();
         popviewStaff.show();
-
+        popviewStaff.isDicount.setSelect(true);
+        popviewStaff.isExcl.setSelect(true);
+        popviewStaff.isOrder.setSelect(true);
+        popviewStaff.isOrder.setSelect(true);
+        popviewStaff.isGive.setSelect(true);
         popviewStaff.cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +87,10 @@ public class StaffFragment extends BaseFragment implements StaffView {
         popviewStaff.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!StringHelp.isNumeric(popviewStaff.staffPassword.getText().toString())) {
+                    toast("请输入纯数字密码");
+                    return;
+                }
                 StringBuilder stringBuilder = new StringBuilder();
                 if (popviewStaff.isDicount.isSelect()) {
                     stringBuilder.append("1,");
@@ -104,6 +113,7 @@ public class StaffFragment extends BaseFragment implements StaffView {
                         setQx(stringBuilder.toString()).
                         setTel(popviewStaff.staffId.getText().toString()).
                         setUsername(popviewStaff.staffName.getText().toString()));
+                popviewStaff.dismiss();
             }
         });
     }
@@ -339,6 +349,10 @@ public class StaffFragment extends BaseFragment implements StaffView {
                     popviewStaff.save.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            if (!StringHelp.isNumeric(popviewStaff.staffPassword.getText().toString())) {
+                                toast("请输入纯数字密码");
+                                return;
+                            }
                             final StringBuilder stringBuilder = new StringBuilder();
                             if (popviewStaff.isDicount.isSelect()) {
                                 stringBuilder.append("1,");

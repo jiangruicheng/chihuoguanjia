@@ -16,6 +16,7 @@
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:paddingLeft="4dp"
+        android:textSize="@dimen/ssmall_text"
         android:text="打印参数"
         android:textColor="@color/buttonStork" />
 
@@ -34,8 +35,9 @@
             android:orientation="vertical"
             android:paddingLeft="6dp"
             android:text="退菜是否打印"
+            android:textColor="@android:color/black"
 
-            android:textColor="@android:color/black" />
+            android:textSize="@dimen/small_text" />
 
         <include
             android:id="@+id/back_set"
@@ -57,16 +59,17 @@
 
         <TextView
             android:id="@+id/textView6"
-
             android:layout_width="0dp"
+
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-
             android:orientation="vertical"
+
             android:paddingLeft="6dp"
             android:text="出单方式"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/small_text" />
 
         <include
             android:id="@+id/print_set"
@@ -88,15 +91,16 @@
 
         <TextView
             android:id="@+id/textView7"
-
             android:layout_width="0dp"
+
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:orientation="vertical"
             android:paddingLeft="6dp"
             android:text="可否折扣区分汇总"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/small_text" />
 
         <include
             android:id="@+id/discount_set"
@@ -125,7 +129,8 @@
         android:gravity="center_vertical"
         android:paddingLeft="6dp"
         android:text="软件缴费"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/small_text" />
 
     <View
         android:layout_width="match_parent"

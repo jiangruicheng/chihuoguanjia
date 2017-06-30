@@ -535,6 +535,7 @@ public class NoteFragment extends BaseFragment implements NoteView {
                         // presenter.addDeshMethod(new RequestAddMethod().setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()).setName(name.getText().toString()).setPrice(price.getText().toString()));
                         name.setText("");
                         price.clearComposingText();
+                        popUpViewUtil.dismiss();
                     } else {
                         // presenter.updateDeshMethod(new RequestUpdateMethod().setId(((ResponseMethod.DataBean) adapter.getMitems().get(position)).getId()).setName(name.getText().toString()).setPrice(price.getText().toString()));
                         popUpViewUtil.dismiss();

@@ -128,6 +128,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
             return;
         View view = LayoutInflater.from(getContext()).inflate(R.layout.list_mendian, parent, false);
         ListView listView = (ListView) view.findViewById(R.id.list_mendian);
+        final PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
         if (adapter == null) {
             mendianListAdpater = new MendianListAdpater();
         }
@@ -137,10 +138,10 @@ public class HomeFragment extends BaseFragment implements HomeView {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AppMode.getInstance().setMid(mendianListAdpater.getList().get(position).getId());
                 init();
+                popUpViewUtil.dismiss();
             }
         });
 
-        PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
         popUpViewUtil.setOnDismissAction(new PopUpViewUtil.OnDismissAction() {
             @Override
             public void onDismiss() {
@@ -170,7 +171,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
     void onclick_baobiao() {
         if (isAppOver())
             return;
-        if (!AppMode.getInstance().isLoading() || (!AppMode.getInstance().isExcel() && !AppMode.getInstance().isBoss())) {
+        if (AppMode.getInstance().isLoading() && (!AppMode.getInstance().isExcel() && !AppMode.getInstance().isBoss())) {
             showMesg("无查询报表权限");
             return;
         }
@@ -194,7 +195,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
     void onclick_staff() {
         if (isAppOver())
             return;
-        if (!AppMode.getInstance().isBoss()) {
+        if (!AppMode.getInstance().isBoss() && AppMode.getInstance().isLoading()) {
             toast("员工账号不能操作此项");
             return;
         }
@@ -309,7 +310,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
     void onclick_register() {
         if (isAppOver())
             return;
-        if (!AppMode.getInstance().isBoss()) {
+        if (!AppMode.getInstance().isBoss() && AppMode.getInstance().isLoading()) {
             toast("员工账号不能操作此项");
             return;
         }
@@ -399,8 +400,8 @@ public class HomeFragment extends BaseFragment implements HomeView {
         });
     }
 
-    private void showPayMesg() {
-        MesgShow.showPayMesg("", "软件已过期，请续费后继续使用", logoff, new MesgShow.OnButtonListener() {
+    private void showPayMesg(String mesg) {
+        MesgShow.showPayMesg("", mesg, logoff, new MesgShow.OnButtonListener() {
             @Override
             public void onListerner() {
                 replaceFragmentAddToBackStack(PayAppFragment.newInstance("", ""), null);
@@ -606,8 +607,10 @@ public class HomeFragment extends BaseFragment implements HomeView {
                 super.onNext(baseResponse);
                 if (((ResponseQueryAppData) baseResponse).getData().getIsover() == 1) {
                     AppMode.getInstance().setAppOver(true);
-                    showPayMesg();
+                    showPayMesg("软件已过期，请续费后继续使用");
                 } else {
+                    if (Float.valueOf(((ResponseQueryAppData) baseResponse).getData().getDays()) < 11)
+                        showPayMesg("你的软件还有" + ((ResponseQueryAppData) baseResponse).getData().getDays() + "过期");
                     AppMode.getInstance().setAppOver(false);
                 }
             }
@@ -616,7 +619,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     private boolean isAppOver() {
         if (AppMode.getInstance().isAppOver()) {
-            showPayMesg();
+            showPayMesg("软件已过期，请续费后继续使用");
             return true;
         }
         return false;

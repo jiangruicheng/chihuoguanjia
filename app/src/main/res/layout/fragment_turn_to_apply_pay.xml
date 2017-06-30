@@ -14,6 +14,7 @@
         android:layout_weight="0.5" />
 
     <ImageView
+        android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1.5"
@@ -27,7 +28,7 @@
         android:gravity="center"
         android:text="抱歉！"
         android:textColor="@color/buttonStork"
-        android:textSize="21sp" />
+        android:textSize="@dimen/big_text" />
 
     <TextView
         android:id="@+id/info"
@@ -39,7 +40,7 @@
         android:paddingRight="8dp"
         android:text="你还没有开通微信支付收款，暂时不能使用微信支付收款功能"
         android:textColor="@color/black"
-        android:textSize="16sp" />
+        android:textSize="@dimen/mid_text" />
 
     <View
         android:layout_width="match_parent"
@@ -55,7 +56,8 @@
         android:layout_weight="1"
         android:background="@drawable/shape_fillet_solid"
         android:text="现在去开通支付"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:textSize="@dimen/mid_text" />
 
     <View
         android:layout_width="match_parent"
@@ -71,5 +73,6 @@
         android:layout_weight="1"
         android:background="@drawable/shape_fillet_button"
         android:text="返回收款页面"
-        android:textColor="@color/buttonStork" />
+        android:textColor="@color/buttonStork"
+        android:textSize="@dimen/mid_text" />
 </LinearLayout>

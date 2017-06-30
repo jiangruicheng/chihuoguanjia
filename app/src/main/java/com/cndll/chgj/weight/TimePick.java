@@ -60,9 +60,9 @@ public class TimePick {
         Vday = (LoopView) view.findViewById(R.id.day);
         cancel = (Button) view.findViewById(R.id.cancel);
         sure = (Button) view.findViewById(R.id.sure);
-        Vyear.setTextSize(14);
-        Vmoth.setTextSize(14);
-        Vday.setTextSize(14);
+        Vyear.setTextSize(19);
+        Vmoth.setTextSize(19);
+        Vday.setTextSize(19);
 
         Vyear.setItemsVisibleCount(6);
         Vday.setItemsVisibleCount(6);

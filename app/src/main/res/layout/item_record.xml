@@ -12,11 +12,13 @@
 
         <TextView
             android:id="@+id/info"
+            android:textSize="@dimen/small_text"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
 
         <TextView
+            android:textSize="@dimen/small_text"
             android:id="@+id/time"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -26,6 +28,7 @@
     <TextView
         android:id="@+id/price"
         android:layout_width="0dp"
+        android:textSize="@dimen/small_text"
         android:layout_height="match_parent"
         android:layout_weight="1" />
 </LinearLayout>

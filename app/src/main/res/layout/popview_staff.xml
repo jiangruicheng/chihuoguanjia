@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/yinse"
+    android:background="@color/colorBottom"
     android:orientation="vertical">
 
     <LinearLayout
@@ -24,8 +24,11 @@
             android:layout_height="match_parent"
             android:layout_margin="12dp"
             android:layout_weight="3"
-            android:background="@color/white"
-            android:selectAllOnFocus="true" />
+            android:background="@drawable/shape_dialog_fillet_solid"
+            android:hint="请输入姓名"
+            android:padding="4dp"
+            android:selectAllOnFocus="true"
+            android:textSize="@dimen/small_text" />
     </LinearLayout>
 
     <LinearLayout
@@ -47,7 +50,11 @@
             android:layout_height="match_parent"
             android:layout_margin="12dp"
             android:layout_weight="3"
-            android:background="@color/white" />
+            android:background="@drawable/shape_dialog_fillet_solid"
+            android:hint="请输入手机号"
+            android:inputType="number"
+            android:padding="4dp"
+            android:textSize="@dimen/small_text" />
     </LinearLayout>
 
     <LinearLayout
@@ -69,7 +76,11 @@
             android:layout_height="match_parent"
             android:layout_margin="12dp"
             android:layout_weight="3"
-            android:background="@color/white" />
+            android:background="@drawable/shape_dialog_fillet_solid"
+            android:hint="请输入密码"
+            android:inputType="number"
+            android:padding="4dp"
+            android:textSize="@dimen/small_text" />
     </LinearLayout>
 
     <TextView
