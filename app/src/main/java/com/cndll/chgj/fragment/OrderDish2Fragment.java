@@ -42,6 +42,7 @@ import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetDeskList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetOrder;
 import com.cndll.chgj.mvp.presenter.OrderPresenter;
+import com.cndll.chgj.mvp.presenter.impl.NoteImpl;
 import com.cndll.chgj.mvp.presenter.impl.OrderImpl;
 import com.cndll.chgj.mvp.view.OrderView;
 import com.cndll.chgj.util.HorizontalPageLayoutManager;
@@ -55,6 +56,7 @@ import com.cndll.chgj.weight.KeyWeight;
 import com.cndll.chgj.weight.MesgShow;
 import com.cndll.chgj.weight.OrderInfo;
 import com.cndll.chgj.weight.OrderItemMesg;
+import com.cndll.chgj.weight.PopOrderRequest;
 
 import java.util.Calendar;
 import java.util.List;
@@ -250,7 +252,203 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
 
     @OnClick(R.id.yaoqiu)
     void onclick_yaoqiu() {
+        final Orders orders;
+        if (this.orders != null && (this.orders.isWritDesh(this.orders.getCurrPosition()) || this.orders.isOrderDesh(this.orders.getCurrPosition()))) {
+            orders = this.orders;
+        } else if (sendOrders != null) {
+            orders = sendOrders;
+        } else {
+            return;
+        }
+        orders.view = this;
+        final String id = orders.getCurrPosition();
+        final PopOrderRequest popOrderRequest;
+        if (orders.isDeshSend(id)) {
+            popOrderRequest = new PopOrderRequest();
+            popOrderRequest.init(getContext(), yaoqiu);
+            popOrderRequest.four.setVisibility(View.GONE);
+            popOrderRequest.setFirstText("赠送");
+            popOrderRequest.setSecondText("退菜");
+            popOrderRequest.show();
+            if (orders.isWritDesh(id)) {
+                if (orders.isWritDesh(id))
+                    if (orders.writeDish.get(id).getGiveCount() == 0) {
+                        popOrderRequest.setThirdVisble(View.GONE);
+                        popOrderRequest.setViewHeight(2);
+                    } else {
+                        popOrderRequest.setThirdText("取消赠送");
+                        popOrderRequest.setViewHeight(3);
+                    }
+            } else {
+                if (orders.getOrder(id).getGiveCount() == 0) {
+                    popOrderRequest.setThirdVisble(View.GONE);
+                    popOrderRequest.setViewHeight(2);
+                } else {
+                    popOrderRequest.setThirdText("取消赠送");
+                    popOrderRequest.setViewHeight(3);
+                }
+            }
+        } else {
+            popOrderRequest = new PopOrderRequest();
+            popOrderRequest.init(getContext(), yaoqiu);
+            popOrderRequest.show();
+            boolean isGive = false;
+            if (orders.isWritDesh(id)) {
+                if (orders.writeDish.get(id).giveCount != 0) {
+                    isGive = true;
+                }
+            } else {
+                if (orders.getOrder(id).giveCount != 0) {
+                    isGive = true;
+                }
+            }
+            if (isGive) {
+                popOrderRequest.setViewHeight(4);
+                popOrderRequest.four.setVisibility(View.VISIBLE);
+                popOrderRequest.four.setText("取消赠送");
+                popOrderRequest.four.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
+                        popOrderRequest.setViewHeight(3);
+                        popOrderRequest.four.setVisibility(View.GONE);
+                        popOrderRequest.dismiss();
+                    }
+                });
+            } else {
+                popOrderRequest.four.setVisibility(View.GONE);
+                popOrderRequest.setViewHeight(3);
+            }
+
+        }
+        popOrderRequest.setOnItemClick(new PopOrderRequest.onItemClick() {
+            @Override
+            public void onFirst(View view) {
+
+                if (orders.isDeshSend(id)) {
+                    orders.giveDesh(id, new KeyUtuil.Builder().setContext(getContext()).setLocation(view).
+                            setDoFuckSureUnSend(new Orders.DoFuck() {
+                                @Override
+                                public void doFuck(Object o) {
+                                    setOrderInfolayout(id, isOrderWrite);
+                                    popOrderRequest.dismiss();
+                                }
+                            }).setDoFuckSureSend(new Orders.DoFuck() {
+                        @Override
+                        public void doFuck(Object o) {
+                            orderInfolayout.setMesg(sendOrders);
+                            sendOrds(presenter.GIVE);
+                            popOrderRequest.dismiss();
+                        }
+                    }).setDoFuckCancelSend(new Orders.DoFuck() {
+                        @Override
+                        public void doFuck(Object o) {
+                            setOrderInfolayout(id, isOrderWrite);
+                            popOrderRequest.dismiss();
+                        }
+                    }));
+
+                } else {
+                    if (orders.isWritDesh(id)) {
+                        replaceFragmentAddToBackStack(NoteFragment.newInstance(null, null).setWrite(orders.writeDish.get(id)), new NoteImpl());
+                    } else {
+                        replaceFragmentAddToBackStack(NoteFragment.newInstance(null, null).setOrder(orders.getOrder(id)), new NoteImpl());
+                    }
+                    popOrderRequest.dismiss();
+                }
+
+            }
+
+            @Override
+            public void onSecond(View view) {
+
+                if (orders.isDeshSend(id)) {
+                    orders.backDesh(id, new Orders.DoFuck<List<RequestPrintBackDesh.ItemsBean>>() {
+                        @Override
+                        public void doFuck(List<RequestPrintBackDesh.ItemsBean> itemsBeen) {
+                            orderInfolayout.setMesg(sendOrders);
+                            backDesh = itemsBeen;
+                            sendOrds(presenter.BACK);
+                            isBackDesh = true;
+                            popOrderRequest.dismiss();
+                        }
+                    });
+                } else {
+                    orders.giveDesh(id, new KeyUtuil.Builder().setDoFuckSureUnSend(new Orders.DoFuck() {
+                        @Override
+                        public void doFuck(Object o) {
+                            setOrderInfolayout(id, isOrderWrite);
+                            popOrderRequest.dismiss();
+                        }
+                    }).setDoFuckSureSend(new Orders.DoFuck() {
+                        @Override
+                        public void doFuck(Object o) {
+                            orderInfolayout.setMesg(sendOrders);
+                            sendOrds();
+                            popOrderRequest.dismiss();
+                        }
+                    }).setDoFuckCancelSend(new Orders.DoFuck() {
+                        @Override
+                        public void doFuck(Object o) {
+                            setOrderInfolayout(id, isOrderWrite);
+                            popOrderRequest.dismiss();
+                        }
+                    }));
+                }
+
+            }
+
+            @Override
+            public void onThird(View view) {
+                if (orders.isDeshSend(id)) {
+                    orders.cancelGive(id, new KeyUtuil.Builder().setDoFuckSureSend(new Orders.DoFuck() {
+                        @Override
+                        public void doFuck(Object o) {
+                            orderInfolayout.setMesg(sendOrders);
+                            sendOrds();
+                            popOrderRequest.dismiss();
+                        }
+                    }).setDoFuckSureUnSend(new Orders.DoFuck() {
+                        @Override
+                        public void doFuck(Object o) {
+                            setOrderInfolayout(id, isOrderWrite);
+                            popOrderRequest.dismiss();
+                        }
+                    }).setDoFuckCancelUnsend(new Orders.DoFuck() {
+                        @Override
+                        public void doFuck(Object o) {
+                            setOrderInfolayout(id, isOrderWrite);
+                            popOrderRequest.dismiss();
+                        }
+                    }));
+                } else {
+                    orders.deleteDesh(id, new Orders.DoFuck() {
+                        @Override
+                        public void doFuck(Object o) {
+                            if (!orders.isWritDesh(id)) {
+                                if (orders.orders.size() != 0)
+                                    orders.setCurrPosition(orders.orders.keyAt(0));
+                                else if (orders.writeDish != null && orders.writeDish.size() != 0) {
+                                    orders.setCurrPosition(orders.writeDish.keyAt(0));
+                                    isOrderWrite = true;
+                                }
+                            } else {
+                                if (orders.writeDish.size() != 0) {
+                                    orders.setCurrPosition(orders.writeDish.keyAt(0));
+                                    isOrderWrite = true;
+                                } else {
+                                    orders.setCurrPosition(orders.orders.keyAt(0));
+                                }
+                            }
+                            setOrderInfolayout(id, isOrderWrite);
+
+                            popOrderRequest.dismiss();
+                        }
+                    });
+                }
+
+            }
+        });
     }
 
 
@@ -378,7 +576,13 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
 
     @OnClick(R.id.send)
     void onclick_send() {
-
+        if (orders == null) {
+            showMesg("不存在未送单菜品，无需送单");
+            return;
+        }
+        if (orders.getOrders().size() != 0 || (orders.writeDish == null ? false : orders.writeDish.size() != 0)) {
+            replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment((OrderDish2Fragment) fragmentList.get(fragmentList.size() - 2)), new OrderImpl());
+        }
     }
 
     @BindView(R.id.info)
@@ -701,7 +905,7 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
             return;
         }
         // replaceFragmentAddToBackStack(ApplyPayFragment.newInstance(null, null), null);
-        if (!orders.isChange) {
+        if (orders == null || (orders.orders.size() == 0 && (orders.writeDish == null ? true : orders.writeDish.size() == 0))) {
             if (orderId != 0) {
                 replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(orderId).setOrders(sendOrders), null);
                 MainActivity.removeBackPressEvent(backPressEvent);
@@ -944,20 +1148,23 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
                 }
             }
             setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
-        }
-        if (sendOrders != null) {
-            if (sendOrders.getOrders().size() > 0) {
-                isOrderWrite = false;
-                sendOrders.setCurrPosition(sendOrders.getOrders().keyAt(0));
-            } else {
-                if (sendOrders.writeDish == null || sendOrders.writeDish.size() == 0) {
+        } else {
+            if (sendOrders != null) {
+                if (sendOrders.getOrders().size() > 0) {
 
+
+                    isOrderWrite = false;
+                    sendOrders.setCurrPosition(sendOrders.getOrders().keyAt(0));
                 } else {
-                    isOrderWrite = true;
-                    sendOrders.setCurrPosition(sendOrders.writeDish.keyAt(0));
+                    if (sendOrders.writeDish == null || sendOrders.writeDish.size() == 0) {
+
+                    } else {
+                        isOrderWrite = true;
+                        sendOrders.setCurrPosition(sendOrders.writeDish.keyAt(0));
+                    }
                 }
+                setOrderInfolayout(sendOrders.getCurrPosition(), isOrderWrite);
             }
-            setOrderInfolayout(sendOrders.getCurrPosition(), isOrderWrite);
         }
         MainActivity.setBackPressEvent(backPressEvent);
 
@@ -1054,6 +1261,10 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
 
     private void setOrderInfolayout(String id, boolean iswrite) {
         if (iswrite) {
+            if ((orders.writeDish == null || orders.writeDish.size() == 0) && (sendOrders.writeDish == null || sendOrders.writeDish.size() == 0)) {
+                setOrderInfolayout(id);
+                return;
+            }
             setOrderInfolayoutWrite(id);
         } else {
             setOrderInfolayout(id);
@@ -1061,38 +1272,50 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
     }
 
     private void setOrderInfolayoutWrite(String id) {
-        if ((orders == null || orders.writeDish == null || orders.writeDish.get(id) == null || id == null) && (sendOrders == null || sendOrders.writeDish == null || sendOrders.writeDish.get(id) == null || id == null)) {
+        if ((orders == null || orders.writeDish == null || orders.writeDish.size() == 0 || id == null) && (sendOrders == null || sendOrders.writeDish == null || sendOrders.writeDish.size() == 0 || id == null)) {
             orderItemMesglayout.setMethod("").setCount("1").setName("").setPrice("");
 
-        } else if (orders != null && orders.writeDish != null && orders.writeDish.get(id) != null) {
+        } else if (orders != null && orders.writeDish != null && orders.writeDish.size() != 0) {
+            String mid = "";
+            if (orders.writeDish.get(id) != null) {
+                mid = id;
+            } else {
+                mid = orders.writeDish.keyAt(0);
+            }
             if (orderItemMesglayout != null)
                 Log.d("at", "setOrderInfolayoutWrite: " + orders.writeDish.get(id));
-            orderItemMesglayout.setPrice(orders.writeDish.get(id).getAllPrice() + "").
-                    setName(orders.writeDish.get(id).getDeshName() + orders.writeDish.get(id).getOnePrice()).setCount(orders.writeDish.get(id).getCount() + "").setMethod("");
-            if (orders.writeDish.get(id).getItemsBean().getRemarks() != null && orders.writeDish.get(id).getItemsBean().getRemarks().size() != 0) {
-                orderItemMesglayout.setMethod(orders.writeDish.get(id).getItemsBean().getRemarks().get(0).getName() + orders.writeDish.get(id).getItemsBean().getRemarks().get(0).getPrice());
+            orderItemMesglayout.setPrice(orders.writeDish.get(mid).getAllPrice() + "").
+                    setName(orders.writeDish.get(mid).getDeshName() + orders.writeDish.get(mid).getOnePrice()).setCount(orders.writeDish.get(mid).getCount() + "").setMethod("");
+            if (orders.writeDish.get(mid).getItemsBean().getRemarks() != null && orders.writeDish.get(mid).getItemsBean().getRemarks().size() != 0) {
+                orderItemMesglayout.setMethod(orders.writeDish.get(mid).getItemsBean().getRemarks().get(0).getName() + orders.writeDish.get(mid).getItemsBean().getRemarks().get(0).getPrice());
             }
-            if (orders.writeDish.get(id).getGiveCount() != 0) {
-                orderItemMesglayout.setMethod(orderItemMesglayout.getMethod().getText().toString() + "赠送：" + orders.writeDish.get(id).getGiveCount());
+            if (orders.writeDish.get(mid).getGiveCount() != 0) {
+                orderItemMesglayout.setMethod(orderItemMesglayout.getMethod().getText().toString() + "赠送：" + orders.writeDish.get(mid).getGiveCount());
             }
-            if (orders.writeDish.get(id).getBackCount() != 0) {
-                orderItemMesglayout.setMethod(orderItemMesglayout.getMethod().getText().toString() + "退菜：" + orders.writeDish.get(id).getBackCount());
+            if (orders.writeDish.get(mid).getBackCount() != 0) {
+                orderItemMesglayout.setMethod(orderItemMesglayout.getMethod().getText().toString() + "退菜：" + orders.writeDish.get(mid).getBackCount());
 
             }
             /*if (orders.writeDish.get(id).getItemsBean().getRemarks() == null) {
                 orderItemMesglayout.setMethod(" ");
             }*/
-        } else if (sendOrders != null && sendOrders.writeDish != null && sendOrders.writeDish.get(id) != null) {
-            orderItemMesglayout.setPrice(sendOrders.writeDish.get(id).getAllPrice() + "").
-                    setName(sendOrders.writeDish.get(id).getDeshName() + sendOrders.writeDish.get(id).getOnePrice()).setCount(sendOrders.writeDish.get(id).getCount() + "").setMethod("");
-            if (sendOrders.writeDish.get(id).getItemsBean().getRemarks() != null && sendOrders.writeDish.get(id).getItemsBean().getRemarks().size() != 0) {
-                orderItemMesglayout.setMethod(sendOrders.writeDish.get(id).getItemsBean().getRemarks().get(0).getName() + sendOrders.writeDish.get(id).getItemsBean().getRemarks().get(0).getPrice());
+        } else if (sendOrders != null && sendOrders.writeDish != null && sendOrders.writeDish.size() != 0) {
+            String mid = "";
+            if (sendOrders.writeDish.get(id) != null) {
+                mid = id;
+            } else {
+                mid = sendOrders.writeDish.keyAt(0);
             }
-            if (sendOrders.writeDish.get(id).getGiveCount() != 0) {
-                orderItemMesglayout.setMethod(orderItemMesglayout.getMethod().getText().toString() + "赠送：" + sendOrders.writeDish.get(id).getGiveCount());
+            orderItemMesglayout.setPrice(sendOrders.writeDish.get(mid).getAllPrice() + "").
+                    setName(sendOrders.writeDish.get(mid).getDeshName() + sendOrders.writeDish.get(mid).getOnePrice()).setCount(sendOrders.writeDish.get(mid).getCount() + "").setMethod("");
+            if (sendOrders.writeDish.get(mid).getItemsBean().getRemarks() != null && sendOrders.writeDish.get(mid).getItemsBean().getRemarks().size() != 0) {
+                orderItemMesglayout.setMethod(sendOrders.writeDish.get(mid).getItemsBean().getRemarks().get(0).getName() + sendOrders.writeDish.get(mid).getItemsBean().getRemarks().get(0).getPrice());
             }
-            if (sendOrders.writeDish.get(id).getBackCount() != 0) {
-                orderItemMesglayout.setMethod(orderItemMesglayout.getMethod().getText().toString() + "退菜：" + sendOrders.writeDish.get(id).getBackCount());
+            if (sendOrders.writeDish.get(mid).getGiveCount() != 0) {
+                orderItemMesglayout.setMethod(orderItemMesglayout.getMethod().getText().toString() + "赠送：" + sendOrders.writeDish.get(mid).getGiveCount());
+            }
+            if (sendOrders.writeDish.get(mid).getBackCount() != 0) {
+                orderItemMesglayout.setMethod(orderItemMesglayout.getMethod().getText().toString() + "退菜：" + sendOrders.writeDish.get(mid).getBackCount());
 
             }
         }
@@ -1102,33 +1325,46 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
     }
 
     private void setOrderInfolayout(String id) {
-        if ((id == null || (orders == null ? true : orders.getOrder(id) == null)) && (id == null || (sendOrders == null ? true : sendOrders.getOrder(id) == null))) {
+        if ((id == null || (orders == null ? true : orders.orders.size() == 0)) && (id == null || (sendOrders == null ? true : sendOrders.orders.size() == 0))) {
             orderItemMesglayout.setMethod("").setCount(" ").setName("").setPrice("");
-        } else if (orders != null && orders.getOrder(id) != null) {
+        } else if (orders != null && orders.orders.size() != 0) {
+            String mid = "";
+            if (orders.getOrder(id) != null) {
+                mid = id;
+            } else if (orders.orders.size() != 0) {
+                mid = orders.getOrders().keyAt(0);
+            }
             if (orderItemMesglayout != null) {
                 orderItemMesglayout.
-                        setPrice(orders.getOrder(id).getAllPrice() + "").
-                        setName(orders.getOrder(id).getDeshName() + " " + orders.getOrder(id).getOnePrice()).
-                        setMethod(orders.getOrder(id).getMethodName() + orders.getOrder(id).getMethodPrice()).setCount(orders.getOrder(id).getCount() /*+ orders.getOrder(id).getGiveCount() */ + "");
-                if (orders.getOrder(id).getGiveCount() != 0) {
-                    orderItemMesglayout.setMethod(orderItemMesglayout.getMethod().getText().toString() + "赠送：" + orders.getOrder(id).getGiveCount());
+                        setPrice(orders.getOrder(mid).getAllPrice() + "").
+                        setName(orders.getOrder(mid).getDeshName() + " " + orders.getOrder(mid).getOnePrice()).
+                        setMethod(orders.getOrder(mid).getMethodName() + orders.getOrder(mid).getMethodPrice()).setCount(orders.getOrder(mid).getCount() /*+ orders.getOrder(id).getGiveCount() */ + "");
+                if (orders.getOrder(mid).getGiveCount() != 0) {
+                    orderItemMesglayout.setMethod(orderItemMesglayout.getMethod().getText().toString() + "赠送：" + orders.getOrder(mid).getGiveCount());
                 }
-                if (orders.getOrder(id).getBackCount() != 0) {
-                    orderItemMesglayout.setMethod(orderItemMesglayout.getMethod().getText().toString() + "退菜：" + orders.getOrder(id).getBackCount());
+                if (orders.getOrder(mid).getBackCount() != 0) {
+                    orderItemMesglayout.setMethod(orderItemMesglayout.getMethod().getText().toString() + "退菜：" + orders.getOrder(mid).getBackCount());
                 }
             }
 
-        } else if (sendOrders != null && sendOrders.getOrder(id) != null) {
+        } else if (sendOrders != null && sendOrders.orders.size() != 0) {
+            String mid = "";
+
+            if (sendOrders.getOrder(id) != null) {
+                mid = id;
+            } else if (sendOrders.orders.size() != 0) {
+                mid = sendOrders.getOrders().keyAt(0);
+            }
             if (orderItemMesglayout != null) {
                 orderItemMesglayout.
-                        setPrice(sendOrders.getOrder(id).getAllPrice() + "").
-                        setName(sendOrders.getOrder(id).getDeshName() + " " + sendOrders.getOrder(id).getOnePrice()).
-                        setMethod(sendOrders.getOrder(id).getMethodName() + sendOrders.getOrder(id).getMethodPrice()).setCount(sendOrders.getOrder(id).getCount() /*+ orders.getOrder(id).getGiveCount() */ + "");
-                if (sendOrders.getOrder(id).getGiveCount() != 0) {
-                    orderItemMesglayout.setMethod(orderItemMesglayout.getMethod().getText().toString() + "赠送：" + sendOrders.getOrder(id).getGiveCount());
+                        setPrice(sendOrders.getOrder(mid).getAllPrice() + "").
+                        setName(sendOrders.getOrder(mid).getDeshName() + " " + sendOrders.getOrder(mid).getOnePrice()).
+                        setMethod(sendOrders.getOrder(mid).getMethodName() + sendOrders.getOrder(mid).getMethodPrice()).setCount(sendOrders.getOrder(mid).getCount() /*+ orders.getOrder(id).getGiveCount() */ + "");
+                if (sendOrders.getOrder(mid).getGiveCount() != 0) {
+                    orderItemMesglayout.setMethod(orderItemMesglayout.getMethod().getText().toString() + "赠送：" + sendOrders.getOrder(mid).getGiveCount());
                 }
-                if (sendOrders.getOrder(id).getBackCount() != 0) {
-                    orderItemMesglayout.setMethod(orderItemMesglayout.getMethod().getText().toString() + "退菜：" + sendOrders.getOrder(id).getBackCount());
+                if (sendOrders.getOrder(mid).getBackCount() != 0) {
+                    orderItemMesglayout.setMethod(orderItemMesglayout.getMethod().getText().toString() + "退菜：" + sendOrders.getOrder(mid).getBackCount());
                 }
             }
         }
