@@ -109,6 +109,10 @@ public class PrintReportFragment extends BaseFragment {
     String url;
     String baseUrl = AppRequest.ACCOUNTURL;
     String stm, etm;
+    int year;
+    int month;
+    int day;
+    Calendar calendar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -116,10 +120,19 @@ public class PrintReportFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_print_report, container, false);
         unbinder = ButterKnife.bind(this, view);
-        Calendar calendar = Calendar.getInstance();
-        final int year = calendar.get(Calendar.YEAR);
-        final int month = calendar.get(Calendar.MONTH) + 1;
-        final int day = calendar.get(Calendar.DAY_OF_MONTH);
+        calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH) + 1;
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        if (hour < 5) {
+            calendar.add(Calendar.DATE, -1);
+            year = calendar.get(Calendar.YEAR);
+            month = calendar.get(Calendar.MONTH) + 1;
+            day = calendar.get(Calendar.DAY_OF_MONTH);
+        } else {
+            day = calendar.get(Calendar.DAY_OF_MONTH);
+        }
         stm = year + "-" + month + "-" + day;
 
         title.setText("报表查询");
@@ -130,7 +143,12 @@ public class PrintReportFragment extends BaseFragment {
         yesterday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stm = etm = year + "-" + month + "-" + (day - 1);
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.DATE, -1);
+                year = calendar.get(Calendar.YEAR);
+                month = calendar.get(Calendar.MONTH) + 1;
+                day = calendar.get(Calendar.DAY_OF_MONTH);
+                stm = etm = year + "-" + month + "-" + day;
                 setUrl(stm, etm);
             }
         });

@@ -70,10 +70,13 @@ public class BillQueryFragment extends BaseFragment implements BillView {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH) + 1;
         int day /*= calendar.get(Calendar.DAY_OF_MONTH)*/;
-        if (hour > 5) {
+        if (hour < 5) {
+            calendar.add(Calendar.DATE, -1);
+            year = calendar.get(Calendar.YEAR);
+            month = calendar.get(Calendar.MONTH) + 1;
             day = calendar.get(Calendar.DAY_OF_MONTH);
         } else {
-            day = calendar.get(Calendar.DAY_OF_MONTH) - 1;
+            day = calendar.get(Calendar.DAY_OF_MONTH);
         }
         etm = stm = year + "-" + month + "-" + day;
         billInfo.setText("账单信息      日期：" + stm + "——" + etm);
@@ -86,10 +89,10 @@ public class BillQueryFragment extends BaseFragment implements BillView {
     @OnClick(R.id.yesterday)
     void onclic_yesterday() {
         Calendar calendar = Calendar.getInstance();
-
+        calendar.add(Calendar.DATE, -1);
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH) + 1;
-        int day = calendar.get(Calendar.DAY_OF_MONTH) - 1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
 
         etm = stm = year + "-" + month + "-" + day;
         billInfo.setText("账单信息      日期：" + stm + "——" + etm);
@@ -170,10 +173,13 @@ public class BillQueryFragment extends BaseFragment implements BillView {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH) + 1;
         int day /*= calendar.get(Calendar.DAY_OF_MONTH)*/;
-        if (hour > 5) {
+        if (hour < 5) {
+            calendar.add(Calendar.DATE, -1);
+            year = calendar.get(Calendar.YEAR);
+            month = calendar.get(Calendar.MONTH) + 1;
             day = calendar.get(Calendar.DAY_OF_MONTH);
         } else {
-            day = calendar.get(Calendar.DAY_OF_MONTH) - 1;
+            day = calendar.get(Calendar.DAY_OF_MONTH);
         }
         etm = stm = year + "-" + month + "-" + day;
         billInfo.setText("账单信息      日期：" + stm + "——" + etm);
