@@ -581,7 +581,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
             @Override
             public void onNumbClick(Orders orders, String id, final int position, View Item) {
                 orders.view = OrderInfo2Fragment.this;
-                orders.numbEdit(orders.getCurrPosition(), new KeyUtuil.Builder().setContext(getContext()).setLocation(Item).
+                orders.numbEdit(id, new KeyUtuil.Builder().setContext(getContext()).setLocation(Item).
                         setDoFuckCancelUnsend(new Orders.DoFuck() {
                             @Override
                             public void doFuck(Object o) {
