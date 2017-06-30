@@ -148,6 +148,15 @@ public class PrintReportFragment extends BaseFragment {
                 year = calendar.get(Calendar.YEAR);
                 month = calendar.get(Calendar.MONTH) + 1;
                 day = calendar.get(Calendar.DAY_OF_MONTH);
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                if (hour < 5) {
+                    calendar.add(Calendar.DATE, -1);
+                    year = calendar.get(Calendar.YEAR);
+                    month = calendar.get(Calendar.MONTH) + 1;
+                    day = calendar.get(Calendar.DAY_OF_MONTH);
+                } else {
+                    day = calendar.get(Calendar.DAY_OF_MONTH);
+                }
                 stm = etm = year + "-" + month + "-" + day;
                 setUrl(stm, etm);
             }
@@ -155,7 +164,20 @@ public class PrintReportFragment extends BaseFragment {
         today.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stm = etm = year + "-" + month + "-" + (day);
+                Calendar calendar = Calendar.getInstance();
+                year = calendar.get(Calendar.YEAR);
+                month = calendar.get(Calendar.MONTH) + 1;
+                day = calendar.get(Calendar.DAY_OF_MONTH);
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                if (hour < 5) {
+                    calendar.add(Calendar.DATE, -1);
+                    year = calendar.get(Calendar.YEAR);
+                    month = calendar.get(Calendar.MONTH) + 1;
+                    day = calendar.get(Calendar.DAY_OF_MONTH);
+                } else {
+                    day = calendar.get(Calendar.DAY_OF_MONTH);
+                }
+                stm = etm = year + "-" + month + "-" + day;
                 setUrl(stm, etm);
             }
         });

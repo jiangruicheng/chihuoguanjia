@@ -92,8 +92,16 @@ public class BillQueryFragment extends BaseFragment implements BillView {
         calendar.add(Calendar.DATE, -1);
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH) + 1;
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
-
+        if (hour < 5) {
+            calendar.add(Calendar.DATE, -1);
+            year = calendar.get(Calendar.YEAR);
+            month = calendar.get(Calendar.MONTH) + 1;
+            day = calendar.get(Calendar.DAY_OF_MONTH);
+        } else {
+            day = calendar.get(Calendar.DAY_OF_MONTH);
+        }
         etm = stm = year + "-" + month + "-" + day;
         billInfo.setText("账单信息      日期：" + stm + "——" + etm);
         presenter.getBillList(new RequestGetBillList().setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()).setEtm(etm).setStm(stm));
