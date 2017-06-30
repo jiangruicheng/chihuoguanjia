@@ -386,11 +386,13 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
 
     @OnClick(R.id.info)
     void onclick_info() {
-        if (orders != null && orders.getAll() != null) {
+        replaceFragmentAddToBackStack(OrderInfo2Fragment.newInstance(titleLeft.getText().toString(), titleRight.getText().toString()).setOrderList(orders).setOrderId(orderId).setResponseOrd(responseOrd).setTabID(tableId).setTabname(tabname).setSendOrders(sendOrders), new OrderImpl());
+
+/*        if (orders != null && orders.getAll() != null) {
             replaceFragmentAddToBackStack(OrderInfo2Fragment.newInstance(titleLeft.getText().toString(), titleRight.getText().toString()).setOrderList(orders).setOrderId(orderId).setResponseOrd(responseOrd).setTabID(tableId).setTabname(tabname), new OrderImpl());
         } else {
             replaceFragmentAddToBackStack(OrderInfo2Fragment.newInstance(null, null), new OrderImpl());
-        }
+        }*/
         MainActivity.removeBackPressEvent(backPressEvent);
     }
 
