@@ -121,16 +121,16 @@ public class SendFragment extends BaseFragment implements OrderView {
         return fragment;
     }
 
-    public OrderDishFragment getOrderDishFragment() {
+    public OrderDish2Fragment getOrderDishFragment() {
         return orderDishFragment;
     }
 
-    public SendFragment setOrderDishFragment(OrderDishFragment orderDishFragment) {
+    public SendFragment setOrderDishFragment(OrderDish2Fragment orderDishFragment) {
         this.orderDishFragment = orderDishFragment;
         return this;
     }
 
-    OrderDishFragment orderDishFragment;
+    OrderDish2Fragment orderDishFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -196,31 +196,63 @@ public class SendFragment extends BaseFragment implements OrderView {
                             setYsmoney(orderDishFragment.orderInfolayout.getLastPrice() + "").
                             setWritedishs(orderDishFragment.orders.getWriteDish()).setNote(note.getText().toString()));
                 } else {
-                    orderPresenter.updateOreder(new RequestOrder().setId(orderDishFragment.orderId + "").
-                            setItems(orderDishFragment.orders.getItems()).
-                            setMid(AppMode.getInstance().getMid()).
-                            setUid(AppMode.getInstance().getUid()).
-                            setPernum(personCount.getText().toString()).
-                            setSmoney(orderDishFragment.orderInfolayout.getGivePrice() + "").
-                            setSsmoney(orderDishFragment.orderInfolayout.getLastPrice() + "").
-                            setZk(orderDishFragment.orders.getDisconut() + "").
-                            setZkmoney(orderDishFragment.orderInfolayout.getDiscountPrice() + "").
-                            setTmoney(orderDishFragment.orderInfolayout.getAllPrice() + "").
-                            setTabname(orderDishFragment.tabname).
-                            setTab_id(orderDishFragment.tableId).setPayee(AppMode.getInstance().getUsername()).
-                            setYsmoney(orderDishFragment.orderInfolayout.getLastPrice() + "").
-                            setType("0").
-                            setCre_tm(orderDishFragment.responseOrd.getData().getCre_tm()).
-                            setE_tm(orderDishFragment.responseOrd.getData().getE_tm()).
-                            setOrdernum(orderDishFragment.responseOrd.getData().getOrdernum()).
-                            setOrdnum(orderDishFragment.responseOrd.getData().getOrdnum()).
-                            setYm(orderDishFragment.responseOrd.getData().getYm()).
-                            setWritedishs(orderDishFragment.orders.getWriteDish()).
-                            setAllremarks(orderDishFragment.orders.getAllMethod())
-                            .setStorename(orderDishFragment.responseOrd.getData().getStorename())
-                            .setType_txt(orderDishFragment.responseOrd.getData().getType_txt()).
-                                    setNote(note.getText().toString())
-                    );
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            Orders orders;
+                            if (orderDishFragment.orders != null) {
+                                orders = new Orders();
+                                if (orders.orders == null) {
+                                    orders.orders = new ArrayMap<String, Orders.Order>();
+                                }
+                                if (orders.writeDish == null) {
+                                    orders.writeDish = new ArrayMap<String, Orders.Write>();
+                                }
+                                orders.orders.putAll((Map<? extends String, ? extends Orders.Order>) orderDishFragment.orders.orders);
+                                orders.orders.putAll((Map<? extends String, ? extends Orders.Order>) orderDishFragment.sendOrders.orders);
+                                if (orderDishFragment.orders.writeDish != null)
+                                    orders.writeDish.putAll((Map<? extends String, ? extends Orders.Write>) orderDishFragment.orders.writeDish);
+                                if (orderDishFragment.sendOrders.writeDish != null)
+                                    orders.writeDish.putAll((Map<? extends String, ? extends Orders.Write>) orderDishFragment.sendOrders.writeDish);
+                                if (orders.allRemarklist == null) {
+                                    orders.allRemarklist = new ArrayList<ResponseGetCaipinList.DataBean.RemarkBean>();
+                                }
+                                orders.allRemarklist.addAll(orderDishFragment.orders.getAllMethod());
+                                orders.allRemarklist.addAll(orderDishFragment.sendOrders.getAllMethod());
+                                orders.setDisconut(orderDishFragment.sendOrders.getDisconut());
+                            } else {
+                                return;
+                            }
+                            orderDishFragment.orderInfolayout.countAll(orders);
+                            orderPresenter.updateOreder(new RequestOrder().setId(orderDishFragment.orderId + "").
+                                    setItems(orders.getItems()).
+                                    setMid(AppMode.getInstance().getMid()).
+                                    setUid(AppMode.getInstance().getUid()).
+                                    setPernum(personCount.getText().toString()).
+                                    setSmoney(orderDishFragment.orderInfolayout.getGivePrice() + "").
+                                    setSsmoney(orderDishFragment.orderInfolayout.getLastPrice() + "").
+                                    setZk(orderDishFragment.sendOrders.getDisconut() + "").
+                                    setZkmoney(orderDishFragment.orderInfolayout.getDiscountPrice() + "").
+                                    setTmoney(orderDishFragment.orderInfolayout.getAllPrice() + "").
+                                    setTabname(orderDishFragment.tabname).
+                                    setTab_id(orderDishFragment.tableId).setPayee(AppMode.getInstance().getUsername()).
+                                    setYsmoney(orderDishFragment.orderInfolayout.getLastPrice() + "").
+                                    setType("0").
+                                    setCre_tm(orderDishFragment.responseOrd.getData().getCre_tm()).
+                                    setE_tm(orderDishFragment.responseOrd.getData().getE_tm()).
+                                    setOrdernum(orderDishFragment.responseOrd.getData().getOrdernum()).
+                                    setOrdnum(orderDishFragment.responseOrd.getData().getOrdnum()).
+                                    setYm(orderDishFragment.responseOrd.getData().getYm()).
+                                    setWritedishs(orders.getWriteDish()).
+                                    setAllremarks(orders.getAllMethod())
+                                    .setStorename(orderDishFragment.responseOrd.getData().getStorename())
+                                    .setType_txt(orderDishFragment.responseOrd.getData().getType_txt()).
+                                            setNote(note.getText().toString())
+                            );
+                        }
+                    }.start();
+
                 }
             }
         });

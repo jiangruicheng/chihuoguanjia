@@ -1051,7 +1051,7 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
         presenter.getDcList(new RequestPrintList().setUid(AppMode.getInstance().getUid()).setMid(AppMode.getInstance().getMid()));
     }
 
-    public Orders addOrders;
+
 
     private void setOrderInfolayout(String id, boolean iswrite) {
         if (iswrite) {

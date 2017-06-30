@@ -341,7 +341,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
             return;
         }
         if (order.getOrders().size() != 0 || order.writeDish.size() != 0) {
-            replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment((OrderDishFragment) fragmentList.get(fragmentList.size() - 2)), new OrderImpl());
+            replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment((OrderDish2Fragment) fragmentList.get(fragmentList.size() - 2)), new OrderImpl());
         }
     }
 
@@ -359,7 +359,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
             showMesg("此台不存在消费，无需买单");
             return;
         }
-        if (!order.isChange) {
+        if (order == null || (order.orders.size() == 0 && (order.writeDish == null ? true : (order.writeDish.size() == 0)))) {
             if (orderId != 0) {
                 replaceFragmentAddToBackStack(PaySwitchFragment.newInstance(null, null).setOrderID(orderId).setOrders(order), null);
             }
@@ -381,12 +381,12 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
             showMesg("无打折权限");
             return;
         }
-        if (!order.isChange && orderId != 0) {
+        if ((order == null || (order.orders.size() == 0 && (order.writeDish == null ? true : (order.writeDish.size() == 0)))) && sendOrders != null) {
             popUpkey(2, Color.rgb(171, 171, 171), Color.rgb(1, 169, 104), "请输入折扣，例如8折则输入0.8", "取消打折", "确定", new KeyWeight.OnKeyClick() {
                 @Override
                 public void onKeyCancel(String s) {
-                    order.setDisconut(1);
-                    orderInfo.setMesg(order);
+                    sendOrders.setDisconut(1);
+                    orderInfo.setMesg(order, sendOrders);
                     sendOrds();
                 }
 
@@ -395,8 +395,8 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
 
                     if (StringHelp.isFloat(s)) {
                         if (Float.valueOf(s) <= 0.99 && Float.valueOf(s) >= 0.1) {
-                            order.setDisconut(Float.valueOf(s));
-                            orderInfo.setMesg(order);
+                            sendOrders.setDisconut(Float.valueOf(s));
+                            orderInfo.setMesg(order, sendOrders);
                             sendOrds();
                         }
                     }
@@ -590,6 +590,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                         }).setDoFuckCancelSend(new Orders.DoFuck<List<RequestPrintBackDesh.ItemsBean>>() {
                     @Override
                     public void doFuck(List<RequestPrintBackDesh.ItemsBean> o) {
+                        orderInfo.setMesg(sendOrders);
                         backDesh = o;
                         sendOrds(presenter.BACK);
                         isBackDesh = true;
@@ -602,6 +603,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                 }).setDoFuckSureSend(new Orders.DoFuck() {
                     @Override
                     public void doFuck(Object o) {
+                        orderInfo.setMesg(sendOrders);
                         sendOrds();
                     }
                 }));
@@ -686,12 +688,14 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                                     }).setDoFuckSureSend(new Orders.DoFuck() {
                                 @Override
                                 public void doFuck(Object o) {
+                                    orderInfo.setMesg(sendOrders);
                                     sendOrds(presenter.GIVE);
                                     popOrderRequest.dismiss();
                                 }
                             }).setDoFuckCancelSend(new Orders.DoFuck() {
                                 @Override
                                 public void doFuck(Object o) {
+                                    adapter.notifyDataSetChanged();
                                     popOrderRequest.dismiss();
                                 }
                             }));
@@ -767,6 +771,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                             orders.backDesh(id, new Orders.DoFuck<List<RequestPrintBackDesh.ItemsBean>>() {
                                 @Override
                                 public void doFuck(List<RequestPrintBackDesh.ItemsBean> itemsBeen) {
+                                    orderInfo.setMesg(sendOrders);
                                     backDesh = itemsBeen;
                                     sendOrds(presenter.BACK);
                                     isBackDesh = true;
@@ -783,12 +788,14 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                             }).setDoFuckSureSend(new Orders.DoFuck() {
                                 @Override
                                 public void doFuck(Object o) {
+                                    orderInfo.setMesg(sendOrders);
                                     sendOrds();
                                     popOrderRequest.dismiss();
                                 }
                             }).setDoFuckCancelSend(new Orders.DoFuck() {
                                 @Override
                                 public void doFuck(Object o) {
+                                    adapter.notifyDataSetChanged();
                                     popOrderRequest.dismiss();
                                 }
                             }));
@@ -802,6 +809,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                             orders.cancelGive(id, new KeyUtuil.Builder().setDoFuckSureSend(new Orders.DoFuck() {
                                 @Override
                                 public void doFuck(Object o) {
+                                    orderInfo.setMesg(sendOrders);
                                     sendOrds();
                                     popOrderRequest.dismiss();
                                 }
@@ -814,6 +822,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                             }).setDoFuckCancelUnsend(new Orders.DoFuck() {
                                 @Override
                                 public void doFuck(Object o) {
+                                    adapter.notifyDataSetChanged();
                                     popOrderRequest.dismiss();
                                 }
                             }));
@@ -1082,7 +1091,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
             orderItemMesg.setMethod(orderItemMesg.getMethod().getText().toString() + "退菜：" + order.writeDish.get(id).getBackCount());
         }
         if (orderInfo != null) {
-            orderInfo.setMesg(order);
+            orderInfo.setMesg(OrderInfo2Fragment.this.order, sendOrders);
         }
     }
 
@@ -1103,7 +1112,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
             }
         }
         if (orderInfo != null) {
-            orderInfo.setMesg(order);
+            orderInfo.setMesg(OrderInfo2Fragment.this.order, sendOrders);
         }
     }
 
@@ -1396,7 +1405,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                 orders = order;
                 j = 0;
             }
-            if (orders.writeDish == null || position > orders.writeDish.size() - 1) {
+            if (orders.writeDish == null || position > orders.writeDish.size() + j - 1) {
                 isOrderWrite = false;
                 if (orders.writeDish == null) {
                     i = 0;

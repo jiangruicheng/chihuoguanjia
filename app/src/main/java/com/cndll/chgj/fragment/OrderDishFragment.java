@@ -675,7 +675,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             return;
         }
         if (orders.getOrders().size() != 0 || orders.writeDish.size() != 0) {
-            replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment(this), new OrderImpl());
+            //replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment(this), new OrderImpl());
             MainActivity.removeBackPressEvent(backPressEvent);
         }
     }
@@ -1194,7 +1194,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                         showMesg("还未点菜，不能修改");
                         return;
                     }
-                    replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment(OrderDishFragment.this), new OrderImpl());
+                   // replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment(OrderDishFragment.this), new OrderImpl());
                     MainActivity.removeBackPressEvent(backPressEvent);
                 }
             });

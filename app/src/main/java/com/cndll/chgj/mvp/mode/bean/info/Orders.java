@@ -228,7 +228,7 @@ public class Orders {
         this.disconut = disconut;
     }
 
-    List<ResponseGetCaipinList.DataBean.RemarkBean> allRemarklist;
+    public List<ResponseGetCaipinList.DataBean.RemarkBean> allRemarklist;
     private float disconut = 1;
 
     public List<ResponseGetCaipinList.DataBean.RemarkBean> getAllMethod() {

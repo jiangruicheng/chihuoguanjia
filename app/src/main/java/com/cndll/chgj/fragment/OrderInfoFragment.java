@@ -37,7 +37,6 @@ import com.cndll.chgj.mvp.mode.bean.response.ResponseGetDeskList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetOrder;
 import com.cndll.chgj.mvp.presenter.OrderPresenter;
 import com.cndll.chgj.mvp.presenter.impl.NoteImpl;
-import com.cndll.chgj.mvp.presenter.impl.OrderImpl;
 import com.cndll.chgj.mvp.view.OrderView;
 import com.cndll.chgj.util.LinearPagerLayoutManager;
 import com.cndll.chgj.util.PopUpViewUtil;
@@ -341,7 +340,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
             return;
         }
         if (order.getOrders().size() != 0 || order.writeDish.size() != 0) {
-            replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment((OrderDishFragment) fragmentList.get(fragmentList.size() - 2)), new OrderImpl());
+           // replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment((OrderDishFragment) fragmentList.get(fragmentList.size() - 2)), new OrderImpl());
         }
     }
 

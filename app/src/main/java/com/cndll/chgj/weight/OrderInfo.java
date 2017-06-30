@@ -65,6 +65,48 @@ public class OrderInfo {
 
     }
 
+    public void countAll(Orders order) {
+        count = 0;
+        allPrice = 0;
+        discountPrice = 0;
+        givePrice = 0;
+        lastPrice = 0;
+        allDiscountPrice = 0;
+        if (order == null) {
+            return;
+        }
+        List<Orders.Order> orders = order.getAll();
+        if (orders == null) {
+            return;
+        }
+        for (int i = 0; i < orders.size(); i++) {
+            count = count + orders.get(i).getCount() /*+ orders.get(i).getGiveCount()*/;
+            allPrice = allPrice + orders.get(i).getAllPrice();
+            if (orders.get(i).getItemsBean().getIs_discount().equals("0")) {
+                orders.get(i).getItemsBean().setZkmoney("0");
+            } else {
+                allDiscountPrice = allDiscountPrice + orders.get(i).getAllPrice();
+                orders.get(i).getItemsBean().setZkmoney(orders.get(i).getAllPrice() - (orders.get(i).getCount() /*- orders.get(i).getGiveCount()*/) * Float.valueOf(orders.get(i).getItemsBean().getPrice()) * order.getDisconut() + "");
+            }
+            orders.get(i).getItemsBean().setSmoney(orders.get(i).getGivePrice() + "");
+            givePrice = givePrice + orders.get(i).getGivePrice();
+        }
+        if (order.writeDish != null) {
+            List<Orders.Write> writes = new ArrayList<>(order.writeDish.values());
+            if (order.writeDish != null && order.writeDish.size() > 0) {
+                for (int i = 0; i < writes.size(); i++) {
+                    count = count + Float.valueOf(writes.get(i).getCount()) /*+ Float.valueOf(writes.get(i).getGiveCount())*/;
+                    allPrice = allPrice + Float.valueOf(writes.get(i).getAllPrice());
+                    givePrice = givePrice + Float.valueOf(writes.get(i).getGivePrice());
+                }
+            }
+        }
+        discountPrice = allDiscountPrice - allDiscountPrice * (order.getDisconut() != 0 ? order.getDisconut() : 1);
+        /*lastPrice = allPrice * order.getDisconut();*/
+        lastPrice = allPrice - discountPrice - givePrice;
+        lastPrice = Math.round(lastPrice);
+    }
+
     private void setM(Orders order) {
         if (order != null) {
             List<Orders.Order> orders = order.getAll();
@@ -139,7 +181,7 @@ public class OrderInfo {
         /*lastPrice = allPrice * order.getDisconut();*/
         lastPrice = allPrice - discountPrice - givePrice;
         lastPrice = Math.round(lastPrice);
-        setCount(count + "").setAllMoney(String.valueOf(allPrice)).setDiscount(discountPrice + "").setLastMoney(lastPrice + "").setGive(givePrice + "");
+        // setCount(count + "").setAllMoney(String.valueOf(allPrice)).setDiscount(discountPrice + "").setLastMoney(lastPrice + "").setGive(givePrice + "");
 
     }
 
