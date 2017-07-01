@@ -35,6 +35,7 @@ import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetDeskList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetOrder;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetSeting;
 import com.cndll.chgj.mvp.presenter.OrderPresenter;
 import com.cndll.chgj.mvp.presenter.impl.NoteImpl;
 import com.cndll.chgj.mvp.presenter.impl.OrderImpl;
@@ -342,6 +343,8 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
         }
         if (order.getOrders().size() != 0 || (order.writeDish == null ? false : order.writeDish.size() != 0)) {
             replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment((OrderDish2Fragment) fragmentList.get(fragmentList.size() - 2)), new OrderImpl());
+        } else {
+            showMesg("不存在未送单菜品，无需送单");
         }
     }
 
@@ -1029,11 +1032,12 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
         //order.isChange = true;
     }
 
-    private void printBackDesh(RequestPrintBackDesh requestPrintBackDesh) {
-        AppRequest.getAPI().printOrder(requestPrintBackDesh).
+    private void printBackDesh(final RequestPrintBackDesh requestPrintBackDesh) {
+        AppRequest.getAPI().getSetting(AppMode.getInstance().getUid(),
+                AppMode.getInstance().getMid()).
                 subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).
-                subscribe(new MObeserver(this) {
+                subscribe(new MObeserver(OrderInfo2Fragment.this) {
                     @Override
                     public void onCompleted() {
                         super.onCompleted();
@@ -1047,12 +1051,38 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                     @Override
                     public void onNext(BaseResponse baseResponse) {
                         super.onNext(baseResponse);
+
                         if (baseResponse.getCode() == 1) {
-                            isBackDesh = false;
-                            backDesh = null;
+                            ResponseGetSeting responseGetSeting = ((ResponseGetSeting) baseResponse);
+                            if (responseGetSeting.getData().getTcis_print().equals("1")) {
+                                AppRequest.getAPI().printOrder(requestPrintBackDesh).
+                                        subscribeOn(Schedulers.io()).
+                                        observeOn(AndroidSchedulers.mainThread()).
+                                        subscribe(new MObeserver(OrderInfo2Fragment.this) {
+                                            @Override
+                                            public void onCompleted() {
+                                                super.onCompleted();
+                                            }
+
+                                            @Override
+                                            public void onError(Throwable e) {
+                                                super.onError(e);
+                                            }
+
+                                            @Override
+                                            public void onNext(BaseResponse baseResponse) {
+                                                super.onNext(baseResponse);
+                                                if (baseResponse.getCode() == 1) {
+                                                    isBackDesh = false;
+                                                    backDesh = null;
+                                                }
+                                            }
+                                        });
+                            }
                         }
                     }
                 });
+
     }
 
     @Override

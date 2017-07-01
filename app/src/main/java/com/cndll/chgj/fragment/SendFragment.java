@@ -175,12 +175,9 @@ public class SendFragment extends BaseFragment implements OrderView {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (orderDishFragment.orders == null) {
-                    return;
-                }
                 showProg("");
                 orderDishFragment.orderInfolayout.setMesg(orderDishFragment.orders);
-                if (orderDishFragment.orderId == 0) {
+                if (orderDishFragment.orderId == 0 && orderDishFragment.orders != null) {
                     orderPresenter.sendOrder(new RequestOrder().
                             setItems(orderDishFragment.orders.getItems()).
                             setMid(AppMode.getInstance().getMid()).
@@ -200,7 +197,10 @@ public class SendFragment extends BaseFragment implements OrderView {
                         @Override
                         public void run() {
                             super.run();
-                            Orders orders;
+                            Orders orders = null;
+                            if (orderDishFragment.sendOrders == null) {
+                                return;
+                            }
                             if (orderDishFragment.orders != null) {
                                 orders = new Orders();
                                 if (orders.orders == null) {
@@ -222,8 +222,9 @@ public class SendFragment extends BaseFragment implements OrderView {
                                 orders.allRemarklist.addAll(orderDishFragment.sendOrders.getAllMethod());
                                 orders.setDisconut(orderDishFragment.sendOrders.getDisconut());
                             } else {
-                                return;
+                                orders = orderDishFragment.sendOrders;
                             }
+
                             orderDishFragment.orderInfolayout.countAll(orders);
                             orderPresenter.updateOreder(new RequestOrder().setId(orderDishFragment.orderId + "").
                                     setItems(orders.getItems()).
@@ -319,7 +320,7 @@ public class SendFragment extends BaseFragment implements OrderView {
                         setDate(time).
                         setSname("下单人：" + AppMode.getInstance().getUsername()).
                         setTabcode(orderDishFragment.tabname).
-                        setTitle("出品分单");
+                        setTitle("追加单");
                 Observable.from(orderList).subscribe(new Observer<Orders.Order>() {
                     @Override
                     public void onCompleted() {

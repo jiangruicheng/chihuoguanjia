@@ -132,6 +132,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
 
             }
         });
+        final PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -145,9 +146,10 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
                 caileiname = popCaileiListAdpater.getList().
                         get(position).getName();
                 title.setText("菜品" + "(" + caileiname + ")");
+                popUpViewUtil.dismiss();
             }
         });
-        PopUpViewUtil popUpViewUtil = PopUpViewUtil.getInstance();
+
         popUpViewUtil.setOnDismissAction(new PopUpViewUtil.OnDismissAction() {
             @Override
             public void onDismiss() {
@@ -159,7 +161,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
         locations[1] = locations[1] + rightText.getHeight();
         popUpViewUtil.popListWindow(rightText, view,
                 popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getWidth() / 3 * 2,
-                popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 10 * 4, Gravity.NO_GRAVITY, locations);
+                popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 10 * 3, Gravity.NO_GRAVITY, locations);
     }
 
     public interface MenuEvent {
@@ -391,7 +393,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
 
     @Override
     public void toast(String s) {
-
+        showToast(s);
     }
 
     MenuPresenter presenter;
@@ -536,6 +538,10 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
             save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (printer.getText().toString().equals("")) {
+                        toast("请选择打印机");
+                        return;
+                    }
                     if (position < 0) {
                         presenter.addCaipin(new RequestAddCaipin().setMid(AppMode.getInstance().getMid()).
                                 setUid(AppMode.getInstance().getUid()).
@@ -548,7 +554,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
                                 setIs_print(print.isLeftInt()).
                                 setCode(queryid.getText().toString()).
                                 setDc_id(((CaipinFragment) fragments.get(CAIPIN)).getDcId()));
-                                setData(-2);
+                        setData(-2);
                     } else {
                         presenter.updataCaipin(new RequestUpdaCaipin().setMid(AppMode.getInstance().getMid()).
                                 setUid(AppMode.getInstance().getUid()).

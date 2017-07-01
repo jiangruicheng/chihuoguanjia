@@ -85,7 +85,7 @@ public class Orders {
             public void onListerner() {
                 List<RequestPrintBackDesh.ItemsBean> backDesh = new ArrayList<RequestPrintBackDesh.ItemsBean>();
                 if (isWritDesh(id)) {
-                    StringBuffer mname = new StringBuffer("");
+                    StringBuffer mname = new StringBuffer("退1");
                     /*if (writeDish.get(id).getItemsBean().getRemarks() != null) {
                         for (int i = 0; i < writeDish.get(id).getItemsBean().getRemarks().size(); i++) {
                             mname.append(writeDish.get(id).getItemsBean().getRemarks().get(i).getName() + " " + writeDish.get(id).getItemsBean().getRemarks().get(i).getPrice());
@@ -98,7 +98,7 @@ public class Orders {
                             setM_name(mname.toString()));
                     writeDish.get(id).backDesh();
                 } else if (isOrderDesh(id)) {
-                    StringBuffer mname = new StringBuffer("");
+                    StringBuffer mname = new StringBuffer("退1");
                     /*if (orders.get(id).getItemsBean().getRemark() != null && orders.get(id).getItemsBean().getRemark().getRemarks() != null) {
                         for (int i = 0; i < orders.get(id).getItemsBean().getRemark().getRemarks().size(); i++) {
                             mname.append(orders.get(id).getItemsBean().getRemark().getRemarks().get(i).getName() + " " + orders.get(id).getItemsBean().getRemark().getRemarks().get(i).getPrice());

@@ -1,11 +1,13 @@
 package com.cndll.chgj.adapter;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cndll.chgj.R;
 import com.cndll.chgj.itemtouchhelperdemo.helper.OnStartDragListener;
@@ -33,6 +35,14 @@ public class CaipinFunctionListAdpater extends ListAdapter<ResponseMethod.DataBe
             public boolean onTouch(View v, MotionEvent event) {
                 mDragStartListener.onStartDrag(holder);
                 return false;
+            }
+        });
+        ((CaipinViewHolder) holder).handler.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast toast = Toast.makeText(v.getContext(), "拖动可以排序", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
             }
         });
         ((CaipinViewHolder) holder).name.setText(mitems.get(position).getName());

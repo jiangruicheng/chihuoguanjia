@@ -41,6 +41,7 @@ import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaipinList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetDeskList;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetOrder;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetSeting;
 import com.cndll.chgj.mvp.presenter.OrderPresenter;
 import com.cndll.chgj.mvp.presenter.impl.NoteImpl;
 import com.cndll.chgj.mvp.presenter.impl.OrderImpl;
@@ -599,6 +600,8 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
         }
         if (orders.getOrders().size() != 0 || (orders.writeDish == null ? false : orders.writeDish.size() != 0)) {
             replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment(this), new OrderImpl());
+        } else {
+            showMesg("不存在未送单菜品，无需送单");
         }
     }
 
@@ -836,11 +839,12 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
 
     private boolean isBackDesh;
 
-    private void printBackDesh(RequestPrintBackDesh requestPrintBackDesh) {
-        AppRequest.getAPI().printOrder(requestPrintBackDesh).
+    private void printBackDesh(final RequestPrintBackDesh requestPrintBackDesh) {
+        AppRequest.getAPI().getSetting(AppMode.getInstance().getUid(),
+                AppMode.getInstance().getMid()).
                 subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).
-                subscribe(new MObeserver(this) {
+                subscribe(new MObeserver(OrderDish2Fragment.this) {
                     @Override
                     public void onCompleted() {
                         super.onCompleted();
@@ -854,9 +858,34 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
                     @Override
                     public void onNext(BaseResponse baseResponse) {
                         super.onNext(baseResponse);
+
                         if (baseResponse.getCode() == 1) {
-                            isBackDesh = false;
-                            backDesh = null;
+                            ResponseGetSeting responseGetSeting = ((ResponseGetSeting) baseResponse);
+                            if (responseGetSeting.getData().getTcis_print().equals("1")) {
+                                AppRequest.getAPI().printOrder(requestPrintBackDesh).
+                                        subscribeOn(Schedulers.io()).
+                                        observeOn(AndroidSchedulers.mainThread()).
+                                        subscribe(new MObeserver(OrderDish2Fragment.this) {
+                                            @Override
+                                            public void onCompleted() {
+                                                super.onCompleted();
+                                            }
+
+                                            @Override
+                                            public void onError(Throwable e) {
+                                                super.onError(e);
+                                            }
+
+                                            @Override
+                                            public void onNext(BaseResponse baseResponse) {
+                                                super.onNext(baseResponse);
+                                                if (baseResponse.getCode() == 1) {
+                                                    isBackDesh = false;
+                                                    backDesh = null;
+                                                }
+                                            }
+                                        });
+                            }
                         }
                     }
                 });
@@ -875,7 +904,7 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
             showMesg("无打折权限");
             return;
         }
-        if (orders == null && orderId != 0) {
+        if ((orders == null || (orders.getOrders().size() == 0 || (orders.writeDish == null ? true : orders.writeDish.size() == 0))) && orderId != 0) {
             popUpkey(2, R.drawable.shape_bg_discount, R.drawable.shape_bg_mendian, "请输入折扣，例如8折则输入0.8", "撤销打折", "确定", new KeyWeight.OnKeyClick() {
                 @Override
                 public void onKeyCancel(String s) {
@@ -1024,7 +1053,7 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
     private OrderItemMesg orderItemMesglayout;
 
     private void back() {
-        if (orders == null) {
+        if ((orders == null || (orders.getOrders().size() == 0 && (orders.writeDish == null ? true : orders.writeDish.size() == 0)))) {
             popBackFragment();
             return;
         }

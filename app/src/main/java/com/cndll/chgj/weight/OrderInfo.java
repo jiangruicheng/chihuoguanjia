@@ -178,7 +178,10 @@ public class OrderInfo {
                 }
             }
         }
-        discountPrice = allDiscountPrice - allDiscountPrice * (order.getDisconut() != 0 ? order.getDisconut() : 1);
+        if (order != null)
+            discountPrice = (allDiscountPrice - givePrice) - (allDiscountPrice - givePrice) * (order.getDisconut() != 0 ? order.getDisconut() : 1);
+        discountPrice = (float) (Math.round(discountPrice * 100) / 100);
+
         /*lastPrice = allPrice * order.getDisconut();*/
         lastPrice = allPrice - discountPrice - givePrice;
         lastPrice = Math.round(lastPrice);

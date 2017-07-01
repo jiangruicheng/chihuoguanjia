@@ -19,12 +19,14 @@ package com.cndll.chgj.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.view.MotionEventCompat;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cndll.chgj.R;
 import com.cndll.chgj.itemtouchhelperdemo.helper.ItemTouchHelperAdapter;
@@ -87,6 +89,14 @@ public class CaiLeiListAdapter extends ListAdapter<ResponseGetCaileiList.DataBea
                     mDragStartListener.onStartDrag(holder);
                 }
                 return false;
+            }
+        });
+        ((ListItemViewHolder) holder).handleView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast toast = Toast.makeText(v.getContext(), "拖动可以排序", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
             }
         });
     }

@@ -1,5 +1,6 @@
 package com.cndll.chgj.adapter;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,10 +58,11 @@ public class PopCaileiListAdpater extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mendian_home, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
+        viewHolder.name.setTextColor(Color.BLACK);
         if (list != null) {
             viewHolder.name.setText(list.get(position).getName());
             viewHolder.number.setVisibility(View.GONE);
-            viewHolder.layout.setBackgroundResource(R.color.menuEditorItemTitle);
+            viewHolder.layout.setBackgroundResource(R.drawable.shape_verify_button);
         }
         return view;
     }
