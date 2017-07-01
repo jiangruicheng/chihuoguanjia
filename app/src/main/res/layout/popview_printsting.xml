@@ -16,7 +16,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="打印机名称" />
+            android:text="打印机名称"
+            android:textSize="@dimen/small_text" />
 
         <EditText
             android:id="@+id/print_name"
@@ -41,17 +42,17 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="打印机编号" />
+            android:text="打印机编号"
+            android:textSize="@dimen/small_text" />
 
         <EditText
             android:id="@+id/print_id"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="6dp"
-
             android:layout_weight="3"
             android:background="@drawable/shape_dialog_fillet_solid"
-            android:hint="请输入打印机编号"
+            android:hint="请查看打印机底部标签"
             android:textSize="@dimen/mid_text" />
     </LinearLayout>
 
@@ -66,7 +67,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="打印机KEY" />
+            android:text="打印机KEY"
+            android:textSize="@dimen/small_text" />
 
         <EditText
             android:id="@+id/print_key"
@@ -75,7 +77,7 @@
             android:layout_margin="6dp"
             android:layout_weight="3"
             android:background="@drawable/shape_dialog_fillet_solid"
-            android:hint="请输入打印机KEY"
+            android:hint="请查看打印机底部标签"
             android:textSize="@dimen/mid_text" />
     </LinearLayout>
 

@@ -258,7 +258,7 @@ public class OrderImpl implements OrderPresenter {
     public void removeOrder(final String id, String type) {
         view.showProg("");
         AppRequest.getAPI().
-                removerOrder(id, type).
+                removerOrder(id, type, AppMode.getInstance().getUsername()).
                 subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
                 subscribe(new MObeserver(view) {
                     @Override

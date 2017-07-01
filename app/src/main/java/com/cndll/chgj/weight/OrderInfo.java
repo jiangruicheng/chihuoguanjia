@@ -83,13 +83,21 @@ public class OrderInfo {
         for (int i = 0; i < orders.size(); i++) {
             count = count + orders.get(i).getCount() /*+ orders.get(i).getGiveCount()*/;
             allPrice = allPrice + orders.get(i).getAllPrice();
+            float discount = order.getDisconut();
+            if (order.getDisconut() == 1) {
+                discount = 0;
+            }
+            if (order.getDisconut() == 0) {
+                discount = 1;
+            }
             if (orders.get(i).getItemsBean().getIs_discount().equals("0")) {
                 orders.get(i).getItemsBean().setZkmoney("0");
             } else {
                 allDiscountPrice = allDiscountPrice + orders.get(i).getAllPrice();
-                orders.get(i).getItemsBean().setZkmoney(orders.get(i).getAllPrice() - (orders.get(i).getCount() /*- orders.get(i).getGiveCount()*/) * Float.valueOf(orders.get(i).getItemsBean().getPrice()) * order.getDisconut() + "");
+                orders.get(i).getItemsBean().setZkmoney(orders.get(i).getLastPrice() - (orders.get(i).getCount() - orders.get(i).getGiveCount()) * Float.valueOf(orders.get(i).getItemsBean().getPrice()) * discount + "");
             }
             orders.get(i).getItemsBean().setSmoney(orders.get(i).getGivePrice() + "");
+            orders.get(i).getItemsBean().setSalemoney(orders.get(i).getAllPrice() + "");
             givePrice = givePrice + orders.get(i).getGivePrice();
         }
         if (order.writeDish != null) {
@@ -117,13 +125,21 @@ public class OrderInfo {
                 for (int i = 0; i < orders.size(); i++) {
                     count = count + orders.get(i).getCount() /*+ orders.get(i).getGiveCount()*/;
                     allPrice = allPrice + orders.get(i).getAllPrice();
+                    float discount = order.getDisconut();
+                    if (order.getDisconut() == 1) {
+                        discount = 0;
+                    }
+                    if (order.getDisconut() == 0) {
+                        discount = 1;
+                    }
                     if (orders.get(i).getItemsBean().getIs_discount().equals("0")) {
                         orders.get(i).getItemsBean().setZkmoney("0");
                     } else {
                         allDiscountPrice = allDiscountPrice + orders.get(i).getAllPrice();
-                        orders.get(i).getItemsBean().setZkmoney(orders.get(i).getAllPrice() - (orders.get(i).getCount() /*- orders.get(i).getGiveCount()*/) * Float.valueOf(orders.get(i).getItemsBean().getPrice()) * order.getDisconut() + "");
+                        orders.get(i).getItemsBean().setZkmoney(orders.get(i).getLastPrice() - (orders.get(i).getCount() - orders.get(i).getGiveCount()) * Float.valueOf(orders.get(i).getItemsBean().getPrice()) * discount + "");
                     }
                     orders.get(i).getItemsBean().setSmoney(orders.get(i).getGivePrice() + "");
+                    orders.get(i).getItemsBean().setSalemoney(orders.get(i).getAllPrice() + "");
                     givePrice = givePrice + orders.get(i).getGivePrice();
                 }
                 if (order.writeDish != null) {
@@ -159,12 +175,20 @@ public class OrderInfo {
         for (int i = 0; i < orders.size(); i++) {
             count = count + orders.get(i).getCount() /*+ orders.get(i).getGiveCount()*/;
             allPrice = allPrice + orders.get(i).getAllPrice();
+            float discount = order.getDisconut();
+            if (order.getDisconut() == 1) {
+                discount = 0;
+            }
+            if (order.getDisconut() == 0) {
+                discount = 1;
+            }
             if (orders.get(i).getItemsBean().getIs_discount().equals("0")) {
                 orders.get(i).getItemsBean().setZkmoney("0");
             } else {
                 allDiscountPrice = allDiscountPrice + orders.get(i).getAllPrice();
-                orders.get(i).getItemsBean().setZkmoney(orders.get(i).getAllPrice() - (orders.get(i).getCount() /*- orders.get(i).getGiveCount()*/) * Float.valueOf(orders.get(i).getItemsBean().getPrice()) * order.getDisconut() + "");
+                orders.get(i).getItemsBean().setZkmoney(orders.get(i).getLastPrice() - (orders.get(i).getCount() - orders.get(i).getGiveCount()) * Float.valueOf(orders.get(i).getItemsBean().getPrice()) * discount + "");
             }
+            orders.get(i).getItemsBean().setSalemoney(orders.get(i).getAllPrice() + "");
             orders.get(i).getItemsBean().setSmoney(orders.get(i).getGivePrice() + "");
             givePrice = givePrice + orders.get(i).getGivePrice();
         }

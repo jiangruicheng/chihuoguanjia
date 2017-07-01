@@ -290,7 +290,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("order/modifyorder")
-    Observable<ResponseAddOrd> removerOrder(@Field("id") String id, @Field("type") String type);
+    Observable<ResponseAddOrd> removerOrder(@Field("id") String id, @Field("type") String type,@Field("payee") String name);
 
     @FormUrlEncoded
     @POST("order/modifyorder")

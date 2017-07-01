@@ -133,8 +133,7 @@ public class PrintReportFragment extends BaseFragment {
         } else {
             day = calendar.get(Calendar.DAY_OF_MONTH);
         }
-        stm = year + "-" + month + "-" + day;
-
+        stm = etm = year + "-" + month + "-" + day;
         title.setText("报表查询");
         WebSettings webSettings = webview.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -206,7 +205,9 @@ public class PrintReportFragment extends BaseFragment {
             public void onClick(View v) {
                 switch (mParam1) {
                     case "day":
-                        AppRequest.getAPI().printDayReport(AppMode.getInstance().getUid(), AppMode.getInstance().getMid(), stm, etm, AppMode.getInstance().getPrint_code()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(null) {
+                        AppRequest.getAPI().printDayReport(AppMode.getInstance().getUid(), AppMode.getInstance().getMid(),
+                                stm, etm, AppMode.getInstance().getPrint_code()).subscribeOn(Schedulers.io()).
+                                observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(null) {
                             @Override
                             public void onCompleted() {
                                 super.onCompleted();

@@ -904,7 +904,8 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
             showMesg("无打折权限");
             return;
         }
-        if ((orders == null || (orders.getOrders().size() == 0 || (orders.writeDish == null ? true : orders.writeDish.size() == 0))) && orderId != 0) {
+        //(order == null || (order.orders.size() == 0 && (order.writeDish == null ? true : (order.writeDish.size() == 0)))) && sendOrders != null
+        if ((orders == null || (orders.getOrders().size() == 0 && (orders.writeDish == null ? true : orders.writeDish.size() == 0))) && orderId != 0) {
             popUpkey(2, R.drawable.shape_bg_discount, R.drawable.shape_bg_mendian, "请输入折扣，例如8折则输入0.8", "撤销打折", "确定", new KeyWeight.OnKeyClick() {
                 @Override
                 public void onKeyCancel(String s) {
@@ -1534,11 +1535,17 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
 
     @Override
     public void sendSucc(int ord) {
+        if (backDesh == null) {
+            isBackDesh = false;
+            backDesh = null;
+            return;
+        }
         if (isBackDesh) {
             String date = DateFormatUtil.transForDate1(DateFormatUtil.currentTimeStamp());
             printBackDesh(new RequestPrintBackDesh().setSname(AppMode.getInstance().getUsername()).setTitle("退菜单").setDate(date).setTabcode(tabname).setItems(backDesh));
             return;
         }
+
         toast("修改成功");
         isSend = true;
     }

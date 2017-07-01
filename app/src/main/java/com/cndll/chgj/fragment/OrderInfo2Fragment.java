@@ -1023,7 +1023,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
 
     @Override
     public void sendSucc(int ord) {
-        if (isBackDesh) {
+        if (isBackDesh && backDesh != null) {
             String date = DateFormatUtil.transForDate1(DateFormatUtil.currentTimeStamp());
             printBackDesh(new RequestPrintBackDesh().setSname(AppMode.getInstance().getUsername()).setTitle("退菜单").setDate(date).setTabcode(tabname).setItems(backDesh));
             return;

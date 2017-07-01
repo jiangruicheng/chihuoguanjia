@@ -42,7 +42,7 @@
                 android:paddingLeft="8dp"
                 android:text="门店编号123455"
                 android:textColor="@android:color/holo_red_light"
-                android:textSize="10sp" />
+                android:textSize="@dimen/small_text" />
         </LinearLayout>
 
 

@@ -104,12 +104,17 @@ public class Orders {
                             mname.append(orders.get(id).getItemsBean().getRemark().getRemarks().get(i).getName() + " " + orders.get(id).getItemsBean().getRemark().getRemarks().get(i).getPrice());
                         }
                     }*/
-                    backDesh.add(new RequestPrintBackDesh.ItemsBean().setName(orders.get(id).getItemsBean().getName()).
-                            setMoney(orders.get(id).getItemsBean().getPrice()).
-                            setNum(/*order.getOrder(order.getCurrPosition()).getCount() +*/ "1").
-                            setUnit(orders.get(id).getItemsBean().getUnit()).
-                            setM_name(mname.toString()));
-                    orders.get(id).backDesh();
+                    if (orders.get(id).getItemsBean().getIs_print().equals("0")) {
+                        backDesh = null;
+                        orders.get(id).backDesh();
+                    } else {
+                        backDesh.add(new RequestPrintBackDesh.ItemsBean().setName(orders.get(id).getItemsBean().getName()).
+                                setMoney(orders.get(id).getItemsBean().getPrice()).
+                                setNum(/*order.getOrder(order.getCurrPosition()).getCount() +*/ "1").
+                                setUnit(orders.get(id).getItemsBean().getUnit()).
+                                setM_name(mname.toString()));
+                        orders.get(id).backDesh();
+                    }
                 }
                 if (null != doFuck)
                     doFuck.doFuck(backDesh);
@@ -470,7 +475,13 @@ public class Orders {
         }
 
         public float getGivePrice() {
-            return giveCount * Float.valueOf(itemsBean.getPrice());
+            float price = 0;
+            if (itemsBean.getRemarks() != null) {
+                for (int i = 0; i < itemsBean.getRemarks().size(); i++) {
+                    price = price + Float.valueOf(itemsBean.getRemarks().get(i).getPrice());
+                }
+            }
+            return giveCount * Float.valueOf(itemsBean.getPrice() + price);
         }
 
         public float getAllPrice() {
@@ -640,7 +651,25 @@ public class Orders {
         }
 
         public float getGivePrice() {
-            return giveCount * Float.valueOf(itemsBean.getPrice());
+            float remarkPrice = 0;
+            if (itemsBean.getRemark() != null && itemsBean.getRemark().getRemarks() != null) {
+                for (int i = 0; i < itemsBean.getRemark().getRemarks().size(); i++) {
+                    remarkPrice = remarkPrice + Float.valueOf(itemsBean.getRemark().getRemarks().get(i).getPrice());
+                }
+            }
+            return giveCount * ((Float.valueOf(itemsBean.getPrice())) + remarkPrice);
+        }
+
+        public float getLastPrice() {
+            float price = 0;
+            if (itemsBean.getRemark() != null && itemsBean.getRemark().getRemarks() != null)
+                for (int i = 0; i < itemsBean.getRemark().getRemarks().size(); i++) {
+                    if (itemsBean.getRemark().getRemarks().get(i).getPrice() != null && StringHelp.isFloat(itemsBean.getRemark().getRemarks().get(i).getPrice()))
+                        price = price + Float.valueOf(itemsBean.getRemark().getRemarks().get(i).getPrice());
+                }
+            //return (price + Float.valueOf(itemsBean.getPrice())) * count;
+            return (price + Float.valueOf(itemsBean.getPrice())) * (Float.valueOf(itemsBean.getCount()) - itemsBean.getGiveCount());
+
         }
 
         public float getAllPrice() {

@@ -334,8 +334,10 @@ public class SendFragment extends BaseFragment implements OrderView {
 
                     @Override
                     public void onNext(Orders.Order order) {
+                        if (order.getItemsBean().getIs_print().equals("0")) {
+                            return;
+                        }
                         List<RequestPrintBill.ItemsBean> item = new ArrayList<RequestPrintBill.ItemsBean>();
-
                         item.add(new RequestPrintBill.ItemsBean().
                                 setName(order.getItemsBean().getName()).
                                 setMoney(order.getItemsBean().getPrice()).
@@ -373,7 +375,7 @@ public class SendFragment extends BaseFragment implements OrderView {
                 }
                 Map<String, RequestPrintBill> prints = new ArrayMap<>();
                 for (Orders.Order o : orderList) {
-                    if (o.isSend) {
+                    if (o.isSend || o.getItemsBean().getIs_print().equals("0")) {
                         continue;
                     }
                     if (!prints.containsKey(o.getItemsBean().getMachine())) {

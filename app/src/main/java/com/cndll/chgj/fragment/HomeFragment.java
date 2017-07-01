@@ -236,8 +236,12 @@ public class HomeFragment extends BaseFragment implements HomeView {
         MesgShow.showMesg("", "4008 781 028", kefu, new MesgShow.OnButtonListener() {
             @Override
             public void onListerner() {
-                Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "4008781028"));//跳转到拨号界面，同时传递电话号码
-                startActivity(dialIntent);
+                try {
+                    Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "4008781028"));//跳转到拨号界面，同时传递电话号码
+                    startActivity(dialIntent);
+                } catch (Exception e) {
+
+                }
             }
         }, new MesgShow.OnButtonListener() {
             @Override

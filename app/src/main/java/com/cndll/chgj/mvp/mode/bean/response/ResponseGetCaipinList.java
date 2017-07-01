@@ -77,6 +77,14 @@ public class ResponseGetCaipinList extends BaseResponse {
             return this;
         }
 
+        public String getSalemoney() {
+            return salemoney;
+        }
+
+        public void setSalemoney(String salemoney) {
+            this.salemoney = salemoney;
+        }
+
         /**
          * id : 81
          * unit : 份
@@ -96,6 +104,7 @@ public class ResponseGetCaipinList extends BaseResponse {
          * name : 小炒肉
          * dc_id : 39
          */
+        private String salemoney;
         private float addCount;
         private String smoney;
         private String zkmoney;
