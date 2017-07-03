@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cndll.chgj.R;
+import com.cndll.chgj.RXbus.EventType;
+import com.cndll.chgj.RXbus.RxBus;
 import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.util.PrintUtil;
 
@@ -122,6 +124,34 @@ public class WebViewFragment extends BaseFragment {
                         }
                     }
                 }
+                back.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (fragmentList.get(fragmentList.size() - 3) instanceof OrderInfo2Fragment) {
+                            if (AppMode.getInstance().isDeskMode()) {
+                                popBackFragment();
+                                popBackFragment();
+                                popBackFragment();
+                                popBackFragment();
+                            } else {
+                                popBackFragment();
+                                popBackFragment();
+                                popBackFragment();
+                                RxBus.getDefault().post(new EventType().setType(EventType.RESET));
+                            }
+                        } else {
+                            if (AppMode.getInstance().isDeskMode()) {
+                                popBackFragment();
+                                popBackFragment();
+                                popBackFragment();
+                            } else {
+                                popBackFragment();
+                                popBackFragment();
+                                RxBus.getDefault().post(new EventType().setType(EventType.RESET));
+                            }
+                        }
+                    }
+                });
                 return super.shouldOverrideUrlLoading(view, url);
             }
 

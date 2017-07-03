@@ -216,7 +216,7 @@ public class CaiPinFunctionFragment extends BaseFragment<CaipinFunctionListAdpat
 
     @Override
     public void toast(String s) {
-
+        showToast(s);
     }
 
     DeshMethodPresenter presenter;

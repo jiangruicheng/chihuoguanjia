@@ -76,7 +76,7 @@ public class StaffFragment extends BaseFragment implements StaffView {
         popviewStaff.isDicount.setSelect(true);
         popviewStaff.isExcl.setSelect(true);
         popviewStaff.isOrder.setSelect(true);
-        popviewStaff.isOrder.setSelect(true);
+        popviewStaff.isRetrun.setSelect(true);
         popviewStaff.isGive.setSelect(true);
         popviewStaff.cancel.setOnClickListener(new View.OnClickListener() {
             @Override

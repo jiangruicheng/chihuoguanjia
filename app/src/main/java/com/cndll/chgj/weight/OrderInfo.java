@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import com.cndll.chgj.R;
 import com.cndll.chgj.mvp.mode.bean.info.Orders;
+import com.cndll.chgj.util.Arith;
 import com.cndll.chgj.util.StringHelp;
 
 import java.util.ArrayList;
@@ -57,10 +58,10 @@ public class OrderInfo {
             setM(sendOrder);
         }
         if (sendOrder != null)
-            discountPrice = (allDiscountPrice - givePrice) - (allDiscountPrice - givePrice) * (sendOrder.getDisconut() != 0 ? sendOrder.getDisconut() : 1);
-        discountPrice = (float) (Math.round(discountPrice * 100) / 100);
+            discountPrice = (float) Arith.sub((allDiscountPrice), (allDiscountPrice) * (sendOrder.getDisconut() != 0 ? sendOrder.getDisconut() : 1));
+        //  discountPrice = (float) (Math.round(discountPrice * 100) / 100);
         /*lastPrice = allPrice * order.getDisconut();*/
-        lastPrice = allPrice - discountPrice - givePrice;
+        lastPrice = (float) Arith.sub(Arith.sub(allPrice, discountPrice), discountPrice);
         lastPrice = Math.round(lastPrice);
         setCount(count + "").setAllMoney(String.valueOf(allPrice)).setDiscount(discountPrice + "").setLastMoney(lastPrice + "").setGive(givePrice + "");
 
@@ -81,8 +82,8 @@ public class OrderInfo {
             return;
         }
         for (int i = 0; i < orders.size(); i++) {
-            count = count + orders.get(i).getCount() /*+ orders.get(i).getGiveCount()*/;
-            allPrice = allPrice + orders.get(i).getAllPrice();
+            count = /*(float) Arith.add(count, orders.get(i).getCount());*/count + orders.get(i).getCount();
+            allPrice = /*(float) Arith.add(allPrice, orders.get(i).getAllPrice());*/allPrice + orders.get(i).getAllPrice();
             float discount = order.getDisconut();
             if (order.getDisconut() == 1) {
                 discount = 0;
@@ -93,7 +94,8 @@ public class OrderInfo {
             if (orders.get(i).getItemsBean().getIs_discount().equals("0")) {
                 orders.get(i).getItemsBean().setZkmoney("0");
             } else {
-                allDiscountPrice = allDiscountPrice + orders.get(i).getAllPrice();
+                allDiscountPrice = (float) Arith.add(allDiscountPrice, orders.get(i).getLastPrice());
+                // orders.get(i).getItemsBean().setZkmoney(Arith.sub(orders.get(i).getLastPrice(), Arith.mul(Arith.mul(Arith.sub(orders.get(i).getCount(), orders.get(i).getGiveCount()), Float.valueOf(orders.get(i).getItemsBean().getPrice())), discount)) + "");
                 orders.get(i).getItemsBean().setZkmoney(orders.get(i).getLastPrice() - (orders.get(i).getCount() - orders.get(i).getGiveCount()) * Float.valueOf(orders.get(i).getItemsBean().getPrice()) * discount + "");
             }
             orders.get(i).getItemsBean().setSmoney(orders.get(i).getGivePrice() + "");
@@ -135,7 +137,9 @@ public class OrderInfo {
                     if (orders.get(i).getItemsBean().getIs_discount().equals("0")) {
                         orders.get(i).getItemsBean().setZkmoney("0");
                     } else {
-                        allDiscountPrice = allDiscountPrice + orders.get(i).getAllPrice();
+                        // allDiscountPrice = (float) Arith.add(allDiscountPrice, orders.get(i).getLastPrice());
+                        // orders.get(i).getItemsBean().setZkmoney(Arith.sub(orders.get(i).getLastPrice(), Arith.mul(Arith.mul(Arith.sub(orders.get(i).getCount(), orders.get(i).getGiveCount()), Float.valueOf(orders.get(i).getItemsBean().getPrice())), discount)) + "");
+                        allDiscountPrice = allDiscountPrice + orders.get(i).getLastPrice();
                         orders.get(i).getItemsBean().setZkmoney(orders.get(i).getLastPrice() - (orders.get(i).getCount() - orders.get(i).getGiveCount()) * Float.valueOf(orders.get(i).getItemsBean().getPrice()) * discount + "");
                     }
                     orders.get(i).getItemsBean().setSmoney(orders.get(i).getGivePrice() + "");
@@ -185,8 +189,10 @@ public class OrderInfo {
             if (orders.get(i).getItemsBean().getIs_discount().equals("0")) {
                 orders.get(i).getItemsBean().setZkmoney("0");
             } else {
-                allDiscountPrice = allDiscountPrice + orders.get(i).getAllPrice();
-                orders.get(i).getItemsBean().setZkmoney(orders.get(i).getLastPrice() - (orders.get(i).getCount() - orders.get(i).getGiveCount()) * Float.valueOf(orders.get(i).getItemsBean().getPrice()) * discount + "");
+                allDiscountPrice = (float) Arith.add(allDiscountPrice, orders.get(i).getLastPrice());
+                orders.get(i).getItemsBean().setZkmoney(Arith.sub(orders.get(i).getLastPrice(), Arith.mul(Arith.mul(Arith.sub(orders.get(i).getCount(), orders.get(i).getGiveCount()), Float.valueOf(orders.get(i).getItemsBean().getPrice())), discount)) + "");
+                // allDiscountPrice = allDiscountPrice + orders.get(i).getLastPrice();
+                // orders.get(i).getItemsBean().setZkmoney(orders.get(i).getLastPrice() - (orders.get(i).getCount() - orders.get(i).getGiveCount()) * Float.valueOf(orders.get(i).getItemsBean().getPrice()) * discount + "");
             }
             orders.get(i).getItemsBean().setSalemoney(orders.get(i).getAllPrice() + "");
             orders.get(i).getItemsBean().setSmoney(orders.get(i).getGivePrice() + "");
@@ -202,9 +208,10 @@ public class OrderInfo {
                 }
             }
         }
-        if (order != null)
-            discountPrice = (allDiscountPrice - givePrice) - (allDiscountPrice - givePrice) * (order.getDisconut() != 0 ? order.getDisconut() : 1);
-        discountPrice = (float) (Math.round(discountPrice * 100) / 100);
+        if (order != null) {
+            discountPrice = (allDiscountPrice) - (allDiscountPrice) * (order.getDisconut() != 0 ? order.getDisconut() : 1);
+        }
+        //  discountPrice = (float) (Math.round(discountPrice * 100) / 100);
 
         /*lastPrice = allPrice * order.getDisconut();*/
         lastPrice = allPrice - discountPrice - givePrice;

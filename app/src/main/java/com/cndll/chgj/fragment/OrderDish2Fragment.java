@@ -184,6 +184,14 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
 
             @Override
             public void onKeySure(String s) {
+                if (orders == null || (orders.orders.size() == 0 && (orders.writeDish == null ? true : orders.writeDish.size() == 0))) {
+                    toast("请选菜");
+                    return;
+                }
+                if (s.equals("")) {
+                    toast("请输入桌牌号");
+                    return;
+                }
                 showProg("");
                 AppRequest.getAPI().sendOrd(new RequestOrder().
                         setItems(orders.getItems()).

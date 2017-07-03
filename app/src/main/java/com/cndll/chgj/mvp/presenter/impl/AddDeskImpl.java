@@ -73,6 +73,7 @@ public class AddDeskImpl implements AddDeskPresenter {
             public void onNext(BaseResponse baseResponse) {
                 super.onNext(baseResponse);
                 if (baseResponse.getCode() == 1) {
+                    view.toast("添加成功");
                     getDeskList(new RequestGetDeskList().setUid(AppMode.getInstance().getUid()).setMid(AppMode.getInstance().getMid()));
                 }
             }

@@ -69,6 +69,7 @@ public class DeshMethodImpl implements DeshMethodPresenter {
             public void onNext(BaseResponse baseResponse) {
                 super.onNext(baseResponse);
                 if (baseResponse.getCode() == 1) {
+                    view.toast("添加成功");
                     getDeshMethodList(new RequestGetMethodList().setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()));
                 }
             }

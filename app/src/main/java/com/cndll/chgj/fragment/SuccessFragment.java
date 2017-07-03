@@ -177,7 +177,7 @@ public class SuccessFragment extends BaseFragment {
     View.OnClickListener succListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (fragmentList.get(fragmentList.size() - 3) instanceof OrderInfoFragment) {
+            if (fragmentList.get(fragmentList.size() - 3) instanceof OrderInfo2Fragment) {
                 if (AppMode.getInstance().isDeskMode()) {
                     popBackFragment();
                     popBackFragment();

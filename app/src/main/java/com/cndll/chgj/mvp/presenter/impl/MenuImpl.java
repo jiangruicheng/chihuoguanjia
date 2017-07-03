@@ -142,6 +142,7 @@ public class MenuImpl implements MenuPresenter {
                     @Override
                     public void onNext(BaseResponse baseResponse) {
                         super.onNext(baseResponse);
+                        view.toast("添加成功");
                         getCaileiList(new RequestPrintList().setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()));
                     }
                 });
@@ -166,6 +167,7 @@ public class MenuImpl implements MenuPresenter {
                     @Override
                     public void onNext(BaseResponse baseResponse) {
                         super.onNext(baseResponse);
+                        view.toast("添加成功");
                         view.updataCaiPinList();
                     }
                 });

@@ -224,7 +224,7 @@ public class DeskEditorFragment extends BaseFragment<DeskListAdapter> implements
 
     @Override
     public void toast(String s) {
-
+        showToast(s);
     }
 
     private AddDeskPresenter presenter;

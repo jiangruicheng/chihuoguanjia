@@ -356,7 +356,12 @@ public class PaySwitchFragment extends BaseFragment {
                         super.onNext(baseResponse);
                         if (((ResponsePayStatue) baseResponse).getData() == 1) {
                             gotoWebView();
-                        } else {
+                        } else if (((ResponsePayStatue) baseResponse).getData() == -2) {
+                            replaceFragmentAddToBackStack(TurnToApplyPayFragment.newInstance(s, null), null);
+                        } else if (((ResponsePayStatue) baseResponse).getData() == 0) {
+                            showToast("支付申请审核中");
+                        } else if (((ResponsePayStatue) baseResponse).getData() == -1) {
+                            showToast("审核失败");
                             replaceFragmentAddToBackStack(TurnToApplyPayFragment.newInstance(s, null), null);
                         }
                     }

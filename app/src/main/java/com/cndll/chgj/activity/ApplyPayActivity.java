@@ -201,6 +201,7 @@ public class ApplyPayActivity extends AppCompatActivity {
                 return;
             }
         }
+        baseShowProg(sure);
         upLoadImage(0);
         upLoadImage(1);
         upLoadImage(2);
@@ -236,6 +237,32 @@ public class ApplyPayActivity extends AppCompatActivity {
     private void getImage() {
         SelectImage selectImage = new SelectImage();
         selectImage.init(sure);
+    }
+
+    PopUpViewUtil prog;
+
+    protected void baseShowProg(View location) {
+        if (prog == null) {
+            prog = PopUpViewUtil.getInstance();
+            prog.setOnDismissAction(new PopUpViewUtil.OnDismissAction() {
+                @Override
+                public void onDismiss() {
+                    prog = null;
+                }
+            });
+            View view = LayoutInflater.from(this).inflate(R.layout.progress, null, false);
+            prog.popListWindowNotOut(location, view, prog.getWindowManager(this).getDefaultDisplay().getWidth() / 7, prog.getWindowManager(this).getDefaultDisplay().getHeight() / 10, Gravity.CENTER, null);
+        }
+
+    }
+
+    protected boolean baseDisProg() {
+        if (prog != null) {
+            prog.dismiss();
+            prog = null;
+            return true;
+        }
+        return false;
     }
 
     BaseView baseview = new BaseView() {
@@ -326,11 +353,12 @@ public class ApplyPayActivity extends AppCompatActivity {
         File file = new File(paths[position]);
         parmes.put("fmd", toreRequestBody(Md5Utils.getFileMD5(file.getPath())));
         Log.i("MD5", file.getName() + ": " + Md5Utils.getFileMD5(file.getPath()));
-        String s = Md5Utils.getFileMD5(file.getPath());
+        final String s = Md5Utils.getFileMD5(file.getPath());
         parmes.put("file\";filename=\"" + file.getName(), RequestBody.create(MediaType.parse("image/jpg"), file));
         AppRequest.getAPI().uploadImage(parmes).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(baseview) {
             @Override
             public void onCompleted() {
+                baseDisProg();
                 super.onCompleted();
             }
 
@@ -347,6 +375,7 @@ public class ApplyPayActivity extends AppCompatActivity {
                     statue++;
                     if (statue == 3) {
                         statue = 0;
+                        baseShowProg(sure);
                         AppRequest.getAPI().uploadPayInfo(new RequestUpLoadPayInfo().
                                 setUid(AppMode.getInstance().getUid()).
                                 setMid(AppMode.getInstance().getMid()).
@@ -372,6 +401,7 @@ public class ApplyPayActivity extends AppCompatActivity {
                                     @Override
                                     public void onNext(BaseResponse baseResponse) {
                                         super.onNext(baseResponse);
+                                        baseDisProg();
                                         if (baseResponse.getCode() == 1) {
                                             Toast.makeText(ApplyPayActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
                                             ApplyPayActivity.this.finish();
