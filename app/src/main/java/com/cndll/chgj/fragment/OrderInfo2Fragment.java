@@ -1087,10 +1087,10 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
 
     @Override
     public void setOrder(ResponseGetOrder getOrder) {
-        if (order == null) {
+        if (sendOrders == null) {
             sendOrders = new Orders();
         } else {
-            if (order.writeDish != null) {
+            if (sendOrders.writeDish != null) {
                 sendOrders.writeDish.clear();
             }
             sendOrders.getOrders().clear();
