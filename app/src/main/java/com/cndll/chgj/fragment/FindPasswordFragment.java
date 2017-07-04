@@ -137,7 +137,7 @@ public class FindPasswordFragment extends BaseFragment {
                         replaceFragmentAddToBackStack(SuccessFragment.newInstance("密码重置", "密码重置成功"), null);
                         AppMode.getInstance().setUid("3");
                         AppMode.getInstance().setLoading(false);
-                        AppMode.getInstance().setMid("3");
+                        AppMode.getInstance().setMid("3").setMcode("");
                         AppMode.getInstance().setToken(null);
                     }
                 }

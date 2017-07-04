@@ -136,7 +136,12 @@ public class HomeFragment extends BaseFragment implements HomeView {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                AppMode.getInstance().setMid(mendianListAdpater.getList().get(position).getId());
+                AppMode.getInstance().setMid(mendianListAdpater.getList().get(position).getId()).setMcode(mendianListAdpater.getList().get(position).getCode());
+                SharedPreferences.Editor editor = getActivity().getSharedPreferences("CHGJ", Context.MODE_PRIVATE).edit();
+                editor.putString("mdname", mendianListAdpater.getList().get(position).getName());
+                editor.putString("mdcode", mendianListAdpater.getList().get(position).getCode());
+                editor.putString("mid", AppMode.getInstance().getMid());
+                editor.commit();
                 init();
                 popUpViewUtil.dismiss();
             }

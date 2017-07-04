@@ -139,7 +139,7 @@ public class ResetPasswordFragment extends BaseFragment {
                     replaceFragmentAddToBackStack(SuccessFragment.newInstance("修改密码", "修改成功"), null);
                     AppMode.getInstance().setUid("3");
                     AppMode.getInstance().setLoading(false);
-                    AppMode.getInstance().setMid("3");
+                    AppMode.getInstance().setMid("3").setMcode("");
                     AppMode.getInstance().setToken(null);
                 }
             }
