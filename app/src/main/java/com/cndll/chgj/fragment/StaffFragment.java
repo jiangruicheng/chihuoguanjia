@@ -227,7 +227,7 @@ public class StaffFragment extends BaseFragment implements StaffView {
 
     @Override
     public void toast(String s) {
-
+        showToast(s);
     }
 
     StaffPresenter presenter;
@@ -338,6 +338,7 @@ public class StaffFragment extends BaseFragment implements StaffView {
                         @Override
                         public void onClick(View v) {
                             presenter.deleteStaff(new RequestDeleteStaff().setStaff_uid(mitems.get(position).getId()));
+                            popviewStaff.dismiss();
                         }
                     });
                     popviewStaff.cancel.setOnClickListener(new View.OnClickListener() {

@@ -340,7 +340,7 @@ public class SendFragment extends BaseFragment implements OrderView {
                         List<RequestPrintBill.ItemsBean> item = new ArrayList<RequestPrintBill.ItemsBean>();
                         item.add(new RequestPrintBill.ItemsBean().
                                 setName(order.getItemsBean().getName()).
-                                setMoney(order.getItemsBean().getPrice()).
+                                setMoney((Float.valueOf(order.getItemsBean().getPrice()) + getMethodPrice(order)) * order.getItemsBean().getAddCount() + "").
                                 setNum(order.getItemsBean().getAddCount() + "").
                                 setUnit(order.getItemsBean().getUnit()).
                                 setM_name(getMethodName(order)).
@@ -392,7 +392,7 @@ public class SendFragment extends BaseFragment implements OrderView {
                                     setName(o.getItemsBean().getName()).
                                     setUnit(o.getItemsBean().getUnit()).
                                     setNum(o.getItemsBean().getAddCount() + "").
-                                    setMoney(o.getItemsBean().getPrice()).setM_name(getMethodName(o)).setMachine(o.getItemsBean().getMachine()));
+                                    setMoney((Float.valueOf(o.getItemsBean().getPrice()) + getMethodPrice(o)) * o.getItemsBean().getAddCount() + "").setM_name(getMethodName(o)).setMachine(o.getItemsBean().getMachine()));
                 }
                 prints.values();
                 Observable.from(new ArrayList<RequestPrintBill>(prints.values())).subscribe(new Observer<RequestPrintBill>() {
@@ -440,7 +440,7 @@ public class SendFragment extends BaseFragment implements OrderView {
             if (w.isSend) {
 
             } else {
-                printBill.getItems().add(new RequestPrintBill.ItemsBean().setUnit(w.getItemsBean().getUnit()).setName(w.getItemsBean().getName()).setNum(w.getItemsBean().getCount()).setMoney(w.getItemsBean().getPrice()));
+                printBill.getItems().add(new RequestPrintBill.ItemsBean().setUnit(w.getItemsBean().getUnit()).setName(w.getItemsBean().getName()).setNum(w.getItemsBean().getCount()).setMoney(w.getAllPrice() + ""));
             }
         }
         AppRequest.getAPI().printAddOrder(printBill).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ResponseCailei>() {
@@ -465,6 +465,17 @@ public class SendFragment extends BaseFragment implements OrderView {
     public void onResume() {
         super.onResume();
 
+    }
+
+    private float getMethodPrice(Orders.Order o) {
+        float price = 0;
+        if (o.getItemsBean().getRemark() != null && o.getItemsBean().getRemark().getRemarks() != null) {
+            for (ResponseMethod.DataBean m : o.getItemsBean().getRemark().getRemarks()) {
+                price = price + Float.valueOf(m.getPrice());
+            }
+
+        }
+        return price;
     }
 
     private String getMethodName(Orders.Order o) {

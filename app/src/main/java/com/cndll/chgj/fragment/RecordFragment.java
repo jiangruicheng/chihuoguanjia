@@ -19,7 +19,6 @@ import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.mode.bean.request.RequestGetMethodList;
 import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseAppRecord;
-import com.cndll.chgj.mvp.mode.bean.response.ResponseRecord;
 import com.cndll.chgj.mvp.presenter.BasePresenter;
 import com.cndll.chgj.mvp.view.BaseView;
 
@@ -208,7 +207,7 @@ public class RecordFragment extends BaseFragment {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             long lt = new Long(mitems.get(position).getCre_tm());
             Date date = new Date(lt);
-            viewHolder.time.setText(simpleDateFormat.format(date));
+            viewHolder.time.setText(mitems.get(position).getTm_txt());
             return convertView;
         }
 

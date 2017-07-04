@@ -241,7 +241,7 @@ public interface Api {
     Observable<ResponseOrd> updateCaipin(@Body RequestUpdaCaipin requestGetCaipinList);
 
     @POST("Dish/deldc")
-    Observable<ResponseOrd> deleteCailei(@Body RequestDeleteCailei requestGetCaipinList);
+    Observable<ResponseCailei> deleteCailei(@Body RequestDeleteCailei requestGetCaipinList);
 
     @POST("Dish/deldish")
     Observable<ResponseCailei> deleteCaipin(@Body RequestDeleteCaipin requestGetCaipinList);

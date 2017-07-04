@@ -93,6 +93,7 @@ public class StaffImpl implements StaffPresenter {
                 if (baseResponse.getCode() == 1) {
                     getStaffList(new RequestPrintList().setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()));
                 }
+                view.toast(baseResponse.getExtra());
             }
         });
     }
