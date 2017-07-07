@@ -83,7 +83,7 @@ public class SetingFragment extends BaseFragment {
         AppRequest.getAPI().setting(AppMode.getInstance().getUid(),
                 AppMode.getInstance().getMid(),
                 backSet.isLeftInt() + "", printset,
-                discountSet.isLeftInt() + "").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(baseView) {
+                String.valueOf(discountSet.isLeftInt() == 1 ? 0 : 1)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(baseView) {
             @Override
             public void onCompleted() {
                 super.onCompleted();
