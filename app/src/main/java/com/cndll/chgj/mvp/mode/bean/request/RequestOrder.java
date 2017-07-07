@@ -65,8 +65,8 @@ public class RequestOrder extends BaseRequest {
     private String ssmoney;
     private String cre_tm;
     private Object e_tm;
-    private Object paytype;
-    private Object tcmoney;
+    private String paytype;
+    private String tcmoney;
     private String tab_id;
     private String ordernum;
     private Object ym;
@@ -221,11 +221,11 @@ public class RequestOrder extends BaseRequest {
         return this;
     }
 
-    public Object getPaytype() {
+    public String getPaytype() {
         return paytype;
     }
 
-    public RequestOrder setPaytype(Object paytype) {
+    public RequestOrder setPaytype(String paytype) {
         this.paytype = paytype;
         return this;
     }
@@ -234,7 +234,7 @@ public class RequestOrder extends BaseRequest {
         return tcmoney;
     }
 
-    public RequestOrder setTcmoney(Object tcmoney) {
+    public RequestOrder setTcmoney(String tcmoney) {
         this.tcmoney = tcmoney;
         return this;
     }
@@ -702,6 +702,16 @@ public class RequestOrder extends BaseRequest {
 
         private String backCount;
 
+        public float getFoodBackPrice() {
+            return foodBackPrice;
+        }
+
+        public WriteDishBean setFoodBackPrice(float foodBackPrice) {
+            this.foodBackPrice = foodBackPrice;
+            return this;
+        }
+
+        private float foodBackPrice;
     }
 
     public static class AllremarksBean {

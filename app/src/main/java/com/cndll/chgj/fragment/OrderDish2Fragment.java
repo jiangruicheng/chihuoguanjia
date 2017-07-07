@@ -886,10 +886,13 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
 
                                             @Override
                                             public void onNext(BaseResponse baseResponse) {
-                                                super.onNext(baseResponse);
+                                                //super.onNext(baseResponse);
                                                 if (baseResponse.getCode() == 1) {
                                                     isBackDesh = false;
                                                     backDesh = null;
+                                                    toast("打印成功");
+                                                }else {
+                                                    toast("打印机故障");
                                                 }
                                             }
                                         });
@@ -1595,7 +1598,7 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
                             setE_tm(responseOrd.getData().getE_tm()).
                             setOrdernum(responseOrd.getData().getOrdernum()).
                             setOrdnum(responseOrd.getData().getOrdnum()).
-                            setYm(responseOrd.getData().getYm()).
+                            setYm(responseOrd.getData().getYm()).setTcmoney(sendOrders.getTCprice()).
                             setWritedishs(sendOrders.getWriteDish())/*.
                             setAllremarks(orders.getAllMethod())
                             .setStorename(responseOrd.getData().getStorename())

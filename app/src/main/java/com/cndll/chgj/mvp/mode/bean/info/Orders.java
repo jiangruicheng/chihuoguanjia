@@ -85,36 +85,43 @@ public class Orders {
             public void onListerner() {
                 List<RequestPrintBackDesh.ItemsBean> backDesh = new ArrayList<RequestPrintBackDesh.ItemsBean>();
                 if (isWritDesh(id)) {
-                    StringBuffer mname = new StringBuffer("退1");
+                    float bc = 0;
                     /*if (writeDish.get(id).getItemsBean().getRemarks() != null) {
                         for (int i = 0; i < writeDish.get(id).getItemsBean().getRemarks().size(); i++) {
                             mname.append(writeDish.get(id).getItemsBean().getRemarks().get(i).getName() + " " + writeDish.get(id).getItemsBean().getRemarks().get(i).getPrice());
                         }
                     }*/
+                    writeDish.get(id).backDesh();
+                    StringBuffer mname = new StringBuffer("退" + StringHelp.float2Int(bc + ""));
                     backDesh.add(new RequestPrintBackDesh.ItemsBean().setName(writeDish.get(id).getItemsBean().getName()).
                             setMoney(writeDish.get(id).getItemsBean().getPrice()).
                             setNum(/*order.writeDish.get(order.getCurrPosition()).getCount() +*/ "1").
                             setUnit("盘").
                             setM_name(mname.toString()));
-                    writeDish.get(id).backDesh();
+
+                    writeDish.get(id).getItemsBean().setFoodBackPrice(Float.valueOf(writeDish.get(id).getAllMethodPrice()) + Float.valueOf(writeDish.get(id).getItemsBean().getPrice()) * bc);
                 } else if (isOrderDesh(id)) {
-                    StringBuffer mname = new StringBuffer("退1");
+                    StringBuffer mname = new StringBuffer("");
                     /*if (orders.get(id).getItemsBean().getRemark() != null && orders.get(id).getItemsBean().getRemark().getRemarks() != null) {
                         for (int i = 0; i < orders.get(id).getItemsBean().getRemark().getRemarks().size(); i++) {
                             mname.append(orders.get(id).getItemsBean().getRemark().getRemarks().get(i).getName() + " " + orders.get(id).getItemsBean().getRemark().getRemarks().get(i).getPrice());
                         }
                     }*/
+                    float bc = 0;
                     if (orders.get(id).getItemsBean().getIs_print().equals("0")) {
                         backDesh = null;
-                        orders.get(id).backDesh();
+                        bc = orders.get(id).backDesh();
                     } else {
+                        bc = orders.get(id).backDesh();
+                        mname.append("退" + StringHelp.float2Int(String.valueOf(bc)));
                         backDesh.add(new RequestPrintBackDesh.ItemsBean().setName(orders.get(id).getItemsBean().getName()).
                                 setMoney(orders.get(id).getItemsBean().getPrice()).
                                 setNum(/*order.getOrder(order.getCurrPosition()).getCount() +*/ "1").
                                 setUnit(orders.get(id).getItemsBean().getUnit()).
                                 setM_name(mname.toString()));
-                        orders.get(id).backDesh();
+
                     }
+                    orders.get(id).getItemsBean().setFoodBackPrice(orders.get(id).getItemsBean().getFoodBackPrice() + Float.valueOf(orders.get(id).getAllMethodPrice()) + Float.valueOf(orders.get(id).getItemsBean().getPrice()) * bc);
                 }
                 if (null != doFuck)
                     doFuck.doFuck(backDesh);
@@ -270,6 +277,19 @@ public class Orders {
 
     String currPosition;
 
+    public String getTCprice() {
+        float price = 0;
+        if (writeDish != null) {
+            for (int i = 0; i < writeDish.size(); i++) {
+                price = price + writeDish.get(writeDish.keyAt(i)).getItemsBean().getFoodBackPrice();
+            }
+        }
+        for (int i = 0; i < orders.size(); i++) {
+            price = price + orders.get(orders.keyAt(i)).getItemsBean().getFoodBackPrice();
+        }
+        return price + "";
+    }
+
     public void setOrders(String id, Order order) {
         orders.put(id, order);
         order.orders = this;
@@ -411,7 +431,7 @@ public class Orders {
 
         public float backCountOnce = 0;
 
-        public void backDesh() {
+        public float backDesh() {
 
             if (count - giveCount > 0) {
                 if (count - giveCount > 0 && count - giveCount < 1) {
@@ -430,6 +450,7 @@ public class Orders {
             itemsBean.setGiveCount((int) giveCount + "");
             itemsBean.setCount(count + "");
             orders.isChange = true;
+            return backCountOnce;
         }
 
         public Write cancelGive() {
@@ -469,6 +490,16 @@ public class Orders {
                 return itemsBean.getRemarks().get(0).getName();
             }
             return "";
+        }
+
+        public String getAllMethodPrice() {
+            float price = 0;
+            if (itemsBean.getRemarks() != null && itemsBean.getRemarks().size() > 0) {
+                for (int i = 0; i < itemsBean.getRemarks().size(); i++) {
+                    price = price + Float.valueOf(itemsBean.getRemarks().get(i).getPrice());
+                }
+            }
+            return price + "";
         }
 
         public String getMethodPrice() {
@@ -544,7 +575,7 @@ public class Orders {
 
         public float backCountOnce = 0;
 
-        public void backDesh() {
+        public float backDesh() {
             backCountOnce = 0;
             if (count - giveCount > 0) {
                 if (count - giveCount > 0 && count - giveCount < 1) {
@@ -564,6 +595,7 @@ public class Orders {
             itemsBean.setGiveCount((int) giveCount);
             itemsBean.setCount(count + "");
             orders.isChange = true;
+            return backCountOnce;
         }
 
         public float getCount() {
@@ -645,6 +677,16 @@ public class Orders {
                 return itemsBean.getRemark().getRemarks().get(0).getName();
             }
             return "";
+        }
+
+        public String getAllMethodPrice() {
+            float price = 0;
+            if (itemsBean.getRemark() != null && itemsBean.getRemark().getRemarks() != null && itemsBean.getRemark().getRemarks().size() > 0) {
+                for (int i = 0; i < itemsBean.getRemark().getRemarks().size(); i++) {
+                    price = price + Float.valueOf(itemsBean.getRemark().getRemarks().get(i).getPrice());
+                }
+            }
+            return price + "";
         }
 
         public String getMethodPrice() {

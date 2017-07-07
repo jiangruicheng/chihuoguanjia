@@ -892,7 +892,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                             setOrdnum(responseOrd.getData().getOrdnum()).
                             setYm(responseOrd.getData().getYm()).
                             setWritedishs(sendOrders.getWriteDish()).
-                            setAllremarks(sendOrders.getAllMethod())
+                            setAllremarks(sendOrders.getAllMethod()).setTcmoney(sendOrders.getTCprice())
                             .setStorename(responseOrd.getData().getStorename())
                             .setType_txt(responseOrd.getData().getType_txt())
                     , type);
@@ -1050,7 +1050,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
 
                     @Override
                     public void onNext(BaseResponse baseResponse) {
-                        super.onNext(baseResponse);
+                        //super.onNext(baseResponse);
 
                         if (baseResponse.getCode() == 1) {
                             ResponseGetSeting responseGetSeting = ((ResponseGetSeting) baseResponse);
@@ -1075,6 +1075,8 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                                                 if (baseResponse.getCode() == 1) {
                                                     isBackDesh = false;
                                                     backDesh = null;
+                                                } else {
+                                                    toast("打印机故障");
                                                 }
                                             }
                                         });

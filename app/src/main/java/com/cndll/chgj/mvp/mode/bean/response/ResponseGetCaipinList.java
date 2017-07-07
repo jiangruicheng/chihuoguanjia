@@ -127,6 +127,17 @@ public class ResponseGetCaipinList extends BaseResponse {
         private String name;
         private String dc_id;
 
+        public float getFoodBackPrice() {
+            return foodBackPrice;
+        }
+
+        public DataBean setFoodBackPrice(float foodBackPrice) {
+            this.foodBackPrice = foodBackPrice;
+            return this;
+        }
+
+        private float foodBackPrice;
+
         public String getBackCount() {
             return backCount;
         }
