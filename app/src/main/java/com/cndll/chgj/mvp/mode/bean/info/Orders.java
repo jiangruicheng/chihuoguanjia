@@ -310,8 +310,12 @@ public class Orders {
                     float back3 = back1 + back2;
                     itemsBeen.get(j).setCount(Float.valueOf(orderList.get(i).getItemsBean().getCount()) + Float.valueOf(itemsBeen.get(j).getCount()) + "").
                             setGiveCount(orderList.get(i).getItemsBean().getGiveCount() + itemsBeen.get(j).getGiveCount()).
-                            setAddCount(orderList.get(i).getItemsBean().getAddCount() + itemsBeen.get(j).getAddCount()).
-                            setBackCount(back3 + "");
+                            setAddCount(orderList.get(i).getItemsBean().getAddCount() + itemsBeen.get(j).getAddCount());
+                    if (back3 != 0) {
+                        itemsBeen.get(j).setBackCount(back3 + "");
+                    }
+                    itemsBeen.get(j).setSalemoney(String.valueOf(Float.valueOf(itemsBeen.get(j).getSalemoney()) + Float.valueOf(orderList.get(i).getItemsBean().getSalemoney())));
+                    itemsBeen.get(j).setSmoney(itemsBeen.get(j).getGiveCount() * Float.valueOf(itemsBeen.get(j).getPrice()) + "");
                     isADD = true;
                 }
             }

@@ -119,7 +119,7 @@ public class BillItemFragment extends BaseFragment {
         print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppRequest.getAPI().printBill(mParam2, AppMode.getInstance().getPrint_code(), AppMode.getInstance().getUsername()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(null) {
+                AppRequest.getAPI().printBill(mParam2, AppMode.getInstance().getPrint_code()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(null) {
                     @Override
                     public void onCompleted() {
                         super.onCompleted();

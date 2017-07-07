@@ -122,36 +122,37 @@ public class WebViewFragment extends BaseFragment {
                             PrintUtil printUtil = new PrintUtil();
                             printUtil.printSetting(orderID);
                         }
+                        back.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (fragmentList.get(fragmentList.size() - 3) instanceof OrderInfo2Fragment) {
+                                    if (AppMode.getInstance().isDeskMode()) {
+                                        popBackFragment();
+                                        popBackFragment();
+                                        popBackFragment();
+                                        popBackFragment();
+                                    } else {
+                                        popBackFragment();
+                                        popBackFragment();
+                                        popBackFragment();
+                                        RxBus.getDefault().post(new EventType().setType(EventType.RESET));
+                                    }
+                                } else {
+                                    if (AppMode.getInstance().isDeskMode()) {
+                                        popBackFragment();
+                                        popBackFragment();
+                                        popBackFragment();
+                                    } else {
+                                        popBackFragment();
+                                        popBackFragment();
+                                        RxBus.getDefault().post(new EventType().setType(EventType.RESET));
+                                    }
+                                }
+                            }
+                        });
                     }
                 }
-                back.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (fragmentList.get(fragmentList.size() - 3) instanceof OrderInfo2Fragment) {
-                            if (AppMode.getInstance().isDeskMode()) {
-                                popBackFragment();
-                                popBackFragment();
-                                popBackFragment();
-                                popBackFragment();
-                            } else {
-                                popBackFragment();
-                                popBackFragment();
-                                popBackFragment();
-                                RxBus.getDefault().post(new EventType().setType(EventType.RESET));
-                            }
-                        } else {
-                            if (AppMode.getInstance().isDeskMode()) {
-                                popBackFragment();
-                                popBackFragment();
-                                popBackFragment();
-                            } else {
-                                popBackFragment();
-                                popBackFragment();
-                                RxBus.getDefault().post(new EventType().setType(EventType.RESET));
-                            }
-                        }
-                    }
-                });
+
                 return super.shouldOverrideUrlLoading(view, url);
             }
 

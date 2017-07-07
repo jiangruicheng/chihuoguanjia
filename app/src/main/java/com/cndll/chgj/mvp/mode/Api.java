@@ -140,7 +140,6 @@ public interface Api {
     @FormUrlEncoded
     @POST("Print/printorder")
     Observable<ResponseCailei> printBill(@Field("id") String id,
-                                         @Field("printer") String name,
                                          @Field("print_id") String print_id);
 
     @FormUrlEncoded
@@ -235,7 +234,7 @@ public interface Api {
     Observable<ResponseCailei> addCaipin(@Body RequestAddCaipin requestGetCaipinList);
 
     @POST("Dish/updc")
-    Observable<ResponseOrd> updateCailei(@Body RequestUpdaCailei requestGetCaipinList);
+    Observable<ResponseCailei> updateCailei(@Body RequestUpdaCailei requestGetCaipinList);
 
     @POST("Dish/updish")
     Observable<ResponseOrd> updateCaipin(@Body RequestUpdaCaipin requestGetCaipinList);
@@ -276,7 +275,7 @@ public interface Api {
     @POST("table/addtable")
     Observable<ResponseCailei> addDesk(@Body RequestAddDesk requestAddCailei);
 
-    @POST("table/uptableord")
+    @POST("table/uptable")
     Observable<ResponseCailei> updatDesk(@Body RequestUpdaDesk requestAddCailei);
 
     @POST("table/deltable")
@@ -290,7 +289,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("order/modifyorder")
-    Observable<ResponseAddOrd> removerOrder(@Field("id") String id, @Field("type") String type,@Field("payee") String name);
+    Observable<ResponseAddOrd> removerOrder(@Field("id") String id, @Field("type") String type, @Field("payee") String name);
 
     @FormUrlEncoded
     @POST("order/modifyorder")

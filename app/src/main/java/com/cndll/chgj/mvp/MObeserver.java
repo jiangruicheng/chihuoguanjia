@@ -28,6 +28,8 @@ public class MObeserver implements Observer<BaseResponse> {
     public void onError(Throwable e) {
         // view.showMesg(e.toString());
         e.printStackTrace();
+        if (view != null)
+            view.showMesg("网络链接错误");
     }
 
     @Override

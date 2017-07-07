@@ -825,7 +825,7 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
     private void printOrders() {
         showProg("");
         toast("正在打印");
-        AppRequest.getAPI().printBill(orderId + "", AppMode.getInstance().getPrint_code(), AppMode.getInstance().getUsername()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(OrderDish2Fragment.this) {
+        AppRequest.getAPI().printBill(orderId + "", AppMode.getInstance().getPrint_code()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(OrderDish2Fragment.this) {
             @Override
             public void onCompleted() {
                 super.onCompleted();

@@ -119,9 +119,11 @@ public class SuccessFragment extends BaseFragment {
         switch (mParam1) {
             case "3":
                 title.setText("现金收款");
+                pay();
                 break;
             case "4":
                 title.setText("刷卡收款");
+                pay();
                 break;
             default:
                 title.setText(mParam1);
@@ -146,7 +148,7 @@ public class SuccessFragment extends BaseFragment {
                 }
             });
         }
-        pay();
+        // pay();
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -255,7 +257,7 @@ public class SuccessFragment extends BaseFragment {
                     isplay = true;
                     if (!AppMode.getInstance().isDeskMode()) {
                         PrintUtil printUtil = new PrintUtil();
-                       printUtil.printSetting(orderID);
+                        printUtil.printSetting(orderID);
                     }
                 } else {
                     image.setImageResource(R.mipmap.fail);

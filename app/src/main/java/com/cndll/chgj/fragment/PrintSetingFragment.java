@@ -82,6 +82,19 @@ public class PrintSetingFragment extends BaseFragment implements PrintView {
         printPopView.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (printPopView.name.getText().toString().equals("")) {
+                    showMesg("打印机名字不能为空");
+                    return;
+                }
+                if (printPopView.id.getText().toString().equals("")) {
+                    showMesg("打印机编号不能为空");
+                    return;
+                }
+                if (printPopView.key.getText().toString().equals("")) {
+                    showMesg("打印机key不能为空");
+                    return;
+                }
+
                 presenter.addPrint(new RequestAddPrint().
                         setCode(printPopView.id.getText().toString()).
                         setKey(printPopView.key.getText().toString()).
@@ -351,9 +364,11 @@ public class PrintSetingFragment extends BaseFragment implements PrintView {
 
                         @Override
                         public void afterTextChanged(Editable s) {
-                            printPopView.name.removeTextChangedListener(textWatcher);
-                            printPopView.name.setText(s1);
-                            printPopView.name.addTextChangedListener(textWatcher);
+                            if (items.get(position).getIs_default().equals("1")) {
+                                printPopView.name.removeTextChangedListener(textWatcher);
+                                printPopView.name.setText(s1);
+                                printPopView.name.addTextChangedListener(textWatcher);
+                            }
                         }
                     };
                     printPopView.name.addTextChangedListener(textWatcher);
@@ -368,6 +383,19 @@ public class PrintSetingFragment extends BaseFragment implements PrintView {
                     printPopView.save.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            if (printPopView.name.getText().toString().equals("")) {
+                                showMesg("打印机名字不能为空");
+                                return;
+                            }
+                            if (printPopView.id.getText().toString().equals("")) {
+                                showMesg("打印机编号不能为空");
+                                return;
+                            }
+                            if (printPopView.key.getText().toString().equals("")) {
+                                showMesg("打印机key不能为空");
+                                return;
+                            }
+
                             presenter.updatePrint(new RequestUpdatePrint().
                                     setCode(printPopView.id.getText().toString()).
                                     setKey(printPopView.key.getText().toString()).
