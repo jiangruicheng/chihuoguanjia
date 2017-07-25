@@ -316,11 +316,7 @@ public class SendFragment extends BaseFragment implements OrderView {
         List<Orders.Write> writeList;
         switch (type) {
             case 1:
-                final RequestPrintBill request = new RequestPrintBill().
-                        setDate(time).
-                        setSname("下单人：" + AppMode.getInstance().getUsername()).
-                        setTabcode(orderDishFragment.tabname).
-                        setTitle("追加单");
+
                 Observable.from(orderList).subscribe(new Observer<Orders.Order>() {
                     @Override
                     public void onCompleted() {
@@ -345,26 +341,37 @@ public class SendFragment extends BaseFragment implements OrderView {
                                 setUnit(order.getItemsBean().getUnit()).
                                 setM_name(getMethodName(order)).
                                 setMachine(order.getItemsBean().getMachine()));
+                        RequestPrintBill request = new RequestPrintBill().
+                                setDate(time).
+                                setSname("下单人：" + AppMode.getInstance().getUsername()).
+                                setTabcode(orderDishFragment.tabname).
+                                setTitle("追加单");
                         request.setItems(item);
                         if (order.isSend) {
 
                         } else {
-                            AppRequest.getAPI().printAddOrder(request).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ResponseCailei>() {
-                                @Override
-                                public void onCompleted() {
+                            AppRequest.getAPI().
+                                    printAddOrder(request).
+                                    subscribeOn(Schedulers.io()).
+                                    observeOn(AndroidSchedulers.mainThread()).
+                                    subscribe(new Observer<ResponseCailei>() {
+                                        @Override
+                                        public void onCompleted() {
 
-                                }
+                                        }
 
-                                @Override
-                                public void onError(Throwable e) {
-                                    e.printStackTrace();
-                                }
+                                        @Override
+                                        public void onError(Throwable e) {
+                                            e.printStackTrace();
+                                        }
 
-                                @Override
-                                public void onNext(ResponseCailei responseCailei) {
-                                    RxBus.getDefault().post(new EventType().setType(EventType.SHOW).setExtra(responseCailei.getExtra()));
-                                }
-                            });
+                                        @Override
+                                        public void onNext(ResponseCailei responseCailei) {
+                                            RxBus.getDefault().post(new EventType().
+                                                    setType(EventType.SHOW).
+                                                    setExtra(responseCailei.getExtra()));
+                                        }
+                                    });
                         }
                     }
                 });
@@ -408,22 +415,26 @@ public class SendFragment extends BaseFragment implements OrderView {
                     @Override
                     public void onNext(RequestPrintBill requestPrintBill) {
                         requestPrintBill.setDate(time).setSname("下单人：" + AppMode.getInstance().getUsername()).setTabcode(orderDishFragment.tabname).setTitle("追加单");
-                        AppRequest.getAPI().printAddOrder(requestPrintBill).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ResponseCailei>() {
-                            @Override
-                            public void onCompleted() {
+                        AppRequest.getAPI().
+                                printAddOrder(requestPrintBill).
+                                subscribeOn(Schedulers.io()).
+                                observeOn(AndroidSchedulers.mainThread()).
+                                subscribe(new Observer<ResponseCailei>() {
+                                    @Override
+                                    public void onCompleted() {
 
-                            }
+                                    }
 
-                            @Override
-                            public void onError(Throwable e) {
+                                    @Override
+                                    public void onError(Throwable e) {
 
-                            }
+                                    }
 
-                            @Override
-                            public void onNext(ResponseCailei responseCailei) {
-                                RxBus.getDefault().post(new EventType().setExtra(responseCailei.getExtra()).setType(EventType.SHOW));
-                            }
-                        });
+                                    @Override
+                                    public void onNext(ResponseCailei responseCailei) {
+                                        RxBus.getDefault().post(new EventType().setExtra(responseCailei.getExtra()).setType(EventType.SHOW));
+                                    }
+                                });
                     }
                 });
 
