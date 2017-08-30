@@ -700,7 +700,7 @@ public class Orders {
             float remarkPrice = 0;
             if (itemsBean.getRemark() != null && itemsBean.getRemark().getRemarks() != null) {
                 for (int i = 0; i < itemsBean.getRemark().getRemarks().size(); i++) {
-                    remarkPrice = remarkPrice + Float.valueOf(itemsBean.getRemark().getRemarks().get(i).getPrice());
+                    remarkPrice = remarkPrice + (StringHelp.isFloat(itemsBean.getRemark().getRemarks().get(i).getPrice()) ? Float.valueOf(itemsBean.getRemark().getRemarks().get(i).getPrice()) : 0);
                 }
             }
             return giveCount * ((Float.valueOf(itemsBean.getPrice())) + remarkPrice);

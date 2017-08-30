@@ -783,11 +783,11 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
                             showMesg("请输入菜品名字");
                             return;
                         }
-                        if (number.getText().toString() == null || name.getText().toString().equals("")) {
+                        if (number.getText().toString() == null || number.getText().toString().equals("")) {
                             showMesg("请输入菜品数量");
                             return;
                         }
-                        if (price.getText().toString() == null || name.getText().toString().equals("")) {
+                        if (price.getText().toString() == null || price.getText().toString().equals("")) {
                             showMesg("请输入菜品价格");
                             return;
                         }
@@ -891,7 +891,7 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
                                                     isBackDesh = false;
                                                     backDesh = null;
                                                     toast("打印成功");
-                                                }else {
+                                                } else {
                                                     toast("打印机故障");
                                                 }
                                             }
@@ -1319,7 +1319,7 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
 
     private void setOrderInfolayout(String id, boolean iswrite) {
         if (iswrite) {
-            if ((orders.writeDish == null || orders.writeDish.size() == 0) && (sendOrders.writeDish == null || sendOrders.writeDish.size() == 0)) {
+            if ((orders == null || orders.writeDish == null || orders.writeDish.size() == 0) && (sendOrders.writeDish == null || sendOrders.writeDish.size() == 0)) {
                 setOrderInfolayout(id);
                 return;
             }

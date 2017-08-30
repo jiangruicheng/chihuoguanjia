@@ -207,10 +207,19 @@ public class NoteFragment extends BaseFragment implements NoteView {
         });
         allMethodAdapter = new AllMethodAdapter();
         selectMethodAdapter = new SelectMethodAdapter();
-        if (order.getItemsBean().getRemark() == null) {
-            currItems = null;
-        } else {
-            currItems = new ArrayList<>(order.getItemsBean().getRemark().getRemarks());
+        if (order != null) {
+            if (order.getItemsBean().getRemark() == null) {
+                currItems = null;
+            } else {
+                currItems = new ArrayList<>(order.getItemsBean().getRemark().getRemarks());
+            }
+        }
+        if (write != null) {
+            if (write.getItemsBean().getRemarks() == null || write.getItemsBean().getRemarks().size() == 0) {
+                currItems = null;
+            } else {
+                currItems = new ArrayList<>(write.getItemsBean().getRemarks());
+            }
         }
         if (currItems != null) {
             selectMethodAdapter.setMitems(currItems);

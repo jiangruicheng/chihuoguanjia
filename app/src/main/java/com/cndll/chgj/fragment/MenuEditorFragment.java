@@ -477,7 +477,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
                 printer.setText("");
                 queryid.setText("");
                 dazhe.setLeft(true);
-                over.setLeft(false);
+                over.setLeft(true);
                 print.setLeft(true);
                 return;
             }
