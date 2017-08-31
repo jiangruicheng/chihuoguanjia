@@ -318,7 +318,7 @@
                     android:layout_weight="4"
                     android:background="@null"
                     android:gravity="center_vertical"
-                    android:hint="YYYYMMDD,例20171231"
+                    android:hint="YYYYMMDD,例20171231,长期填写29991231"
                     android:paddingLeft="4dp"
                     android:textSize="12sp" />
             </LinearLayout>

@@ -194,6 +194,10 @@ public interface Api {
     @GET("Area/getarealist")
     Observable<ResponseArea> getArea();
 
+    @FormUrlEncoded
+    @POST("Area/getarealist")
+    Observable<ResponseArea> getBankArea(@Field("type") String type);
+
     @GET("Store/getstlist")
     Observable<ResponseStoreTye> getStoreType();
 

@@ -102,9 +102,7 @@ public class ApplyPayActivity extends AppCompatActivity {
     @OnClick(R.id.storyID)
     void onclick_storyID() {
         if (parentBankID.equals("")) {
-            Toast t = Toast.makeText(this, "请选择银行", Toast.LENGTH_SHORT);
-            t.setGravity(Gravity.CENTER, 0, 0);
-            t.show();
+            MesgShow.showMesg("", "请选择银行", sure, null, null, false);
             return;
         }
         AppRequest.getAPI().getBranchBankList("0", parentBankID).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(baseview) {
@@ -210,7 +208,7 @@ public class ApplyPayActivity extends AppCompatActivity {
     @OnClick(R.id.bank_adrress)
     void onclick_bankadrress() {
 
-        AppRequest.getAPI().getArea().map(new Func1<ResponseArea, ResponseArea>() {
+        AppRequest.getAPI().getBankArea("payapply").map(new Func1<ResponseArea, ResponseArea>() {
             @Override
             public ResponseArea call(ResponseArea responseArea) {
                 List<ResponseArea.DataBean> counAddresses = responseArea.getData();
@@ -497,6 +495,8 @@ public class ApplyPayActivity extends AppCompatActivity {
                                         if (baseResponse.getCode() == 1) {
                                             makeText(ApplyPayActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
                                             ApplyPayActivity.this.finish();
+                                        } else {
+                                            MesgShow.showMesg("", baseResponse.extra, sure, null, null, false);
                                         }
                                     }
                                 });
