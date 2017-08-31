@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.cndll.chgj.R;
 import com.cndll.chgj.RXbus.EventType;
 import com.cndll.chgj.RXbus.RxBus;

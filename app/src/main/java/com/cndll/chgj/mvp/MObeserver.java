@@ -45,7 +45,7 @@ public class MObeserver implements Observer<BaseResponse> {
             RxBus.getDefault().post(new EventType().setType(EventType.BACKKEY));
             return;
         }
-        if (baseResponse.getCode() != 1 && view != null) {
+        if ((baseResponse.getCode() != 1 && baseResponse.getCode() != 200) && view != null) {
             view.showMesg(baseResponse.getExtra());
         }
     }

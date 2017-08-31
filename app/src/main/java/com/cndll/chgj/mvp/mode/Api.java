@@ -42,6 +42,7 @@ import com.cndll.chgj.mvp.mode.bean.response.ResponseAddPrint;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseAppRecord;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseArea;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseBank;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseBranchBank;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseCailei;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseDeletePrint;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseGetBillList;
@@ -158,11 +159,16 @@ public interface Api {
                                               @Field("etm") String etm,
                                               @Field("print_id") String print_id);
 
-    @POST("System/payapply")
+    @POST("index.php/Home/System/payapply")
     Observable<ResponseCailei> uploadPayInfo(@Body RequestUpLoadPayInfo info);
 
-    @POST("system/getbanklist")
-    Observable<ResponseBank> getBankList();
+    @FormUrlEncoded
+    @POST("/index.php/Home/Area/getBankList")
+    Observable<ResponseBank> getBankList(@Field("citycode") String code);
+
+    @FormUrlEncoded
+    @POST("/index.php/Home/Area/getBranchBank")
+    Observable<ResponseBranchBank> getBranchBankList(@Field("citycode") String code, @Field("parent_bank_no") String bank);
 
     @FormUrlEncoded
     @POST("System/advset")

@@ -4,7 +4,7 @@ package com.cndll.chgj.mvp.mode.bean.request;
  * Created by kongqing on 2017/5/16.
  */
 
-public class RequestUpLoadPayInfo extends BaseRequest{
+public class RequestUpLoadPayInfo extends BaseRequest {
     String code;
     String province_id;
     String city_id;
@@ -17,6 +17,127 @@ public class RequestUpLoadPayInfo extends BaseRequest{
     String cert_1;
     String cert_2;
     String cert_3;
+    String bank_no;
+
+    public String getBank_no() {
+        return bank_no;
+    }
+
+    public RequestUpLoadPayInfo setBank_no(String bank_no) {
+        this.bank_no = bank_no;
+        return this;
+    }
+
+    public String getBank_name() {
+        return bank_name;
+    }
+
+    public RequestUpLoadPayInfo setBank_name(String bank_name) {
+        this.bank_name = bank_name;
+        return this;
+    }
+
+    public String getMerchant_name() {
+        return merchant_name;
+    }
+
+    public RequestUpLoadPayInfo setMerchant_name(String merchant_name) {
+        this.merchant_name = merchant_name;
+        return this;
+    }
+
+    public String getMerchant_alias() {
+        return merchant_alias;
+    }
+
+    public RequestUpLoadPayInfo setMerchant_alias(String merchant_alias) {
+        this.merchant_alias = merchant_alias;
+        return this;
+    }
+
+    public String getMerchant_company() {
+        return merchant_company;
+    }
+
+    public RequestUpLoadPayInfo setMerchant_company(String merchant_company) {
+        this.merchant_company = merchant_company;
+        return this;
+    }
+
+    public String getMerchant_address() {
+        return merchant_address;
+    }
+
+    public RequestUpLoadPayInfo setMerchant_address(String merchant_address) {
+        this.merchant_address = merchant_address;
+        return this;
+    }
+
+    public String getMerchant_province_code() {
+        return merchant_province_code;
+    }
+
+    public RequestUpLoadPayInfo setMerchant_province_code(String merchant_province_code) {
+        this.merchant_province_code = merchant_province_code;
+        return this;
+    }
+
+    public String getMerchant_city_code() {
+        return merchant_city_code;
+    }
+
+    public RequestUpLoadPayInfo setMerchant_city_code(String merchant_city_code) {
+        this.merchant_city_code = merchant_city_code;
+        return this;
+    }
+
+    public String getMerchant_email() {
+        return merchant_email;
+    }
+
+    public RequestUpLoadPayInfo setMerchant_email(String merchant_email) {
+        this.merchant_email = merchant_email;
+        return this;
+    }
+
+    public String getMerchant_id_no() {
+        return merchant_id_no;
+    }
+
+    public RequestUpLoadPayInfo setMerchant_id_no(String merchant_id_no) {
+        this.merchant_id_no = merchant_id_no;
+        return this;
+    }
+
+    public String getMerchant_id_expire() {
+        return merchant_id_expire;
+    }
+
+    public RequestUpLoadPayInfo setMerchant_id_expire(String merchant_id_expire) {
+        this.merchant_id_expire = merchant_id_expire;
+        return this;
+    }
+
+    public String getAccount_name() {
+        return account_name;
+    }
+
+    public RequestUpLoadPayInfo setAccount_name(String account_name) {
+        this.account_name = account_name;
+        return this;
+    }
+
+    String bank_name;
+    String merchant_name;
+    String merchant_alias;
+    String merchant_company;
+    String merchant_address;
+    String merchant_province_code;
+    String merchant_city_code;
+    String merchant_email;
+    String merchant_id_no;
+    String merchant_id_expire;
+    String account_name;
 
     public String getCode() {
         return code;

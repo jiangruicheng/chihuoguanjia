@@ -32,6 +32,7 @@ import com.cndll.chgj.mvp.mode.bean.request.RequestUpLoadPayInfo;
 import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseArea;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseBank;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseBranchBank;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseUploadImage;
 import com.cndll.chgj.mvp.presenter.BasePresenter;
 import com.cndll.chgj.mvp.view.BaseView;
@@ -59,6 +60,8 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
+import static android.widget.Toast.makeText;
+
 public class ApplyPayActivity extends AppCompatActivity {
 
     @BindView(R.id.back)
@@ -76,19 +79,35 @@ public class ApplyPayActivity extends AppCompatActivity {
     @BindView(R.id.idcard_face)
     ImageView idcardFace;
     @BindView(R.id.storyID)
-    EditText storyID;
-    @BindView(R.id.tel)
-    EditText tel;
-    @BindView(R.id.bankcard)
-    EditText bankcard;
-    @BindView(R.id.bankcard_username)
-    EditText bankcardUsername;
-    @BindView(R.id.bank_name)
-    TextView bankName;
+    TextView storyID;
+    @BindView(R.id.textView16)
+    TextView textView16;
+    @BindView(R.id.textView15)
+    TextView textView15;
+    @BindView(R.id.email)
+    EditText email;
+    @BindView(R.id.id_card)
+    EditText idCard;
+    @BindView(R.id.idcard_time)
+    EditText idcardTime;
+    @BindView(R.id.cast)
+    EditText cast;
+    @BindView(R.id.address)
+    EditText address;
+    @BindView(R.id.shop_name)
+    EditText shopName;
+    @BindView(R.id.shop_nick)
+    EditText shopNick;
 
-    @OnClick(R.id.bank_name)
-    void onclick_bankname() {
-        AppRequest.getAPI().getBankList().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(baseview) {
+    @OnClick(R.id.storyID)
+    void onclick_storyID() {
+        if (parentBankID.equals("")) {
+            Toast t = Toast.makeText(this, "请选择银行", Toast.LENGTH_SHORT);
+            t.setGravity(Gravity.CENTER, 0, 0);
+            t.show();
+            return;
+        }
+        AppRequest.getAPI().getBranchBankList("0", parentBankID).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(baseview) {
             @Override
             public void onCompleted() {
                 super.onCompleted();
@@ -102,14 +121,72 @@ public class ApplyPayActivity extends AppCompatActivity {
             @Override
             public void onNext(final BaseResponse baseResponse) {
                 super.onNext(baseResponse);
-                if (baseResponse.getCode() == 1) {
+                if (baseResponse.getCode() == 200) {
                     final OptionPickView optionPickView = new OptionPickView(ApplyPayActivity.this);
-                    optionPickView.setOptionItem(((ResponseBank) baseResponse).getData());
+                    ArrayList<String> bankname = new ArrayList<String>();
+                    for (int i = 0; i < ((ResponseBranchBank) baseResponse).getData().size(); i++) {
+                        bankname.add(((ResponseBranchBank) baseResponse).getData().get(i).getBank_name());
+                    }
+                    optionPickView.setOptionItem(bankname);
                     optionPickView.setLooper(false, false);
                     optionPickView.setOnOptionPickViewSelect(new OptionPickView.OnOptionPickViewSelect() {
                         @Override
                         public void onSelect(int sheng, int shi) {
-                            bankName.setText(((ResponseBank) baseResponse).getData().get(sheng));
+                            storyID.setText(((ResponseBranchBank) baseResponse).getData().get(sheng).getBank_name());
+                            branhBankNo = ((ResponseBranchBank) baseResponse).getData().get(sheng).getBank_no();
+                        }
+
+                        @Override
+                        public void onCancel() {
+
+                        }
+                    });
+                    optionPickView.show();
+
+                }
+            }
+        });
+    }
+
+    @BindView(R.id.tel)
+    EditText tel;
+    @BindView(R.id.bankcard)
+    EditText bankcard;
+    @BindView(R.id.bankcard_username)
+    EditText bankcardUsername;
+    @BindView(R.id.bank_name)
+    TextView bankName;
+    String parentBankID = "";
+
+    @OnClick(R.id.bank_name)
+    void onclick_bankname() {
+        AppRequest.getAPI().getBankList("0").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(baseview) {
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+            }
+
+            @Override
+            public void onNext(final BaseResponse baseResponse) {
+                super.onNext(baseResponse);
+                if (baseResponse.getCode() == 200) {
+                    final OptionPickView optionPickView = new OptionPickView(ApplyPayActivity.this);
+                    ArrayList<String> bankname = new ArrayList<String>();
+                    for (int i = 0; i < ((ResponseBank) baseResponse).getData().size(); i++) {
+                        bankname.add(((ResponseBank) baseResponse).getData().get(i).getParent_bank_name());
+                    }
+                    optionPickView.setOptionItem(bankname);
+                    optionPickView.setLooper(false, false);
+                    optionPickView.setOnOptionPickViewSelect(new OptionPickView.OnOptionPickViewSelect() {
+                        @Override
+                        public void onSelect(int sheng, int shi) {
+                            bankName.setText(((ResponseBank) baseResponse).getData().get(sheng).getParent_bank_name());
+                            parentBankID = ((ResponseBank) baseResponse).getData().get(sheng).getParent_bank_no();
                         }
 
                         @Override
@@ -306,6 +383,7 @@ public class ApplyPayActivity extends AppCompatActivity {
     private int imagePosition;
     private String[] imageData = new String[3];
     private int statue = 0;
+    private String branhBankNo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -323,7 +401,7 @@ public class ApplyPayActivity extends AppCompatActivity {
     }
 
     private File getTempImage(int position) {
-        if (android.os.Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             File tempFile = null;
             switch (position) {
                 case 0:
@@ -384,7 +462,21 @@ public class ApplyPayActivity extends AppCompatActivity {
                                 setBankaddress(bankName.getText().toString() + "-" + storyID.getText().toString()).
                                 setCode(AppMode.getInstance().getMcode()).
                                 setTel(tel.getText().toString()).
-                                setName(bankcardUsername.getText().toString()).setCert_1(imageData[0]).setCert_2(imageData[1]).setCert_3(imageData[2])).
+                                setName(bankcardUsername.getText().toString()).setCert_1(imageData[0]).setCert_2(imageData[1]).setCert_3(imageData[2])
+                                .setBank_no(branhBankNo).
+                                        setBank_name(storyID.getText().toString()).
+                                        setMerchant_name(shopName.getText().toString()).
+                                        setMerchant_alias(shopNick.getText().toString()).
+                                        setMerchant_company(cast.getText().toString()).
+                                        setMerchant_address(address.getText().toString()).
+                                        setMerchant_province_code(sheng + "").
+                                        setMerchant_city_code(shi + "").
+                                        setMerchant_email(email.getText().toString()).
+                                        setMerchant_id_no(idCard.getText().toString()).
+                                        setMerchant_id_expire(idcardTime.getText().toString()).
+                                        setAccount_name(bankcardUsername.getText().toString())
+
+                        ).
                                 subscribeOn(Schedulers.io()).
                                 observeOn(AndroidSchedulers.mainThread()).
                                 subscribe(new MObeserver(baseview) {
@@ -403,7 +495,7 @@ public class ApplyPayActivity extends AppCompatActivity {
                                         super.onNext(baseResponse);
                                         baseDisProg();
                                         if (baseResponse.getCode() == 1) {
-                                            Toast.makeText(ApplyPayActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
+                                            makeText(ApplyPayActivity.this, "提交成功", Toast.LENGTH_SHORT).show();
                                             ApplyPayActivity.this.finish();
                                         }
                                     }
