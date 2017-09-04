@@ -1,6 +1,8 @@
 package com.cndll.chgj.fragment;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -59,6 +61,14 @@ public class SetingFragment extends BaseFragment {
     Unbinder unbinder;
     @BindView(R.id.payapp)
     TextView payapp;
+    @BindView(R.id.textView7)
+    TextView textView7;
+    @BindView(R.id.left)
+    TextView left;
+    @BindView(R.id.right)
+    TextView right;
+    @BindView(R.id.version)
+    TextView version;
 
     @OnClick(R.id.payapp)
     void onclick_payapp() {
@@ -187,6 +197,14 @@ public class SetingFragment extends BaseFragment {
         View view3 = view.findViewById(R.id.discount_set);
         backSet = new ButtonSwitch();
         printSet = new ButtonSwitch();
+        PackageManager manager = getContext().getPackageManager();
+        PackageInfo info = null;
+        try {
+            info = manager.getPackageInfo(getContext().getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        version.setText("当前版本号:" + info.versionName);
         discountSet = new ButtonSwitch();
         backSet.setText("是", "否");
         backSet.setTextColor(Color.WHITE, Color.BLACK);

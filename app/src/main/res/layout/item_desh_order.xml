@@ -22,8 +22,10 @@
         android:ellipsize="end"
         android:gravity="center_vertical|left"
         android:lines="2"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
         android:textColor="@color/black"
-        android:textSize="@dimen/mid_text" />
+        android:textSize="@dimen/small_text" />
 
     <TextView
         android:id="@+id/price"

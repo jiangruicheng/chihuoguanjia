@@ -199,7 +199,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 }
 
                 @Override
-                public void onKeySure(String s) {
+                public boolean onKeySure(String s) {
 
                     if (StringHelp.isFloat(s)) {
                         if (!isOrderWrite) {
@@ -211,7 +211,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                     }
 
 
-                }
+                return  true;}
 
                 @Override
                 public void onKeyNub(String s) {
@@ -242,7 +242,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
 
 
             @Override
-            public void onKeySure(String s) {
+            public boolean onKeySure(String s) {
                 showProg("");
                 AppRequest.getAPI().sendOrd(new RequestOrder().
                         setItems(orders.getItems()).
@@ -282,6 +282,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                     }
                 });
 
+                return true;
             }
 
             @Override
@@ -422,7 +423,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                             orders.writeDish.get(orders.getCurrPosition()).cancelGive();
                         }
                         popOrderRequest.dismiss();
-                         setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
+                        setOrderInfolayout(orders.getCurrPosition(), isOrderWrite);
                         sendOrds();
                     }
                 });
@@ -644,8 +645,8 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
             }
 
             @Override
-            public void onKeySure(String s) {
-
+            public boolean onKeySure(String s) {
+                return true;
             }
 
             @Override
@@ -961,7 +962,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                 }
 
                 @Override
-                public void onKeySure(String s) {
+                public boolean onKeySure(String s) {
 
                     if (StringHelp.isFloat(s)) {
                         if (Float.valueOf(s) <= 0.99 && Float.valueOf(s) >= 0.1) {
@@ -971,7 +972,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                         }
                     }
 
-
+                    return true;
                 }
 
                 @Override
@@ -1194,7 +1195,7 @@ public class OrderDishFragment extends BaseFragment implements OrderView {
                         showMesg("还未点菜，不能修改");
                         return;
                     }
-                   // replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment(OrderDishFragment.this), new OrderImpl());
+                    // replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment(OrderDishFragment.this), new OrderImpl());
                     MainActivity.removeBackPressEvent(backPressEvent);
                 }
             });

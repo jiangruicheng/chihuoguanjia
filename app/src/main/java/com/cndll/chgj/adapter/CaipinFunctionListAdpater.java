@@ -33,6 +33,12 @@ public class CaipinFunctionListAdpater extends ListAdapter<ResponseMethod.DataBe
         ((CaipinViewHolder) holder).handler.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                if (isToast) {
+                    Toast toast = Toast.makeText(v.getContext(), "拖动可以排序", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                    isToast = false;
+                }
                 mDragStartListener.onStartDrag(holder);
                 return false;
             }

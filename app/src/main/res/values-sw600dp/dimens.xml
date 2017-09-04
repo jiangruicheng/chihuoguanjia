@@ -28,9 +28,12 @@
     <dimen name="small_text">19sp</dimen>
     <dimen name="mid_text">22sp</dimen>
     <dimen name="big_text">34sp</dimen>
+    <dimen name="bb_text">48sp</dimen>
     <dimen name="button_text">39sp</dimen>
     <dimen name="pay_big">24sp</dimen>
     <dimen name="pay_mid">21sp</dimen>
     <dimen name="pay_small">18sp</dimen>
     <dimen name="pay_ssmall">16sp</dimen>
+    <dimen name="logo">128dp</dimen>
+
 </resources>

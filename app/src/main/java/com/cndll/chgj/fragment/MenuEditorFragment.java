@@ -247,10 +247,13 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
                 }
             }
         });
+        int[] locations = new int[2];
+        locations[0] = 0;
+        locations[1] = popUpViewUtil.getWindowManager(getActivity()).getDefaultDisplay().getHeight() / 2 - popUpViewUtil.getWindowManager(getActivity()).getDefaultDisplay().getHeight() / 5;
         popUpViewUtil.popListWindow(addCailei,
                 view,
                 popUpViewUtil.getWindowManager(getActivity()).getDefaultDisplay().getWidth(),
-                popUpViewUtil.getWindowManager(getActivity()).getDefaultDisplay().getHeight() / 10 * 2, Gravity.CENTER, null);
+                popUpViewUtil.getWindowManager(getActivity()).getDefaultDisplay().getHeight() / 12 * 3, Gravity.NO_GRAVITY, locations);
         showInput(name);
     }
 
@@ -576,8 +579,8 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
                 @Override
                 public void onClick(View v) {
                     final PopUpViewUtil popupSpinner = PopUpViewUtil.getInstance();
-                    View spinner_list = LayoutInflater.from(getContext()).inflate(R.layout.popview_spinner_list, null, false);
-                    arrayAdapter = new ArrayAdapter(getActivity(), R.layout.spinner_register_item, dataString);
+                    View spinner_list = LayoutInflater.from(getContext()).inflate(R.layout.popview_spinner_print_list, null, false);
+                    arrayAdapter = new ArrayAdapter(getActivity(), R.layout.spinner_print_item, dataString);
                     ListView spinnerItem = (ListView) spinner_list.findViewById(R.id.spinner);
                     spinnerItem.setAdapter(arrayAdapter);
                     spinnerItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -636,7 +639,7 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
                     popUpViewUtil.getWindowManager(
                             getActivity()).
                             getDefaultDisplay().
-                            getHeight() / 10 * 4, Gravity.CENTER, null);
+                            getHeight() / 10 * 5, Gravity.CENTER, null);
 
         }
     }

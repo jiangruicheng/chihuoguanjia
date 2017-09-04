@@ -31,8 +31,10 @@
         <ImageView
             android:layout_width="0dp"
             android:layout_height="match_parent"
+
             android:layout_weight="1"
-            android:scaleType="fitCenter"
+            android:padding="6dp"
+            android:scaleType="centerInside"
             android:src="@mipmap/xianjin" />
 
         <TextView
@@ -43,8 +45,9 @@
             android:gravity="center_vertical"
             android:padding="2dp"
             android:text="现金收款"
-            android:textSize="21sp" />
+            android:textSize="@dimen/mid_text" />
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -60,7 +63,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:scaleType="fitCenter"
+            android:padding="6dp"
+
+            android:scaleType="centerInside"
             android:src="@mipmap/wecatpay" />
 
         <TextView
@@ -71,8 +76,9 @@
             android:gravity="center_vertical"
             android:padding="2dp"
             android:text="微信收款"
-            android:textSize="21sp" />
+            android:textSize="@dimen/mid_text" />
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -88,7 +94,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:scaleType="fitCenter"
+            android:padding="6dp"
+
+            android:scaleType="centerInside"
             android:src="@mipmap/zhifubaopay" />
 
         <TextView
@@ -100,7 +108,7 @@
             android:gravity="center_vertical"
             android:padding="2dp"
             android:text="支付宝收款"
-            android:textSize="21sp" />
+            android:textSize="@dimen/mid_text" />
     </LinearLayout>
 
     <View
@@ -118,6 +126,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:padding="6dp"
+            android:scaleType="centerInside"
             android:src="@mipmap/payforcard" />
 
         <TextView
@@ -128,7 +138,7 @@
             android:gravity="center_vertical"
             android:padding="2dp"
             android:text="刷卡收款"
-            android:textSize="21sp" />
+            android:textSize="@dimen/mid_text" />
     </LinearLayout>
 
     <View

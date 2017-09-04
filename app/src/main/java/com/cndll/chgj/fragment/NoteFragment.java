@@ -28,6 +28,7 @@ import com.cndll.chgj.mvp.presenter.NotePresenter;
 import com.cndll.chgj.mvp.view.NoteView;
 import com.cndll.chgj.util.PagerLayoutManager;
 import com.cndll.chgj.util.PopUpViewUtil;
+import com.cndll.chgj.weight.MesgShow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -264,7 +265,17 @@ public class NoteFragment extends BaseFragment implements NoteView {
 
     @Override
     public void showMesg(String mesg) {
+        MesgShow.showMesg("", mesg, cancel, new MesgShow.OnButtonListener() {
+            @Override
+            public void onListerner() {
 
+            }
+        }, new MesgShow.OnButtonListener() {
+            @Override
+            public void onListerner() {
+
+            }
+        }, false);
     }
 
     @Override
@@ -537,6 +548,10 @@ public class NoteFragment extends BaseFragment implements NoteView {
                 @Override
                 public void onClick(View v) {
                     if (position == -1) {
+                        if (name.getText().toString().equals("")) {
+                            showMesg("请输入做法名称");
+                            return;
+                        }
                         ResponseMethod.DataBean dataBean = new ResponseMethod.DataBean();
                         dataBean.setName(name.getText().toString());
                         dataBean.setPrice(price.getText().toString());

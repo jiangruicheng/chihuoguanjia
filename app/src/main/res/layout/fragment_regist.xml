@@ -15,17 +15,56 @@
         android:layout_height="0dp"
         android:layout_weight="0.6"
         android:gravity="center_vertical|left"
-android:textSize="@dimen/ssmall_text"
         android:paddingLeft="24dp"
         android:text="门店列表"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        android:textSize="@dimen/ssmall_text" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/list"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="8.5"
-        android:padding="4dp" />
+        android:layout_weight="8.5">
+
+        <LinearLayout
+            android:id="@+id/no_login"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:weightSum="10">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:scaleType="centerInside"
+                android:src="@mipmap/shophead" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:text="门店列表空空如也\n快注册一个吧"
+                android:textSize="@dimen/small_text" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:text="也可以拨打4008-781-028\n人工帮您注册一个"
+                android:textColor="#F73CB7"
+                android:textSize="@dimen/small_text" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="4dp" />
+    </FrameLayout>
 
     <Button
         android:id="@+id/register"

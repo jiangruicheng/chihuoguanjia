@@ -32,6 +32,7 @@ import com.cndll.chgj.mvp.mode.bean.response.ResponseMethod;
 import com.cndll.chgj.mvp.presenter.OrderPresenter;
 import com.cndll.chgj.mvp.view.OrderView;
 import com.cndll.chgj.util.DateFormatUtil;
+import com.cndll.chgj.util.StringHelp;
 import com.cndll.chgj.weight.MesgShow;
 
 import java.util.ArrayList;
@@ -176,6 +177,7 @@ public class SendFragment extends BaseFragment implements OrderView {
             @Override
             public void onClick(View v) {
                 showProg("");
+                save.setEnabled(false);
                 orderDishFragment.orderInfolayout.setMesg(orderDishFragment.orders);
                 if (orderDishFragment.orderId == 0 && orderDishFragment.orders != null) {
                     orderPresenter.sendOrder(new RequestOrder().
@@ -401,7 +403,7 @@ public class SendFragment extends BaseFragment implements OrderView {
                                     setNum(o.getItemsBean().getAddCount() + "").
                                     setMoney((Float.valueOf(o.getItemsBean().getPrice()) + getMethodPrice(o)) * o.getItemsBean().getAddCount() + "").setM_name(getMethodName(o)).setMachine(o.getItemsBean().getMachine()));
                 }
-                prints.values();
+                //prints.values();
                 Observable.from(new ArrayList<RequestPrintBill>(prints.values())).subscribe(new Observer<RequestPrintBill>() {
                     @Override
                     public void onCompleted() {
@@ -454,7 +456,8 @@ public class SendFragment extends BaseFragment implements OrderView {
                 printBill.getItems().add(new RequestPrintBill.ItemsBean().setUnit(w.getItemsBean().getUnit()).setName(w.getItemsBean().getName()).setNum(w.getItemsBean().getCount()).setMoney(w.getAllPrice() + ""));
             }
         }
-        AppRequest.getAPI().printAddOrder(printBill).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ResponseCailei>() {
+        AppRequest.getAPI().
+                printAddOrder(printBill).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<ResponseCailei>() {
             @Override
             public void onCompleted() {
 
@@ -482,7 +485,7 @@ public class SendFragment extends BaseFragment implements OrderView {
         float price = 0;
         if (o.getItemsBean().getRemark() != null && o.getItemsBean().getRemark().getRemarks() != null) {
             for (ResponseMethod.DataBean m : o.getItemsBean().getRemark().getRemarks()) {
-                price = price + Float.valueOf(m.getPrice());
+                price = price + (StringHelp.isFloat(m.getPrice()) ? Float.valueOf(m.getPrice()) : 0);
             }
 
         }

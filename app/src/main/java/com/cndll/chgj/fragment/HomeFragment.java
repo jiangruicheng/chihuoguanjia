@@ -238,7 +238,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
     void onclick_kefu() {
         if (isAppOver())
             return;
-        MesgShow.showMesg("", "4008 781 028", kefu, new MesgShow.OnButtonListener() {
+        MesgShow.showMesg("拨打电话", "4008 781 028", kefu, new MesgShow.OnButtonListener() {
             @Override
             public void onListerner() {
                 try {
@@ -293,10 +293,14 @@ public class HomeFragment extends BaseFragment implements HomeView {
                 popUpViewUtil.dismiss();
             }
         });
-        popUpViewUtil.
+        popUpViewUtil.showDialog(getContext(), view,
+                0, popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 3,
+                popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getWidth(),
+                popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 2, R.style.Translucent_Dialog);
+        /*popUpViewUtil.
                 popListWindow(modeImage,
                         view, d.getWidth(), d.getHeight() / 3, Gravity.BOTTOM, null
-                );
+                );*/
     }
 
     @BindView(R.id.usernumber)
@@ -635,9 +639,13 @@ public class HomeFragment extends BaseFragment implements HomeView {
     }
 
     private void init() {
+        if (switchMendian == null || presenter == null) {
+            return;
+        }
         getPrintList();
         getAppLastTime();
         presenter.getHomeInfo();
+
         if (AppMode.getInstance().isBoss()) {
             switchMendian.setVisibility(View.VISIBLE);
         } else {

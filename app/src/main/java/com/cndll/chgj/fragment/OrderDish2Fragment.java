@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextPaint;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.cndll.chgj.R;
 import com.cndll.chgj.RXbus.EventType;
 import com.cndll.chgj.RXbus.RxBus;
@@ -182,14 +184,14 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
             }
 
             @Override
-            public void onKeySure(String s) {
+            public boolean onKeySure(String s) {
                 if (orders == null || (orders.orders.size() == 0 && (orders.writeDish == null ? true : orders.writeDish.size() == 0))) {
                     toast("请选菜");
-                    return;
+                    return false;
                 }
                 if (s.equals("")) {
                     toast("请输入桌牌号");
-                    return;
+                    return false;
                 }
                 showProg("");
                 AppRequest.getAPI().sendOrd(new RequestOrder().
@@ -230,6 +232,8 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
                     }
                 });
 
+
+                return true;
             }
 
             @Override
@@ -575,8 +579,8 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
             }
 
             @Override
-            public void onKeySure(String s) {
-
+            public boolean onKeySure(String s) {
+                return true;
             }
 
             @Override
@@ -815,10 +819,14 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
                         Gravity.NO_GRAVITY, locations);
             }
         });
-        popviewOther.popUpViewUtil.popListWindow(send, popviewOther.view,
+        popviewOther.popUpViewUtil.showDialog(getContext(), popviewOther.view,
+                0, popviewOther.popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 3,
+                popviewOther.popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getWidth(),
+                popviewOther.popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 2, R.style.Translucent_Dialog);
+        /*popviewOther.popUpViewUtil.popListWindow(send, popviewOther.view,
                 popviewOther.popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getWidth(),
                 popviewOther.popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 3,
-                Gravity.BOTTOM, null);
+                Gravity.BOTTOM, null);*/
     }
 
     private void printOrders() {
@@ -925,16 +933,17 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
                 }
 
                 @Override
-                public void onKeySure(String s) {
+                public boolean onKeySure(String s) {
 
-                    if (StringHelp.isFloat(s)) {
-                        if (Float.valueOf(s) <= 0.99 && Float.valueOf(s) >= 0.1) {
-                            sendOrders.setDisconut(Float.valueOf(s));
-                            setOrderInfolayout(sendOrders.getCurrPosition(), isOrderWrite);
-                            sendOrds();
-                        }
+                    if (StringHelp.isFloat(s) && Float.valueOf(s) <= 0.99 && Float.valueOf(s) >= 0.1) {
+                        sendOrders.setDisconut(Float.valueOf(s));
+                        setOrderInfolayout(sendOrders.getCurrPosition(), isOrderWrite);
+                        sendOrds();
+                        return true;
+                    } else {
+                        showMesg("请输入0.1到0.99之间的折扣率");
+                        return false;
                     }
-
 
                 }
 
@@ -1718,6 +1727,8 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
             popUpViewUtil = PopUpViewUtil.getInstance();
             view = LayoutInflater.from(getContext()).inflate(R.layout.popview_oderdesh_other, null, false);
             unbinder = ButterKnife.bind(this, view);
+            TextPaint tp = cancel.getPaint();
+            tp.setFakeBoldText(true);
         }
 
         public void dismiss() {

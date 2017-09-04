@@ -21,7 +21,7 @@
             android:background="@drawable/shape_dialog_fillet_solid"
             android:drawableLeft="@mipmap/search"
             android:hint="可输入账单号后4四位或桌台号查询"
-            android:textSize="11sp" />
+            android:textSize="@dimen/ssmall_text" />
     </LinearLayout>
 
     <TextView

@@ -57,7 +57,12 @@ public class MesgShow {
         int screenWidth = popUpViewUtil.getWindowManager(location.getContext()).getDefaultDisplay().getWidth();
         int screenHeight = popUpViewUtil.getWindowManager(location.getContext()).getDefaultDisplay().getHeight();
         int width = screenWidth / 7 * 6;
-        int height = screenHeight / 4 * 1;
+        int height = 0;
+        if (layout == R.layout.popview_payapp) {
+            height = screenHeight / 3 * 1;
+        } else {
+            height = screenHeight / 4 * 1;
+        }
         popUpViewUtil.showDialog(location.getContext(), view, 0, 0, width, height, R.style.Translucent_Dialog);
     }
 

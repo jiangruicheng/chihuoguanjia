@@ -99,7 +99,7 @@ public class KeyWeight {
                 locations[1] = locations[1] - popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 2;
                 popUpViewUtil.popListWindow(location, key,
                         popUpViewUtil.getWindowManager(context).getDefaultDisplay().getWidth(),
-                        popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 2,
+                        popUpViewUtil.getWindowManager(context).getDefaultDisplay().getHeight() / 5 * 3,
                         Gravity.NO_GRAVITY, locations);
 
             } else {
@@ -198,10 +198,9 @@ public class KeyWeight {
                 }
                 if (v.getId() == R.id.sure) {
                     if (onKeyClick != null) {
-                        onKeyClick.onKeySure(showbuffer.toString());
-                    }
-                    if (popUpViewUtil != null) {
-                        popUpViewUtil.dismiss();
+                        if (onKeyClick.onKeySure(showbuffer.toString()) && popUpViewUtil != null) {
+                            popUpViewUtil.dismiss();
+                        }
                     }
                     return;
                 }
@@ -224,7 +223,7 @@ public class KeyWeight {
                 }
                 if (v.getId() == R.id.delete_abc || v.getId() == R.id.delete_number) {
                     if (showbuffer.length() > 0) {
-                        showbuffer.deleteCharAt(showbuffer.length() - 1);
+                        showbuffer.delete(0, showbuffer.length());
                         show.setText(showbuffer.toString());
                     }
                     return;
@@ -261,7 +260,7 @@ public class KeyWeight {
     public interface OnKeyClick {
         void onKeyCancel(String s);
 
-        void onKeySure(String s);
+        boolean onKeySure(String s);
 
         void onKeyNub(String s);
     }

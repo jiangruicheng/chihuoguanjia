@@ -2,253 +2,269 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#eeeeee"
-    android:orientation="vertical"
-    android:padding="4dp">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="4dp"
-        android:layout_weight="1">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical|left"
-            android:text="菜品名称:"
-            android:textSize="@dimen/small_text" />
-
-        <EditText
-            android:id="@+id/name"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:background="@drawable/shape_dialog_fillet_solid"
-            android:hint="请输入菜品名称"
-            android:paddingLeft="4dp"
-            android:selectAllOnFocus="true"
-            android:textSize="@dimen/small_text" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="4dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        android:layout_margin="12dp"
+        android:background="@drawable/shape_bg"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
             android:layout_weight="1">
 
             <TextView
                 android:layout_width="0dp"
-
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical|left"
-                android:text="单        位:"
+                android:text="菜品名称:"
                 android:textSize="@dimen/small_text" />
 
             <EditText
-                android:id="@+id/unit"
+                android:id="@+id/name"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:background="@drawable/shape_dialog_fillet_solid"
-                android:gravity="center"
-                android:text="份"
-                android:textColor="@color/buttonStork"
-                android:textSize="@dimen/small_text" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="2dp"
-            android:layout_weight="1">
-
-            <TextView
-                android:layout_width="0dp"
-
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical|left"
-                android:paddingLeft="4dp"
-                android:text="可否打折:"
-                android:textSize="@dimen/small_text" />
-
-            <include
-                android:id="@+id/bs_dazhe"
-                layout="@layout/button_switch"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/shape_dialog_fillet_solid" />
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="4dp"
-        android:layout_weight="1">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <TextView
-                android:layout_width="0dp"
-
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical|left"
-                android:text="价        格:"
-                android:textSize="@dimen/small_text" />
-
-            <EditText
-                android:id="@+id/price"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/shape_dialog_fillet_solid"
-                android:gravity="center"
-                android:inputType="number"
-                android:selectAllOnFocus="true"
-                android:text="0"
-                android:textColor="@color/buttonStork"
-                android:textSize="@dimen/small_text" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="2dp"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/textView8"
-
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical|left"
-                android:paddingLeft="4dp"
-                android:text="是否售完:"
-                android:textSize="@dimen/small_text" />
-
-            <include
-                android:id="@+id/bs_over"
-                layout="@layout/button_switch"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/shape_dialog_fillet_solid" />
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="4dp"
-        android:layout_weight="1">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <TextView
-                android:layout_width="0dp"
-
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical|left"
-                android:text="出   单   机:"
-                android:textSize="@dimen/small_text" />
-
-            <TextView
-                android:id="@+id/print"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/shape_dialog_fillet_solid"
-                android:drawableRight="@mipmap/down"
-                android:ellipsize="end"
+                android:hint="请输入菜品名称"
                 android:lines="1"
+                android:paddingLeft="4dp"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
                 android:textSize="@dimen/small_text" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="0dp"
+
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|left"
+                    android:text="单        位:"
+                    android:textSize="@dimen/small_text" />
+
+                <EditText
+                    android:id="@+id/unit"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_fillet_solid"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:singleLine="true"
+                    android:text="份"
+                    android:textColor="@color/buttonStork"
+                    android:textSize="@dimen/small_text" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="0dp"
+
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|left"
+                    android:paddingLeft="4dp"
+                    android:text="可否打折:"
+                    android:textSize="@dimen/small_text" />
+
+                <include
+                    android:id="@+id/bs_dazhe"
+                    layout="@layout/button_switch"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_fillet_solid" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="0dp"
+
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|left"
+                    android:text="价        格:"
+                    android:textSize="@dimen/small_text" />
+
+                <EditText
+                    android:id="@+id/price"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_fillet_solid"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:selectAllOnFocus="true"
+                    android:singleLine="true"
+                    android:text="0"
+                    android:textColor="@color/buttonStork"
+                    android:textSize="@dimen/small_text" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/textView8"
+
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|left"
+                    android:paddingLeft="4dp"
+                    android:text="是否售完:"
+                    android:textSize="@dimen/small_text" />
+
+                <include
+                    android:id="@+id/bs_over"
+                    layout="@layout/button_switch"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_fillet_solid" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="0dp"
+
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|left"
+                    android:text="出   单   机:"
+                    android:textSize="@dimen/small_text" />
+
+                <TextView
+                    android:id="@+id/print"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_fillet_solid"
+                    android:drawableRight="@mipmap/down"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:textSize="@dimen/small_text" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/textView14"
+
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.99"
+                    android:gravity="center_vertical|left"
+                    android:paddingLeft="4dp"
+                    android:text="是否出单:"
+                    android:textSize="@dimen/small_text" />
+
+                <include
+                    android:id="@+id/bs_print"
+                    layout="@layout/button_switch"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_dialog_fillet_solid" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
             android:layout_weight="1">
 
             <TextView
-                android:id="@+id/textView14"
-
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.99"
-                android:gravity="center_vertical|left"
-                android:paddingLeft="4dp"
-                android:text="是否出单:"
-                android:textSize="@dimen/small_text" />
 
-            <include
-                android:id="@+id/bs_print"
-                layout="@layout/button_switch"
-                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/shape_dialog_fillet_solid" />
+                android:gravity="center_vertical|left"
+                android:text="编辑查询码"
+                android:textSize="@dimen/small_text" />
+
+            <EditText
+                android:id="@+id/query_code"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:background="@drawable/shape_dialog_fillet_solid"
+                android:hint="如需用到查询点餐才输入，建议3位数"
+                android:inputType="number"
+                android:lines="1"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:textSize="@dimen/small_text" />
 
         </LinearLayout>
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="4dp"
-        android:layout_weight="1">
-
-        <TextView
-            android:layout_width="0dp"
-
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical|left"
-            android:text="编辑查询码"
-            android:textSize="@dimen/small_text" />
-
-        <EditText
-            android:id="@+id/query_code"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:background="@drawable/shape_dialog_fillet_solid"
-            android:inputType="number"
-            android:hint="如需用到查询点餐才输入，建议3位数"
-            android:selectAllOnFocus="true"
-            android:textSize="@dimen/small_text" />
+        <include
+            layout="@layout/popview_button"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.5" />
 
     </LinearLayout>
-
-    <include
-        layout="@layout/popview_button"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.5" />
-
 </LinearLayout>

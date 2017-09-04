@@ -158,9 +158,9 @@ public class Orders {
                     }
 
                     @Override
-                    public void onKeySure(String s) {
+                    public boolean onKeySure(String s) {
                         if (!StringHelp.isFloat(s)) {
-                            return;
+                            return true;
                         }
                         if (isWritDesh(id)) {
                             writeDish.get(id).setCount(Float.valueOf(s));
@@ -176,6 +176,7 @@ public class Orders {
                             }
                         }
 
+                        return true;
                     }
 
                     @Override
@@ -513,7 +514,7 @@ public class Orders {
             float price = 0;
             if (itemsBean.getRemarks() != null) {
                 for (int i = 0; i < itemsBean.getRemarks().size(); i++) {
-                    price = price + Float.valueOf(itemsBean.getRemarks().get(i).getPrice());
+                    price = price + (StringHelp.isFloat(itemsBean.getRemarks().get(i).getPrice()) ? Float.valueOf(itemsBean.getRemarks().get(i).getPrice()) : 0);
                 }
             }
             return giveCount * Float.valueOf(itemsBean.getPrice() + price);

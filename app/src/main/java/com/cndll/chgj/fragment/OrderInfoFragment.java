@@ -117,7 +117,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
             }
 
             @Override
-            public void onKeySure(String s) {
+            public boolean onKeySure(String s) {
                 showProg("");
                 AppRequest.getAPI().sendOrd(new RequestOrder().
                         setItems(order.getItems()).
@@ -157,7 +157,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                     }
                 });
 
-            }
+            return true;}
 
             @Override
             public void onKeyNub(String s) {
@@ -390,7 +390,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                 }
 
                 @Override
-                public void onKeySure(String s) {
+                public boolean onKeySure(String s) {
 
                     if (StringHelp.isFloat(s)) {
                         if (Float.valueOf(s) <= 0.99 && Float.valueOf(s) >= 0.1) {
@@ -401,7 +401,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                     }
 
 
-                }
+                return true;}
 
                 @Override
                 public void onKeyNub(String s) {
@@ -651,7 +651,7 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                     }
 
                     @Override
-                    public void onKeySure(String s) {
+                    public boolean onKeySure(String s) {
                         orderItemMesg = new OrderItemMesg();
                         orderItemMesg.init(container);
                         boolean iss;
@@ -669,12 +669,12 @@ public class OrderInfoFragment extends BaseFragment implements OrderView {
                                 return;
                             }*/
                             sendOrds();
-                            return;
+                            return true;
                             //setOrderInfolayout(order.getCurrPosition(), isOrderWrite);
                             //
                         }
                         adapter.notifyDataSetChanged();
-                    }
+                    return true;}
 
                     @Override
                     public void onKeyNub(String s) {

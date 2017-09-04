@@ -1,89 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/yinse"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:layout_margin="12dp"
+        android:background="@drawable/shape_bg"
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="打印机名称"
-            android:textSize="@dimen/small_text" />
+            android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/print_name"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="6dp"
-            android:layout_weight="3"
-            android:background="@drawable/shape_dialog_fillet_solid"
-            android:hint="请输入打印机名称"
-            android:selectAllOnFocus="true"
-            android:textSize="@dimen/mid_text" />
-    </LinearLayout>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="打印机名称"
+                android:textSize="@dimen/small_text" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+            <EditText
+                android:lines="1"
+                android:singleLine="true"
+                android:id="@+id/print_name"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="6dp"
+                android:layout_weight="3"
+                android:background="@drawable/shape_dialog_fillet_solid"
+                android:hint="请输入打印机名称"
+                android:selectAllOnFocus="true"
+                android:textSize="@dimen/mid_text" />
+        </LinearLayout>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="打印机编号"
-            android:textSize="@dimen/small_text" />
+            android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/print_id"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="6dp"
-            android:layout_weight="3"
-            android:background="@drawable/shape_dialog_fillet_solid"
-            android:hint="请查看打印机底部标签"
-            android:textSize="@dimen/mid_text" />
-    </LinearLayout>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="打印机编号"
+                android:textSize="@dimen/small_text" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+            <EditText
+                android:lines="1"
+                android:singleLine="true"
+                android:id="@+id/print_id"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="6dp"
+                android:layout_weight="3"
+                android:background="@drawable/shape_dialog_fillet_solid"
+                android:hint="请查看打印机底部标签"
+                android:textSize="@dimen/mid_text" />
+        </LinearLayout>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="打印机KEY"
-            android:textSize="@dimen/small_text" />
+            android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/print_key"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="6dp"
-            android:layout_weight="3"
-            android:background="@drawable/shape_dialog_fillet_solid"
-            android:hint="请查看打印机底部标签"
-            android:textSize="@dimen/mid_text" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="打印机KEY"
+                android:textSize="@dimen/small_text" />
+
+            <EditText
+                android:lines="1"
+                android:id="@+id/print_key"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="6dp"
+                android:layout_weight="3"
+                android:singleLine="true"
+                android:background="@drawable/shape_dialog_fillet_solid"
+                android:hint="请查看打印机底部标签"
+                android:textSize="@dimen/mid_text" />
+        </LinearLayout>
+
+        <include
+            layout="@layout/popview_button"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
     </LinearLayout>
-
-    <include
-        layout="@layout/popview_button"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
 </LinearLayout>

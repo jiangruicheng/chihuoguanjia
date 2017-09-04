@@ -316,10 +316,13 @@ public class CaiPinFunctionFragment extends BaseFragment<CaipinFunctionListAdpat
         }
 
         public void show() {
+            int[] locations = new int[2];
+            locations[0] = 0;
+            locations[1] = popUpViewUtil.getWindowManager(getActivity()).getDefaultDisplay().getHeight() / 2 - popUpViewUtil.getWindowManager(getActivity()).getDefaultDisplay().getHeight() / 5;
             popUpViewUtil.popListWindow(addMethod,
                     view,
                     popUpViewUtil.getWindowManager(getActivity()).getDefaultDisplay().getWidth(),
-                    popUpViewUtil.getWindowManager(getActivity()).getDefaultDisplay().getHeight() / 10 * 3, Gravity.CENTER, null);
+                    popUpViewUtil.getWindowManager(getActivity()).getDefaultDisplay().getHeight() / 10 * 3, Gravity.NO_GRAVITY, locations);
             showInput(name);
         }
 

@@ -2,13 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fbffffff"
-    android:orientation="vertical">
+    android:background="#00000000"
+    android:orientation="vertical"
+    android:padding="12dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_weight="4"
+        android:background="@drawable/shape_dialog_fillet_solid"
         android:orientation="vertical">
 
         <TextView
@@ -19,7 +21,7 @@
             android:gravity="center"
             android:text="手写临时菜"
             android:textColor="@color/colorPrimary"
-            android:textSize="24sp" />
+            android:textSize="@dimen/mid_text" />
 
         <View
             android:layout_width="match_parent"
@@ -34,7 +36,7 @@
             android:gravity="center"
             android:text="撤台"
             android:textColor="@color/colorPrimary"
-            android:textSize="24sp" />
+            android:textSize="@dimen/mid_text" />
 
         <View
             android:layout_width="match_parent"
@@ -49,7 +51,7 @@
             android:gravity="center"
             android:text="转台"
             android:textColor="@color/colorPrimary"
-            android:textSize="24sp" />
+            android:textSize="@dimen/mid_text" />
 
         <View
             android:layout_width="match_parent"
@@ -64,12 +66,8 @@
             android:gravity="center"
             android:text="打印账单"
             android:textColor="@color/colorPrimary"
-            android:textSize="24sp" />
+            android:textSize="@dimen/mid_text" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/yinse" />
     </LinearLayout>
 
     <View
@@ -81,8 +79,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:background="@drawable/shape_dialog_fillet_solid"
         android:gravity="center"
         android:text="取消"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/black"
         android:textSize="24sp" />
 </LinearLayout>

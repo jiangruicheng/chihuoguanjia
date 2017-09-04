@@ -107,10 +107,12 @@ public class DeskFragment extends BaseFragment implements AddDeskView {
         View view = inflater.inflate(R.layout.fragment_desk, container, false);
         unbinder = ButterKnife.bind(this, view);
         title.setText("管咸事");
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) rightText.getLayoutParams();
+        /*RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) rightText.getLayoutParams();
         params.width = 58;
         params.height = 58;
-        rightText.setLayoutParams(params);
+        rightText.setLayoutParams(params);*/
+        titleRight.setVisibility(View.GONE);
+
         rightText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,7 +126,9 @@ public class DeskFragment extends BaseFragment implements AddDeskView {
             }
         });
         adapter = new OrderDeskListAdapter();
-        rightText.setBackgroundResource(R.mipmap.refresh);
+        rightText.setText("数据同步");
+        rightText.setBackgroundResource(R.drawable.shape_fillet_titlebar_back);
+        rightText.setPadding(10,10,10,10);
         adapter.setOnItemClickLister(new OnItemClickLister() {
             @Override
             public void OnItemClick(View view, int position) {

@@ -24,6 +24,7 @@ public class ListAdapter<T extends DataList> extends RecyclerView.Adapter<ListAd
         implements ItemTouchHelperAdapter {
     protected final OnStartDragListener mDragStartListener;
     protected Context context;
+    static boolean isToast = true;
 
     public List<? extends DataList> getMitems() {
         return mitems;

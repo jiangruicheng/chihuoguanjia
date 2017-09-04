@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:orientation="vertical"
-    android:weightSum="20">
+    android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -192,7 +191,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.2"
+        android:layout_weight="2"
+        android:paddingTop="2dp"
         android:weightSum="4">
 
         <LinearLayout
@@ -204,7 +204,8 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:text="今日收入"
                 android:textSize="@dimen/small_text" />
@@ -212,7 +213,8 @@
             <TextView
                 android:id="@+id/today_comin"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:text="10000"
                 android:textColor="@color/buttonStork"
@@ -236,7 +238,8 @@
             <TextView
                 android:id="@+id/textView13"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:text="今日单数"
                 android:textSize="@dimen/small_text" />
@@ -244,7 +247,8 @@
             <TextView
                 android:id="@+id/today_numb"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:text="369"
                 android:textColor="@color/buttonStork"
@@ -267,7 +271,8 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:text="本月收入"
                 android:textSize="@dimen/small_text" />
@@ -275,7 +280,8 @@
             <TextView
                 android:id="@+id/month_comin"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:text="36万"
                 android:textColor="@color/buttonStork"
@@ -286,10 +292,10 @@
             android:id="@+id/search_baobiao"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginBottom="1dp"
+            android:layout_marginBottom="5dp"
             android:layout_marginLeft="32dp"
             android:layout_marginRight="6dp"
-            android:layout_marginTop="1dp"
+            android:layout_marginTop="5dp"
             android:layout_weight="1"
             android:background="@drawable/shape_fillet_solid"
             android:text="报表查询"
@@ -325,7 +331,7 @@
                 android:gravity="center"
                 android:text="编辑菜品"
 
-                android:textSize="@dimen/small_text" />
+                android:textSize="@dimen/ssmall_text" />
         </LinearLayout>
 
         <LinearLayout
@@ -350,7 +356,7 @@
                 android:gravity="center"
 
                 android:text="菜品做法"
-                android:textSize="@dimen/small_text" />
+                android:textSize="@dimen/ssmall_text" />
         </LinearLayout>
 
         <LinearLayout
@@ -375,7 +381,7 @@
                 android:gravity="center"
                 android:text="编辑桌台"
 
-                android:textSize="@dimen/small_text" />
+                android:textSize="@dimen/ssmall_text" />
         </LinearLayout>
 
         <LinearLayout
@@ -399,7 +405,7 @@
                 android:gravity="center"
                 android:text="打印设置"
 
-                android:textSize="@dimen/small_text" />
+                android:textSize="@dimen/ssmall_text" />
         </LinearLayout>
     </LinearLayout>
 
@@ -430,7 +436,7 @@
                 android:layout_weight="0.1"
                 android:gravity="center"
                 android:text="注册门店"
-                android:textSize="@dimen/small_text" />
+                android:textSize="@dimen/ssmall_text" />
         </LinearLayout>
 
         <LinearLayout
@@ -455,7 +461,7 @@
                 android:gravity="center"
                 android:text="员工账号"
 
-                android:textSize="@dimen/small_text" />
+                android:textSize="@dimen/ssmall_text" />
         </LinearLayout>
 
         <LinearLayout
@@ -479,7 +485,7 @@
                 android:gravity="center"
                 android:text="查询账单"
 
-                android:textSize="@dimen/small_text" />
+                android:textSize="@dimen/ssmall_text" />
         </LinearLayout>
 
         <LinearLayout
@@ -503,7 +509,7 @@
                 android:gravity="center"
                 android:text="高级设置"
 
-                android:textSize="@dimen/small_text" />
+                android:textSize="@dimen/ssmall_text" />
         </LinearLayout>
     </LinearLayout>
 
@@ -517,7 +523,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="5">
+            android:layout_weight="4">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/order"
@@ -548,7 +554,10 @@
                 android:id="@+id/kefu"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_margin="2dp"
+                android:layout_marginBottom="2dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginTop="2dp"
                 android:layout_weight="1"
                 android:background="@mipmap/custom_service" />
 
@@ -567,7 +576,10 @@
                 android:id="@+id/mode_switch"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_margin="2dp"
+                android:layout_marginBottom="2dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginTop="2dp"
                 android:layout_weight="1"
                 android:background="@mipmap/mode_switch" />
         </LinearLayout>

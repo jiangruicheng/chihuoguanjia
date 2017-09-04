@@ -23,7 +23,7 @@
             android:background="@color/white"
             android:drawableLeft="@mipmap/search"
             android:hint="可以输入做法名称、首字母查询"
-            android:textSize="11sp" />
+            android:textSize="@dimen/small_text" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
@@ -37,13 +37,13 @@
         android:id="@+id/add_method"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@drawable/shape_button_addmethod"
-        android:text="添加做法"
-        android:textColor="@color/white"
         android:layout_marginBottom="2dp"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         android:layout_marginTop="2dp"
         android:layout_weight="0.8"
+        android:background="@drawable/shape_button_addmethod"
+        android:text="添加做法"
+        android:textColor="@color/white"
         android:textSize="20sp" />
 </LinearLayout>

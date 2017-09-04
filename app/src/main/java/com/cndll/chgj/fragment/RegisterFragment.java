@@ -74,6 +74,16 @@ public class RegisterFragment extends BaseFragment<RegisterListAdpater> implemen
     LinearLayout parent;
     @BindView(R.id.register)
     Button register;
+    @BindView(R.id.title_left)
+    TextView titleLeft;
+    @BindView(R.id.title_right)
+    TextView titleRight;
+    @BindView(R.id.title_tow)
+    LinearLayout titleTow;
+    @BindView(R.id.right_text)
+    TextView rightText;
+    @BindView(R.id.no_login)
+    LinearLayout noLogin;
 
     @OnClick(R.id.register)
     void onclick_register() {
@@ -132,12 +142,16 @@ public class RegisterFragment extends BaseFragment<RegisterListAdpater> implemen
                 mItemTouchHelper.startDrag(viewHolder);
             }
         });
+        if (!AppMode.getInstance().isLoading()) {
+            list.setVisibility(View.GONE);
+            noLogin.setVisibility(View.VISIBLE);
+        }
         adapter.setOnItemClick(new ListAdapter.OnItemsClick() {
             @Override
             public void onReEidetClick(View view, int position) {
                 if (adapter.getMitems() != null) {
                     ResponseGetStoreList.DataBean dataBean = ((ResponseGetStoreList.DataBean) adapter.getMitems().get(position));
-                    popview(dataBean.getName(), dataBean.getType(), AppMode.getInstance().getTel(), Integer.valueOf(dataBean.getProvince()), Integer.valueOf(dataBean.getCity()), dataBean.getId());
+                    popview(dataBean.getName(), dataBean.getType(), AppMode.getInstance().getTel(), Integer.valueOf(dataBean.getProvince()), Integer.valueOf(dataBean.getCity()), dataBean.getCode());
                 }
             }
 

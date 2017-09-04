@@ -119,7 +119,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
             }
 
             @Override
-            public void onKeySure(String s) {
+            public boolean onKeySure(String s) {
                 showProg("");
                 AppRequest.getAPI().sendOrd(new RequestOrder().
                         setItems(order.getItems()).
@@ -159,6 +159,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                     }
                 });
 
+                return true;
             }
 
             @Override
@@ -250,7 +251,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                     showMesg("此台不存在消费，无需打印");
                     return;
                 }
-                if (order.isChange) {
+                if (order != null) {
                     showMesg("有菜品未送单，不能打印");
                 } else {
                     printOrders();
@@ -320,16 +321,23 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                         adapter.notifyDataSetChanged();
                     }
                 });
+                int[] locations = new int[2];
+                locations[0] = 0;
+                locations[1] = popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 4;
                 popUpViewUtil.popListWindow(send, view,
                         popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getWidth(),
                         popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 3,
-                        Gravity.NO_GRAVITY, null);
+                        Gravity.NO_GRAVITY, locations);
             }
         });
-        popviewOther.popUpViewUtil.popListWindow(send, popviewOther.view,
+        popviewOther.popUpViewUtil.showDialog(getContext(), popviewOther.view,
+                0, popviewOther.popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 3,
+                popviewOther.popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getWidth(),
+                popviewOther.popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 2, R.style.Translucent_Dialog);
+        /*popviewOther.popUpViewUtil.popListWindow(send, popviewOther.view,
                 popviewOther.popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getWidth(),
                 popviewOther.popUpViewUtil.getWindowManager(getContext()).getDefaultDisplay().getHeight() / 3,
-                Gravity.BOTTOM, null);
+                Gravity.BOTTOM, null);*/
     }
 
     @BindView(R.id.send)
@@ -394,16 +402,17 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                 }
 
                 @Override
-                public void onKeySure(String s) {
+                public boolean onKeySure(String s) {
 
-                    if (StringHelp.isFloat(s)) {
-                        if (Float.valueOf(s) <= 0.99 && Float.valueOf(s) >= 0.1) {
-                            sendOrders.setDisconut(Float.valueOf(s));
-                            orderInfo.setMesg(order, sendOrders);
-                            sendOrds();
-                        }
+                    if (StringHelp.isFloat(s) && Float.valueOf(s) <= 0.99 && Float.valueOf(s) >= 0.1) {
+                        sendOrders.setDisconut(Float.valueOf(s));
+                        orderInfo.setMesg(order, sendOrders);
+                        sendOrds();
+                        return true;
+                    } else {
+                        showMesg("请输入0.1到0.99之间的折扣率");
+                        return false;
                     }
-
 
                 }
 
@@ -467,7 +476,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
         keyWeight.setShowHintText(showhint);
         keyWeight.setCancelcolor(cancelcolor);
         keyWeight.setSurecolor(surecolor);
-        keyWeight.init(getContext(), orderListView, mode);
+        keyWeight.init(getContext(), orderinfolayout, mode);
         keyWeight.setOnKeyClick(onKeyClick);
     }
 
@@ -584,7 +593,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
             @Override
             public void onNumbClick(Orders orders, String id, final int position, View Item) {
                 orders.view = OrderInfo2Fragment.this;
-                orders.numbEdit(id, new KeyUtuil.Builder().setContext(getContext()).setLocation(Item).
+                orders.numbEdit(id, new KeyUtuil.Builder().setContext(getContext()).setLocation(orderinfolayout).
                         setDoFuckCancelUnsend(new Orders.DoFuck() {
                             @Override
                             public void doFuck(Object o) {

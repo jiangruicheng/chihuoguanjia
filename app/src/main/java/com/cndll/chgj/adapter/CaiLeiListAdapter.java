@@ -43,7 +43,6 @@ import com.cndll.chgj.mvp.mode.bean.response.ResponseGetCaileiList;
  */
 public class CaiLeiListAdapter extends ListAdapter<ResponseGetCaileiList.DataBean> {
     /*private final List<String> mItems = new ArrayList<>();*/
-
     private final OnStartDragListener mDragStartListener;
 
     public CaiLeiListAdapter(Context context, OnStartDragListener dragStartListener) {
@@ -85,6 +84,12 @@ public class CaiLeiListAdapter extends ListAdapter<ResponseGetCaileiList.DataBea
         ((ListItemViewHolder) holder).handleView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                if (isToast){
+                    Toast toast = Toast.makeText(v.getContext(), "拖动可以排序", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                    isToast = false;
+                }
                 if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
                     mDragStartListener.onStartDrag(holder);
                 }
