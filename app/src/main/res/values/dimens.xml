@@ -35,4 +35,5 @@
     <dimen name="pay_small">16sp</dimen>
     <dimen name="pay_ssmall">16sp</dimen>
     <dimen name="logo">68dp</dimen>
+    <dimen name="key_height">12dp</dimen>
 </resources>

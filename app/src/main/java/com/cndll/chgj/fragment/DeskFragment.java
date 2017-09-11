@@ -104,6 +104,8 @@ public class DeskFragment extends BaseFragment implements AddDeskView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        OrderImpl.orderMap = null;
+        OrderImpl.caileiList = null;
         View view = inflater.inflate(R.layout.fragment_desk, container, false);
         unbinder = ButterKnife.bind(this, view);
         title.setText("管咸事");
@@ -116,6 +118,8 @@ public class DeskFragment extends BaseFragment implements AddDeskView {
         rightText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                OrderImpl.orderMap = null;
+                OrderImpl.caileiList = null;
                 presenter.getDeskList(new RequestGetDeskList().setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()));
             }
         });
@@ -128,11 +132,13 @@ public class DeskFragment extends BaseFragment implements AddDeskView {
         adapter = new OrderDeskListAdapter();
         rightText.setText("数据同步");
         rightText.setBackgroundResource(R.drawable.shape_fillet_titlebar_back);
-        rightText.setPadding(10,10,10,10);
+        rightText.setPadding(10, 10, 10, 10);
         adapter.setOnItemClickLister(new OnItemClickLister() {
             @Override
             public void OnItemClick(View view, int position) {
-                replaceFragmentAddToBackStack(OrderDish2Fragment.newInstance(null, null).setPersionNum(adapter.getItems().get(position).getNum()).setTableId(adapter.getItems().get(position).getId()).setTabname(adapter.getItems().get(position).getName()).setOrderId(adapter.getItems().get(position).getOid()), new OrderImpl());
+                presenter.getDeskList(new RequestGetDeskList().setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()));
+                DeskFragment.this.position = position;
+                isTurn = true;
             }
         });
 
@@ -201,9 +207,16 @@ public class DeskFragment extends BaseFragment implements AddDeskView {
         this.presenter.setView(this);
     }
 
+    int position;
+    boolean isTurn;
+
     @Override
     public void showDeskList(List<ResponseGetDeskList.DataBean> dataBeen) {
         adapter.setItems(dataBeen);
+        if (isTurn) {
+            replaceFragmentAddToBackStack(OrderDish2Fragment.newInstance(null, null).setPersionNum(adapter.getItems().get(position).getNum()).setTableId(adapter.getItems().get(position).getId()).setTabname(adapter.getItems().get(position).getName()).setOrderId(adapter.getItems().get(position).getOid()), new OrderImpl());
+            isTurn = false;
+        }
     }
 
     @Override

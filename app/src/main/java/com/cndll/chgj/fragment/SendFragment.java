@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -33,6 +34,7 @@ import com.cndll.chgj.mvp.presenter.OrderPresenter;
 import com.cndll.chgj.mvp.view.OrderView;
 import com.cndll.chgj.util.DateFormatUtil;
 import com.cndll.chgj.util.StringHelp;
+import com.cndll.chgj.weight.KeyBoardUtil;
 import com.cndll.chgj.weight.MesgShow;
 
 import java.util.ArrayList;
@@ -146,11 +148,25 @@ public class SendFragment extends BaseFragment implements OrderView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_send, container, false);
+        final View view = inflater.inflate(R.layout.fragment_send, container, false);
         unbinder = ButterKnife.bind(this, view);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                view.findViewById(R.id.key).setVisibility(View.GONE);
+            }
+        });
+        KeyBoardUtil.setEdit(personCount, getActivity());
         delete.setVisibility(View.GONE);
         titleRight.setText("人数：" + personCount.getText().toString());
         title.setText("");
+        personCount.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                new KeyBoardUtil(view, getContext(), personCount).showKeyboard();
+                return false;
+            }
+        });
         //rightText.setText("修改");
         if (orderDishFragment.responseOrd != null) {
             titleRight.setText("人数：" + orderDishFragment.responseOrd.getData().getPernum());
@@ -259,10 +275,10 @@ public class SendFragment extends BaseFragment implements OrderView {
                 }
             }
         });
-        personCount.setFocusable(true);
+        /*personCount.setFocusable(true);
         personCount.setFocusableInTouchMode(true);
         personCount.requestFocus();
-        showInput(personCount);
+        showInput(personCount);*/
         return view;
     }
 

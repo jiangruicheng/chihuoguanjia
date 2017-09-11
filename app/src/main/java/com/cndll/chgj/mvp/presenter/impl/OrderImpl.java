@@ -1,5 +1,7 @@
 package com.cndll.chgj.mvp.presenter.impl;
 
+import android.util.ArrayMap;
+
 import com.cndll.chgj.RXbus.EventType;
 import com.cndll.chgj.RXbus.RxBus;
 import com.cndll.chgj.mvp.MObeserver;
@@ -19,6 +21,8 @@ import com.cndll.chgj.mvp.presenter.OrderPresenter;
 import com.cndll.chgj.mvp.view.OrderView;
 import com.cndll.chgj.util.DateFormatUtil;
 
+import java.util.List;
+
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -28,6 +32,8 @@ import rx.schedulers.Schedulers;
 
 public class OrderImpl implements OrderPresenter {
     OrderView view;
+    public static ArrayMap<String, List<ResponseGetCaipinList.DataBean>> orderMap;
+    public static List<ResponseGetCaileiList.DataBean> caileiList;
 
     @Override
     public void setView(OrderView view) {
@@ -36,6 +42,10 @@ public class OrderImpl implements OrderPresenter {
 
     @Override
     public void getDcList(RequestPrintList requestGetCaileiList) {
+        if (caileiList != null && !caileiList.isEmpty()) {
+            view.setDcList(caileiList);
+            return;
+        }
         view.showProg("");
         AppRequest.getAPI().
                 getCaileiList(requestGetCaileiList).
@@ -58,14 +68,18 @@ public class OrderImpl implements OrderPresenter {
                         view.disProg();
                         if (baseResponse.getCode() == 1) {
                             view.setDcList(((ResponseGetCaileiList) baseResponse).getData());
-
+                            caileiList = ((ResponseGetCaileiList) baseResponse).getData();
                         }
                     }
                 });
     }
 
     @Override
-    public void getDeshList(RequestGetCaipinList requestGetCaipinList) {
+    public void getDeshList(final RequestGetCaipinList requestGetCaipinList) {
+        if (orderMap != null && !orderMap.isEmpty() && orderMap.containsKey(requestGetCaipinList.getDc_id())) {
+            view.setDeshList(orderMap.get(requestGetCaipinList.getDc_id()));
+            return;
+        }
         view.showProg("");
         AppRequest.getAPI().
                 getCaipinList(requestGetCaipinList).
@@ -86,8 +100,11 @@ public class OrderImpl implements OrderPresenter {
                         super.onNext(baseResponse);
                         view.disProg();
                         if (baseResponse.getCode() == 1) {
-                            view.setDeshList(((ResponseGetCaipinList) baseResponse).getData()
-                            );
+                            view.setDeshList(((ResponseGetCaipinList) baseResponse).getData());
+                            if (orderMap == null) {
+                                orderMap = new ArrayMap<String, List<ResponseGetCaipinList.DataBean>>();
+                            }
+                            orderMap.put(requestGetCaipinList.getDc_id(), ((ResponseGetCaipinList) baseResponse).getData());
                         }
                     }
                 });

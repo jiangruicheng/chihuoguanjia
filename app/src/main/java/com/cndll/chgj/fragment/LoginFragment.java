@@ -5,7 +5,9 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -18,6 +20,7 @@ import com.cndll.chgj.mvp.mode.bean.request.RequestLogin;
 import com.cndll.chgj.mvp.presenter.LoginPresenter;
 import com.cndll.chgj.mvp.presenter.impl.RegisterImpl;
 import com.cndll.chgj.mvp.view.LoginView;
+import com.cndll.chgj.weight.KeyBoardUtil;
 import com.cndll.chgj.weight.MesgShow;
 
 import butterknife.BindView;
@@ -133,9 +136,41 @@ public class LoginFragment extends BaseFragment implements LoginView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
+        final View view = inflater.inflate(R.layout.fragment_login, container, false);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                view.findViewById(R.id.key).setVisibility(View.GONE);
+            }
+        });
         unbinder = ButterKnife.bind(this, view);
         title.setText("登录");
+        KeyBoardUtil.setEdit(tel, getActivity());
+        KeyBoardUtil.setEdit(number, getActivity());
+        KeyBoardUtil.setEdit(password, getActivity());
+        tel.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                new KeyBoardUtil(view, getContext(), tel).showKeyboard();
+                return false;
+            }
+        });
+        number.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                new KeyBoardUtil(view, getContext(), number).showKeyboard();
+
+                return false;
+            }
+        });
+        password.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                new KeyBoardUtil(view, getContext(), password).showKeyboard();
+
+                return false;
+            }
+        });
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
