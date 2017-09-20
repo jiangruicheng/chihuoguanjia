@@ -7,6 +7,8 @@ import android.widget.TextView;
 import com.cndll.chgj.R;
 import com.cndll.chgj.util.StringHelp;
 
+import java.math.BigDecimal;
+
 /**
  * Created by kongqing on 2017/5/5.
  */
@@ -49,7 +51,13 @@ public class OrderItemMesg {
     }
 
     public OrderItemMesg setPrice(String name) {
-        this.price.setText(name);
+        if (StringHelp.isFloat(name)) {
+            float f = new BigDecimal(Float.valueOf(name)).setScale(1, BigDecimal.ROUND_HALF_UP).floatValue();
+            this.price.setText(f + "");
+        } else {
+            this.price.setText("");
+
+        }
         return this;
     }
 

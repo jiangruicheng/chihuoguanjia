@@ -268,7 +268,7 @@ public class MenuImpl implements MenuPresenter {
                     public void onNext(BaseResponse baseResponse) {
                         super.onNext(baseResponse);
                         getCaileiList(new RequestPrintList().setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()));
-                        view.toast(baseResponse.getExtra());
+                        //view.toast(baseResponse.getExtra());
                     }
                 });
     }

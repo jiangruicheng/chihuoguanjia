@@ -17,6 +17,37 @@ public class RequestUpLoadPayInfo extends BaseRequest {
     String cert_1;
     String cert_2;
     String cert_3;
+    String cert_4;
+    String cert_5;
+
+    public String getCert_4() {
+        return cert_4;
+    }
+
+    public RequestUpLoadPayInfo setCert_4(String cert_4) {
+        this.cert_4 = cert_4;
+        return this;
+    }
+
+    public String getCert_5() {
+        return cert_5;
+    }
+
+    public RequestUpLoadPayInfo setCert_5(String cert_5) {
+        this.cert_5 = cert_5;
+        return this;
+    }
+
+    public String getCert_6() {
+        return cert_6;
+    }
+
+    public RequestUpLoadPayInfo setCert_6(String cert_6) {
+        this.cert_6 = cert_6;
+        return this;
+    }
+
+    String cert_6;
     String bank_no;
 
     public String getBank_no() {

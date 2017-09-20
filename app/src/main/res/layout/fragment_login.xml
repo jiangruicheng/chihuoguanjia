@@ -130,7 +130,7 @@
 
     <include
         android:id="@+id/key"
-        layout="@layout/activity_key"
+        layout="@layout/numbkey"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_alignParentBottom="true"

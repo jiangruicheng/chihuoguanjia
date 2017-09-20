@@ -27,7 +27,7 @@ public class ResponseGetCaipinList extends BaseResponse {
         this.data = data;
     }
 
-    public static class DataBean extends DataList {
+    public static class DataBean extends DataList implements Cloneable {
 
         @Override
         public String getIDList() {
@@ -75,6 +75,11 @@ public class ResponseGetCaipinList extends BaseResponse {
         public DataBean setAddCount(float addCount) {
             this.addCount = addCount;
             return this;
+        }
+
+        @Override
+        public Object clone() throws CloneNotSupportedException {
+            return super.clone();
         }
 
         public String getSalemoney() {

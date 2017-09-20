@@ -108,7 +108,10 @@ public class KeyBoardUtil {
                     return;
                 }
                 if (v.getId() == R.id.delete_abc || v.getId() == R.id.delete_number) {
-                    editable.delete(start - 1, start);
+                    editable.delete(ed.getSelectionStart(), ed.getSelectionEnd());
+                    if (editable.length() > 0) {
+                        editable.delete(start - 1, start);
+                    }
                     return;
                 }
                 if (v.getId() == R.id.tran_number) {

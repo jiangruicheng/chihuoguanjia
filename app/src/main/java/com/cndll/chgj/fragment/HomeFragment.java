@@ -523,7 +523,9 @@ public class HomeFragment extends BaseFragment implements HomeView {
         banner.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                replaceFragmentAddToBackStack(WebViewFragment.newInstance(urls.get(position).getUrl(), ""), null);
+                if (urls.get(position).getUrl() != null && !urls.get(position).getUrl().equals("")) {
+                    replaceFragmentAddToBackStack(WebViewFragment.newInstance(urls.get(position).getUrl(), ""), null);
+                }
             }
         });
     }

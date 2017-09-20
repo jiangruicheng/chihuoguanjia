@@ -205,8 +205,8 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
                         setZkmoney(orderInfolayout.getDiscountPrice() + "").
                         setTmoney(orderInfolayout.getAllPrice() + "").
                         setTabname(s).
-                        setTab_id(0 + "").setPayee("1234").
-                        setYsmoney(orderInfolayout.getLastPrice() + "")).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(OrderDish2Fragment.this) {
+                        setTab_id(0 + "").setPayee(AppMode.getInstance().getUsername()).
+                        setYsmoney(orderInfolayout.getLastPrice() + "").setAllremarks(orders.getAllMethod())).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(OrderDish2Fragment.this) {
                     @Override
                     public void onCompleted() {
                         super.onCompleted();
@@ -383,6 +383,7 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
                     } else {
                         replaceFragmentAddToBackStack(NoteFragment.newInstance(null, null).setOrder(orders.getOrder(id)), new NoteImpl());
                     }
+                    MainActivity.removeBackPressEvent(backPressEvent);
                     popOrderRequest.dismiss();
                 }
 
@@ -611,6 +612,7 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
         }
         if (orders.getOrders().size() != 0 || (orders.writeDish == null ? false : orders.writeDish.size() != 0)) {
             replaceFragmentAddToBackStack(SendFragment.newInstance(null, null).setOrderDishFragment(this), new OrderImpl());
+            MainActivity.removeBackPressEvent(backPressEvent);
         } else {
             showMesg("不存在未送单菜品，无需送单");
         }
@@ -739,6 +741,7 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
         popviewOther.removeDesk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                popviewOther.dismiss();
                 if (orderId == 0) {
                     showMesg("此台不存在消费，无需撤台");
                     return;
@@ -1300,9 +1303,18 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
                     showMesg("已点此菜，请修改数量");
                 } else {
                     Orders.Order order = new Orders.Order().setOrders(orders);
-                    order.setItemsBean(deshListAdapter.getMitems().get(position).
-                            setCount(1 + ""));
-                    orders.setOrders(deshListAdapter.getMitems().get(position).getId(), order);
+                    ResponseGetCaipinList.DataBean dataBean = null;
+                    try {
+                        dataBean = (ResponseGetCaipinList.DataBean) deshListAdapter.getMitems().get(position).clone();
+                    } catch (CloneNotSupportedException e) {
+                        e.printStackTrace();
+                    }
+                   /* dataBean.setName(deshListAdapter.getMitems().get(position).getName());
+                    dataBean.setAddCount(deshListAdapter.getMitems().get(position).getAddCount());*/
+                    if (dataBean != null) {
+                        order.setItemsBean(dataBean.setCount(1 + ""));
+                        orders.setOrders(dataBean.getId(), order);
+                    }
 
                 }
                 orders.setCurrPosition(deshListAdapter.getMitems().get(position).getId());
@@ -1324,6 +1336,14 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
         presenter.getDcList(new RequestPrintList().setUid(AppMode.getInstance().getUid()).setMid(AppMode.getInstance().getMid()));
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (!AppMode.getInstance().isDeskMode()) {
+            OrderImpl.caileiList = null;
+            OrderImpl.orderMap = null;
+        }
+    }
 
     private void setOrderInfolayout(String id, boolean iswrite) {
         if (iswrite) {
@@ -1526,7 +1546,7 @@ public class OrderDish2Fragment extends BaseFragment implements OrderView {
     @Override
     public void setDcList(List<ResponseGetCaileiList.DataBean> data) {
         dcListAdapter.setMitems(data);
-        if (isFirstLoadDc) {
+        if (isFirstLoadDc && data.size() != 0) {
             dcId = data.get(0).getId();
             isFirstLoadDc = false;
         }

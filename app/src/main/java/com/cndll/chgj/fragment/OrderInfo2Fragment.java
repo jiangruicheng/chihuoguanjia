@@ -267,6 +267,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
         popviewOther.removeDesk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                popviewOther.dismiss();
                 if (orderId == 0) {
                     showMesg("此台不存在消费，无需撤台");
                     return;
@@ -285,6 +286,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
         popviewOther.writeDesh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                popviewOther.dismiss();
                 View view = LayoutInflater.from(getContext()).inflate(R.layout.popview_order_write, null, false);
                 final EditText name, number, price;
                 Button cancel, delete, save;
@@ -1067,7 +1069,7 @@ public class OrderInfo2Fragment extends BaseFragment implements OrderView {
                                 AppRequest.getAPI().printOrder(requestPrintBackDesh).
                                         subscribeOn(Schedulers.io()).
                                         observeOn(AndroidSchedulers.mainThread()).
-                                        subscribe(new MObeserver(OrderInfo2Fragment.this) {
+                                        subscribe(new MObeserver(null) {
                                             @Override
                                             public void onCompleted() {
                                                 super.onCompleted();

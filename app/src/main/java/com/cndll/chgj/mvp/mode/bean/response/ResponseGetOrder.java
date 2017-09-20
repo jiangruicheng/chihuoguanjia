@@ -76,13 +76,13 @@ public class ResponseGetOrder extends BaseResponse {
         private String ysmoney;
         private String ssmoney;
         private String cre_tm;
-        private Object e_tm;
-        private Object paytype;
-        private Object tcmoney;
+        private String e_tm;
+        private String paytype;
+        private String tcmoney;
         private String tab_id;
         private String ordernum;
-        private Object ym;
-        private Object note;
+        private String ym;
+        private String note;
         private List<RequestOrder.WriteDishBean> writedishs;
         private String storename;
         private String type_txt;
@@ -228,27 +228,27 @@ public class ResponseGetOrder extends BaseResponse {
             this.cre_tm = cre_tm;
         }
 
-        public Object getE_tm() {
+        public String getE_tm() {
             return e_tm;
         }
 
-        public void setE_tm(Object e_tm) {
+        public void setE_tm(String e_tm) {
             this.e_tm = e_tm;
         }
 
-        public Object getPaytype() {
+        public String getPaytype() {
             return paytype;
         }
 
-        public void setPaytype(Object paytype) {
+        public void setPaytype(String paytype) {
             this.paytype = paytype;
         }
 
-        public Object getTcmoney() {
+        public String getTcmoney() {
             return tcmoney;
         }
 
-        public void setTcmoney(Object tcmoney) {
+        public void setTcmoney(String tcmoney) {
             this.tcmoney = tcmoney;
         }
 
@@ -268,19 +268,19 @@ public class ResponseGetOrder extends BaseResponse {
             this.ordernum = ordernum;
         }
 
-        public Object getYm() {
+        public String getYm() {
             return ym;
         }
 
-        public void setYm(Object ym) {
+        public void setYm(String ym) {
             this.ym = ym;
         }
 
-        public Object getNote() {
+        public String getNote() {
             return note;
         }
 
-        public void setNote(Object note) {
+        public void setNote(String note) {
             this.note = note;
         }
 

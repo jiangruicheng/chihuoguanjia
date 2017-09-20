@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         CrashReport.initCrashReport(getApplicationContext(), "f7a529b1d4", true);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        show = RxBus.getDefault().toObservable(EventType.class).throttleFirst(2, TimeUnit.SECONDS).subscribe(new Observer<EventType>() {
+        show = RxBus.getDefault().toObservable(EventType.class).throttleFirst(3, TimeUnit.SECONDS).subscribe(new Observer<EventType>() {
             @Override
             public void onCompleted() {
 

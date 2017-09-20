@@ -140,6 +140,6 @@
 
     <include
         android:id="@+id/key"
-        layout="@layout/activity_key"
+        layout="@layout/numbkey"
         android:visibility="gone" />
 </RelativeLayout>

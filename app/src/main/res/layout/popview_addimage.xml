@@ -2,66 +2,74 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="#00000000"
+    android:orientation="vertical"
+    android:padding="18dp">
 
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
-        android:background="@drawable/shape_dialog_fillet_solid"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="导入图片"
-            android:textSize="18sp" />
+            android:layout_weight="3"
+            android:background="@drawable/shape_dialog_fillet_solid"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="导入图片"
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#cdcdcd" />
+
+            <TextView
+                android:id="@+id/carma"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="拍照"
+                android:textColor="@color/colorPrimary"
+                android:textSize="24sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#cdcdcd" />
+
+            <TextView
+                android:id="@+id/photo"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="从手机相册选择"
+                android:textColor="@color/colorPrimary"
+                android:textSize="24sp" />
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#cdcdcd" />
+            android:layout_height="12dp" />
 
         <TextView
-            android:id="@+id/carma"
+            android:id="@+id/cancel"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:background="@drawable/shape_dialog_fillet_solid"
             android:gravity="center"
-            android:text="拍照"
-            android:textColor="@color/colorPrimary"
-            android:textSize="24sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#cdcdcd" />
-
-        <TextView
-            android:id="@+id/photo"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="从手机相册选择"
+            android:text="取消"
             android:textColor="@color/colorPrimary"
             android:textSize="24sp" />
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="12dp" />
-
-    <TextView
-        android:id="@+id/cancel"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@drawable/shape_dialog_fillet_solid"
-        android:gravity="center"
-        android:text="取消"
-        android:textColor="@color/colorPrimary"
-        android:textSize="24sp" />
 </LinearLayout>

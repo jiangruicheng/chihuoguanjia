@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -112,6 +113,8 @@ public class WebViewFragment extends BaseFragment {
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
         title.setText(mParam2);
+        JavaScriptInterface JSInterface = new JavaScriptInterface();
+        webview.addJavascriptInterface(JSInterface, "JSInterface");
         webview.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -125,29 +128,7 @@ public class WebViewFragment extends BaseFragment {
                         back.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                if (fragmentList.get(fragmentList.size() - 3) instanceof OrderInfo2Fragment) {
-                                    if (AppMode.getInstance().isDeskMode()) {
-                                        popBackFragment();
-                                        popBackFragment();
-                                        popBackFragment();
-                                        popBackFragment();
-                                    } else {
-                                        popBackFragment();
-                                        popBackFragment();
-                                        popBackFragment();
-                                        RxBus.getDefault().post(new EventType().setType(EventType.RESET));
-                                    }
-                                } else {
-                                    if (AppMode.getInstance().isDeskMode()) {
-                                        popBackFragment();
-                                        popBackFragment();
-                                        popBackFragment();
-                                    } else {
-                                        popBackFragment();
-                                        popBackFragment();
-                                        RxBus.getDefault().post(new EventType().setType(EventType.RESET));
-                                    }
-                                }
+                                back();
                             }
                         });
                     }
@@ -180,6 +161,32 @@ public class WebViewFragment extends BaseFragment {
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    private void back() {
+        if (fragmentList.get(fragmentList.size() - 3) instanceof OrderInfo2Fragment) {
+            if (AppMode.getInstance().isDeskMode()) {
+                popBackFragment();
+                popBackFragment();
+                popBackFragment();
+                popBackFragment();
+            } else {
+                popBackFragment();
+                popBackFragment();
+                popBackFragment();
+                RxBus.getDefault().post(new EventType().setType(EventType.RESET));
+            }
+        } else {
+            if (AppMode.getInstance().isDeskMode()) {
+                popBackFragment();
+                popBackFragment();
+                popBackFragment();
+            } else {
+                popBackFragment();
+                popBackFragment();
+                RxBus.getDefault().post(new EventType().setType(EventType.RESET));
+            }
         }
     }
 
@@ -220,4 +227,17 @@ public class WebViewFragment extends BaseFragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    public class JavaScriptInterface {
+        Context mContext;
+
+        JavaScriptInterface() {
+        }
+
+        @JavascriptInterface
+        public void changeActivity() {
+            back();
+        }
+    }
+
 }

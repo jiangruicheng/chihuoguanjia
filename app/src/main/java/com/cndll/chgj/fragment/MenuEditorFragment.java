@@ -419,12 +419,14 @@ public class MenuEditorFragment extends BaseFragment implements MenuView {
     @Override
     public void setCaileiList(List<ResponseGetCaileiList.DataBean> dataBeen) {
         ((CaileiFragment) fragments.get(CAILEI)).setAdapterList(dataBeen);
-        if (IsFirstLoadCailei) {
+        if (IsFirstLoadCailei && dataBeen.size() != 0) {
             IsFirstLoadCailei = false;
             ((CaipinFragment) fragments.get(CAIPIN)).setDcId(dataBeen.get(0).getId());
         }
         presenter.getCaipinList(new RequestGetCaipinList().setDc_id(((CaipinFragment) fragments.get(CAIPIN)).getDcId()).setMid(AppMode.getInstance().getMid()).setUid(AppMode.getInstance().getUid()));
-        caileiname = dataBeen.get(0).getName();
+        if (dataBeen.size() != 0) {
+            caileiname = dataBeen.get(0).getName();
+        }
     }
 
     @Override

@@ -230,7 +230,14 @@ public class OrderInfo {
     }
 
     public OrderInfo setAllMoney(String count) {
-        this.allMoney.setText(count);
+        //this.allMoney.setText(count);
+        if (StringHelp.isFloat(count)) {
+            float f = new BigDecimal(Float.valueOf(count)).setScale(1, BigDecimal.ROUND_HALF_UP).floatValue();
+            this.allMoney.setText(f + "");
+        } else {
+            this.allMoney.setText("");
+
+        }
         return this;
     }
 

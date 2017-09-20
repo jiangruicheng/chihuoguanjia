@@ -98,6 +98,35 @@ public class ApplyPayActivity extends AppCompatActivity {
     EditText shopName;
     @BindView(R.id.shop_nick)
     EditText shopNick;
+    @BindView(R.id.bankcard_face)
+    ImageView bankcardFace;
+
+    @OnClick(R.id.bankcard_face)
+    void onclick_bankCardFace() {
+        getImage();
+        selectImageView = bankcardFace;
+        imagePosition = 3;
+    }
+
+    @BindView(R.id.bankcard_back)
+    ImageView bankcardBack;
+
+    @OnClick(R.id.bankcard_back)
+    void onclick_bankCardBack() {
+        getImage();
+        selectImageView = bankcardBack;
+        imagePosition = 4;
+    }
+
+    @BindView(R.id.checkstand)
+    ImageView checkstand;
+
+    @OnClick(R.id.checkstand)
+    void onclick_checkstand() {
+        getImage();
+        selectImageView = checkstand;
+        imagePosition = 5;
+    }
 
     @OnClick(R.id.storyID)
     void onclick_storyID() {
@@ -280,6 +309,9 @@ public class ApplyPayActivity extends AppCompatActivity {
         upLoadImage(0);
         upLoadImage(1);
         upLoadImage(2);
+        upLoadImage(3);
+        upLoadImage(4);
+        upLoadImage(5);
     }
 
     @OnClick(R.id.idcard_face)
@@ -377,9 +409,9 @@ public class ApplyPayActivity extends AppCompatActivity {
         }
     };
     private ImageView selectImageView;
-    private String[] paths = new String[3];
+    private String[] paths = new String[6];
     private int imagePosition;
-    private String[] imageData = new String[3];
+    private String[] imageData = new String[6];
     private int statue = 0;
     private String branhBankNo;
 
@@ -410,6 +442,15 @@ public class ApplyPayActivity extends AppCompatActivity {
                     break;
                 case 2:
                     tempFile = new File(Environment.getExternalStorageDirectory(), "business.jpg");
+                    break;
+                case 3:
+                    tempFile = new File(Environment.getExternalStorageDirectory(), "bankface.jpg");
+                    break;
+                case 4:
+                    tempFile = new File(Environment.getExternalStorageDirectory(), "bankback.jpg");
+                    break;
+                case 5:
+                    tempFile = new File(Environment.getExternalStorageDirectory(), "checkstand.jpg");
                     break;
             }
             try {
@@ -449,7 +490,7 @@ public class ApplyPayActivity extends AppCompatActivity {
                 if (baseResponse.getCode() == 1) {
                     imageData[position] = ((ResponseUploadImage) baseResponse).getData();
                     statue++;
-                    if (statue == 3) {
+                    if (statue == 6) {
                         statue = 0;
                         baseShowProg(sure);
                         AppRequest.getAPI().uploadPayInfo(new RequestUpLoadPayInfo().
@@ -460,7 +501,7 @@ public class ApplyPayActivity extends AppCompatActivity {
                                 setBankaddress(bankName.getText().toString() + "-" + storyID.getText().toString()).
                                 setCode(AppMode.getInstance().getMcode()).
                                 setTel(tel.getText().toString()).
-                                setName(bankcardUsername.getText().toString()).setCert_1(imageData[0]).setCert_2(imageData[1]).setCert_3(imageData[2])
+                                setName(bankcardUsername.getText().toString()).setCert_1(imageData[0]).setCert_2(imageData[1]).setCert_3(imageData[2]).setCert_4(imageData[3]).setCert_5(imageData[4]).setCert_6(imageData[5])
                                 .setBank_no(branhBankNo).
                                         setBank_name(storyID.getText().toString()).
                                         setMerchant_name(shopName.getText().toString()).
@@ -626,6 +667,7 @@ public class ApplyPayActivity extends AppCompatActivity {
                         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                         startActivityForResult(intent, 0x01);
                     }
+                    popUpViewUtil.dismiss();
                 }
             });
             photo.setOnClickListener(new View.OnClickListener()
@@ -636,10 +678,16 @@ public class ApplyPayActivity extends AppCompatActivity {
                     Intent intent = new Intent(Intent.ACTION_PICK);
                     intent.setType("image/*");//相片类型
                     startActivityForResult(intent, 0x02);
-
+                    popUpViewUtil.dismiss();
                 }
             });
-            popUpViewUtil.popListWindow(location, view, popUpViewUtil.getWindowManager(ApplyPayActivity.this).
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popUpViewUtil.dismiss();
+                }
+            });
+           /* popUpViewUtil.popListWindow(location, view, popUpViewUtil.getWindowManager(ApplyPayActivity.this).
 
                     getDefaultDisplay().
 
@@ -649,7 +697,11 @@ public class ApplyPayActivity extends AppCompatActivity {
 
                     getDefaultDisplay().
 
-                    getHeight() / 3, Gravity.BOTTOM, null);
+                    getHeight() / 3, Gravity.BOTTOM, null);*/
+            popUpViewUtil.showDialog(ApplyPayActivity.this, view,
+                    0, popUpViewUtil.getWindowManager(ApplyPayActivity.this).getDefaultDisplay().getHeight() / 3,
+                    popUpViewUtil.getWindowManager(ApplyPayActivity.this).getDefaultDisplay().getWidth(),
+                    popUpViewUtil.getWindowManager(ApplyPayActivity.this).getDefaultDisplay().getHeight() / 2, R.style.Translucent_Dialog);
         }
     }
 }
