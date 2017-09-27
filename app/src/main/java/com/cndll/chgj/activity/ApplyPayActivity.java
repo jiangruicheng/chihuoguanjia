@@ -128,13 +128,18 @@ public class ApplyPayActivity extends AppCompatActivity {
         imagePosition = 5;
     }
 
+
     @OnClick(R.id.storyID)
     void onclick_storyID() {
         if (parentBankID.equals("")) {
             MesgShow.showMesg("", "请选择银行", sure, null, null, false);
             return;
         }
-        AppRequest.getAPI().getBranchBankList("0", parentBankID).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(baseview) {
+        if (shi == 0) {
+            MesgShow.showMesg("", "请选择所在地区", sure, null, null, false);
+            return;
+        }
+        AppRequest.getAPI().getBranchBankList(shi + "", parentBankID).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(baseview) {
             @Override
             public void onCompleted() {
                 super.onCompleted();

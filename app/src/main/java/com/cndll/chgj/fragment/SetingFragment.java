@@ -93,7 +93,7 @@ public class SetingFragment extends BaseFragment {
         AppRequest.getAPI().setting(AppMode.getInstance().getUid(),
                 AppMode.getInstance().getMid(),
                 backSet.isLeftInt() + "", printset,
-                String.valueOf(discountSet.isLeftInt() == 1 ? 0 : 1)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(baseView) {
+                String.valueOf(discountSet.isLeftInt() == 1 ? 0 : 1), String.valueOf(wechatOffLine.isLeftInt() == 1 ? 0 : 1), String.valueOf(alipayOffLine.isLeftInt() == 1 ? 0 : 1)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(baseView) {
             @Override
             public void onCompleted() {
                 super.onCompleted();
@@ -177,7 +177,7 @@ public class SetingFragment extends BaseFragment {
         }
     }
 
-    private ButtonSwitch backSet, printSet, discountSet;
+    private ButtonSwitch backSet, printSet, discountSet, wechatOffLine, alipayOffLine;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -195,8 +195,12 @@ public class SetingFragment extends BaseFragment {
         View view1 = view.findViewById(R.id.back_set);
         View view2 = view.findViewById(R.id.print_set);
         View view3 = view.findViewById(R.id.discount_set);
+        View view4 = view.findViewById(R.id.wechat_offline);
+        View view5 = view.findViewById(R.id.alpay_offline);
         backSet = new ButtonSwitch();
         printSet = new ButtonSwitch();
+        alipayOffLine = new ButtonSwitch();
+        wechatOffLine = new ButtonSwitch();
         PackageManager manager = getContext().getPackageManager();
         PackageInfo info = null;
         try {
@@ -210,6 +214,14 @@ public class SetingFragment extends BaseFragment {
         backSet.setTextColor(Color.WHITE, Color.BLACK);
         backSet.setRightBackground(R.drawable.shape_button_black);
         backSet.setLeftBackground(R.drawable.shape_fillet_solid_blue);
+        wechatOffLine.setText("否", "是");
+        wechatOffLine.setTextColor(Color.WHITE, Color.BLACK);
+        wechatOffLine.setRightBackground(R.drawable.shape_button_black);
+        wechatOffLine.setLeftBackground(R.drawable.shape_fillet_solid_blue);
+        alipayOffLine.setText("否", "是");
+        alipayOffLine.setTextColor(Color.WHITE, Color.BLACK);
+        alipayOffLine.setRightBackground(R.drawable.shape_button_black);
+        alipayOffLine.setLeftBackground(R.drawable.shape_fillet_solid_blue);
         printSet.setText("一菜一单", "一桌一单");
         printSet.setTextColor(Color.WHITE, Color.BLACK);
         printSet.setRightBackground(R.drawable.shape_button_black);
@@ -221,9 +233,13 @@ public class SetingFragment extends BaseFragment {
         backSet.init(view1);
         printSet.init(view2);
         discountSet.init(view3);
+        wechatOffLine.init(view4);
+        alipayOffLine.init(view5);
         backSet.setLeft(true);
         printSet.setLeft(true);
         discountSet.setLeft(true);
+        wechatOffLine.setLeft(true);
+        alipayOffLine.setLeft(true);
         title.setText("高级设置");
         AppRequest.getAPI().getSetting(AppMode.getInstance().getUid(), AppMode.getInstance().getMid()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new MObeserver(baseView) {
             @Override
@@ -255,6 +271,16 @@ public class SetingFragment extends BaseFragment {
                         printSet.setLeft(true);
                     } else {
                         printSet.setLeft(false);
+                    }
+                    if (IsTrue(responseGetSeting.getData().getWeixin())) {
+                        wechatOffLine.setLeft(false);
+                    } else {
+                        wechatOffLine.setLeft(true);
+                    }
+                    if (IsTrue(responseGetSeting.getData().getAlipay())) {
+                        alipayOffLine.setLeft(false);
+                    } else {
+                        alipayOffLine.setLeft(true);
                     }
                 }
             }

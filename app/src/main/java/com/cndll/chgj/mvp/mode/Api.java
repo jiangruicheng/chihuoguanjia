@@ -172,7 +172,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("System/advset")
-    Observable<ResponseCailei> setting(@Field("uid") String uid, @Field("mid") String mid, @Field("tcis_print") String tcis_print, @Field("cd_method") String cd_method, @Field("dis_zk") String dis_zk);
+    Observable<ResponseCailei> setting(@Field("uid") String uid, @Field("mid") String mid, @Field("tcis_print") String tcis_print, @Field("cd_method") String cd_method, @Field("dis_zk") String dis_zk,@Field("weixin") String weixin,@Field("alipay") String alipay);
 
     @FormUrlEncoded
     @POST("user/loginout")

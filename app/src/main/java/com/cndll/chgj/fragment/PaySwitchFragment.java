@@ -18,6 +18,7 @@ import com.cndll.chgj.mvp.mode.bean.info.AppMode;
 import com.cndll.chgj.mvp.mode.bean.info.Orders;
 import com.cndll.chgj.mvp.mode.bean.response.BaseResponse;
 import com.cndll.chgj.mvp.mode.bean.response.ResponseAddOrd;
+import com.cndll.chgj.mvp.mode.bean.response.ResponseGetSeting;
 import com.cndll.chgj.mvp.mode.bean.response.ResponsePayStatue;
 import com.cndll.chgj.mvp.presenter.BasePresenter;
 import com.cndll.chgj.mvp.view.BaseView;
@@ -211,21 +212,82 @@ public class PaySwitchFragment extends BaseFragment {
         weixin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                type = 2;
-                if (orderID != 0)
-                    isHavePayCount("微信");
-                titlename = "微信收款";
+
+                AppRequest.getAPI().getSetting(AppMode.getInstance().getUid(),
+                        AppMode.getInstance().getMid()).
+                        subscribeOn(Schedulers.io()).
+                        observeOn(AndroidSchedulers.mainThread()).
+                        subscribe(new MObeserver(null) {
+                            @Override
+                            public void onCompleted() {
+                                super.onCompleted();
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                super.onError(e);
+                            }
+
+                            @Override
+                            public void onNext(BaseResponse baseResponse) {
+                                super.onNext(baseResponse);
+
+                                if (baseResponse.getCode() == 1) {
+                                    ResponseGetSeting responseGetSeting = ((ResponseGetSeting) baseResponse);
+                                    if (responseGetSeting.getData().getWeixin().equals("1")) {
+                                        gotoPay("2");
+                                    } else {
+                                        type = 2;
+                                        if (orderID != 0)
+                                            isHavePayCount("微信");
+                                        titlename = "微信收款";
+                                    }
+
+                                }
+                            }
+                        });
+
             }
         });
         zhifubao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                type = 1;
-                if (orderID != 0)
-                    //gotoWebView();
+                AppRequest.getAPI().getSetting(AppMode.getInstance().getUid(),
+                        AppMode.getInstance().getMid()).
+                        subscribeOn(Schedulers.io()).
+                        observeOn(AndroidSchedulers.mainThread()).
+                        subscribe(new MObeserver(null) {
+                            @Override
+                            public void onCompleted() {
+                                super.onCompleted();
+                            }
 
-                    isHavePayCount("支付宝");
-                titlename = "支付宝收款";
+                            @Override
+                            public void onError(Throwable e) {
+                                super.onError(e);
+                            }
+
+                            @Override
+                            public void onNext(BaseResponse baseResponse) {
+                                super.onNext(baseResponse);
+
+                                if (baseResponse.getCode() == 1) {
+                                    ResponseGetSeting responseGetSeting = ((ResponseGetSeting) baseResponse);
+                                    if (responseGetSeting.getData().getAlipay().equals("1")) {
+                                        gotoPay("1");
+                                    } else {
+                                        type = 1;
+                                        if (orderID != 0)
+                                            //gotoWebView();
+
+                                            isHavePayCount("支付宝");
+                                        titlename = "支付宝收款";
+                                    }
+
+                                }
+                            }
+                        });
+
             }
         });
         setOrderInfolayout();

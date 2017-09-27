@@ -117,6 +117,14 @@ public class SuccessFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_success, container, false);
         unbinder = ButterKnife.bind(this, view);
         switch (mParam1) {
+            case "1":
+                title.setText("支付宝收款");
+                pay();
+                break;
+            case "2":
+                title.setText("微信收款");
+                pay();
+                break;
             case "3":
                 title.setText("现金收款");
                 pay();
